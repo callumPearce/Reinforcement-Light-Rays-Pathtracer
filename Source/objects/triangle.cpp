@@ -11,7 +11,7 @@ Triangle::Triangle(vec4 v0, vec4 v1, vec4 v2, Material material) : Shape(materia
 }
 
 // Tests whether the triangle intersects a ray
-bool Triangle::intersects(Ray * ray, Intersection & intersection, int index) {
+bool Triangle::intersects(Ray * ray, Intersection& intersection, int index) {
     bool returnVal = false;
     vec4 start = ray->get_start();
     vec4 dir = ray->get_direction();
@@ -19,7 +19,7 @@ bool Triangle::intersects(Ray * ray, Intersection & intersection, int index) {
     // cout << start.x << " " << start.y << " " << start.z << endl;
     // cout << dir.x << " " << dir.y << " " << dir.z << endl;
 
-    dir = vec4(vec3(dir) * (float)SCREEN_HEIGHT, 1);
+    //dir = vec4(vec3(dir) * (float)SCREEN_HEIGHT, 1);
 
     vec4 v0 = getV0();
     vec4 v1 = getV1();
@@ -28,6 +28,10 @@ bool Triangle::intersects(Ray * ray, Intersection & intersection, int index) {
     vec3 e1 = vec3(v1.x - v0.x, v1.y - v0.y, v1.z - v0.z);
     vec3 e2 = vec3(v2.x - v0.x, v2.y - v0.y, v2.z - v0.z);
     vec3 b = vec3(start.x - v0.x, start.y - v0.y, start.z - v0.z);
+
+    // cout << v0.x << " " << v0.y << " " << v0.z << endl;
+    // cout << v1.x << " " << v1.y << " " << v1.z << endl;
+    // cout << v2.x << " " << v2.y << " " << v2.z << endl;
 
     mat3 A(vec3(-dir), e1, e2);
 
@@ -42,7 +46,6 @@ bool Triangle::intersects(Ray * ray, Intersection & intersection, int index) {
             intersection.position = start + solution.x * dir;
             intersection.distance = solution.x;
             intersection.index = index;
-            intersection.normal = normal;
             returnVal = true;
         }
     }
@@ -115,4 +118,5 @@ void Triangle::compute_and_set_normal() {
     normal.y = normal3.y;
     normal.z = normal3.z;
     normal.w = 1.0;
+    this->normal = normal;
 }

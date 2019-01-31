@@ -13,6 +13,7 @@
 
 #include "image_settings.h"
 #include "cornell_box_scene.h"
+#include "ray.h"
 
 using namespace std;
 using glm::vec3;
@@ -38,6 +39,11 @@ int main (int argc, char* argv[]) {
     vec4 camera_pos = vec4(0, 0, -3, 1);
 
     while (NoQuitMessageSDL()){
+        
+        Ray ray(camera_pos, vec4(0));
+        
+        memset(screen->buffer, 0, screen->height*screen->width*sizeof(uint32_t));
+
         for (int x = 0; x < SCREEN_WIDTH; x++){
             for (int y = 0; y < SCREEN_HEIGHT; y++){
 
@@ -45,7 +51,7 @@ int main (int argc, char* argv[]) {
                 vec4 dir((x - SCREEN_WIDTH / 2) , (y - SCREEN_HEIGHT / 2) , FOCAL_LENGTH , 1);
 
                 // Create a ray that we will change the direction for below
-                Ray ray(camera_pos, dir);
+                ray.set_direction(dir);
                 // ray.rotateRay(camera.getYaw());
 
                 // Initialise the closest intersection
@@ -54,7 +60,6 @@ int main (int argc, char* argv[]) {
                 // Find the closest intersection and plot the colour of the shape
                 if (ray.closest_intersection(shapes, closest_intersection)) {
                     vec3 colour = shapes[closest_intersection.index]->get_material().get_diffuse_c();
-
                     PutPixelSDL(screen, x, y, colour);
                 }
                 else {

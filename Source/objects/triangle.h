@@ -23,7 +23,7 @@ class Triangle : public Shape {
         Triangle(vec4 v0, vec4 v1, vec4 v2, Material material);
 
         // Tests whether a triangle intersects a ray
-        bool intersects(Ray * ray, Intersection & intersection, int index);
+        bool intersects(Ray* ray, Intersection& intersection, int index);
 
         // Getters
         vec4 getV0();

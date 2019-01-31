@@ -1,6 +1,6 @@
 #include "cornell_box_scene.h"
 
-void get_cornell_shapes(vector<Triangle>& triangles) {
+void get_cornell_shapes(std::vector<Triangle>& triangles) {
     
     // Materials
     Material blue = Material(vec3(0.15f, 0.15f, 0.75f));
@@ -128,4 +128,34 @@ void get_cornell_shapes(vector<Triangle>& triangles) {
     triangles.push_back(Triangle(G,F,E,red));
     triangles.push_back(Triangle(G,H,F,red));
 
+
+    for (size_t i = 0 ; i < triangles.size() ; ++i) {
+        triangles[i].setV0(triangles[i].getV0() * (2 / l));
+        triangles[i].setV1(triangles[i].getV1() * (2 / l));
+        triangles[i].setV2(triangles[i].getV2() * (2 / l));
+
+        triangles[i].setV0(triangles[i].getV0() - vec4(1,1,1,1));
+        triangles[i].setV1(triangles[i].getV1() - vec4(1,1,1,1));
+        triangles[i].setV2(triangles[i].getV2() - vec4(1,1,1,1));
+
+        vec4 newV0 = triangles[i].getV0();
+        newV0.x *= -1;
+        newV0.y *= -1;
+        newV0.w = 1.0;
+        triangles[i].setV0(newV0);
+
+        vec4 newV1 = triangles[i].getV1();
+        newV1.x *= -1;
+        newV1.y *= -1;
+        newV1.w = 1.0;
+        triangles[i].setV1(newV1);
+
+        vec4 newV2 = triangles[i].getV2();
+        newV2.x *= -1;
+        newV2.y *= -1;
+        newV2.w = 1.0;
+        triangles[i].setV2(newV2);
+
+        triangles[i].compute_and_set_normal();
+    }
 }
