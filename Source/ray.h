@@ -46,6 +46,9 @@ class Ray {
         // Cramers rule for solving a system of linear equations
         bool cramers(mat3 A, vec3 b, vec3& solution);
 
+        // Rotate a ray by "yaw"
+        void rotate_ray(float yaw);
+
         // Getters
         vec4 get_start();
         vec4 get_direction();

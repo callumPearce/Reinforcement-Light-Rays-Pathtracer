@@ -20,6 +20,14 @@ bool Ray::closest_intersection(vector<Shape *> shapes, Intersection& closest_int
     return returnVal;
 }
 
+// Rotate a ray by "yaw"
+void Ray::rotate_ray(float yaw) {
+    mat4 R = mat4(1.0);
+    R[0] = vec4(cos(yaw), 0, sin(yaw), 0);
+    R[2] = vec4(-sin(yaw), 0, cos(yaw), 0);
+    set_direction(R * get_direction());
+}
+
 // Getters
 vec4 Ray::get_start() {
     return start;
