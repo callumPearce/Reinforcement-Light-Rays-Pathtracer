@@ -5,10 +5,10 @@ project(Monte_Carlo_Raytracer)
 set(CMAKE_CXX_FLAGS "-Wall -Wextra -O3 -g")
 
 # Set output directory for executables
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_HOME_DIRECTORY}/build)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_HOME_DIRECTORY}/Build)
 
 # Set the output directory for library:
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_HOME_DIRECTORY}/lib)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_HOME_DIRECTORY}/Lib)
 
 # Find SDL2 and include directories to project
 find_package(SDL2 REQUIRED)
