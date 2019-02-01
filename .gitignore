@@ -1,0 +1,14 @@
+# Remove mac metadata
+.DS_Store
+
+# Ignore Makefile 
+Makefile
+
+# Ignore CMakeFiles
+/CMakeFiles/*
+
+# Ignore builds
+/Build/*
+
+# Ignore .vscode
+/.vscode/
