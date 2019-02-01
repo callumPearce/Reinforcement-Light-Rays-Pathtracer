@@ -1,9 +1,0 @@
-{
-    "files.associations": {
-        "vector": "cpp",
-        "iostream": "cpp",
-        "limits": "cpp",
-        "unordered_map": "cpp",
-        "cmath": "cpp"
-    }
-}

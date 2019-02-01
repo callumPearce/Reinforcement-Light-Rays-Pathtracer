@@ -15,3 +15,6 @@ Makefile
 
 # Ignore CMakeCache
 CMakeCache.txt
+
+# Ignore cmake_install.make
+cmake_install.cmake
