@@ -8,7 +8,6 @@
 #include "sdl_auxiliary.h"
 #include <stdint.h>
 #include <memory>
-#include <omp.h>
 #include <vector>
 
 #include "image_settings.h"
@@ -81,9 +80,6 @@ void Draw(screen* screen, Camera& camera, vector<Shape *> shapes){
 }
 
 int main (int argc, char* argv[]) {
-
-    // Number of threads to be used by the program
-    omp_set_num_threads(6);
     
     // Initialise SDL screen
     screen *screen = InitializeSDL(SCREEN_WIDTH, SCREEN_HEIGHT, FULLSCREEN_MODE);
