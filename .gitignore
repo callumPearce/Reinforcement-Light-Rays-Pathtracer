@@ -12,3 +12,6 @@ Makefile
 
 # Ignore .vscode
 /.vscode/
+
+# Ignore CMakeCache
+CMakeCache.txt

@@ -1,3 +1,3 @@
-/Users/callum/Documents/Year 4/thesis/monte_carlo_raytracer/CMakeFiles/rebuild_cache.dir
-/Users/callum/Documents/Year 4/thesis/monte_carlo_raytracer/CMakeFiles/edit_cache.dir
-/Users/callum/Documents/Year 4/thesis/monte_carlo_raytracer/CMakeFiles/Monte_Carlo_Raytracer.dir
+/home/calst/Documents/year4/thesis/monte_carlo_raytracer/CMakeFiles/rebuild_cache.dir
+/home/calst/Documents/year4/thesis/monte_carlo_raytracer/CMakeFiles/Monte_Carlo_Raytracer.dir
+/home/calst/Documents/year4/thesis/monte_carlo_raytracer/CMakeFiles/edit_cache.dir
