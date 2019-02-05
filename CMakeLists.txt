@@ -21,6 +21,7 @@ include_directories(Source/constants)
 include_directories(Source/objects)
 include_directories(Source/scenes)
 include_directories(Source/utils)
+include_directories(Source/lights)
 
 # Set the sources
 set(
@@ -33,6 +34,7 @@ set(
     Source/objects/triangle.cpp
     Source/scenes/cornell_box_scene.cpp
     Source/utils/printing.cpp
+    Source/lights/light.cpp
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES})

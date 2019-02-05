@@ -15,6 +15,7 @@
 #include "ray.h"
 #include "printing.h"
 #include "camera.h"
+#include "light.h"
 
 using namespace std;
 using glm::vec3;
@@ -48,12 +49,11 @@ void Update(Camera& camera){
     }
 }
 
-void Draw(screen* screen, Camera& camera, vector<Shape *> shapes){
+void Draw(screen* screen, Camera& camera, Light& light, vector<Shape *> shapes){
 
     // Reset the SDL screen to black
     memset(screen->buffer, 0, screen->height*screen->width*sizeof(uint32_t));
 
-    #pragma omp parallel for
     for (int x = 0; x < SCREEN_WIDTH; x++){
         for (int y = 0; y < SCREEN_HEIGHT; y++){
 
@@ -69,8 +69,9 @@ void Draw(screen* screen, Camera& camera, vector<Shape *> shapes){
 
             // Find the closest intersection and plot the colour of the shape
             if (ray.closest_intersection(shapes, closest_intersection)) {
-                vec3 colour = shapes[closest_intersection.index]->get_material().get_diffuse_c();
-                PutPixelSDL(screen, x, y, colour);
+                //vec3 colour = shapes[closest_intersection.index]->get_material().get_diffuse_c();
+                vec3 diffuse_colour = light.direct_light(closest_intersection, shapes);
+                PutPixelSDL(screen, x, y, diffuse_colour);
             }
             else {
                 PutPixelSDL(screen, x, y, vec3(0,0,0));
@@ -88,17 +89,24 @@ int main (int argc, char* argv[]) {
     vector<Triangle> triangles;
     get_cornell_shapes(triangles);
 
+    // Convert all shapes into a unified list of pointers to them
     vector<Shape *> shapes;
     for (int i = 0 ; i < triangles.size(); i++) {
         Shape * sptr (&triangles[i]);
         shapes.push_back(sptr);
     }
 
+    // Create the camera
     Camera camera = Camera(vec4(0, 0, -3, 1));
 
+    // Create the light
+    vec3 diffuse_power = 14.0f * vec3(1, 1, 0.9);
+    Light light = Light(vec4(0, -0.5, -0.7, 1.0), diffuse_power);
+
+    // Render
     while (NoQuitMessageSDL()){
         Update(camera);
-        Draw(screen, camera, shapes);
+        Draw(screen, camera, light, shapes);
         SDL_Renderframe(screen);
     }
 
