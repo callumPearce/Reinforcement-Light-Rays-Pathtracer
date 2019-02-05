@@ -1,6 +1,7 @@
 /*
     Entry point for the Raytracer
 */
+#include <omp.h>
 #include <assert.h>
 #include <iostream>
 #include <glm/glm.hpp>
@@ -9,7 +10,6 @@
 #include <stdint.h>
 #include <memory>
 #include <vector>
-#include <omp.h>
 
 #include "image_settings.h"
 #include "cornell_box_scene.h"
