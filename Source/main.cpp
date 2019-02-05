@@ -9,6 +9,7 @@
 #include <stdint.h>
 #include <memory>
 #include <vector>
+#include <omp.h>
 
 #include "image_settings.h"
 #include "cornell_box_scene.h"
@@ -72,6 +73,7 @@ void Draw(screen* screen, Camera& camera, LightSphere& light_sphere, vector<Shap
     // Reset the SDL screen to black
     memset(screen->buffer, 0, screen->height*screen->width*sizeof(uint32_t));
 
+    #pragma omp parallel for
     for (int x = 0; x < SCREEN_WIDTH; x++){
         for (int y = 0; y < SCREEN_HEIGHT; y++){
 
@@ -99,6 +101,8 @@ void Draw(screen* screen, Camera& camera, LightSphere& light_sphere, vector<Shap
 }
 
 int main (int argc, char* argv[]) {
+
+    omp_set_num_threads(6);
     
     // Initialise SDL screen
     screen *screen = InitializeSDL(SCREEN_WIDTH, SCREEN_HEIGHT, FULLSCREEN_MODE);
@@ -119,7 +123,7 @@ int main (int argc, char* argv[]) {
 
     // Create the light-sphere
     vec3 diffuse_p = 30.0f * vec3(1, 1, 0.9);
-    vec3 ambient_p = 0.5f * vec3(1,1,1);
+    vec3 ambient_p = 0.1f * vec3(1,1,1);
     float r = 0.05f;
     LightSphere light_sphere(vec4(0, -0.4, -0.9, 1.0), r, 10, diffuse_p, ambient_p);
 
