@@ -16,11 +16,6 @@ bool Triangle::intersects(Ray * ray, Intersection& intersection, int index) {
     vec4 start = ray->get_start();
     vec4 dir = ray->get_direction();
 
-    // cout << start.x << " " << start.y << " " << start.z << endl;
-    // cout << dir.x << " " << dir.y << " " << dir.z << endl;
-
-    //dir = vec4(vec3(dir) * (float)SCREEN_HEIGHT, 1);
-
     vec4 v0 = getV0();
     vec4 v1 = getV1();
     vec4 v2 = getV2();
@@ -29,9 +24,7 @@ bool Triangle::intersects(Ray * ray, Intersection& intersection, int index) {
     vec3 e2 = vec3(v2.x - v0.x, v2.y - v0.y, v2.z - v0.z);
     vec3 b = vec3(start.x - v0.x, start.y - v0.y, start.z - v0.z);
 
-    // cout << v0.x << " " << v0.y << " " << v0.z << endl;
-    // cout << v1.x << " " << v1.y << " " << v1.z << endl;
-    // cout << v2.x << " " << v2.y << " " << v2.z << endl;
+    dir = vec4(vec3(dir) * (float)SCREEN_HEIGHT, 1);
 
     mat3 A(vec3(-dir), e1, e2);
 
@@ -45,6 +38,7 @@ bool Triangle::intersects(Ray * ray, Intersection& intersection, int index) {
         if (solution.x < intersection.distance) {
             intersection.position = start + solution.x * dir;
             intersection.distance = solution.x;
+            intersection.normal = normal;
             intersection.index = index;
             returnVal = true;
         }

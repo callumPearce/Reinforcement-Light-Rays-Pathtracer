@@ -34,15 +34,13 @@ vec3 Light::direct_light(const Intersection& i, vector<Shape *> shapes){
     if (point_to_light.closest_intersection(shapes, closest_intersection)){
         float distance_to_shape = distance(i.position, closest_intersection.position);
         if (distance_to_shape < distance_to_light){
-            return vec3(0,0,0);
+           return vec3(0,0,0);
         }
     }
 
     // Compute the diffuse illumination
     vec3 point_normal(i.normal.x, i.normal.y, i.normal.z);
     float power_per_surface_area = (max(dot(direction_point_to_light, point_normal), 0.f)) / (4.f * M_PI * pow(distance_to_light,2));
-
-    cout << power_per_surface_area << endl;
 
     vec3 diffuse_c = this->get_diffuse_p();
     vec3 diffuse_illumination = vec3(
@@ -51,7 +49,38 @@ vec3 Light::direct_light(const Intersection& i, vector<Shape *> shapes){
         diffuse_c.z * power_per_surface_area
         );
 
+    diffuse_illumination = diffuse_illumination;
+
     return diffuse_illumination * shapes[i.index]->get_material().get_diffuse_c();
+}
+
+vec3 Light::ambient_light(const Intersection& i, vector<Shape *> shapes, vec3 l_ambient){
+    return shapes[i.index]->get_material().get_diffuse_c() * l_ambient;
+}
+
+// Movement functions
+void Light::translate_left(float distance) {
+    set_position(get_position() - vec4(distance, 0, 0, 0));
+}
+
+void Light::translate_right(float distance) {
+    set_position(get_position() + vec4(distance, 0, 0, 0));
+}
+
+void Light::translate_forwards(float distance) {
+    set_position(get_position() + vec4(0, 0, distance, 0));
+}
+
+void Light::translate_backwards(float distance) {
+    set_position(get_position() - vec4(0, 0, distance, 0));
+}
+
+void Light::translate_up(float distance) {
+    set_position(get_position() + vec4(0, distance, 0, 0));
+}
+
+void Light::translate_down(float distance) {
+   set_position(get_position() - vec4(0, distance, 0, 0));
 }
 
 // Getters

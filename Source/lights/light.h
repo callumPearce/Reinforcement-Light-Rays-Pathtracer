@@ -25,8 +25,15 @@ class Light{
 
         // Light Functions
         vec3 direct_light(const Intersection& i, vector<Shape *> shapes);
+        vec3 ambient_light(const Intersection& i, vector<Shape *> shapes, vec3 l_ambient);
 
-        // Movement
+        // Movement methods
+        void translate_left(float distance);
+        void translate_right(float distance);
+        void translate_forwards(float distance);
+        void translate_backwards(float distance);
+        void translate_up(float distance);
+        void translate_down(float distance);
 
         // Getters
         vec4 get_position();

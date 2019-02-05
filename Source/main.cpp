@@ -15,7 +15,7 @@
 #include "ray.h"
 #include "printing.h"
 #include "camera.h"
-#include "light.h"
+#include "light_sphere.h"
 
 using namespace std;
 using glm::vec3;
@@ -23,7 +23,7 @@ using glm::mat3;
 using glm::vec4;
 using glm::mat4;
 
-void Update(Camera& camera){
+void Update(Camera& camera, LightSphere& light_sphere){
     static int t = SDL_GetTicks();
     /* Compute frame time */
     int t2 = SDL_GetTicks();
@@ -47,9 +47,27 @@ void Update(Camera& camera){
     if (keystate[SDL_SCANCODE_RIGHT]) {
         camera.rotate_right(0.1);
     }
+    if (keystate[SDL_SCANCODE_A]) {
+        light_sphere.translate_left(0.1);
+    }
+    if (keystate[SDL_SCANCODE_D]) {
+        light_sphere.translate_right(0.1);
+    }
+    if (keystate[SDL_SCANCODE_Q]) {
+        light_sphere.translate_up(0.1);
+    }
+    if (keystate[SDL_SCANCODE_E]) {
+        light_sphere.translate_down(0.1);
+    }
+    if (keystate[SDL_SCANCODE_W]) {
+        light_sphere.translate_forwards(0.1);
+    }
+    if (keystate[SDL_SCANCODE_S]) {
+        light_sphere.translate_backwards(0.1);
+    }
 }
 
-void Draw(screen* screen, Camera& camera, Light& light, vector<Shape *> shapes){
+void Draw(screen* screen, Camera& camera, LightSphere& light_sphere, vector<Shape *> shapes){
 
     // Reset the SDL screen to black
     memset(screen->buffer, 0, screen->height*screen->width*sizeof(uint32_t));
@@ -69,9 +87,9 @@ void Draw(screen* screen, Camera& camera, Light& light, vector<Shape *> shapes){
 
             // Find the closest intersection and plot the colour of the shape
             if (ray.closest_intersection(shapes, closest_intersection)) {
-                //vec3 colour = shapes[closest_intersection.index]->get_material().get_diffuse_c();
-                vec3 diffuse_colour = light.direct_light(closest_intersection, shapes);
-                PutPixelSDL(screen, x, y, diffuse_colour);
+                vec3 light_sphere_light = light_sphere.light_sphere_luminance(closest_intersection, shapes); 
+                vec3 final_colour = light_sphere_light;
+                PutPixelSDL(screen, x, y, final_colour);
             }
             else {
                 PutPixelSDL(screen, x, y, vec3(0,0,0));
@@ -99,14 +117,16 @@ int main (int argc, char* argv[]) {
     // Create the camera
     Camera camera = Camera(vec4(0, 0, -3, 1));
 
-    // Create the light
-    vec3 diffuse_power = 14.0f * vec3(1, 1, 0.9);
-    Light light = Light(vec4(0, -0.5, -0.7, 1.0), diffuse_power);
+    // Create the light-sphere
+    vec3 diffuse_p = 30.0f * vec3(1, 1, 0.9);
+    vec3 ambient_p = 0.5f * vec3(1,1,1);
+    float r = 0.05f;
+    LightSphere light_sphere(vec4(0, -0.4, -0.9, 1.0), r, 10, diffuse_p, ambient_p);
 
     // Render
     while (NoQuitMessageSDL()){
-        Update(camera);
-        Draw(screen, camera, light, shapes);
+        Update(camera, light_sphere);
+        Draw(screen, camera, light_sphere, shapes);
         SDL_Renderframe(screen);
     }
 
