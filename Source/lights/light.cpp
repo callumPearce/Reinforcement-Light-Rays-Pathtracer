@@ -103,6 +103,7 @@ vector<Ray> Light::uniform_sample_hemisphere_rays(vector<Shape *> shapes, Inters
                     intersection.normal.z
                     );
 
+                // Angle to rotate to reach normal
                 float angle = dot(position - centre, norm);
                 not_found = false;
             }
