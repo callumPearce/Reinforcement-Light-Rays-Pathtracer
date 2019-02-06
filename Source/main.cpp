@@ -1,7 +1,7 @@
 /*
     Entry point for the Raytracer
 */
-#include <omp.h>
+// #include <omp.h>
 #include <assert.h>
 #include <iostream>
 #include <glm/glm.hpp>
@@ -102,7 +102,7 @@ void Draw(screen* screen, Camera& camera, LightSphere& light_sphere, vector<Shap
 
 int main (int argc, char* argv[]) {
 
-    omp_set_num_threads(6);
+    // omp_set_num_threads(6);
     
     // Initialise SDL screen
     screen *screen = InitializeSDL(SCREEN_WIDTH, SCREEN_HEIGHT, FULLSCREEN_MODE);
@@ -122,10 +122,10 @@ int main (int argc, char* argv[]) {
     Camera camera = Camera(vec4(0, 0, -3, 1));
 
     // Create the light-sphere
-    vec3 diffuse_p = 70.0f * vec3(1, 1, 0.9);
+    vec3 diffuse_p = 10.0f * vec3(1, 1, 0.9);
     vec3 ambient_p = 0.3f * vec3(1,1,1);
     float r = 0.05f;
-    LightSphere light_sphere(vec4(0, -0.4, -0.9, 1.0), r, 10, diffuse_p, ambient_p);
+    LightSphere light_sphere(vec4(0, -0.4, -0.9, 1.0), r, 1, diffuse_p, ambient_p);
 
     // Render
     while (NoQuitMessageSDL()){

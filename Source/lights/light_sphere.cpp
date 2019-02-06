@@ -43,8 +43,7 @@ vec3 LightSphere::get_intersection_radiance(Intersection& intersection, vector<S
         vec3 l_light = l.get_intersection_radiance(intersection, shapes, incident_ray);
         colour = vec3(colour.x + l_light.x, colour.y + l_light.y, colour.z + l_light.z);
     }
-    vec3 final_colour(colour.x/size, colour.y/size, colour.z/size);
-    return final_colour;
+    return colour;
 }
 
 // Movement 

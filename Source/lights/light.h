@@ -20,13 +20,16 @@ class Light{
         vec3 ambient_p;
         vec4 position;
 
+        vector<Ray> uniform_sample_hemisphere_rays(vector<Shape *> shapes, Intersection& i);
+        bool contained_in_hemisphere(vec4 point, vec4 centre, float radius);
+
     public:
         // Constructor
         Light(vec4 position, vec3 diffuse_p, vec3 ambient_p);
 
         // Light Functions
         vec3 get_intersection_radiance(const Intersection& i, vector<Shape *> shapes, Ray incident_ray);
-        vec3 indirect_light(const Intersection& i, vector<Shape *> shapes, Ray incident_ray);
+        vec3 indirect_light(const Intersection& i, vector<Shape *> shapes, Ray incident_ray, int bounces);
         vec3 direct_light(const Intersection& i, vector<Shape *> shapes);
         vec3 ambient_light(const Intersection& i, vector<Shape *> shapes);
 
