@@ -9,6 +9,7 @@ Ray::Ray(vec4 start, vec4 direction) {
     set_direction(vec4(dir3, 1));
 }
 
+// Find (if there is) the closest intersection with a given ray and a shape
 bool Ray::closest_intersection(vector<Shape *> shapes, Intersection& closest_intersection) {
     closest_intersection.distance = numeric_limits<float>::max();
     bool returnVal = false;

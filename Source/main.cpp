@@ -89,7 +89,7 @@ void Draw(screen* screen, Camera& camera, LightSphere& light_sphere, vector<Shap
 
             // Find the closest intersection and plot the colour of the shape
             if (ray.closest_intersection(shapes, closest_intersection)) {
-                vec3 light_sphere_light = light_sphere.light_sphere_luminance(closest_intersection, shapes); 
+                vec3 light_sphere_light = light_sphere.get_intersection_radiance(closest_intersection, shapes, ray); 
                 vec3 final_colour = light_sphere_light;
                 PutPixelSDL(screen, x, y, final_colour);
             }
@@ -122,8 +122,8 @@ int main (int argc, char* argv[]) {
     Camera camera = Camera(vec4(0, 0, -3, 1));
 
     // Create the light-sphere
-    vec3 diffuse_p = 30.0f * vec3(1, 1, 0.9);
-    vec3 ambient_p = 0.1f * vec3(1,1,1);
+    vec3 diffuse_p = 70.0f * vec3(1, 1, 0.9);
+    vec3 ambient_p = 0.3f * vec3(1,1,1);
     float r = 0.05f;
     LightSphere light_sphere(vec4(0, -0.4, -0.9, 1.0), r, 10, diffuse_p, ambient_p);
 

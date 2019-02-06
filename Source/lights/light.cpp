@@ -1,13 +1,34 @@
 #include "light.h"
 #include "printing.h"
+#include "monte_carlo_settings.h"
 
-Light::Light(vec4 position, vec3 diffuse_p){
+Light::Light(vec4 position, vec3 diffuse_p, vec3 ambient_p){
     set_position(position);
     set_diffuse_p(diffuse_p);
+    set_ambient_p(ambient_p);
 }
 
-// For a given intersection point, return the diffuse illumination
-// for the surface intersected with
+// Get the outgoing radiance (L_O(w_O)) for a given intersection point
+vec3 Light::get_intersection_radiance(const Intersection& i, vector<Shape *> shapes, Ray incident_ray){
+    return this->direct_light(i, shapes) + this->indirect_light(i, shapes, incident_ray) + this->ambient_light(i, shapes);
+}
+
+
+// For a given intersection point, return the radiance of the surface resulting
+// from indirect illumination (i.e. other shapes in the scene) via the Monte Carlo Raytracing
+vec3 Light::indirect_light(const Intersection& i, vector<Shape *> shapes, Ray incident_ray){
+    
+    // Sample SAMPLES_PER_BOUNCE angles uniformly in a hemisphere around the normal of the interesection
+    
+    // Sum up all samples (note we assume the surface does not emit light itself i.e. omit L_e)
+
+    // Divide the sum by the number of samples (Monte Carlo)
+
+    
+}
+
+// For a given intersection point, return the radiance of the surface directly
+// resulting from this light source
 vec3 Light::direct_light(const Intersection& i, vector<Shape *> shapes){
 
     float distance_to_light = distance(i.position, this->position);
@@ -54,8 +75,8 @@ vec3 Light::direct_light(const Intersection& i, vector<Shape *> shapes){
     return diffuse_illumination * shapes[i.index]->get_material().get_diffuse_c();
 }
 
-vec3 Light::ambient_light(const Intersection& i, vector<Shape *> shapes, vec3 l_ambient){
-    return shapes[i.index]->get_material().get_diffuse_c() * l_ambient;
+vec3 Light::ambient_light(const Intersection& i, vector<Shape *> shapes){
+    return shapes[i.index]->get_material().get_diffuse_c() * this->ambient_p;
 }
 
 // Movement functions
@@ -92,6 +113,10 @@ vec3 Light::get_diffuse_p(){
     return diffuse_p;
 }
 
+vec3 Light::get_ambient_p(){
+    return ambient_p;
+}
+
 // Setters
 void Light::set_position(vec4 position){
     this->position = position;
@@ -99,4 +124,8 @@ void Light::set_position(vec4 position){
 
 void Light::set_diffuse_p(vec3 diffuse_p){
     this->diffuse_p = diffuse_p;
+}
+
+void Light::set_ambient_p(vec3 ambient_p){
+    this->ambient_p = ambient_p;
 }
