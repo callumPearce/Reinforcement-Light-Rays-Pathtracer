@@ -9,8 +9,12 @@ Light::Light(vec4 position, vec3 diffuse_p, vec3 ambient_p){
 }
 
 // Get the outgoing radiance (L_O(w_O)) for a given intersection point
-vec3 Light::get_intersection_radiance(const Intersection& i, vector<Shape *> shapes, Ray incident_ray){
-    return this->direct_light(i, shapes) + this->indirect_light(i, shapes, incident_ray, 0) + this->ambient_light(i, shapes);
+vec3 Light::get_intersection_radiance(const Intersection& i, vector<Shape *> shapes, int bounces){
+    if (bounces == MAX_RAY_BOUNCES){
+        return this->direct_light(i, shapes) + this->ambient_light(i, shapes);
+    } else{
+        return this->direct_light(i, shapes) + this->indirect_light(i, shapes, bounces) + this->ambient_light(i, shapes);
+    }
 }
 
 // For a given intersection point, return the radiance of the surface directly
@@ -66,59 +70,98 @@ vec3 Light::ambient_light(const Intersection& i, vector<Shape *> shapes){
     return shapes[i.index]->get_material().get_diffuse_c() * this->ambient_p;
 }
 
+
 // For a given intersection point, return the radiance of the surface resulting
 // from indirect illumination (i.e. other shapes in the scene) via the Monte Carlo Raytracing
-vec3 Light::indirect_light(const Intersection& i, vector<Shape *> shapes, Ray incident_ray, int bounces){
+vec3 Light::indirect_light(const Intersection& intersection, vector<Shape *> shapes, int bounces){
 
-    // Sample SAMPLES_PER_BOUNCE angles uniformly in a hemisphere around the normal of the interesection
-    vector<Ray> sampled_rays = uniform_sample_hemisphere_rays(i);
+    // 1) Create new coordinate system (tranformation matrix)
+    vec3 normal = intersection.normal;
+    vec3 normal_T = vec3(0);
+    vec3 normal_B = vec3(0);
+    create_normal_coordinate_system(normal, normal_T, normal_B);
 
-    // Sum up all samples (note we assume the surface does not emit light itself i.e. omit L_e)
-
-    // Divide the sum by the number of samples (Monte Carlo)
-
-    return vec3(0);
-    
-}
-
-// Sample n rays within a hemisphere
-vector<Ray> Light::uniform_sample_hemisphere_rays(const Intersection& intersection){
-    
-    vector<Ray> sampled_rays;
-
+    // Calculate the estiamted total radiance estimate
+    // (\int L(w_i) * roh / pi * cos(w_i, N) dw)
+    vec3 total_radiance = vec3(0);
     for (int i = 0; i < SAMPLES_PER_BOUNCE; i++){
-        vec3 dir = random_hemisphere_direction(intersection.normal);
-        sampled_rays.push_back(Ray(intersection.position, vec4(dir.x, dir.y, dir.z, 1)));
-        print_vec3("direction",dir);
+        
+        // Generate random number for monte carlo sampling of theta and phi
+        float cos_theta = ((float) rand() / (RAND_MAX)); //r1
+        float r2 = ((float) rand() / (RAND_MAX));
+
+        // 2) Sample uniformly coordinates on unit hemisphere
+        vec3 sample = uniform_hemisphere_sample(cos_theta, r2);
+
+        // 3) Transform random sampled position into the world coordinate system
+        vec4 sampled_pos = vec4(
+            sample.x * normal_B.x + sample.y * normal.x + sample.z * normal_T.x, 
+            sample.x * normal_B.y + sample.y * normal.y + sample.z * normal_T.y, 
+            sample.x * normal_B.z + sample.y * normal.z + sample.z * normal_T.z,
+            1
+        );
+
+        // Create the new bounced ray
+        vec4 dir = sampled_pos - intersection.position; //TODO: Double check this
+        dir[3] = 1;
+        Ray ray = Ray(intersection.position, dir);
+
+        // 4) Get the radiance contribution for this ray and add to the sum
+        vec3 radiance = vec3(0);
+        Intersection intersection;
+        if (ray.closest_intersection(shapes, intersection)) {
+            radiance = this->get_intersection_radiance(intersection, shapes, bounces+1);
+        } 
+        // Note: we can multiply the BRDF to the final sum because it is 
+        // constant for diffuse surfaces, so we omit it here
+        total_radiance += cos_theta * radiance;
     }
-    
-    return sampled_rays;
+
+    // Divide the sum by the number of samples (Monte Carlo) and apply BRDF
+    // Note: 1/2pi comes from PDF being constant for sampled ray directions (Monte Carlo) 
+    total_radiance /= SAMPLES_PER_BOUNCE * (1 / (2 * M_PI)); 
+    total_radiance *= shapes[intersection.index]->get_material().get_diffuse_c();
+
+    return total_radiance;
 }
 
+// Generate a random point on a unit hemisphere
+vec3 Light::uniform_hemisphere_sample(float r1, float r2){
 
-float Light::uniform_random(float a, float b) {
-  return a + drand48() * (b - a);
+    // cos(theta) = 1 - r1 same as just doing r1
+    float y = r1; 
+    
+    // theta = cos^-1 (1 - r1 - r1)
+    float sin_theta = sqrt(1 - r1 * r1);
+
+    // phi = 2*pi * r2
+    float phi = 2 * M_PI * r2;
+
+    // x = sin(theta) * cos(phi)
+    float x = sin_theta * cosf(phi);
+    // z = sin(theta) * sin(phi)
+    float z = sin_theta * sinf(phi);
+
+    return vec3(x,y,z);
 }
 
-vec3 Light::random_hemisphere_direction(vec3 normal) {
-
-    // Make an orthogonal basis whose third vector is along `direction'
-    vec3 b3 = normal;
-    vec3 different = (abs(b3.x) < 0.5f) ? vec3(1.0f, 0.0f, 0.0f) : vec3(0.0f, 1.0f, 0.0f);
-    vec3 b1 = normalize(cross(b3, different));
-    vec3 b2 = cross(b1, b3);
-    
-    // Pick (x,y,z) randomly around (0,0,1)
-    float z = uniform_random(cos(0.5 * M_PI), 1);
-    float r = sqrt(1.0f - z * z);
-    float theta = uniform_random(-M_PI, M_PI);
-    float x = r * cos(theta);
-    float y = r * sin(theta);
-    
-    // Construct the vector that has coordinates (x,y,z) in the basis formed by b1, b2, b3
-    return x * b1 + y * b2 + z * b3;
+// Create the new coordinate system based on the normal being the y-axis unit vector.
+// In other words, create a **basis** set of vectors which any vector in the 3D space
+// can be created with by taking a linear combination of these 3 vectors
+void Light::create_normal_coordinate_system(vec3& normal, vec3& normal_T, vec3& normal_B){
+    // normal_T is found by setting either x or y to 0
+    // i.e. the two define a plane
+    if (fabs(normal.x) > fabs(normal.y)){
+        // N_x * x = -N_z * z
+        normal_T = normalize(vec3(normal.z, 0, -normal.x));
+    } else{
+        //N_y * y = -N_z * z
+        normal_T = normalize(vec3(0, -normal.z, normal.y));
+    }
+    // The cross product between the two vectors creates another  
+    // perpendicular to the plane formed by normal, normal_T
+    normal_B = cross(normal, normal_T);
 }
-
 
 // Movement functions
 void Light::translate_left(float distance) {

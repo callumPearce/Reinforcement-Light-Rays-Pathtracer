@@ -37,6 +37,7 @@ bool Triangle::intersects(Ray * ray, Intersection& intersection, int index) {
     if (crmr && solution.x >= 0.0f && solution.y >= 0.0f && solution.z >= 0.0f && solution.y + solution.z <= 1.0f) {
         if (solution.x < intersection.distance) {
             intersection.position = start + solution.x * dir;
+            intersection.position[3] = 1;
             intersection.distance = solution.x;
             intersection.normal = normal;
             intersection.index = index;

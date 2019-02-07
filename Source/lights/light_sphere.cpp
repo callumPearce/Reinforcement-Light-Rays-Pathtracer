@@ -35,12 +35,12 @@ bool LightSphere::contained_in_sphere(vec4 point){
 }
 
 // Return the light for a given interesection point contributed to by the lightsphere
-vec3 LightSphere::get_intersection_radiance(Intersection& intersection, vector<Shape *> shapes,  Ray incident_ray){
+vec3 LightSphere::get_intersection_radiance(Intersection& intersection, vector<Shape *> shapes){
     vec3 colour(0,0,0);
     float size = (float)point_lights.size();
     for (int i = 0 ; i < point_lights.size() ; i++) {
         Light l = point_lights[i];
-        vec3 l_light = l.get_intersection_radiance(intersection, shapes, incident_ray);
+        vec3 l_light = l.get_intersection_radiance(intersection, shapes, 0);
         colour = vec3(colour.x + l_light.x, colour.y + l_light.y, colour.z + l_light.z);
     }
     return colour;

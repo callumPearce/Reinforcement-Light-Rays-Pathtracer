@@ -6,6 +6,6 @@
 #define MONTE_CARLO_SETTING_H
 
 #define MAX_RAY_BOUNCES 2
-#define SAMPLES_PER_BOUNCE 10
+#define SAMPLES_PER_BOUNCE 16 
 
 #endif

@@ -33,7 +33,7 @@ class LightSphere {
         LightSphere(vec4 centre, float radius, int num_lights, vec3 diffuse_p, vec3 ambient_p);
 
         // Return the light for a given interesection point contributed to by the lightsphere
-        vec3 get_intersection_radiance(Intersection& intersection, vector<Shape *> shapes, Ray incident_ray);
+        vec3 get_intersection_radiance(Intersection& intersection, vector<Shape *> shapes);
 
         // Movement
         void translate_left(float distance);
