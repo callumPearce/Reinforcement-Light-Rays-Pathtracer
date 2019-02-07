@@ -71,6 +71,7 @@ vec3 Light::ambient_light(const Intersection& i, vector<Shape *> shapes){
 vec3 Light::indirect_light(const Intersection& i, vector<Shape *> shapes, Ray incident_ray, int bounces){
 
     // Sample SAMPLES_PER_BOUNCE angles uniformly in a hemisphere around the normal of the interesection
+    vector<Ray> sampled_rays = uniform_sample_hemisphere_rays(i);
 
     // Sum up all samples (note we assume the surface does not emit light itself i.e. omit L_e)
 
@@ -81,41 +82,43 @@ vec3 Light::indirect_light(const Intersection& i, vector<Shape *> shapes, Ray in
 }
 
 // Sample n rays within a hemisphere
-vector<Ray> Light::uniform_sample_hemisphere_rays(vector<Shape *> shapes, Intersection& intersection){
+vector<Ray> Light::uniform_sample_hemisphere_rays(const Intersection& intersection){
     
-    vec4 c = intersection.position;
-    int radius = 1.f;
-    for (int i = 0 ; i < SAMPLES_PER_BOUNCE ; i++) {
-        bool not_found = true;
-        // rejection sampling
-        while (not_found) {
-            float randx = ((float) rand() / (RAND_MAX)) * radius - radius / 2;
-            float randy = ((float) rand() / (RAND_MAX)) * radius - radius / 2;
-            float randz = ((float) rand() / (RAND_MAX)) * radius - radius / 2;
-            vec4 p(c.x + randx, c.y + randy, c.z + randz, 1);
-            if (contained_in_hemisphere(p, c, radius)) {
-                
-                vec3 position = vec3(p.x, p.y, p.z);
-                vec3 centre = vec3(c.x, c.y, c.z);
-                vec3 norm = vec3(
-                    intersection.normal.x, 
-                    intersection.normal.y, 
-                    intersection.normal.z
-                    );
+    vector<Ray> sampled_rays;
 
-                // Angle to rotate to reach normal
-                float angle = dot(position - centre, norm);
-                not_found = false;
-            }
-        }
+    for (int i = 0; i < SAMPLES_PER_BOUNCE; i++){
+        vec3 dir = random_hemisphere_direction(intersection.normal);
+        sampled_rays.push_back(Ray(intersection.position, vec4(dir.x, dir.y, dir.z, 1)));
+        print_vec3("direction",dir);
     }
-    return vector<Ray>();
+    
+    return sampled_rays;
 }
 
-// Check if a given point is within the lightsphere
-bool Light::contained_in_hemisphere(vec4 point, vec4 centre, float radius){
-    return distance(point, centre) <= radius && point.z  > centre.z;
+
+float Light::uniform_random(float a, float b) {
+  return a + drand48() * (b - a);
 }
+
+vec3 Light::random_hemisphere_direction(vec3 normal) {
+
+    // Make an orthogonal basis whose third vector is along `direction'
+    vec3 b3 = normal;
+    vec3 different = (abs(b3.x) < 0.5f) ? vec3(1.0f, 0.0f, 0.0f) : vec3(0.0f, 1.0f, 0.0f);
+    vec3 b1 = normalize(cross(b3, different));
+    vec3 b2 = cross(b1, b3);
+    
+    // Pick (x,y,z) randomly around (0,0,1)
+    float z = uniform_random(cos(0.5 * M_PI), 1);
+    float r = sqrt(1.0f - z * z);
+    float theta = uniform_random(-M_PI, M_PI);
+    float x = r * cos(theta);
+    float y = r * sin(theta);
+    
+    // Construct the vector that has coordinates (x,y,z) in the basis formed by b1, b2, b3
+    return x * b1 + y * b2 + z * b3;
+}
+
 
 // Movement functions
 void Light::translate_left(float distance) {

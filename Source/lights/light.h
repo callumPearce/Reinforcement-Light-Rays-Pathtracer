@@ -20,8 +20,10 @@ class Light{
         vec3 ambient_p;
         vec4 position;
 
-        vector<Ray> uniform_sample_hemisphere_rays(vector<Shape *> shapes, Intersection& i);
+        vector<Ray> uniform_sample_hemisphere_rays(const Intersection& i);
         bool contained_in_hemisphere(vec4 point, vec4 centre, float radius);
+        float uniform_random(float a, float b);
+        vec3 random_hemisphere_direction(vec3 normal);
 
     public:
         // Constructor
