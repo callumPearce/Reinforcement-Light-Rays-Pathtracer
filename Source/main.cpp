@@ -13,6 +13,7 @@
 
 #include "image_settings.h"
 #include "cornell_box_scene.h"
+#include "monte_carlo_test_scene.h"
 #include "ray.h"
 #include "printing.h"
 #include "camera.h"

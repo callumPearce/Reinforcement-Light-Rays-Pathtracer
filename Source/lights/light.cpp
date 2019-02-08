@@ -76,7 +76,7 @@ vec3 Light::ambient_light(const Intersection& i, vector<Shape *> shapes){
 vec3 Light::indirect_light(const Intersection& intersection, vector<Shape *> shapes, int bounces){
 
     // 1) Create new coordinate system (tranformation matrix)
-    vec3 normal = intersection.normal;
+    vec3 normal = vec3(intersection.normal.x, intersection.normal.y, intersection.normal.z);
     vec3 normal_T = vec3(0);
     vec3 normal_B = vec3(0);
     create_normal_coordinate_system(normal, normal_T, normal_B);
@@ -94,17 +94,14 @@ vec3 Light::indirect_light(const Intersection& intersection, vector<Shape *> sha
         vec3 sample = uniform_hemisphere_sample(cos_theta, r2);
 
         // 3) Transform random sampled position into the world coordinate system
-        vec4 sampled_pos = vec4(
+        vec3 sampled_direction = vec3(
             sample.x * normal_B.x + sample.y * normal.x + sample.z * normal_T.x, 
             sample.x * normal_B.y + sample.y * normal.y + sample.z * normal_T.y, 
-            sample.x * normal_B.z + sample.y * normal.z + sample.z * normal_T.z,
-            1
+            sample.x * normal_B.z + sample.y * normal.z + sample.z * normal_T.z
         );
 
         // Create the new bounced ray
-        vec4 dir = sampled_pos - intersection.position; //TODO: Double check this
-        dir[3] = 1;
-        Ray ray = Ray(intersection.position, dir);
+        Ray ray = Ray(intersection.position + 0.0001f * vec4(sampled_direction, 1), vec4(sampled_direction, 1));
 
         // 4) Get the radiance contribution for this ray and add to the sum
         vec3 radiance = vec3(0);
@@ -119,7 +116,7 @@ vec3 Light::indirect_light(const Intersection& intersection, vector<Shape *> sha
 
     // Divide the sum by the number of samples (Monte Carlo) and apply BRDF
     // Note: 1/2pi comes from PDF being constant for sampled ray directions (Monte Carlo) 
-    total_radiance /= SAMPLES_PER_BOUNCE * (1 / (2 * M_PI)); 
+    total_radiance /= ((float)SAMPLES_PER_BOUNCE * (1 / (2 * M_PI))); 
     total_radiance *= shapes[intersection.index]->get_material().get_diffuse_c();
 
     return total_radiance;

@@ -33,6 +33,7 @@ set(
     Source/objects/shape.cpp
     Source/objects/triangle.cpp
     Source/scenes/cornell_box_scene.cpp
+    Source/scenes/monte_carlo_test_scene.cpp
     Source/utils/printing.cpp
     Source/lights/light.cpp
     Source/lights/light_sphere.cpp

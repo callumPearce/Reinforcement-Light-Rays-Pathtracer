@@ -35,7 +35,6 @@ vec4 Ray::get_start() {
 }
 
 vec4 Ray::get_direction() {
-    float lngth = length(vec3(direction));
     return direction;
 }
 
