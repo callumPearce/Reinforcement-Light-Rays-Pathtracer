@@ -6,9 +6,9 @@
 #define IMAGE_SETTINGS_H
 
 #define FULLSCREEN_MODE false
-#define SCREEN_WIDTH 300
-#define SCREEN_HEIGHT 300
+#define SCREEN_WIDTH 600
+#define SCREEN_HEIGHT 600
 #define FOCAL_LENGTH SCREEN_HEIGHT
-#define EPS 0.000001f
+#define EPS 0.00001f
 
 #endif

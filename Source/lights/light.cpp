@@ -18,17 +18,6 @@ vec3 Light::get_intersection_radiance(const Intersection& i, vector<Shape *> sha
     }
 }
 
-// Blends the colour of the two intersected indices
-vec3 Light::blend_intersection_diffuse_c(const Intersection& i, vector<Shape *> shapes){
-    vec3 diff_1 = shapes[i.indices[0]]->get_material().get_diffuse_c();
-    // vec3 diff_2 = shapes[i.indices[1]]->get_material().get_diffuse_c();
-    // vec3 mixed = (diff_1 + diff_2)/2.f;
-    // mixed.x = glm::mix(diff_1.x, diff_2.x, 0.5f * fabs(i.distances[0] - i.distances[1]) / EPS);
-    // mixed.y = glm::mix(diff_1.y, diff_2.y, 0.5f * fabs(i.distances[0] - i.distances[1]) / EPS);
-    // mixed.z = glm::mix(diff_1.z, diff_2.z, 0.5f * fabs(i.distances[0] - i.distances[1]) / EPS);
-    return diff_1;
-}
-
 // For a given intersection point, return the radiance of the surface directly
 // resulting from this light source
 vec3 Light::direct_light(const Intersection& i, vector<Shape *> shapes){
@@ -58,7 +47,7 @@ vec3 Light::direct_light(const Intersection& i, vector<Shape *> shapes){
 
     if (point_to_light.closest_intersection(shapes, closest_intersection)){
         float distance_to_shape = distance(i.position, closest_intersection.position);
-        if (distance_to_shape < distance_to_light && abs(distance_to_light - distance_to_shape) > EPS){
+        if (distance_to_shape < distance_to_light && distance_to_shape > 0.0001f){
            return vec3(0,0,0);
         }
     }
@@ -76,12 +65,12 @@ vec3 Light::direct_light(const Intersection& i, vector<Shape *> shapes){
 
     diffuse_illumination = diffuse_illumination;
 
-    return diffuse_illumination * blend_intersection_diffuse_c(i, shapes);
+    return diffuse_illumination * shapes[i.index]->get_material().get_diffuse_c();
 }
 
 // Get the ambient light radiance
 vec3 Light::ambient_light(const Intersection& i, vector<Shape *> shapes){
-    return blend_intersection_diffuse_c(i, shapes) * this->ambient_p;
+    return shapes[i.index]->get_material().get_diffuse_c() * this->ambient_p;
 }
 
 
@@ -115,12 +104,12 @@ vec3 Light::indirect_light(const Intersection& intersection, vector<Shape *> sha
         );
 
         // Create the new bounced ray
-        vec4 start = intersection.position + (0.001f * vec4(sampled_direction, 1));
+        vec4 start = intersection.position + (0.00001f * vec4(sampled_direction, 1));
         start[3] = 1.f;
         Ray ray = Ray(start, vec4(sampled_direction, 1));
 
         // 4) Get the radiance contribution for this ray and add to the sum
-        vec3 radiance = vec3(0);
+        vec3 radiance = vec3(0); //TODO: Rays by the corner don't intersect with any surface, hence dark line running across
         Intersection intersection;
         if (ray.closest_intersection(shapes, intersection)) {
             radiance = this->get_intersection_radiance(intersection, shapes, bounces+1);
@@ -133,7 +122,7 @@ vec3 Light::indirect_light(const Intersection& intersection, vector<Shape *> sha
     // Divide the sum by the number of samples (Monte Carlo) and apply BRDF
     // Note: 1/2pi comes from PDF being constant for sampled ray directions (Monte Carlo) 
     total_radiance /= ((float)SAMPLES_PER_BOUNCE * (1 / (2 * M_PI))); 
-    total_radiance *= blend_intersection_diffuse_c(intersection, shapes);
+    total_radiance *= shapes[intersection.index]->get_material().get_diffuse_c();
 
     return total_radiance;
 }

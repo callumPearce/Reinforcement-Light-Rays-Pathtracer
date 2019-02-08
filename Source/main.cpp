@@ -110,7 +110,7 @@ int main (int argc, char* argv[]) {
 
     // Load the shapes within the scene
     vector<Triangle> triangles;
-    get_monte_carlo_shapes(triangles);
+    get_cornell_shapes(triangles);
 
     // Convert all shapes into a unified list of pointers to them
     vector<Shape *> shapes;

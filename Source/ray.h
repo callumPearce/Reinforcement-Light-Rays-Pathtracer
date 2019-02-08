@@ -21,9 +21,9 @@ using glm::mat4;
 */
 struct Intersection {
     vec4 position;
-    vec2 distances;
+    float distance;
     vec4 normal;
-    vec2 indices;
+    int index;
 };
 
 

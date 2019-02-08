@@ -74,25 +74,25 @@ void get_monte_carlo_shapes(std::vector<Triangle>& triangles) {
     G = vec4(190,165,392,1);
     H = vec4( 32,165,345,1);
 
-    // Front
-    triangles.push_back(Triangle(E,B,A,blue));
-    triangles.push_back(Triangle(E,F,B,blue));
+    // // Front
+    // triangles.push_back(Triangle(E,B,A,blue));
+    // triangles.push_back(Triangle(E,F,B,blue));
 
-    // Front
-    triangles.push_back(Triangle(F,D,B,blue));
-    triangles.push_back(Triangle(F,H,D,blue));
+    // // Front
+    // triangles.push_back(Triangle(F,D,B,blue));
+    // triangles.push_back(Triangle(F,H,D,blue));
 
-    // BACK
-    triangles.push_back(Triangle(H,C,D,blue));
-    triangles.push_back(Triangle(H,G,C,blue));
+    // // BACK
+    // triangles.push_back(Triangle(H,C,D,blue));
+    // triangles.push_back(Triangle(H,G,C,blue));
 
-    // LEFT
-    triangles.push_back(Triangle(G,E,C,blue));
-    triangles.push_back(Triangle(E,A,C,blue));
+    // // LEFT
+    // triangles.push_back(Triangle(G,E,C,blue));
+    // triangles.push_back(Triangle(E,A,C,blue));
 
-    // TOP
-    triangles.push_back(Triangle(G,F,E,blue));
-    triangles.push_back(Triangle(G,H,F,blue));
+    // // TOP
+    // triangles.push_back(Triangle(G,F,E,blue));
+    // triangles.push_back(Triangle(G,H,F,blue));
 
 
     for (size_t i = 0 ; i < triangles.size() ; ++i) {
