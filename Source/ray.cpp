@@ -11,7 +11,8 @@ Ray::Ray(vec4 start, vec4 direction) {
 
 // Find (if there is) the closest intersection with a given ray and a shape
 bool Ray::closest_intersection(vector<Shape *> shapes, Intersection& closest_intersection) {
-    closest_intersection.distance = numeric_limits<float>::max();
+    closest_intersection.distances = vec2(numeric_limits<float>::max(),numeric_limits<float>::max());
+    closest_intersection.indices = vec2(-1,-1);
     bool returnVal = false;
     for (int i = 0; i < shapes.size(); i++) {
         if (shapes[i]->intersects(this, closest_intersection, i)) {

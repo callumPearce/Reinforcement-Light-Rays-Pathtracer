@@ -35,14 +35,22 @@ bool Triangle::intersects(Ray * ray, Intersection& intersection, int index) {
     bool crmr = cramer(A, b, solution);
 
     if (crmr && solution.x >= 0.0f && solution.y >= 0.0f && solution.z >= 0.0f && solution.y + solution.z <= 1.0f) {
-        if (solution.x < intersection.distance) {
+        if (solution.x > EPS && abs(intersection.distances[0] - solution.x) < EPS){
+            intersection.indices[1] = intersection.indices[0];
+            intersection.distances[1] = intersection.distances[0];
+        }
+        if (solution.x < intersection.distances[0] + EPS && solution.x > EPS) {
             intersection.position = start + solution.x * dir;
             intersection.position[3] = 1;
-            intersection.distance = solution.x;
+            intersection.distances[0] = solution.x;
             intersection.normal = normal;
-            intersection.index = index;
+            intersection.indices[0] = index;
             returnVal = true;
         }
+    }
+
+    if (returnVal && intersection.indices[1] == -1){
+        intersection.indices[1] = intersection.indices[0];
     }
     return returnVal;
 }

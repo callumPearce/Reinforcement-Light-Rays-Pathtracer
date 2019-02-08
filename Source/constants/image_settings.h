@@ -9,5 +9,6 @@
 #define SCREEN_WIDTH 300
 #define SCREEN_HEIGHT 300
 #define FOCAL_LENGTH SCREEN_HEIGHT
+#define EPS 0.000001f
 
 #endif

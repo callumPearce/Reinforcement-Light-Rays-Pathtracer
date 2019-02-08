@@ -23,6 +23,7 @@ class Light{
         bool contained_in_hemisphere(vec4 point, vec4 centre, float radius);
         void create_normal_coordinate_system(vec3& normal, vec3& normal_T, vec3& normal_B);
         vec3 uniform_hemisphere_sample(float r1, float r2);
+        vec3 blend_intersection_diffuse_c(const Intersection& i, vector<Shape *> shapes);
 
     public:
         // Constructor

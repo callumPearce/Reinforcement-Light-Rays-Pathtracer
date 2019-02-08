@@ -11,6 +11,7 @@ class Triangle;
 
 using namespace std;
 using glm::vec3;
+using glm::vec2;
 using glm::mat3;
 using glm::vec4;
 using glm::mat4;
@@ -20,9 +21,9 @@ using glm::mat4;
 */
 struct Intersection {
     vec4 position;
-    float distance;
+    vec2 distances;
     vec4 normal;
-    int index;
+    vec2 indices;
 };
 
 

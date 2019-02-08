@@ -1,7 +1,7 @@
 /*
     Entry point for the Raytracer
 */
-#include <omp.h>
+// #include <omp.h>
 #include <assert.h>
 #include <iostream>
 #include <glm/glm.hpp>
@@ -74,7 +74,7 @@ void Draw(screen* screen, Camera& camera, LightSphere& light_sphere, vector<Shap
     // Reset the SDL screen to black
     memset(screen->buffer, 0, screen->height*screen->width*sizeof(uint32_t));
 
-    #pragma omp parallel for
+    // #pragma omp parallel for
     for (int x = 0; x < SCREEN_WIDTH; x++){
         for (int y = 0; y < SCREEN_HEIGHT; y++){
 
@@ -103,14 +103,14 @@ void Draw(screen* screen, Camera& camera, LightSphere& light_sphere, vector<Shap
 
 int main (int argc, char* argv[]) {
 
-    omp_set_num_threads(6);
+    // omp_set_num_threads(6);
     
     // Initialise SDL screen
     screen *screen = InitializeSDL(SCREEN_WIDTH, SCREEN_HEIGHT, FULLSCREEN_MODE);
 
     // Load the shapes within the scene
     vector<Triangle> triangles;
-    get_cornell_shapes(triangles);
+    get_monte_carlo_shapes(triangles);
 
     // Convert all shapes into a unified list of pointers to them
     vector<Shape *> shapes;
