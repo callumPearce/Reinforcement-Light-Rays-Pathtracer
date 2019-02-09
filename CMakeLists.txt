@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.7)
 project(Monte_Carlo_Raytracer)
 
 # Compiler Flags
-set(CMAKE_CXX_FLAGS "-pipe -Wall -Wno-switch -ggdb -g3 -O3 -lm -g -ffast-math -funroll-loops -ftree-vectorize")
+set(CMAKE_CXX_FLAGS "-pipe -Wall -Wno-switch -fopenmp -ggdb -g3 -O3 -lm -g -ffast-math -funroll-loops -ftree-vectorize")
 
 # Set output directory for executables
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_HOME_DIRECTORY}/Build)
@@ -32,6 +32,7 @@ set(
     Source/objects/material.cpp
     Source/objects/shape.cpp
     Source/objects/triangle.cpp
+    Source/objects/object_importer.cpp
     Source/scenes/cornell_box_scene.cpp
     Source/scenes/monte_carlo_test_scene.cpp
     Source/utils/printing.cpp
