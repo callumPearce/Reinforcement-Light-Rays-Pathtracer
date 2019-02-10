@@ -111,9 +111,9 @@ void build_triangles(vector<Triangle>& triangles, vector<vec3>& vertex_indices, 
     float scale = 2 / max_difference;
     
     // Translate so that a vertex can be at min [-1,-1,-1]
-    // float dist_x = -1.f;//(min_pos[0] * scale);
-    // float dist_y = -1.f;//(min_pos[1] * scale);
-    // float dist_z = -1.f;//(min_pos[2] * scale);
+    float dist_x = -1.f -(min_pos[0] * scale);
+    float dist_y = -1.f -(min_pos[1] * scale);
+    float dist_z = -1.f -(min_pos[2] * scale);
 
     // For each vertex
     for (int i = 0; i < vertex_indices.size(); i++){
@@ -122,9 +122,9 @@ void build_triangles(vector<Triangle>& triangles, vector<vec3>& vertex_indices, 
         vec4 v1 = vec4(temp_vertices[(int)vertex_indices[i].x - 1],1.f)*scale;
         vec4 v2 = vec4(temp_vertices[(int)vertex_indices[i].y - 1],1.f)*scale;
         vec4 v3 = vec4(temp_vertices[(int)vertex_indices[i].z - 1],1.f)*scale;
-        // v1 += vec4(dist_x, dist_y, dist_z, 0.f);
-        // v2 += vec4(dist_x, dist_y, dist_z, 0.f);
-        // v3 += vec4(dist_x, dist_y, dist_z, 0.f);
+        v1 += vec4(dist_x, dist_y, dist_z, 0.f);
+        v2 += vec4(dist_x, dist_y, dist_z, 0.f);
+        v3 += vec4(dist_x, dist_y, dist_z, 0.f);
         
         vec4 rotation = vec4(-1.f, -1.f, 1.f, 1.f);
 
