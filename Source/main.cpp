@@ -111,8 +111,8 @@ int main (int argc, char* argv[]) {
 
     // Load the shapes within the scene
     vector<Triangle> triangles;
-    get_cornell_shapes(triangles);
-    load_scene("Models/Medieval_House.obj", triangles);
+    //get_cornell_shapes(triangles);
+    load_scene("Models/simple_room.obj", triangles);
 
     // Convert all shapes into a unified list of pointers to them
     vector<Shape *> shapes;
@@ -128,7 +128,7 @@ int main (int argc, char* argv[]) {
     vec3 diffuse_p = 15.0f * vec3(1, 1, 0.9);
     vec3 ambient_p = 0.0f * vec3(1,1,1);
     float r = 0.05f;
-    LightSphere light_sphere(vec4(0, -0.4, -0.9, 1.0), r, 1, diffuse_p, ambient_p);
+    LightSphere light_sphere(vec4(-0.5f, -0.5f, 0.2f, 1.f), r, 1, diffuse_p, ambient_p);
 
     // Render
     while (NoQuitMessageSDL()){
