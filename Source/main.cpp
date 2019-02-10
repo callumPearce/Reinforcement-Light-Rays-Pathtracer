@@ -112,7 +112,7 @@ int main (int argc, char* argv[]) {
     // Load the shapes within the scene
     vector<Triangle> triangles;
     get_cornell_shapes(triangles);
-    load_scene("../bunny.obj", triangles);
+    // load_scene("Models/box.obj", triangles);
 
     // Convert all shapes into a unified list of pointers to them
     vector<Shape *> shapes;
