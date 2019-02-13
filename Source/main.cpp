@@ -19,6 +19,8 @@
 #include "printing.h"
 #include "camera.h"
 #include "light_sphere.h"
+// #include "surface.h"
+
 
 using namespace std;
 using glm::vec3;
@@ -70,7 +72,7 @@ void Update(Camera& camera, LightSphere& light_sphere){
     }
 }
 
-void Draw(screen* screen, Camera& camera, LightSphere& light_sphere, vector<Shape *> shapes){
+void Draw(screen* screen, Camera& camera, LightSphere& light_sphere, vector<Surface *> surfaces){
 
     // Reset the SDL screen to black
     memset(screen->buffer, 0, screen->height*screen->width*sizeof(uint32_t));
@@ -90,8 +92,8 @@ void Draw(screen* screen, Camera& camera, LightSphere& light_sphere, vector<Shap
             Intersection closest_intersection;
 
             // Find the closest intersection and plot the colour of the shape
-            if (ray.closest_intersection(shapes, closest_intersection)) {
-                vec3 light_sphere_light = light_sphere.get_intersection_radiance(closest_intersection, shapes); 
+            if (ray.closest_intersection(surfaces, closest_intersection)) {
+                vec3 light_sphere_light = light_sphere.get_intersection_radiance(closest_intersection, surfaces); 
                 vec3 final_colour = light_sphere_light;
                 PutPixelSDL(screen, x, y, final_colour);
             }
@@ -110,15 +112,15 @@ int main (int argc, char* argv[]) {
     screen *screen = InitializeSDL(SCREEN_WIDTH, SCREEN_HEIGHT, FULLSCREEN_MODE);
 
     // Load the shapes within the scene
-    vector<Triangle> triangles;
+    vector<Surface> surfaces_load;
     //get_cornell_shapes(triangles);
-    load_scene("Models/simple_room.obj", triangles);
+    load_scene("Models/simple_room.obj", surfaces_load);
 
-    // Convert all shapes into a unified list of pointers to them
-    vector<Shape *> shapes;
-    for (int i = 0 ; i < triangles.size(); i++) {
-        Shape * sptr (&triangles[i]);
-        shapes.push_back(sptr);
+    // Convert all surfaces into a unified list of pointers to them
+    vector<Surface *> surfaces;
+    for (int i = 0 ; i < surfaces_load.size(); i++) {
+        Surface * sptr (&surfaces_load[i]);
+        surfaces.push_back(sptr);
     }
 
     // Create the camera
@@ -133,7 +135,7 @@ int main (int argc, char* argv[]) {
     // Render
     while (NoQuitMessageSDL()){
         Update(camera, light_sphere);
-        Draw(screen, camera, light_sphere, shapes);
+        Draw(screen, camera, light_sphere, surfaces);
         SDL_Renderframe(screen);
     }
 

@@ -3,7 +3,7 @@
 #include "object_importer.h"
 
 // Load a given object file into the scene to be rendered
-bool load_scene(const char* path, vector<Triangle>& triangles){
+bool load_scene(const char* path, vector<Surface>& surfaces){
 
     // Attempt to open the object file in the supplied path
     FILE* file = fopen(path, "r");
@@ -78,11 +78,11 @@ bool load_scene(const char* path, vector<Triangle>& triangles){
         }
     }
     fclose (file);
-    build_triangles(triangles, vertex_indices, temp_vertices);
+    build_surfaces(surfaces, vertex_indices, temp_vertices);
 }
 
 // Convert the temporary stored data into triangles for rendering
-void build_triangles(vector<Triangle>& triangles, vector<vec3>& vertex_indices, vector<vec3>& temp_vertices){
+void build_surfaces(vector<Surface>& surfaces, vector<vec3>& vertex_indices, vector<vec3>& temp_vertices){
 
     // Find the max and min vertex position of each dimension
     float max_pos[3] = {0.f};
@@ -137,13 +137,13 @@ void build_triangles(vector<Triangle>& triangles, vector<vec3>& vertex_indices, 
         v3.w = 1.f;
 
         // Construct a Triangle with white material (TODO: Implement materials properly)
-        Triangle triangle = Triangle(v1, v3, v2, Material(vec3(0.75f, 0.75f, 0.75f)));
+        Surface surface = Surface(v1, v3, v2, Material(vec3(0.75f, 0.75f, 0.75f)));
 
         // Compute and set the normal
-        triangle.compute_and_set_normal();
+        surface.compute_and_set_normal();
 
         // Append to list of triangles
-        triangles.push_back(triangle);
+        surfaces.push_back(surface);
     }
 }
 

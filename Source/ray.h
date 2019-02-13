@@ -8,6 +8,7 @@
 
 class Shape;
 class Triangle;
+class Surface;
 
 using namespace std;
 using glm::vec3;
@@ -42,7 +43,7 @@ class Ray {
         Ray(vec4 start, vec4 direction);
 
         // Find the closest intersection for the given ray with an shape in the scene
-        bool closest_intersection(vector<Shape *> shapes, Intersection& closest_intersection);
+        bool closest_intersection(vector<Surface *> surfaces, Intersection& closest_intersection);
 
         // Cramers rule for solving a system of linear equations
         bool cramers(mat3 A, vec3 b, vec3& solution);

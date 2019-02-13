@@ -2,7 +2,6 @@
 #define SHAPE_H
 
 #include <glm/glm.hpp>
-#include "material.h"
 #include "ray.h"
 
 using namespace std;
@@ -17,21 +16,12 @@ using glm::mat4;
 */
 class Shape {
 
-    private:
-        Material material = Material(vec3(0));
-
     public:
         // Constructor
-        Shape(Material material);
+        Shape();
 
         // Tests whether the shape intersects a ray
         virtual bool intersects(Ray * ray, Intersection & intersection, int index)=0;
-
-        // Getters
-        Material get_material();
-
-        // Setters
-        void set_material(Material material);
 };
 
 #endif

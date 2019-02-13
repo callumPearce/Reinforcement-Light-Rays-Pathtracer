@@ -1,10 +1,10 @@
-#ifndef LIGHT_H
-#define LIGHT_H
+#ifndef POINT_LIGHT_H
+#define POINT_LIGHT_H
 
 #include <glm/glm.hpp>
 #include <vector>
 
-#include "shape.h"
+#include "surface.h"
 #include "ray.h"
 
 using namespace std;
@@ -13,7 +13,7 @@ using glm::mat3;
 using glm::vec4;
 using glm::mat4;
 
-class Light{
+class PointLight{
 
     private:
         vec3 diffuse_p;
@@ -23,17 +23,17 @@ class Light{
         bool contained_in_hemisphere(vec4 point, vec4 centre, float radius);
         void create_normal_coordinate_system(vec3& normal, vec3& normal_T, vec3& normal_B);
         vec3 uniform_hemisphere_sample(float r1, float r2);
-        vec3 blend_intersection_diffuse_c(const Intersection& i, vector<Shape *> shapes);
+        vec3 blend_intersection_diffuse_c(const Intersection& i, vector<Surface *> surfaces);
 
     public:
         // Constructor
-        Light(vec4 position, vec3 diffuse_p, vec3 ambient_p);
+        PointLight(vec4 position, vec3 diffuse_p, vec3 ambient_p);
 
         // Light Functions
-        vec3 get_intersection_radiance(const Intersection& i, vector<Shape *> shapes, int bounces);
-        vec3 indirect_light(const Intersection& i, vector<Shape *> shapes, int bounces);
-        vec3 direct_light(const Intersection& i, vector<Shape *> shapes);
-        vec3 ambient_light(const Intersection& i, vector<Shape *> shapes);
+        vec3 get_intersection_radiance(const Intersection& i, vector<Surface *> surfaces, int bounces);
+        vec3 indirect_light(const Intersection& i, vector<Surface *> surfaces, int bounces);
+        vec3 direct_light(const Intersection& i, vector<Surface *> surfaces);
+        vec3 ambient_light(const Intersection& i, vector<Surface *> surfaces);
 
         // Movement methods
         void translate_left(float distance);

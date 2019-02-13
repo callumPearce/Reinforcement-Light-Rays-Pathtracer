@@ -21,7 +21,7 @@ void LightSphere::create_lights(int sample_count){
             float randz = ((float) rand() / (RAND_MAX)) * radius - radius / 2;
             vec4 p(c.x + randx, c.y + randy, c.z + randz, 1);
             if (contained_in_sphere(p)) {
-                Light light(p, this->diffuse_p / (float) sample_count, this->ambient_p/ (float) sample_count);
+                PointLight light(p, this->diffuse_p / (float) sample_count, this->ambient_p/ (float) sample_count);
                 point_lights.push_back(light);
                 not_found = false;
             }
@@ -35,12 +35,12 @@ bool LightSphere::contained_in_sphere(vec4 point){
 }
 
 // Return the light for a given interesection point contributed to by the lightsphere
-vec3 LightSphere::get_intersection_radiance(Intersection& intersection, vector<Shape *> shapes){
+vec3 LightSphere::get_intersection_radiance(Intersection& intersection, vector<Surface *> surfaces){
     vec3 colour(0,0,0);
     float size = (float)point_lights.size();
     for (int i = 0 ; i < point_lights.size() ; i++) {
-        Light l = point_lights[i];
-        vec3 l_light = l.get_intersection_radiance(intersection, shapes, 0);
+        PointLight l = point_lights[i];
+        vec3 l_light = l.get_intersection_radiance(intersection, surfaces, 0);
         colour = vec3(colour.x + l_light.x, colour.y + l_light.y, colour.z + l_light.z);
     }
     return colour;
@@ -84,7 +84,7 @@ void LightSphere::translate_up(float distance) {
 
 void LightSphere::translate_down(float distance) {
     set_centre(get_centre() - vec4(distance, 0, 0, 0));
-    vector<Light> newLights;
+    vector<PointLight> newLights;
     for (int i = 0 ; i < point_lights.size() ; i++) {
         point_lights[i].translate_down(distance);
     }
@@ -103,7 +103,7 @@ vec3 LightSphere::get_diffuse_p(){
     return diffuse_p;
 }
 
-vector<Light> LightSphere::get_point_lights(){
+vector<PointLight> LightSphere::get_point_lights(){
     return point_lights;
 }
 
@@ -124,7 +124,7 @@ void LightSphere::set_diffuse_p(vec3 diffuse_p){
     this->diffuse_p = diffuse_p; 
 }
 
-void LightSphere::set_point_lights(vector<Light> point_lights){
+void LightSphere::set_point_lights(vector<PointLight> point_lights){
     this->point_lights = point_lights;
 }
 

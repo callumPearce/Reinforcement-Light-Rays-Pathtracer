@@ -5,7 +5,8 @@
 #include <vector>
 
 #include "ray.h"
-#include "light.h"
+#include "point_light.h"
+#include "surface.h"
 
 using namespace std;
 using glm::vec3;
@@ -16,7 +17,7 @@ using glm::mat4;
 class LightSphere {
 
     private:
-        vector<Light> point_lights;
+        vector<PointLight> point_lights;
         vec4 centre;
         float radius;
         vec3 diffuse_p;
@@ -33,7 +34,7 @@ class LightSphere {
         LightSphere(vec4 centre, float radius, int num_lights, vec3 diffuse_p, vec3 ambient_p);
 
         // Return the light for a given interesection point contributed to by the lightsphere
-        vec3 get_intersection_radiance(Intersection& intersection, vector<Shape *> shapes);
+        vec3 get_intersection_radiance(Intersection& intersection, vector<Surface *> surfaces);
 
         // Movement
         void translate_left(float distance);
@@ -44,14 +45,14 @@ class LightSphere {
         void translate_down(float distance);
 
         // Getters
-        vector<Light> get_point_lights();
+        vector<PointLight> get_point_lights();
         vec4 get_centre();
         float get_radius();
         vec3 get_diffuse_p();
         vec3 get_ambient_p();
 
         // Setters
-        void set_point_lights(vector<Light> point_lights);
+        void set_point_lights(vector<PointLight> point_lights);
         void set_centre(vec4 centre);
         void set_radius(float r);
         void set_diffuse_p(vec3 diffuse_p);

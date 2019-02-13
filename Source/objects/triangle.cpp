@@ -3,7 +3,7 @@
 
 #include <iostream>
 
-Triangle::Triangle(vec4 v0, vec4 v1, vec4 v2, Material material) : Shape(material) {
+Triangle::Triangle(vec4 v0, vec4 v1, vec4 v2){
     setV0(v0);
     setV1(v1);
     setV2(v2);

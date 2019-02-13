@@ -1,5 +1,5 @@
 #include "ray.h"
-#include "shape.h"
+#include "surface.h"
 #include <iostream>
 #include <limits>
 
@@ -10,11 +10,11 @@ Ray::Ray(vec4 start, vec4 direction) {
 }
 
 // Find (if there is) the closest intersection with a given ray and a shape
-bool Ray::closest_intersection(vector<Shape *> shapes, Intersection& closest_intersection) {
+bool Ray::closest_intersection(vector<Surface *> surfaces, Intersection& closest_intersection) {
     closest_intersection.distance = numeric_limits<float>::max();
     bool returnVal = false;
-    for (int i = 0; i < shapes.size(); i++) {
-        if (shapes[i]->intersects(this, closest_intersection, i)) {
+    for (int i = 0; i < surfaces.size(); i++) {
+        if (surfaces[i]->intersects(this, closest_intersection, i)) {
             returnVal = true;
         }
     }
