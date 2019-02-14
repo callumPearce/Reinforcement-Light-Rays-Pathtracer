@@ -11,8 +11,12 @@ using glm::vec4;
 using glm::mat4;
 
 /*
+    Path Tracer Light
+    -----------------
     Defines a triangle area light in the scene, the entire surface is treated as
-    a light when intersected by the path tracer
+    a light when intersected by the path tracer. Rays continually bounce until they
+    intersect the area light, then and only then does any kind of illumination returned
+    for that ray.
 */
 
 class AreaLight : public Triangle{
@@ -28,7 +32,7 @@ class AreaLight : public Triangle{
         vec3 get_diffuse_p();
 
         // Setters
-        void set_diffuse_p();
+        void set_diffuse_p(vec3 diffuse_p);
 };
 
 #endif

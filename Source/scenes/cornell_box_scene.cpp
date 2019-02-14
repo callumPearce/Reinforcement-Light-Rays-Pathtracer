@@ -1,6 +1,6 @@
 #include "cornell_box_scene.h"
 
-void get_cornell_shapes(std::vector<Surface>& Surfaces) {
+void get_cornell_shapes(std::vector<Surface>& Surfaces, std::vector<AreaLightPlane>& area_light_planes) {
     
     // Materials
     Material blue = Material(vec3(0.15f, 0.15f, 0.75f));
@@ -25,6 +25,11 @@ void get_cornell_shapes(std::vector<Surface>& Surfaces) {
     vec4 G(l,l,l,1);
     vec4 H(0,l,l,1);
 
+    vec4 I(l/3, l, (2*l)/3, 1);
+    vec4 J((2*l)/3, l, (2*l)/3, 1);
+    vec4 K(l/3, l, l/3, 1);
+    vec4 L((2*l)/3, l, l/3, 1);
+
     // Surfaces now take a material as an argument rather than a colour
     // Floor:
     Surface flrTri1 = Surface(C, B, A, green);
@@ -48,11 +53,35 @@ void get_cornell_shapes(std::vector<Surface>& Surfaces) {
     Surfaces.push_back(rghtWall2);
 
     // Ceiling
-    Surface clng1 = Surface(E, F, G, cyan);
+    Surface clng1 = Surface(F, H, I, cyan);
     Surfaces.push_back(clng1);
 
-    Surface clng2 = Surface(F, H, G, cyan);
+    Surface clng2 = Surface(F, I, K, cyan);
     Surfaces.push_back(clng2);
+
+    Surface clng3 = Surface(F, K, E, cyan);
+    Surfaces.push_back(clng3);
+
+    Surface clng4 = Surface(K, L, E, cyan);
+    Surfaces.push_back(clng4);
+
+    Surface clng5 = Surface(L, G, E, cyan);
+    Surfaces.push_back(clng5);
+
+    Surface clng6 = Surface(L, J, G, cyan);
+    Surfaces.push_back(clng6);
+
+    Surface clng7 = Surface(I, G, J, cyan);
+    Surfaces.push_back(clng7);
+
+    Surface clng8 = Surface(H, G, I, cyan);
+    Surfaces.push_back(clng8);
+
+    std::vector<vec4> ceiling_light_vectors;
+    ceiling_light_vectors.push_back(K);
+    ceiling_light_vectors.push_back(I);
+    ceiling_light_vectors.push_back(J);
+    ceiling_light_vectors.push_back(L);
 
     // Back wall
     Surface bckWall1 = Surface(G, D, C, yellow);
@@ -158,4 +187,19 @@ void get_cornell_shapes(std::vector<Surface>& Surfaces) {
 
         Surfaces[i].compute_and_set_normal();
     }
+    
+    for (size_t i = 0 ; i < ceiling_light_vectors.size() ; ++i) {
+        ceiling_light_vectors[i] *= (2 / l);
+
+        ceiling_light_vectors[i] -= vec4(1,1,1,1);
+
+        ceiling_light_vectors[i].x *= -1;
+        ceiling_light_vectors[i].y *= -1;
+        ceiling_light_vectors[i].w = 1.0;
+
+    }
+
+    vec3 diffuse_p = 2.0f * vec3(1, 1, 0.9);
+    AreaLightPlane ceiling_light = AreaLightPlane(ceiling_light_vectors, diffuse_p);
+    area_light_planes.push_back(ceiling_light);
 }

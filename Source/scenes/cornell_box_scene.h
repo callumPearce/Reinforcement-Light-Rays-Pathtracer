@@ -6,6 +6,7 @@
 #include <vector>
 
 #include "surface.h"
+#include "area_light_plane.h"
 
 using namespace std;
 using glm::vec3;
@@ -13,6 +14,6 @@ using glm::mat3;
 using glm::vec4;
 using glm::mat4;
 
-void get_cornell_shapes(vector<Surface>& surfaces);
+void get_cornell_shapes(vector<Surface>& surfaces, std::vector<AreaLightPlane>& area_light_planes);
 
 #endif

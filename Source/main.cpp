@@ -1,7 +1,7 @@
 /*
     Entry point for the Raytracer
 */
-// #include <omp.h>
+#include <omp.h>
 #include <assert.h>
 #include <iostream>
 #include <glm/glm.hpp>
@@ -18,8 +18,8 @@
 #include "ray.h"
 #include "printing.h"
 #include "camera.h"
-#include "light_sphere.h"
-// #include "surface.h"
+#include "area_light_plane.h"
+#include "path_tracing.h"
 
 
 using namespace std;
@@ -28,7 +28,7 @@ using glm::mat3;
 using glm::vec4;
 using glm::mat4;
 
-void Update(Camera& camera, LightSphere& light_sphere){
+void Update(Camera& camera){
     static int t = SDL_GetTicks();
     /* Compute frame time */
     int t2 = SDL_GetTicks();
@@ -52,32 +52,14 @@ void Update(Camera& camera, LightSphere& light_sphere){
     if (keystate[SDL_SCANCODE_RIGHT]) {
         camera.rotate_right(0.1);
     }
-    if (keystate[SDL_SCANCODE_A]) {
-        light_sphere.translate_left(0.1);
-    }
-    if (keystate[SDL_SCANCODE_D]) {
-        light_sphere.translate_right(0.1);
-    }
-    if (keystate[SDL_SCANCODE_Q]) {
-        light_sphere.translate_up(0.1);
-    }
-    if (keystate[SDL_SCANCODE_E]) {
-        light_sphere.translate_down(0.1);
-    }
-    if (keystate[SDL_SCANCODE_W]) {
-        light_sphere.translate_forwards(0.1);
-    }
-    if (keystate[SDL_SCANCODE_S]) {
-        light_sphere.translate_backwards(0.1);
-    }
 }
 
-void Draw(screen* screen, Camera& camera, LightSphere& light_sphere, vector<Surface *> surfaces){
+void Draw(screen* screen, Camera& camera, vector<AreaLightPlane *> light_planes, vector<Surface *> surfaces){
 
     // Reset the SDL screen to black
     memset(screen->buffer, 0, screen->height*screen->width*sizeof(uint32_t));
 
-    // #pragma omp parallel for
+    #pragma omp parallel for
     for (int x = 0; x < SCREEN_WIDTH; x++){
         for (int y = 0; y < SCREEN_HEIGHT; y++){
 
@@ -91,30 +73,25 @@ void Draw(screen* screen, Camera& camera, LightSphere& light_sphere, vector<Surf
             // Initialise the closest intersection
             Intersection closest_intersection;
 
-            // Find the closest intersection and plot the colour of the shape
-            if (ray.closest_intersection(surfaces, closest_intersection)) {
-                vec3 light_sphere_light = light_sphere.get_intersection_radiance(closest_intersection, surfaces); 
-                vec3 final_colour = light_sphere_light;
-                PutPixelSDL(screen, x, y, final_colour);
-            }
-            else {
-                PutPixelSDL(screen, x, y, vec3(0,0,0));
-            }
+            // Path trace the ray to find the colour to paint the pixel
+            vec3 radiance = path_trace(ray, surfaces, light_planes, 0);
+            PutPixelSDL(screen, x, y, radiance);
         }
     }
 }
 
 int main (int argc, char* argv[]) {
 
-    // omp_set_num_threads(6);
+    omp_set_num_threads(6);
     
     // Initialise SDL screen
     screen *screen = InitializeSDL(SCREEN_WIDTH, SCREEN_HEIGHT, FULLSCREEN_MODE);
 
     // Load the shapes within the scene
     vector<Surface> surfaces_load;
-    //get_cornell_shapes(triangles);
-    load_scene("Models/simple_room.obj", surfaces_load);
+    vector<AreaLightPlane> light_planes_load;
+    get_cornell_shapes(surfaces_load, light_planes_load);
+    // load_scene("Models/simple_room.obj", surfaces_load);
 
     // Convert all surfaces into a unified list of pointers to them
     vector<Surface *> surfaces;
@@ -123,19 +100,21 @@ int main (int argc, char* argv[]) {
         surfaces.push_back(sptr);
     }
 
+    // Convert all area lights into a unified list of pointers to them
+    vector<AreaLightPlane* > light_planes;
+    for (int i = 0 ; i < light_planes_load.size(); i++) {
+        AreaLightPlane * sptr (&light_planes_load[i]);
+        light_planes.push_back(sptr);
+    }
+
     // Create the camera
     Camera camera = Camera(vec4(0, 0, -3, 1));
 
-    // Create the light-sphere
-    vec3 diffuse_p = 15.0f * vec3(1, 1, 0.9);
-    vec3 ambient_p = 0.0f * vec3(1,1,1);
-    float r = 0.05f;
-    LightSphere light_sphere(vec4(-0.5f, -0.5f, 0.2f, 1.f), r, 1, diffuse_p, ambient_p);
-
+    
     // Render
     while (NoQuitMessageSDL()){
-        Update(camera, light_sphere);
-        Draw(screen, camera, light_sphere, surfaces);
+        Update(camera);
+        Draw(screen, camera, light_planes, surfaces);
         SDL_Renderframe(screen);
     }
 

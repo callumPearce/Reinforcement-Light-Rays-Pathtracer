@@ -10,7 +10,7 @@ Triangle::Triangle(vec4 v0, vec4 v1, vec4 v2){
     compute_and_set_normal();
 }
 
-// Tests whether the triangle intersects a ray
+// Tests whether the triangle intersects a ray, closer to the current closest intersection
 bool Triangle::intersects(Ray * ray, Intersection& intersection, int index) {
     bool returnVal = false;
     vec4 start = ray->get_start();
