@@ -8,6 +8,8 @@
 
 class Shape;
 class Triangle;
+class Surface;
+class AreaLightPlane;
 
 using namespace std;
 using glm::vec3;
@@ -17,6 +19,15 @@ using glm::vec4;
 using glm::mat4;
 
 /*
+    Define all the object types a ray can intersect with
+*/
+enum IntersectionType {
+    NOTHING,
+    AREA_LIGHT_PLANE,
+    SURFACE
+};
+
+/*
     Defines an intersection point for a ray
 */
 struct Intersection {
@@ -24,8 +35,8 @@ struct Intersection {
     float distance;
     vec4 normal;
     int index;
+    IntersectionType intersection_type = NOTHING;
 };
-
 
 /*
     Defines a ray, which is a 4D vector (Homogeneous coordinates)
@@ -42,7 +53,7 @@ class Ray {
         Ray(vec4 start, vec4 direction);
 
         // Find the closest intersection for the given ray with an shape in the scene
-        bool closest_intersection(vector<Shape *> shapes, Intersection& closest_intersection);
+        void closest_intersection(vector<Surface *> surfaces, vector<AreaLightPlane *> light_planes, Intersection& closest_intersection);
 
         // Cramers rule for solving a system of linear equations
         bool cramers(mat3 A, vec3 b, vec3& solution);

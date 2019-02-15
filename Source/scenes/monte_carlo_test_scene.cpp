@@ -1,6 +1,6 @@
 #include "monte_carlo_test_scene.h"
 
-void get_monte_carlo_shapes(std::vector<Triangle>& triangles) {
+void get_monte_carlo_shapes(std::vector<Surface>& Surfaces) {
     
     // Materials
     Material blue = Material(vec3(0.15f, 0.15f, 0.75f));
@@ -25,41 +25,41 @@ void get_monte_carlo_shapes(std::vector<Triangle>& triangles) {
     vec4 G(l,l,l,1);
     vec4 H(0,l,l,1);
 
-    // Triangles now take a material as an argument rather than a colour
+    // Surfaces now take a material as an argument rather than a colour
     // Floor:
-    Triangle flrTri1 = Triangle(C, B, A, white);
-    triangles.push_back(flrTri1);
+    Surface flrTri1 = Surface(C, B, A, white);
+    Surfaces.push_back(flrTri1);
 
-    Triangle flrTri2 = Triangle(C, D, B, white);
-    triangles.push_back(flrTri2);
+    Surface flrTri2 = Surface(C, D, B, white);
+    Surfaces.push_back(flrTri2);
 
     // Left wall
-    Triangle lftWall1 = Triangle(A, E, C, white);
-    triangles.push_back(lftWall1);
+    Surface lftWall1 = Surface(A, E, C, white);
+    Surfaces.push_back(lftWall1);
 
-    Triangle lftWall2 = Triangle(C, E, G, white);
-    triangles.push_back(lftWall2);
+    Surface lftWall2 = Surface(C, E, G, white);
+    Surfaces.push_back(lftWall2);
 
     // Right wall
-    Triangle rghtWall1 = Triangle(F, B, D, white);
-    triangles.push_back(rghtWall1);
+    Surface rghtWall1 = Surface(F, B, D, white);
+    Surfaces.push_back(rghtWall1);
 
-    Triangle rghtWall2 = Triangle(H, F, D, white);
-    triangles.push_back(rghtWall2);
+    Surface rghtWall2 = Surface(H, F, D, white);
+    Surfaces.push_back(rghtWall2);
 
     // Ceiling
-    Triangle clng1 = Triangle(E, F, G, white);
-    triangles.push_back(clng1);
+    Surface clng1 = Surface(E, F, G, white);
+    Surfaces.push_back(clng1);
 
-    Triangle clng2 = Triangle(F, H, G, white);
-    triangles.push_back(clng2);
+    Surface clng2 = Surface(F, H, G, white);
+    Surfaces.push_back(clng2);
 
     // Back wall
-    Triangle bckWall1 = Triangle(G, D, C, white);
-    triangles.push_back(bckWall1);
+    Surface bckWall1 = Surface(G, D, C, white);
+    Surfaces.push_back(bckWall1);
 
-    Triangle bckWall2 = Triangle(G, H, D, white);
-    triangles.push_back(bckWall2);
+    Surface bckWall2 = Surface(G, H, D, white);
+    Surfaces.push_back(bckWall2);
 
     // ---------------------------------------------------------------------------
     // Short block
@@ -75,53 +75,53 @@ void get_monte_carlo_shapes(std::vector<Triangle>& triangles) {
     H = vec4( 32,165,345,1);
 
     // // Front
-    // triangles.push_back(Triangle(E,B,A,blue));
-    // triangles.push_back(Triangle(E,F,B,blue));
+    // Surfaces.push_back(Surface(E,B,A,blue));
+    // Surfaces.push_back(Surface(E,F,B,blue));
 
     // // Front
-    // triangles.push_back(Triangle(F,D,B,blue));
-    // triangles.push_back(Triangle(F,H,D,blue));
+    // Surfaces.push_back(Surface(F,D,B,blue));
+    // Surfaces.push_back(Surface(F,H,D,blue));
 
     // // BACK
-    // triangles.push_back(Triangle(H,C,D,blue));
-    // triangles.push_back(Triangle(H,G,C,blue));
+    // Surfaces.push_back(Surface(H,C,D,blue));
+    // Surfaces.push_back(Surface(H,G,C,blue));
 
     // // LEFT
-    // triangles.push_back(Triangle(G,E,C,blue));
-    // triangles.push_back(Triangle(E,A,C,blue));
+    // Surfaces.push_back(Surface(G,E,C,blue));
+    // Surfaces.push_back(Surface(E,A,C,blue));
 
     // // TOP
-    // triangles.push_back(Triangle(G,F,E,blue));
-    // triangles.push_back(Triangle(G,H,F,blue));
+    // Surfaces.push_back(Surface(G,F,E,blue));
+    // Surfaces.push_back(Surface(G,H,F,blue));
 
 
-    for (size_t i = 0 ; i < triangles.size() ; ++i) {
-        triangles[i].setV0(triangles[i].getV0() * (2 / l));
-        triangles[i].setV1(triangles[i].getV1() * (2 / l));
-        triangles[i].setV2(triangles[i].getV2() * (2 / l));
+    for (size_t i = 0 ; i < Surfaces.size() ; ++i) {
+        Surfaces[i].setV0(Surfaces[i].getV0() * (2 / l));
+        Surfaces[i].setV1(Surfaces[i].getV1() * (2 / l));
+        Surfaces[i].setV2(Surfaces[i].getV2() * (2 / l));
 
-        triangles[i].setV0(triangles[i].getV0() - vec4(1,1,1,1));
-        triangles[i].setV1(triangles[i].getV1() - vec4(1,1,1,1));
-        triangles[i].setV2(triangles[i].getV2() - vec4(1,1,1,1));
+        Surfaces[i].setV0(Surfaces[i].getV0() - vec4(1,1,1,1));
+        Surfaces[i].setV1(Surfaces[i].getV1() - vec4(1,1,1,1));
+        Surfaces[i].setV2(Surfaces[i].getV2() - vec4(1,1,1,1));
 
-        vec4 newV0 = triangles[i].getV0();
+        vec4 newV0 = Surfaces[i].getV0();
         newV0.x *= -1;
         newV0.y *= -1;
         newV0.w = 1.0;
-        triangles[i].setV0(newV0);
+        Surfaces[i].setV0(newV0);
 
-        vec4 newV1 = triangles[i].getV1();
+        vec4 newV1 = Surfaces[i].getV1();
         newV1.x *= -1;
         newV1.y *= -1;
         newV1.w = 1.0;
-        triangles[i].setV1(newV1);
+        Surfaces[i].setV1(newV1);
 
-        vec4 newV2 = triangles[i].getV2();
+        vec4 newV2 = Surfaces[i].getV2();
         newV2.x *= -1;
         newV2.y *= -1;
         newV2.w = 1.0;
-        triangles[i].setV2(newV2);
+        Surfaces[i].setV2(newV2);
 
-        triangles[i].compute_and_set_normal();
+        Surfaces[i].compute_and_set_normal();
     }
 }

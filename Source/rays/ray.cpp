@@ -1,5 +1,6 @@
 #include "ray.h"
-#include "shape.h"
+#include "surface.h"
+#include "area_light_plane.h"
 #include <iostream>
 #include <limits>
 
@@ -10,15 +11,20 @@ Ray::Ray(vec4 start, vec4 direction) {
 }
 
 // Find (if there is) the closest intersection with a given ray and a shape
-bool Ray::closest_intersection(vector<Shape *> shapes, Intersection& closest_intersection) {
+void Ray::closest_intersection(vector<Surface *> surfaces, vector<AreaLightPlane *> light_planes, Intersection& closest_intersection) {
     closest_intersection.distance = numeric_limits<float>::max();
-    bool returnVal = false;
-    for (int i = 0; i < shapes.size(); i++) {
-        if (shapes[i]->intersects(this, closest_intersection, i)) {
-            returnVal = true;
+    // Find intersection with surface
+    for (int i = 0; i < surfaces.size(); i++) {
+        if (surfaces[i]->intersects(this, closest_intersection, i)) {
+            closest_intersection.intersection_type = SURFACE;
         }
     }
-    return returnVal;
+    // Find intersection with area lights
+    for (int i = 0; i < light_planes.size(); i++) { //TODO: Enum on type of closest intersction
+        if (light_planes[i]->light_plane_intersects(this, closest_intersection, i)) {
+            closest_intersection.intersection_type = AREA_LIGHT_PLANE;
+        }
+    }
 }
 
 // Rotate a ray by "yaw"

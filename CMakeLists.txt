@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.7)
 project(Monte_Carlo_Raytracer)
 
 # Compiler Flags
-set(CMAKE_CXX_FLAGS "-pipe -Wall -Wno-switch -ggdb -g3 -O3 -lm -g -ffast-math -funroll-loops -ftree-vectorize")
+set(CMAKE_CXX_FLAGS "-pipe -Wall -g -Wno-switch -fopenmp -g3 -O3 -lm -ffast-math -funroll-loops -ftree-vectorize -flto=full")
 
 # Set output directory for executables
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_HOME_DIRECTORY}/Build)
@@ -22,22 +22,27 @@ include_directories(Source/objects)
 include_directories(Source/scenes)
 include_directories(Source/utils)
 include_directories(Source/lights)
+include_directories(Source/sdl)
+include_directories(Source/rays)
 
 # Set the sources
 set(
     SOURCES
     Source/main.cpp
     Source/camera.cpp
-    Source/ray.cpp
+    Source/rays/ray.cpp
     Source/objects/material.cpp
     Source/objects/shape.cpp
     Source/objects/triangle.cpp
+    Source/objects/surface.cpp
     Source/objects/object_importer.cpp
     Source/scenes/cornell_box_scene.cpp
     Source/scenes/monte_carlo_test_scene.cpp
     Source/utils/printing.cpp
-    Source/lights/light.cpp
-    Source/lights/light_sphere.cpp
+    Source/lights/area_light.cpp
+    Source/lights/area_light_plane.cpp
+    Source/rays/path_tracing.cpp
+    Source/radiance_volume.cpp
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES})
