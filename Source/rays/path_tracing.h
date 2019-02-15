@@ -10,6 +10,7 @@
 #include "surface.h"
 #include "area_light_plane.h"
 #include "monte_carlo_settings.h"
+#include "hemisphere_helpers.h"
 
 using namespace std;
 using glm::vec3;
@@ -21,10 +22,6 @@ using glm::mat4;
 /*
     Path tracing functionality
 */
-
-void create_normal_coordinate_system(vec3& normal, vec3& normal_T, vec3& normal_B);
-
-vec3 uniform_hemisphere_sample(float r1, float r2);
 
 vec3 path_trace(Ray ray, vector<Surface *> surfaces, vector<AreaLightPlane *> light_planes, int bounces);
 

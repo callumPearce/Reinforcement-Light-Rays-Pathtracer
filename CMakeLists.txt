@@ -39,6 +39,7 @@ set(
     Source/scenes/cornell_box_scene.cpp
     Source/scenes/monte_carlo_test_scene.cpp
     Source/utils/printing.cpp
+    Source/utils/hemisphere_helpers.cpp
     Source/lights/area_light.cpp
     Source/lights/area_light_plane.cpp
     Source/rays/path_tracing.cpp

@@ -54,7 +54,7 @@ vec3 indirect_radiance(const Intersection& intersection, vector<Surface *> surfa
         // 2) Sample uniformly coordinates on unit hemisphere
         vec3 sample = uniform_hemisphere_sample(cos_theta, r2);
 
-        // 3) Transform random sampled position into the world coordinate system
+        // 3) Transform random sampled direction into the world coordinate system
         vec3 sampled_direction = vec3(
             sample.x * normal_B.x + sample.y * normal.x + sample.z * normal_T.x, 
             sample.x * normal_B.y + sample.y * normal.y + sample.z * normal_T.y, 
@@ -80,42 +80,4 @@ vec3 indirect_radiance(const Intersection& intersection, vector<Surface *> surfa
     total_radiance *= surfaces[intersection.index]->get_material().get_diffuse_c();
 
     return total_radiance;
-}
-
-// Generate a random point on a unit hemisphere
-vec3 uniform_hemisphere_sample(float r1, float r2){
-
-    // cos(theta) = 1 - r1 same as just doing r1
-    float y = r1; 
-    
-    // theta = cos^-1 (1 - r1 - r1)
-    float sin_theta = sqrt(1 - r1 * r1);
-
-    // phi = 2*pi * r2
-    float phi = 2 * M_PI * r2;
-
-    // x = sin(theta) * cos(phi)
-    float x = sin_theta * cosf(phi);
-    // z = sin(theta) * sin(phi)
-    float z = sin_theta * sinf(phi);
-
-    return vec3(x,y,z);
-}
-
-// Create the new coordinate system based on the normal being the y-axis unit vector.
-// In other words, create a **basis** set of vectors which any vector in the 3D space
-// can be created with by taking a linear combination of these 3 vectors
-void create_normal_coordinate_system(vec3& normal, vec3& normal_T, vec3& normal_B){
-    // normal_T is found by setting either x or y to 0
-    // i.e. the two define a plane
-    if (fabs(normal.x) > fabs(normal.y)){
-        // N_x * x = -N_z * z
-        normal_T = normalize(vec3(normal.z, 0, -normal.x));
-    } else{
-        //N_y * y = -N_z * z
-        normal_T = normalize(vec3(0, -normal.z, normal.y));
-    }
-    // The cross product between the two vectors creates another  
-    // perpendicular to the plane formed by normal, normal_T
-    normal_B = cross(normal, normal_T);
 }
