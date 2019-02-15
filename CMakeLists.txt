@@ -42,6 +42,7 @@ set(
     Source/lights/area_light.cpp
     Source/lights/area_light_plane.cpp
     Source/rays/path_tracing.cpp
+    Source/radiance_volume.cpp
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES})
