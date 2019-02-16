@@ -38,7 +38,20 @@ void create_normal_coordinate_system(vec3& normal, vec3& normal_T, vec3& normal_
     normal_B = cross(normal, normal_T);
 }
 
-// Convert a position within the hemisphere space to world space 
-vec4 convert_position_to_world_space(vec3 normal, vec3 normal_T, vec3 normal_B){
-    return vec4(0);
+// Create the transformation matrix for a unit hemisphere
+mat4 create_transformation_matrix(vec3 normal, vec4 position){
+    // Create coordinate system (i.e. 3 basis vectors to define rotation)
+    vec3 normal_T;
+    vec3 normal_B;
+    create_normal_coordinate_system(normal, normal_T, normal_B);
+    // Build the transformation matrix
+    // [ right
+    //   up
+    //   forward
+    //   translation ]
+    vec4 normal4 = vec4(normal, 0.f);
+    vec4 normal_T4 = vec4(normal_T, 0.f);
+    vec4 normal_B4 = vec4(normal_B, 0.f);
+    position.w = 1.f;
+    return mat4(normal_T4, normal4, normal_B4, position);
 }

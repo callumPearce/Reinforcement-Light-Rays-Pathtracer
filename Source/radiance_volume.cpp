@@ -1,15 +1,21 @@
 #include "radiance_volume.h"
 #include "radiance_volumes_settings.h"
 #include "hemisphere_helpers.h"
+#include <iostream>
 
 RadianceVolume::RadianceVolume(vec4 position, vec4 normal){
     initialise_radiance_grid();
     set_position(position);
     set_normal(vec3(normal.x, normal.y, normal.z));
 
-    // Create the coordinate system to convert points unit hemisphere space to world space
-    create_normal_coordinate_system(this->normal, this->normal_T, this->normal_B);
+    // Create the transformation matrix for this hemisphere: local->world
+    this->transformation_matrix = create_transformation_matrix(normal, position);
 }
+
+// Updates the transformation matrix with the current set values of the normal and position
+void RadianceVolume::update_transformation_matrix(){
+    this->transformation_matrix = create_transformation_matrix(normal, position);
+} 
 
 // Intialises a 2D grid to store radiance values at each grid point
 void RadianceVolume::initialise_radiance_grid(){
@@ -24,21 +30,22 @@ void RadianceVolume::initialise_radiance_grid(){
 
 // Returns a list of vertices for the generated radiance volume
 void RadianceVolume::get_vertices(vector<vector<vec4>>& vertices){
-    
     // For every grid coordinate, add the corresponding 3D world coordinate
     for (int x = 0; x <= GRID_RESOLUTION; x++){
         vector<vec4> vertices_row;
         for (int y = 0; y <= GRID_RESOLUTION; y++){
             // Get the coordinates on the unit hemisphere
             float x_h, y_h, z_h;
-            map(x/GRID_RESOLUTION, y/GRID_RESOLUTION, x_h, y_h, z_h);
+            map(x/(float)GRID_RESOLUTION, y/(float)GRID_RESOLUTION, x_h, y_h, z_h);
+            cout << x_h << "," << y_h << "," << z_h << std::endl;
             // Scale to the correct radius desired of the hemisphere
             x_h *= RADIUS;
             y_h *= RADIUS;
             z_h *= RADIUS;
             // Convert to world space
-
+            vec4 world_position = this->transformation_matrix * vec4(x_h, y_h, z_h, 1.f);
             // Add the point to vertices_row
+            vertices_row.push_back(world_position);
         }
         vertices.push_back(vertices_row);
     }
@@ -131,11 +138,11 @@ void RadianceVolume::map(float x, float y, float& x_ret, float& y_ret, float& z_
                 } 
                 else {
                     /*
-                    * Origin
+                    * Origincreate_normal_coordinate_system
                     */
-                    x_ret = 0;
-                    y_ret = 1;
-                    z_ret = 0;
+                    x_ret = 0.f;
+                    y_ret = 1.f;
+                    z_ret = 0.f;
                     return;
                 }
             }
@@ -164,6 +171,4 @@ void RadianceVolume::set_position(vec4 position){
 
 void RadianceVolume::set_normal(vec3 normal){
     this->normal = normal;
-    // Update the coordinate system
-    create_normal_coordinate_system(this->normal, this->normal_T, this->normal_B);
 }

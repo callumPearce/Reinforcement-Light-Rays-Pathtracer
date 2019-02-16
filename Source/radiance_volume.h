@@ -21,8 +21,7 @@ class RadianceVolume{
         vector<vector<vec3>> radiance_grid;
         // For coordinate system
         vec3 normal;
-        vec3 normal_T;
-        vec3 normal_B;
+        mat4 transformation_matrix;
 
         // Initialises square grid as a 2D vector of vec3s (radiance stores for each angle)
         void initialise_radiance_grid();
@@ -31,7 +30,8 @@ class RadianceVolume{
         // Constructor
         RadianceVolume(vec4 position, vec4 normal);
 
-        // Radiance Volume functions
+        // Update the transformation matrix with the current normal and position values
+        void update_transformation_matrix();
 
         // Get vertices of radiance volume in world space
         void get_vertices(vector<vector<vec4>>& vertices);

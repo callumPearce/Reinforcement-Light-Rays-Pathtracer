@@ -20,7 +20,7 @@
 #include "camera.h"
 #include "area_light_plane.h"
 #include "path_tracing.h"
-
+#include "radiance_volume_test.h"
 
 using namespace std;
 using glm::vec3;
@@ -90,7 +90,8 @@ int main (int argc, char* argv[]) {
     // Load the shapes within the scene
     vector<Surface> surfaces_load;
     vector<AreaLightPlane> light_planes_load;
-    get_cornell_shapes(surfaces_load, light_planes_load);
+    get_monte_carlo_shapes(surfaces_load, light_planes_load);
+    get_radiance_volume_shapes(surfaces_load);
     // load_scene("Models/simple_room.obj", surfaces_load);
 
     // Convert all surfaces into a unified list of pointers to them
@@ -110,7 +111,6 @@ int main (int argc, char* argv[]) {
     // Create the camera
     Camera camera = Camera(vec4(0, 0, -3, 1));
 
-    
     // Render
     while (NoQuitMessageSDL()){
         Update(camera);
