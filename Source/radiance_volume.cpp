@@ -37,11 +37,10 @@ void RadianceVolume::get_vertices(vector<vector<vec4>>& vertices){
             // Get the coordinates on the unit hemisphere
             float x_h, y_h, z_h;
             map(x/(float)GRID_RESOLUTION, y/(float)GRID_RESOLUTION, x_h, y_h, z_h);
-            cout << x_h << "," << y_h << "," << z_h << std::endl;
-            // Scale to the correct radius desired of the hemisphere
-            x_h *= RADIUS;
-            y_h *= RADIUS;
-            z_h *= RADIUS;
+            // Scale to the correct diameter desired of the hemisphere
+            x_h *= DIAMETER;
+            y_h *= DIAMETER;
+            z_h *= DIAMETER;
             // Convert to world space
             vec4 world_position = this->transformation_matrix * vec4(x_h, y_h, z_h, 1.f);
             // Add the point to vertices_row
