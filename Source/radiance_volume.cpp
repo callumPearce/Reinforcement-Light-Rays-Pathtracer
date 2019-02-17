@@ -1,6 +1,7 @@
 #include "radiance_volume.h"
 #include "radiance_volumes_settings.h"
 #include "hemisphere_helpers.h"
+#include "path_tracing.h"
 #include <iostream>
 
 RadianceVolume::RadianceVolume(vec4 position, vec4 normal){
@@ -25,6 +26,60 @@ void RadianceVolume::initialise_radiance_grid(){
             grid_row.push_back(vec3(0));
         }
         this->radiance_grid.push_back(grid_row);
+    }
+}
+
+// Gets the incoming radiance values from all grid samples and
+// populates radiance_grid with the estimates
+// NOTE: This should be called before any radiance_volumes are instantiated
+// in the scene by surfaces or these surfaces will be taken into account
+void RadianceVolume::get_radiance_estimate(vector<Surface *> surfaces, vector<AreaLightPlane *> light_planes){
+    // Path trace a ray in the direction from the centre of hemisphere towards
+    // the centre of each sector to determine the radiance incoming from that direction
+    for (int x = 0; x < GRID_RESOLUTION; x++){
+        for (int y = 0; y < GRID_RESOLUTION; y++){
+            // Get the 3D coordinates of the centre of the sector
+            float sector_x, sector_y, sector_z;
+            map(
+                (x + 0.5f)/(float)GRID_RESOLUTION,
+                (y + 0.5f)/(float)GRID_RESOLUTION,
+                sector_x, 
+                sector_y, 
+                sector_z
+            );
+            sector_x *= DIAMETER;
+            sector_y *= DIAMETER;
+            sector_z *= DIAMETER;
+            // Calculate the direction and starting position of the ray
+            vec4 dir = vec4(sector_x, sector_y, sector_z, 1.f) - vec4(this->position.x, this->position.y, this->position.z, 0.f);
+            vec4 start = this->position + 0.00001f * dir;
+            start.w = 1.f;
+            // Create the ray and path trace to find the radiance in that direction
+            Ray ray = Ray(start, dir);
+            this->radiance_grid[x][y] = path_trace(ray, surfaces, light_planes, 0);
+        }
+    }
+}
+
+// Builds a radiance volume out of Surfaces, where each surfaces colour
+// represents the incoming radiance at that position from that angle
+void RadianceVolume::build_radiance_volume_shapes(vector<Surface>& surfaces){
+    // Get its vertices
+    vector<vector<vec4>> vertices;
+    this->get_vertices(vertices);
+    // Build Surfaces using the vertices
+    for (int x = 0; x < GRID_RESOLUTION; x++){
+        for (int y = 0; y < GRID_RESOLUTION; y++){
+            vec4 v1 = vertices[x][y];
+            vec4 v2 = vertices[x+1][y];
+            vec4 v3 = vertices[x][y+1];
+            vec4 v4 = vertices[x+1][y+1];
+            float r1 = ((float) rand() / (RAND_MAX));
+            float r2 = ((float) rand() / (RAND_MAX));
+            float r3 = ((float) rand() / (RAND_MAX));
+            surfaces.push_back(Surface(v1, v3, v2, Material(this->radiance_grid[x][y])));
+            surfaces.push_back(Surface(v2, v3, v4, Material(this->radiance_grid[x][y])));
+        }
     }
 }
 

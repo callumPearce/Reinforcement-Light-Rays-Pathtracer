@@ -23,6 +23,8 @@ using glm::mat4;
     Path tracing functionality
 */
 
+// Traces the path of a ray following monte carlo path tracer in order to estimate the radiance for a ray shot
+// from its angle and starting position
 vec3 path_trace(Ray ray, vector<Surface *> surfaces, vector<AreaLightPlane *> light_planes, int bounces);
 
 vec3 indirect_radiance(const Intersection& intersection, vector<Surface *> surfaces, vector<AreaLightPlane *> light_planes, int bounces);

@@ -39,42 +39,42 @@ void get_monte_carlo_shapes(std::vector<Surface>& Surfaces, std::vector<AreaLigh
     Surfaces.push_back(flrTri2);
 
     // Left wall
-    Surface lftWall1 = Surface(A, E, C, white);
+    Surface lftWall1 = Surface(A, E, C, red);
     Surfaces.push_back(lftWall1);
 
-    Surface lftWall2 = Surface(C, E, G, white);
+    Surface lftWall2 = Surface(C, E, G, red);
     Surfaces.push_back(lftWall2);
 
     // Right wall
-    Surface rghtWall1 = Surface(F, B, D, white);
+    Surface rghtWall1 = Surface(F, B, D, blue);
     Surfaces.push_back(rghtWall1);
 
-    Surface rghtWall2 = Surface(H, F, D, white);
+    Surface rghtWall2 = Surface(H, F, D, blue);
     Surfaces.push_back(rghtWall2);
 
     // Ceiling
-    Surface clng1 = Surface(F, H, I, cyan);
+    Surface clng1 = Surface(F, H, I, white);
     Surfaces.push_back(clng1);
 
-    Surface clng2 = Surface(F, I, K, cyan);
+    Surface clng2 = Surface(F, I, K, white);
     Surfaces.push_back(clng2);
 
-    Surface clng3 = Surface(F, K, E, cyan);
+    Surface clng3 = Surface(F, K, E, white);
     Surfaces.push_back(clng3);
 
-    Surface clng4 = Surface(K, L, E, cyan);
+    Surface clng4 = Surface(K, L, E, white);
     Surfaces.push_back(clng4);
 
-    Surface clng5 = Surface(L, G, E, cyan);
+    Surface clng5 = Surface(L, G, E, white);
     Surfaces.push_back(clng5);
 
-    Surface clng6 = Surface(L, J, G, cyan);
+    Surface clng6 = Surface(L, J, G, white);
     Surfaces.push_back(clng6);
 
-    Surface clng7 = Surface(I, G, J, cyan);
+    Surface clng7 = Surface(I, G, J, white);
     Surfaces.push_back(clng7);
 
-    Surface clng8 = Surface(H, G, I, cyan);
+    Surface clng8 = Surface(H, G, I, white);
     Surfaces.push_back(clng8);
 
     std::vector<vec4> ceiling_light_vectors;

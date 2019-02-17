@@ -20,7 +20,7 @@
 #include "camera.h"
 #include "area_light_plane.h"
 #include "path_tracing.h"
-#include "radiance_volume_test.h"
+#include "radiance_volume.h"
 
 using namespace std;
 using glm::vec3;
@@ -91,8 +91,10 @@ int main (int argc, char* argv[]) {
     vector<Surface> surfaces_load;
     vector<AreaLightPlane> light_planes_load;
     get_monte_carlo_shapes(surfaces_load, light_planes_load);
-    get_radiance_volume_shapes(surfaces_load);
     // load_scene("Models/simple_room.obj", surfaces_load);
+
+    // Create the camera
+    Camera camera = Camera(vec4(0, 0, -3, 1));
 
     // Convert all surfaces into a unified list of pointers to them
     vector<Surface *> surfaces;
@@ -108,8 +110,17 @@ int main (int argc, char* argv[]) {
         light_planes.push_back(sptr);
     }
 
-    // Create the camera
-    Camera camera = Camera(vec4(0, 0, -3, 1));
+    // Create radiance volumes and get their radiance estiamte of the current geometry
+    RadianceVolume test_rv = RadianceVolume(vec4(0.f, 1.f, 0.f, 1.f), vec4(0.f, -1.f, 0.f, 1.f));
+    test_rv.get_radiance_estimate(surfaces, light_planes);
+
+    // Clear the list of surfaces and add the surfaces for the radiance spheres to be rendered
+    test_rv.build_radiance_volume_shapes(surfaces_load);
+    surfaces.clear();
+    for (int i = 0 ; i < surfaces_load.size(); i++) {
+        Surface * sptr (&surfaces_load[i]);
+        surfaces.push_back(sptr);
+    }
 
     // Render
     while (NoQuitMessageSDL()){

@@ -1,5 +1,7 @@
 #include "path_tracing.h"
 
+// Traces the path of a ray following monte carlo path tracer in order to estimate the radiance for a ray shot
+// from its angle and starting position
 vec3 path_trace(Ray ray, vector<Surface *> surfaces, vector<AreaLightPlane *> light_planes, int bounces){
     
     // Trace the path of the ray to find the closest intersection
