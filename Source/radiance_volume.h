@@ -59,6 +59,10 @@ class RadianceVolume{
         // represents the incoming radiance at that position from that angle
         void build_radiance_volume_shapes(vector<Surface>& surfaces);
 
+        // Builds a radiance volume out of Surfaces, where each surfaces colour
+        // represents the magnitude of incoming radiance compared to the other directions
+        void build_radiance_magnitude_volume_shapes(vector<Surface>& surfaces);
+
         // Getters
         vec4 get_position();
         vec3 get_normal();

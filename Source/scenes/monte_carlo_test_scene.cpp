@@ -164,7 +164,7 @@ void get_monte_carlo_shapes(std::vector<Surface>& Surfaces, std::vector<AreaLigh
 
     }
 
-    vec3 diffuse_p = 2.0f * vec3(1, 1, 0.9);
+    vec3 diffuse_p = 5.0f * vec3(1, 1, 0.9);
     AreaLightPlane ceiling_light = AreaLightPlane(ceiling_light_vectors, diffuse_p);
     area_light_planes.push_back(ceiling_light);
 }

@@ -2,6 +2,7 @@
 #include "radiance_volumes_settings.h"
 #include "hemisphere_helpers.h"
 #include "path_tracing.h"
+#include "printing.h"
 #include <iostream>
 
 RadianceVolume::RadianceVolume(vec4 position, vec4 normal){
@@ -79,6 +80,38 @@ void RadianceVolume::build_radiance_volume_shapes(vector<Surface>& surfaces){
             float r3 = ((float) rand() / (RAND_MAX));
             surfaces.push_back(Surface(v1, v3, v2, Material(this->radiance_grid[x][y])));
             surfaces.push_back(Surface(v2, v3, v4, Material(this->radiance_grid[x][y])));
+        }
+    }
+}
+
+// Builds a radiance volume out of Surfaces, where each surfaces colour
+// represents the incoming radiance at that position from that angle
+void RadianceVolume::build_radiance_magnitude_volume_shapes(vector<Surface>& surfaces){
+    // Get its vertices
+    vector<vector<vec4>> vertices;
+    this->get_vertices(vertices);
+    // Find the max radiance magnitude of the hemisphere
+    float max_radiance = 0.0001f;
+    for (int x = 0; x < GRID_RESOLUTION; x++){
+        for (int y = 0; y < GRID_RESOLUTION; y++){
+            if(length(this->radiance_grid[x][y]) > max_radiance){
+                max_radiance = length(this->radiance_grid[x][y]);
+            }
+        }
+    }
+    // Build Surfaces using the vertices
+    for (int x = 0; x < GRID_RESOLUTION; x++){
+        for (int y = 0; y < GRID_RESOLUTION; y++){
+            vec4 v1 = vertices[x][y];
+            vec4 v2 = vertices[x+1][y];
+            vec4 v3 = vertices[x][y+1];
+            vec4 v4 = vertices[x+1][y+1];
+            float r1 = ((float) rand() / (RAND_MAX));
+            float r2 = ((float) rand() / (RAND_MAX));
+            float r3 = ((float) rand() / (RAND_MAX));
+            vec3 colour = length(this->radiance_grid[x][y])/max_radiance * vec3(1.f);
+            surfaces.push_back(Surface(v1, v3, v2, Material(colour)));
+            surfaces.push_back(Surface(v2, v3, v4, Material(colour)));
         }
     }
 }
