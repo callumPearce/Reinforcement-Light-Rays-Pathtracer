@@ -44,29 +44,27 @@ void RadianceMap::build_radiance_map_shapes(vector<Surface>& surfaces){
 
 /*              Querying                */
 
-// Updates the list of closest distances/closest indices with the new value
-// if it is smaller than the largest element in the current list]
-void update_list(float new_distance, vector<float>& closest_distances, int index, vector<int>& closest_indices){
-    
+void insert_to_distance_vector(vector<float>& closest_distances, vector<int>& closest_indices, float distance, int index){
     if (closest_distances.size() < CLOSEST_QUERY_COUNT){
-        closest_distances.push_back(new_distance);
-        closest_indices.push_back(index);
-    }
-    else{
-        if (new_distance < closest_distances[0]){
-            return;
+        int j = 0;
+        while (j < closest_distances.size() && distance < closest_distances[j]){
+            j++;
         }
-        else{
-            // Delete the first element
-            closest_distances.erase(closest_distances.begin());
-            closest_indices.erase(closest_indices.begin());
-            // Find the index to insert the element into 
-            int j = 0;
-            while (new_distance < closest_distances[j] && j < CLOSEST_QUERY_COUNT){
-                j++;
-            }
-            closest_distances.insert(closest_distances.begin()+j-1, new_distance);
-            closest_indices.insert(closest_indices.begin()+j-1, index);
+        closest_distances.insert(closest_distances.begin()+j, distance);
+        closest_indices.insert(closest_indices.begin()+j, index);
+    }
+    else if (distance < closest_distances[0] ){
+        int j = 1;
+        closest_distances[0] = distance;
+        closest_indices[0] = index;
+        while (j < CLOSEST_QUERY_COUNT && distance < closest_distances[j]){
+            float temp_d = closest_distances[j];
+            int temp_i = closest_indices[j];
+            closest_distances[j] = closest_distances[j-1];
+            closest_indices[j] = closest_indices[j-1];
+            closest_distances[j-1] = temp_d;
+            closest_indices[j-1] = temp_i;
+            j++;
         }
     }
 }
@@ -81,31 +79,14 @@ vec3 RadianceMap::get_radiance_estimate(const Intersection& intersection, vector
     int volumes = this->radiance_volumes.size();
     for (int i = 0; i < volumes; i++){
         float temp_dist = distance(this->radiance_volumes[i].get_position(), intersection.position);
-        update_list(temp_dist, closest_distances, i, closest_indices);
-    }
-
-    // Weight the distances values
-    float distances_sum = 0.f;
-    vector<float> distance_weightings;
-    for (int i = 0; i < CLOSEST_QUERY_COUNT; i++){
-        distances_sum += closest_distances[i];
-    }
-    for (int i = 0; i < CLOSEST_QUERY_COUNT; i++){
-        closest_distances[i] = distances_sum - closest_distances[i];
-    }
-    distances_sum = 0.f;
-    for (int i = 0; i < CLOSEST_QUERY_COUNT; i++){
-        distances_sum += closest_distances[i];
-    }
-    for (int i = 0; i < CLOSEST_QUERY_COUNT; i++){
-        distance_weightings.push_back(closest_distances[i]/distances_sum);
+        insert_to_distance_vector(closest_distances, closest_indices, temp_dist, i);
     }
     
-    // For each index, get the radiance, multiply it by the weighting and add to the total
+    // For each index, get the radiance and average the total radiance
     vec3 radiance = vec3(0.f);
     for (int i = 0; i < CLOSEST_QUERY_COUNT; i++){
-        radiance += distance_weightings[i] * this->radiance_volumes[closest_indices[i]].get_total_radiance(intersection, surfaces);
+        radiance += this->radiance_volumes[closest_indices[i]].get_total_radiance(intersection, surfaces);
     }
-
+    radiance /= (float)CLOSEST_QUERY_COUNT;
     return radiance;
 }

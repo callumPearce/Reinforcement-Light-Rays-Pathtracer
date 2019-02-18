@@ -9,7 +9,7 @@
 #define GRID_RESOLUTION 4
 #define DIAMETER 0.1f
 #define RADIANCE_SAMPLES_PER_BOUNCE 128
-#define AREA_PER_SAMPLE 0.1f
+#define AREA_PER_SAMPLE 0.01f
 
 // Querying
 #define CLOSEST_QUERY_COUNT 3

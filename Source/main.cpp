@@ -59,7 +59,7 @@ void Draw(screen* screen, Camera& camera, vector<AreaLightPlane *> light_planes,
     // Reset the SDL screen to black
     memset(screen->buffer, 0, screen->height*screen->width*sizeof(uint32_t));
 
-    #pragma omp parallel for
+    // #pragm  a omp parallel for
     for (int x = 0; x < SCREEN_WIDTH; x++){
         for (int y = 0; y < SCREEN_HEIGHT; y++){
 

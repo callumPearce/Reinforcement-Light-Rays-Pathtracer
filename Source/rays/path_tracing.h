@@ -28,7 +28,7 @@ using glm::mat4;
 // from its angle and starting position
 vec3 path_trace(bool radiance_volume, Ray ray, vector<Surface *> surfaces, vector<AreaLightPlane *> light_planes, int bounces);
 
-vec3 path_trace_radiance_map(RadianceMap radiance_map, Ray ray, vector<Surface *> surfaces, vector<AreaLightPlane *> light_planes);
+vec3 path_trace_radiance_map(RadianceMap& radiance_map, Ray ray, vector<Surface *> surfaces, vector<AreaLightPlane *> light_planes);
 
 vec3 indirect_radiance(bool radiance_volume, const Intersection& intersection, vector<Surface *> surfaces, vector<AreaLightPlane *> light_planes, int bounces);
 
