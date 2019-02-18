@@ -1,8 +1,9 @@
 #include "path_tracing.h"
+#include "radiance_volumes_settings.h"
 
 // Traces the path of a ray following monte carlo path tracer in order to estimate the radiance for a ray shot
 // from its angle and starting position
-vec3 path_trace(Ray ray, vector<Surface *> surfaces, vector<AreaLightPlane *> light_planes, int bounces){
+vec3 path_trace(bool radiance_volume, Ray ray, vector<Surface *> surfaces, vector<AreaLightPlane *> light_planes, int bounces){
     
     // Trace the path of the ray to find the closest intersection
     Intersection closest_intersection;
@@ -26,7 +27,7 @@ vec3 path_trace(Ray ray, vector<Surface *> surfaces, vector<AreaLightPlane *> li
             if (bounces == MAX_RAY_BOUNCES){
                 return vec3(0);
             } else{
-                return indirect_radiance(closest_intersection, surfaces, light_planes, bounces);
+                return indirect_radiance(radiance_volume, closest_intersection, surfaces, light_planes, bounces);
             }
             break;
     }
@@ -36,7 +37,7 @@ vec3 path_trace(Ray ray, vector<Surface *> surfaces, vector<AreaLightPlane *> li
 
 // For a given intersection point, return the radiance of the surface resulting
 // from indirect illumination (i.e. other shapes in the scene) via the Monte Carlo Raytracing
-vec3 indirect_radiance(const Intersection& intersection, vector<Surface *> surfaces, vector<AreaLightPlane *> light_planes, int bounces){
+vec3 indirect_radiance(bool radiance_volume, const Intersection& intersection, vector<Surface *> surfaces, vector<AreaLightPlane *> light_planes, int bounces){
 
     // 1) Create new coordinate system (tranformation matrix)
     vec3 normal = vec3(intersection.normal.x, intersection.normal.y, intersection.normal.z);
@@ -47,7 +48,8 @@ vec3 indirect_radiance(const Intersection& intersection, vector<Surface *> surfa
     // Calculate the estiamted total radiance estimate
     // (\int L(w_i) * roh / pi * cos(w_i, N) dw)
     vec3 total_radiance = vec3(0);
-    for (int i = 0; i < SAMPLES_PER_BOUNCE; i++){
+    int sample_count = radiance_volume ? RADIANCE_SAMPLES_PER_BOUNCE : SAMPLES_PER_BOUNCE;
+    for (int i = 0; i < sample_count; i++){
         
         // Generate random number for monte carlo sampling of theta and phi
         float cos_theta = ((float) rand() / (RAND_MAX)); //r1
@@ -69,7 +71,7 @@ vec3 indirect_radiance(const Intersection& intersection, vector<Surface *> surfa
         Ray ray = Ray(start, vec4(sampled_direction, 1));
 
         // 4) Get the radiance contribution for this ray and add to the sum
-        vec3 radiance = path_trace(ray, surfaces, light_planes, bounces+1);
+        vec3 radiance = path_trace(radiance_volume, ray, surfaces, light_planes, bounces+1);
 
         // Note: we can multiply the BRDF to the final sum because it is 
         // constant for diffuse surfaces, so we omit it here
@@ -78,7 +80,7 @@ vec3 indirect_radiance(const Intersection& intersection, vector<Surface *> surfa
 
     // Divide the sum by the number of samples (Monte Carlo) and apply BRDF
     // Note: 1/2pi comes from PDF being constant for sampled ray directions (Monte Carlo) 
-    total_radiance /= ((float)SAMPLES_PER_BOUNCE * (1 / (2 * M_PI))); 
+    total_radiance /= ((float)sample_count * (1 / (2 * M_PI))); 
     total_radiance *= surfaces[intersection.index]->get_material().get_diffuse_c();
 
     return total_radiance;

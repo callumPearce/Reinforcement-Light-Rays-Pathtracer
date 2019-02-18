@@ -74,7 +74,7 @@ void Draw(screen* screen, Camera& camera, vector<AreaLightPlane *> light_planes,
             Intersection closest_intersection;
 
             // Path trace the ray to find the colour to paint the pixel
-            vec3 radiance = path_trace(ray, surfaces, light_planes, 0);
+            vec3 radiance = path_trace(false, ray, surfaces, light_planes, 0);
             PutPixelSDL(screen, x, y, radiance);
         }
     }
@@ -111,11 +111,14 @@ int main (int argc, char* argv[]) {
     }
 
     // Create radiance volumes and get their radiance estiamte of the current geometry
-    RadianceVolume test_rv = RadianceVolume(vec4(0.f, 1.f, 0.f, 1.f), vec4(0.f, -1.f, 0.f, 1.f));
+    RadianceVolume test_rv = RadianceVolume(vec4(0.f, 0.f, 0.f, 1.f), vec4(1.f, 0.f, 0.f, 1.f));
+    RadianceVolume test_rv2 = RadianceVolume(vec4(0.f, 0.f, 0.f, 1.f), vec4(-1.f, 0.f, 0.f, 1.f));
     test_rv.get_radiance_estimate(surfaces, light_planes);
+    test_rv2.get_radiance_estimate(surfaces, light_planes);
 
     // Clear the list of surfaces and add the surfaces for the radiance spheres to be rendered
     test_rv.build_radiance_volume_shapes(surfaces_load);
+    test_rv2.build_radiance_volume_shapes(surfaces_load);
     surfaces.clear();
     for (int i = 0 ; i < surfaces_load.size(); i++) {
         Surface * sptr (&surfaces_load[i]);

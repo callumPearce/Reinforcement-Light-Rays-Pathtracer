@@ -7,5 +7,6 @@
 
 #define GRID_RESOLUTION 10
 #define DIAMETER 0.4f
+#define RADIANCE_SAMPLES_PER_BOUNCE 256
 
 #endif

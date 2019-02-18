@@ -51,13 +51,15 @@ void RadianceVolume::get_radiance_estimate(vector<Surface *> surfaces, vector<Ar
             sector_x *= DIAMETER;
             sector_y *= DIAMETER;
             sector_z *= DIAMETER;
+            // Convert the position to world space
+            vec4 world_position = this->transformation_matrix * vec4(sector_x, sector_y, sector_z, 1.f);
             // Calculate the direction and starting position of the ray
-            vec4 dir = vec4(sector_x, sector_y, sector_z, 1.f) - vec4(this->position.x, this->position.y, this->position.z, 0.f);
+            vec4 dir = world_position - vec4(this->position.x, this->position.y, this->position.z, 0.f);
             vec4 start = this->position + 0.00001f * dir;
             start.w = 1.f;
             // Create the ray and path trace to find the radiance in that direction
             Ray ray = Ray(start, dir);
-            this->radiance_grid[x][y] = path_trace(ray, surfaces, light_planes, 0);
+            this->radiance_grid[x][y] = path_trace(true, ray, surfaces, light_planes, 0);
         }
     }
 }
@@ -78,6 +80,7 @@ void RadianceVolume::build_radiance_volume_shapes(vector<Surface>& surfaces){
             float r1 = ((float) rand() / (RAND_MAX));
             float r2 = ((float) rand() / (RAND_MAX));
             float r3 = ((float) rand() / (RAND_MAX));
+            print_vec3("radiance", this->radiance_grid[x][y]);
             surfaces.push_back(Surface(v1, v3, v2, Material(this->radiance_grid[x][y])));
             surfaces.push_back(Surface(v2, v3, v4, Material(this->radiance_grid[x][y])));
         }
@@ -109,7 +112,7 @@ void RadianceVolume::build_radiance_magnitude_volume_shapes(vector<Surface>& sur
             float r1 = ((float) rand() / (RAND_MAX));
             float r2 = ((float) rand() / (RAND_MAX));
             float r3 = ((float) rand() / (RAND_MAX));
-            vec3 colour = length(this->radiance_grid[x][y])/max_radiance * vec3(1.f);
+            vec3 colour = vec3(1.f) - length(this->radiance_grid[x][y])/max_radiance * vec3(1.f);
             surfaces.push_back(Surface(v1, v3, v2, Material(colour)));
             surfaces.push_back(Surface(v2, v3, v4, Material(colour)));
         }
