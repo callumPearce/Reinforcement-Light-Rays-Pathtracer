@@ -65,6 +65,10 @@ class RadianceVolume{
         // represents the magnitude of incoming radiance compared to the other directions
         void build_radiance_magnitude_volume_shapes(vector<Surface>& surfaces);
 
+        // Gets the total radiance incident on the point from all incoming directions with
+        // current recorded estimates
+        vec3 get_total_radiance(const Intersection& intersection, vector<Surface *> surfaces);
+
         // Getters
         vec4 get_position();
         vec3 get_normal();

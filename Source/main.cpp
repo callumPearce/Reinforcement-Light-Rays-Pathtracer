@@ -54,7 +54,7 @@ void Update(Camera& camera){
     }
 }
 
-void Draw(screen* screen, Camera& camera, vector<AreaLightPlane *> light_planes, vector<Surface *> surfaces){
+void Draw(screen* screen, Camera& camera, vector<AreaLightPlane *> light_planes, vector<Surface *> surfaces, RadianceMap& radiance_map){
 
     // Reset the SDL screen to black
     memset(screen->buffer, 0, screen->height*screen->width*sizeof(uint32_t));
@@ -74,7 +74,8 @@ void Draw(screen* screen, Camera& camera, vector<AreaLightPlane *> light_planes,
             Intersection closest_intersection;
 
             // Path trace the ray to find the colour to paint the pixel
-            vec3 radiance = path_trace(false, ray, surfaces, light_planes, 0);
+            // vec3 radiance = path_trace(false, ray, surfaces, light_planes, 0);
+            vec3 radiance = path_trace_radiance_map(radiance_map, ray, surfaces, light_planes);
             PutPixelSDL(screen, x, y, radiance);
         }
     }
@@ -115,17 +116,17 @@ int main (int argc, char* argv[]) {
     radiance_map.get_radiance_estimates(surfaces, light_planes);
 
     // Clear the list of surfaces and add the surfaces for the radiance spheres to be rendered
-    radiance_map.build_radiance_map_shapes(surfaces_load);
-    surfaces.clear();
-    for (int i = 0 ; i < surfaces_load.size(); i++) {
-        Surface * sptr (&surfaces_load[i]);
-        surfaces.push_back(sptr);
-    }
+    // radiance_map.build_radiance_map_shapes(surfaces_load);
+    // surfaces.clear();
+    // for (int i = 0 ; i < surfaces_load.size(); i++) {
+    //     Surface * sptr (&surfaces_load[i]);
+    //     surfaces.push_back(sptr);
+    // }
 
     // Render
     while (NoQuitMessageSDL()){
         Update(camera);
-        Draw(screen, camera, light_planes, surfaces);
+        Draw(screen, camera, light_planes, surfaces, radiance_map);
         SDL_Renderframe(screen);
     }
 

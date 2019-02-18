@@ -4,6 +4,7 @@
 #include <vector>
 #include <glm/glm.hpp>
 #include "radiance_volume.h"
+#include "ray.h"
 
 using namespace std;
 using glm::vec3;
@@ -32,6 +33,9 @@ class RadianceMap{
 
         // Get the radiance estimate for every radiance volume in the RadianceMap
         void get_radiance_estimates(vector<Surface *> surfaces, vector<AreaLightPlane *> light_planes);
+
+        // Get radiance estimate at the intersection point
+        vec3 get_radiance_estimate(const Intersection& intersection, vector<Surface *> surfaces);
 };
 
 #endif

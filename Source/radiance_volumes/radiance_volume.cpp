@@ -140,6 +140,33 @@ void RadianceVolume::get_vertices(vector<vector<vec4>>& vertices){
     }
 }
 
+// Gets the total radiance incident on the point from all incoming directions with
+// current recorded estimates
+vec3 RadianceVolume::get_total_radiance(const Intersection& intersection, vector<Surface *> surfaces){
+    vec3 total_radiance = vec3(0);
+    for (int x = 0; x < GRID_RESOLUTION; x++){
+        for (int y = 0; y < GRID_RESOLUTION; y++){
+            // Get the coordinates on the unit hemisphere
+            float x_h, y_h, z_h;
+            map(x/(float)GRID_RESOLUTION, y/(float)GRID_RESOLUTION, x_h, y_h, z_h);
+            // Scale to the correct diameter desired of the hemisphere
+            x_h *= DIAMETER;
+            y_h *= DIAMETER;
+            z_h *= DIAMETER;
+            // Convert to world space
+            vec4 world_position = this->transformation_matrix * vec4(x_h, y_h, z_h, 1.f);
+            vec3 world_position3 = vec3(world_position.x, world_position.y, world_position.z);
+            // Get the direction
+            vec3 dir = normalize(world_position3 - vec3(this->position));
+            // Get the angle between the dir vector and the normal
+            float cos_theta = dot(dir, this->normal); // No need to divide by lengths as they have been normalized
+            total_radiance += cos_theta * this->radiance_grid[x][y];
+        }
+    }
+    total_radiance /= (float)(GRID_RESOLUTION * GRID_RESOLUTION) * (1 / (2 * M_PI));
+    total_radiance *= surfaces[intersection.index]->get_material().get_diffuse_c();
+}
+
 /*
 * This function takes a point in the unit square,
 * and maps it to a point on the unit hemisphere.

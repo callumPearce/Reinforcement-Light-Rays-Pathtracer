@@ -27,8 +27,39 @@ vec3 path_trace(bool radiance_volume, Ray ray, vector<Surface *> surfaces, vecto
             if (bounces == MAX_RAY_BOUNCES){
                 return vec3(0);
             } else{
+
                 return indirect_radiance(radiance_volume, closest_intersection, surfaces, light_planes, bounces);
             }
+            break;
+    }
+
+    return vec3(0);
+}
+
+// Traces the path of a ray following monte carlo path tracer in order to estimate the radiance for a ray shot
+// from its angle and starting position
+vec3 path_trace_radiance_map(RadianceMap radiance_map, Ray ray, vector<Surface *> surfaces, vector<AreaLightPlane *> light_planes){
+    
+    // Trace the path of the ray to find the closest intersection
+    Intersection closest_intersection;
+    ray.closest_intersection(surfaces, light_planes, closest_intersection);
+
+    // Take the according action based on intersection type
+    switch(closest_intersection.intersection_type){
+
+        // Interescted with nothing, so no radiance
+        case NOTHING:
+            return vec3(0);
+            break;
+        
+        // Intersected with light plane, so return its diffuse_p
+        case AREA_LIGHT_PLANE:
+            return light_planes[closest_intersection.index]->get_diffuse_p();
+            break;
+
+        // Intersected with a surface (diffuse)
+        case SURFACE:
+            return radiance_map.get_radiance_estimate(closest_intersection, surfaces);
             break;
     }
 
