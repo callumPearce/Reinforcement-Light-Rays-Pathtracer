@@ -12,8 +12,10 @@ using glm::vec4;
 using glm::mat4;
 
 /*
-    Defines a single radiance volume in the scene as described in:
+    Defines a single radiance hemisphere in the scene as described in:
     https://www.researchgate.net/publication/3208677_The_Irradiance_Volume
+    Note: I have decided to call each hemisphere a radiance volume and all
+    of the hemishperes together form the RadianceMap of the scene
 */
 class RadianceVolume{
 

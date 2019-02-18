@@ -1,6 +1,6 @@
 #include "triangle.h"
 #include "image_settings.h"
-
+#include "printing.h"
 #include <iostream>
 
 Triangle::Triangle(vec4 v0, vec4 v1, vec4 v2){
@@ -73,6 +73,36 @@ bool Triangle::cramer(mat3 A, vec3 b, vec3& solution) {
         ret = false;
     }
     return ret;
+}
+
+// Computes and returns the surface area of this triangle
+float Triangle::compute_area(){
+    // A = 1/2 * |AB||AC|sin(theta)
+    vec3 v0_3 = vec3(v0.x, v0.y, v0.z);
+    vec3 v1_3 = vec3(v1.x, v1.y, v1.z);
+    vec3 v2_3 = vec3(v2.x, v2.y, v2.z);
+    float e01_e02 = length(v1_3 - v0_3) * length(v2_3 - v0_3);
+    float cos_theta = dot(v1_3 - v0_3, v2_3 - v0_3)/e01_e02;
+    float sin_theta = sqrt(1 - pow(cos_theta,2));
+    return 0.5f * e01_e02 * sin_theta;
+}
+
+// Sample a position on the triangles plane
+vec4 Triangle::sample_position_on_plane(){
+    // http://mathworld.wolfram.com/TrianglePointPicking.html
+    // https://math.stackexchange.com/questions/538458/triangle-point-picking-in-3d
+    // x =  v0 + a_1*(v1-v0) + a_2*(v2-v0) 
+    float a1 = 1.f;
+    float a2 = 1.f;
+    vec4 pos = vec4(0);
+    do{
+        a1 = ((float) rand() / (RAND_MAX));
+        a2 = ((float) rand() / (RAND_MAX));
+        pos = this->v0 + a1*(this->v1 - this->v0)  + a2*(this->v2 - this->v0);
+    }
+    while(a1 + a2 > 1.f);
+    pos.w = 1.f;
+    return pos;
 }
 
 // Getters

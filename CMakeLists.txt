@@ -24,6 +24,7 @@ include_directories(Source/utils)
 include_directories(Source/lights)
 include_directories(Source/sdl)
 include_directories(Source/rays)
+include_directories(Source/radiance_volumes)
 
 # Set the sources
 set(
@@ -43,7 +44,8 @@ set(
     Source/lights/area_light.cpp
     Source/lights/area_light_plane.cpp
     Source/rays/path_tracing.cpp
-    Source/radiance_volume.cpp
+    Source/radiance_volumes/radiance_volume.cpp
+    Source/radiance_volumes/radiance_map.cpp
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES})

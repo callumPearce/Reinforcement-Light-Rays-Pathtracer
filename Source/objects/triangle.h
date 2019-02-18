@@ -2,6 +2,7 @@
 #define TRIANGLE_H
 
 #include "shape.h"
+using glm::dot;
 
 /*
     Defines a Triangle shape consisting of three vertices and
@@ -24,6 +25,12 @@ class Triangle : public Shape {
 
         // Tests whether a triangle intersects a ray
         bool intersects(Ray* ray, Intersection& intersection, int index);
+
+        // Gets the surface area of a triangle
+        float compute_area();
+
+        // Samples a position on the triangle plane
+        vec4 sample_position_on_plane();
 
         // Getters
         vec4 getV0();

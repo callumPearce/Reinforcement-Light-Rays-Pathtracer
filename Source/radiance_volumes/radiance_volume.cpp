@@ -80,7 +80,6 @@ void RadianceVolume::build_radiance_volume_shapes(vector<Surface>& surfaces){
             float r1 = ((float) rand() / (RAND_MAX));
             float r2 = ((float) rand() / (RAND_MAX));
             float r3 = ((float) rand() / (RAND_MAX));
-            print_vec3("radiance", this->radiance_grid[x][y]);
             surfaces.push_back(Surface(v1, v3, v2, Material(this->radiance_grid[x][y])));
             surfaces.push_back(Surface(v2, v3, v4, Material(this->radiance_grid[x][y])));
         }
