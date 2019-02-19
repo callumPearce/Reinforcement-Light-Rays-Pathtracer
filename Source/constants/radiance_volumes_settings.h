@@ -13,5 +13,6 @@
 
 // Querying
 #define CLOSEST_QUERY_COUNT 3
+#define MAX_DIST 0.3f
 
 #endif

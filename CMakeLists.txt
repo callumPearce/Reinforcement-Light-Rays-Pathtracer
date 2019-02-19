@@ -46,6 +46,8 @@ set(
     Source/rays/path_tracing.cpp
     Source/radiance_volumes/radiance_volume.cpp
     Source/radiance_volumes/radiance_map.cpp
+    Source/radiance_volumes/radiance_volume_comparator.cpp
+    Source/radiance_volumes/radiance_tree.cpp
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES})

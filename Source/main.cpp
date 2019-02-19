@@ -21,6 +21,7 @@
 #include "area_light_plane.h"
 #include "path_tracing.h"
 #include "radiance_map.h"
+#include "radiance_tree.h"
 
 using namespace std;
 using glm::vec3;
@@ -59,7 +60,7 @@ void Draw(screen* screen, Camera& camera, vector<AreaLightPlane *> light_planes,
     // Reset the SDL screen to black
     memset(screen->buffer, 0, screen->height*screen->width*sizeof(uint32_t));
 
-    // #pragm  a omp parallel for
+    #pragma omp parallel for
     for (int x = 0; x < SCREEN_WIDTH; x++){
         for (int y = 0; y < SCREEN_HEIGHT; y++){
 
@@ -113,7 +114,7 @@ int main (int argc, char* argv[]) {
 
     // Initialise the radiance map
     RadianceMap radiance_map = RadianceMap(surfaces);
-    radiance_map.get_radiance_estimates(surfaces, light_planes);
+    RadianceTree* radiance_tree_pointer = radiance_map.get_global_radiance_tree_pointer();
 
     // Clear the list of surfaces and add the surfaces for the radiance spheres to be rendered
     // radiance_map.build_radiance_map_shapes(surfaces_load);
@@ -129,6 +130,8 @@ int main (int argc, char* argv[]) {
         Draw(screen, camera, light_planes, surfaces, radiance_map);
         SDL_Renderframe(screen);
     }
+
+    delete radiance_tree_pointer;
 
     KillSDL(screen);
     

@@ -5,6 +5,12 @@
 #include "printing.h"
 #include <iostream>
 
+RadianceVolume::RadianceVolume(){
+    this->position = vec4(0.f);
+    this->normal = vec3(0.f);
+    this->transformation_matrix = mat4(0.f);
+}
+
 RadianceVolume::RadianceVolume(vec4 position, vec4 normal){
     initialise_radiance_grid();
     set_position(position);
@@ -142,7 +148,7 @@ void RadianceVolume::get_vertices(vector<vector<vec4>>& vertices){
 
 // Gets the total radiance incident on the point from all incoming directions with
 // current recorded estimates
-vec3 RadianceVolume::get_total_radiance(const Intersection& intersection, vector<Surface *> surfaces){
+vec3 RadianceVolume::get_total_irradiance(const Intersection& intersection, vector<Surface *> surfaces){
     vec3 total_radiance = vec3(0);
     for (int x = 0; x < GRID_RESOLUTION; x++){
         for (int y = 0; y < GRID_RESOLUTION; y++){
@@ -163,8 +169,9 @@ vec3 RadianceVolume::get_total_radiance(const Intersection& intersection, vector
             total_radiance += cos_theta * this->radiance_grid[x][y];
         }
     }
-    total_radiance /= (float)(GRID_RESOLUTION * GRID_RESOLUTION) * (1 / (2 * M_PI));
+    total_radiance /= ((float)(GRID_RESOLUTION * GRID_RESOLUTION)) * (1.f / (2.f * M_PI));
     total_radiance *= surfaces[intersection.index]->get_material().get_diffuse_c();
+    return total_radiance;
 }
 
 /*

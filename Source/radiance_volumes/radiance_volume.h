@@ -42,6 +42,9 @@ class RadianceVolume{
         void initialise_radiance_grid();
 
     public:
+        // Default Constructor
+        RadianceVolume();
+        
         // Constructor
         RadianceVolume(vec4 position, vec4 normal);
 
@@ -67,7 +70,7 @@ class RadianceVolume{
 
         // Gets the total radiance incident on the point from all incoming directions with
         // current recorded estimates
-        vec3 get_total_radiance(const Intersection& intersection, vector<Surface *> surfaces);
+        vec3 get_total_irradiance(const Intersection& intersection, vector<Surface *> surfaces);
 
         // Getters
         vec4 get_position();
