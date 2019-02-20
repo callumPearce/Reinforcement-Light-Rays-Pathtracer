@@ -60,7 +60,7 @@ vec3 path_trace_radiance_map(RadianceMap& radiance_map, Ray ray, vector<Surface 
 
         // Intersected with a surface (diffuse)
         case SURFACE:
-            return radiance_map.get_radiance_estimate(closest_intersection, surfaces);
+            return radiance_map.get_irradiance_estimate(closest_intersection, surfaces);
             break;
     }
 

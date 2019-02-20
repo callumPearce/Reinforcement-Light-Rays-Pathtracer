@@ -6,13 +6,13 @@
 #define RADIANCE_VOLUMES_SETTINGS_H
 
 // Building
-#define GRID_RESOLUTION 4
-#define DIAMETER 0.1f
-#define RADIANCE_SAMPLES_PER_BOUNCE 128
-#define AREA_PER_SAMPLE 0.01f
+#define GRID_RESOLUTION 8
+#define DIAMETER 0.001f
+#define RADIANCE_SAMPLES_PER_BOUNCE 32
+#define AREA_PER_SAMPLE 0.001f
 
 // Querying
 #define CLOSEST_QUERY_COUNT 3
-#define MAX_DIST 0.3f
+#define MAX_DIST 0.05f
 
 #endif

@@ -20,25 +20,26 @@ using glm::mat4;
 class RadianceMap{
 
     private:
-        RadianceTree* radiance_tree;
-        void uniformly_sample_radiance_volumes(vector<RadianceVolume>& radiance_volumes, Surface surface);
+        vector<RadianceVolume*> radiance_volumes;
+        std::unique_ptr<RadianceTree> radiance_tree;
+        void uniformly_sample_radiance_volumes(Surface surface);
 
     public:
 
         // Constructor
-        RadianceMap(vector<Surface *> surfaces, vector<AreaLightPlane *> light_planes);
+        RadianceMap(vector<Surface *> surfaces, vector<AreaLightPlane *> light_planes, vector<Surface>& surfaces_builder);
 
         // Builds all RadianceVolumes which are part of the RadianceMap into the scene
-        void build_radiance_map_shapes(vector<RadianceVolume>& radiance_volumes, vector<Surface>& surfaces);
+        void build_radiance_map_shapes(vector<Surface>& surfaces);
 
         // Get the radiance estimate for every radiance volume in the RadianceMap
-        void get_radiance_estimates(vector<RadianceVolume>& radiance_volumes, vector<Surface *> surfaces, vector<AreaLightPlane *> light_planes);
+        void get_radiance_estimates(vector<Surface *> surfaces, vector<AreaLightPlane *> light_planes);
 
         // Get radiance estimate at the intersection point
         vec3 get_irradiance_estimate(const Intersection& intersection, vector<Surface *> surfaces);
 
-        // Get global radiance tree pointer
-        RadianceTree* get_global_radiance_tree_pointer();
+        // Calculate the Gaussian filter for radiance contribution
+        float calculate_gaussian_filter(float volume_distance, float furthest_volume_distance);
 };
 
 #endif

@@ -8,7 +8,7 @@ RadianceTree::RadianceTree(){
     this->median = 0.f;
 }
 
-RadianceTree::RadianceTree(vector<RadianceVolume>& radiance_volumes, Dimension dimension){
+RadianceTree::RadianceTree(vector<RadianceVolume*>& radiance_volumes, Dimension dimension){
     
     // Set the dimension of the tree
     this->dimension = dimension;
@@ -23,8 +23,8 @@ RadianceTree::RadianceTree(vector<RadianceVolume>& radiance_volumes, Dimension d
         
         // One radiance volume, so the median is that radiance volume (a leaf node)
         case 1:
-            this->median = (float)radiance_volumes[0].get_position()[dimension];
-            this->radiance_volumes = radiance_volumes;
+            this->median = (float)radiance_volumes[0]->get_position()[dimension];
+            this->radiance_volumes = {radiance_volumes[0]};
             break;
     
         // Recursive case, more than 1 radiance volume
@@ -36,15 +36,15 @@ RadianceTree::RadianceTree(vector<RadianceVolume>& radiance_volumes, Dimension d
             int median_index = 0;
             if (volumes % 2 == 0){
                 median_index = int(volumes/2) - 1;
-                this->median = (float)((float)radiance_volumes[median_index].get_position()[dimension] + (float)radiance_volumes[median_index+1].get_position()[dimension])/2;
+                this->median = (float)((float)radiance_volumes[median_index]->get_position()[dimension] + (float)radiance_volumes[median_index+1]->get_position()[dimension])/2;
             } else{
                 median_index = (int)floor(volumes/2);
-                this->median = (float)radiance_volumes[median_index].get_position()[dimension];
+                this->median = (float)radiance_volumes[median_index]->get_position()[dimension];
             }
 
             // Recursively build the tree downwards given the calculated median
-            vector<RadianceVolume> left;
-            vector<RadianceVolume> right;
+            vector<RadianceVolume*> left;
+            vector<RadianceVolume*> right;
             for (int i = 0; i < volumes; i++){
                 if (i <= median_index){
                     left.push_back(radiance_volumes[i]);
@@ -53,8 +53,8 @@ RadianceTree::RadianceTree(vector<RadianceVolume>& radiance_volumes, Dimension d
                 }
             }
             Dimension next_dim = get_next_dimension(dimension);
-            this->left_tree = new RadianceTree(left, next_dim);
-            this->right_tree = new RadianceTree(right, next_dim);
+            this->left_tree = std::unique_ptr<RadianceTree>(new RadianceTree(left, next_dim));
+            this->right_tree = std::unique_ptr<RadianceTree>(new RadianceTree(right, next_dim));
             break;
     }
 }
@@ -78,7 +78,7 @@ Dimension RadianceTree::get_next_dimension(Dimension dimension){
 }
 
 // Compare radiance volumes left and right based on the current dimensions of the tree
-bool RadianceTree::sort_radiance_volumes_on_dimension(vector<RadianceVolume>& radiance_volumes){
+bool RadianceTree::sort_radiance_volumes_on_dimension(vector<RadianceVolume*>& radiance_volumes){
     switch (this->dimension)
     {
         case X_DIM:
@@ -95,25 +95,25 @@ bool RadianceTree::sort_radiance_volumes_on_dimension(vector<RadianceVolume>& ra
     }
 }
 
-bool RadianceTree::sort_on_x(RadianceVolume left, RadianceVolume right){
-    return left.get_position()[0] < right.get_position()[0];
+bool RadianceTree::sort_on_x(RadianceVolume* left, RadianceVolume* right){
+    return left->get_position()[0] < right->get_position()[0];
 }
 
-bool RadianceTree::sort_on_y(RadianceVolume left, RadianceVolume right){
-    return left.get_position()[1] < right.get_position()[1];
+bool RadianceTree::sort_on_y(RadianceVolume* left, RadianceVolume* right){
+    return left->get_position()[1] < right->get_position()[1];
 }
 
-bool RadianceTree::sort_on_z(RadianceVolume left, RadianceVolume right){
-    return left.get_position()[2] < right.get_position()[2];
+bool RadianceTree::sort_on_z(RadianceVolume* left, RadianceVolume* right){
+    return left->get_position()[2] < right->get_position()[2];
 }
 
 // Get the closest n RadianceVolumes within max_dist from position
-vector<RadianceVolume> RadianceTree::find_closest_radiance_volumes(int n, float max_dist, vec4 position){
+vector<RadianceVolume*> RadianceTree::find_closest_radiance_volumes(int n, float max_dist, vec4 position){
     // Create the priority queue and populate it with the closest radiance volumes
     std::priority_queue<RadianceVolumeComparator> sorted_queue;
     populate_closest_volumes_queue(n, max_dist, position, sorted_queue);
     // Add all radiance volumes in the sorted queue to the list of nearest_volumes
-    vector<RadianceVolume> nearest_volumes;
+    vector<RadianceVolume*> nearest_volumes;
     while (!sorted_queue.empty()){
         RadianceVolumeComparator rvc = sorted_queue.top();
         nearest_volumes.push_back(rvc.get_radiance_volume());
@@ -160,7 +160,7 @@ void RadianceTree::populate_closest_volumes_queue(int n, float max_dist, vec4 po
 void RadianceTree::radiance_volume_sorted_queue_insert(vec4 position, priority_queue<RadianceVolumeComparator>& sorted_queue, float max_dist, int n){
     int volumes = this->radiance_volumes.size();
     for (int i = 0; i < volumes; i++){
-        float dist = distance(position, this->radiance_volumes[i].get_position());
+        float dist = distance(position, this->radiance_volumes[i]->get_position());
         RadianceVolumeComparator rvc = RadianceVolumeComparator(this->radiance_volumes[i], dist);
         if (sorted_queue.size() < n){
             sorted_queue.push(rvc);

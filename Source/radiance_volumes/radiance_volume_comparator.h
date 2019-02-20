@@ -14,18 +14,18 @@ class RadianceVolumeComparator{
 
     private:
         float distance;
-        RadianceVolume radiance_volume;
+        RadianceVolume* radiance_volume;
 
     public:
         
         // Constructor
-        RadianceVolumeComparator(RadianceVolume radiance_volume, float distance);
+        RadianceVolumeComparator(RadianceVolume* radiance_volume, float distance);
 
         // Weak ordering
         friend bool operator<(const RadianceVolumeComparator& lhs, const RadianceVolumeComparator& rhs);
 
         // Getters
-        RadianceVolume get_radiance_volume();
+        RadianceVolume* get_radiance_volume();
         float get_distance();
 };
 

@@ -113,8 +113,7 @@ int main (int argc, char* argv[]) {
     }
 
     // Initialise the radiance map
-    RadianceMap radiance_map = RadianceMap(surfaces);
-    RadianceTree* radiance_tree_pointer = radiance_map.get_global_radiance_tree_pointer();
+    RadianceMap radiance_map = RadianceMap(surfaces, light_planes, surfaces_load);
 
     // Clear the list of surfaces and add the surfaces for the radiance spheres to be rendered
     // radiance_map.build_radiance_map_shapes(surfaces_load);
@@ -130,8 +129,6 @@ int main (int argc, char* argv[]) {
         Draw(screen, camera, light_planes, surfaces, radiance_map);
         SDL_Renderframe(screen);
     }
-
-    delete radiance_tree_pointer;
 
     KillSDL(screen);
     
