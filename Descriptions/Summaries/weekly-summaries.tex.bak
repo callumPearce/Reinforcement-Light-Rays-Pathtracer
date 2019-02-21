@@ -1,0 +1,111 @@
+\documentclass[conference]{IEEEtran}
+\IEEEoverridecommandlockouts
+% The preceding line is only needed to identify funding in the first footnote. If that is unneeded, please comment it out.
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+\begin{document}
+
+\title{Reinforcement Light Rays Path-Tracer Progress Report}
+
+\author{\IEEEauthorblockN{Callum Pearce}\\ cp15571@my.bristol.ac.uk }
+
+\maketitle
+
+\begin{abstract}
+This document contains my weekly progress of my thesis as part of my 4th year masters unit COMSM0111 in 2018/19. It is mainly useful to myself for reflecting on the decisions I have made throughout the project and why I chose them.  However, I also hope it gives a detailed overview of how the project evolved with time for any other reader.
+\end{abstract}
+
+
+\section{Introduction}
+Each section of this document describes a single week of work. For each section I have decided to include the following break down:
+
+\begin{itemize}
+
+\item  \textbf{Goals}: A few set goals I aimed to achieve in that week and the motivation behind them.
+
+\item \textbf{Research/Implementation Details}: What was done, and how it was achieved.
+
+\item \textbf{Resources}: Describes what resources were notably helpful during the week for research/implementation details.
+
+\item \textbf{Reflection}: What I believed went well in the week, what to avoid in the future, and were the goal outlined achieved? Finally, if necessary, what has changed for the project as a whole?
+
+\end{itemize}
+
+\section*{Week 1}
+
+Building off dome preliminary research I decided I had to build a ray-tracer in order to start any work with my project. This would be a good way of refreshing the basics of computer graphics.
+
+\subsection{Goals}
+\begin{enumerate}
+\item Build a basic ray-tracer from scratch using only SDL and GLM as external libraries
+\end{enumerate}
+
+\subsection{Research/Implementation Goals}
+This week was fairly simple in terms of implementation. I mainly based my work on the ray-tracer I built with my project partner in my 3rd year of university. I used a similar project structure and followed the lab-sheets from  \verb|COMS30015| by Carl Henrik Ek. By the end of the week I had built a ray-tracer which simulated the following in real-time:
+
+\begin{itemize}
+\item Constructing surfaces from triangle primitives and projecting them onto a 2D pixel plane for camera viewing via ray-tracing.
+\item Supports camera movement
+\item Direct illumination 
+\end{itemize}
+
+\subsection{Resources}
+As mentioned the main resources used were those provided by 
+
+\subsection{Reflection}
+
+
+\section*{Week 2}
+
+\subsection{Goals}
+\begin{enumerate}
+\item
+\end{enumerate}
+
+\subsection{Research/Implementation Goals}
+
+\subsection{Resources}
+
+\subsection{Reflection}
+
+
+\section*{Week 3}
+
+\subsection{Goals}
+\begin{enumerate}
+\item 
+\end{enumerate}
+
+\subsection{Research/Implementation Goals}
+
+\subsection{Resources}
+
+\subsection{Reflection}
+
+
+\section*{Week 4}
+
+\subsection{Goals}
+\begin{enumerate}
+\item 
+\end{enumerate}
+
+\subsection{Research/Implementation Goals}
+
+\subsection{Resources}
+
+\subsection{Reflection}
+
+
+\bibliographystyle{plain}
+\bibliography{weekly-summaries}
+
+
+
+\end{document}
