@@ -4,9 +4,10 @@
 \usepackage{cite}
 \usepackage{amsmath,amssymb,amsfonts}
 \usepackage{algorithmic}
-\usepackage{graphicx}
 \usepackage{textcomp}
+\usepackage{epsfig,endnotes,listings, tabulary, graphicx, tabularx}
 \usepackage{xcolor}
+\usepackage{hyperref}
 \def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
     T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
 \begin{document}
@@ -56,24 +57,33 @@ This week was fairly simple in terms of implementation. I mainly based my work o
 \end{itemize}
 
 \subsection{Resources}
-As mentioned the main resources used were those provided by 
+As mentioned the main resources used were those provided for \verb|COMS30015| by Carl Henrik Ek in 2017. They gave me a good refresher on all the core concepts of ray-tracing and the mathematics behind it. I have based my rendering on the Cornell Box scene which is a classical scene for testing computer graphical renderings. 
 
 \subsection{Reflection}
-
+I met my goal this week and built a well designed code-base to go with it.
 
 \section*{Week 2}
+With a basic ray-tracer up and running, it was then time to add global illumination (indirect lighting) into the rendered scene and other features to make the basic ray-tracer complete for my purposes.
 
 \subsection{Goals}
 \begin{enumerate}
-\item
+\item Implement Monte-Carlo global illumination within the ray-tracing pipeline (to go alongside direct light. It is Monte-Carlo global illumination I am planning to base my reinforcement learning technique presented by NVIDIA \cite{dahm2017learning} on.
+
+\item Create an object loader for the scene to test rendering in different scenes. I need a scene which has very low light levels in certain parts of the scene in order to show how reinforcement learning reduces noise in these areas.
 \end{enumerate}
 
 \subsection{Research/Implementation Goals}
+My implementation worked as follows; for every pixel in the image, calculate the colour by finding the direct light at that point combined with the indirect light. Where indirect light was sampled by shooting a ray into the scene and scattering it, then recursively finding the illumination at these points (via Monte Carlo).
+
+For the object loader, I read in all vertices and then built triangles to form the defined surfaces in the file by using fan-triangulation. These triangles would be built into the scene by a call to the script with the file name of the \verb|.obj| file to load.
+
+I also introduced \verb|openmp| to the project to speed things up by parallelising the ray-tracers pixel painting loop. 
 
 \subsection{Resources}
+ScratchPixel 2.0 \cite{scratch-pixel} provided an excellent description of Monte Carlo global illumination for a ray-tracer. As for the object loader, opengl gave a great tutorial for simple processing of \verb|.obj| files \cite{opengl-obj}. 
 
 \subsection{Reflection}
-
+Monte Carlo global illumination was available for a custom scene as I had set out to achieve in this week. I also introduced an object loader which allows me to load in a scene of my choice, which will become especially useful when comparing different methods later on in the coursework. However, due to the introduction of 
 
 \section*{Week 3}
 

@@ -5,4 +5,15 @@ Ken Dahm and Alexander Keller.
 \newblock Learning light transport the reinforced way.
 \newblock {\em arXiv preprint arXiv:1701.07403}, 2017.
 
+\bibitem{opengl-obj}
+opengl.
+\newblock Model loading.
+\newblock
+  \url{http://www.opengl-tutorial.org/beginners-tutorials/tutorial-7-model-loading/}.
+
+\bibitem{scratch-pixel}
+ScratchPixel.
+\newblock Scratchpixel2.0.
+\newblock \url{http://www.scratchapixel.com/}.
+
 \end{thebibliography}
