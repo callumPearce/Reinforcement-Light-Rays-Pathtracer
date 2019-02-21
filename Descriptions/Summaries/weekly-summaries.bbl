@@ -5,6 +5,11 @@ Ken Dahm and Alexander Keller.
 \newblock Learning light transport the reinforced way.
 \newblock {\em arXiv preprint arXiv:1701.07403}, 2017.
 
+\bibitem{greger1998irradiance}
+Gene Greger, Peter Shirley, Philip~M Hubbard, and Donald~P Greenberg.
+\newblock The irradiance volume.
+\newblock {\em IEEE Computer Graphics and Applications}, 18(2):32--43, 1998.
+
 \bibitem{opengl-obj}
 opengl.
 \newblock Model loading.
@@ -15,5 +20,15 @@ opengl.
 ScratchPixel.
 \newblock Scratchpixel2.0.
 \newblock \url{http://www.scratchapixel.com/}.
+
+\bibitem{reinforcement-learning-book}
+Richard~S. Sutton and Andrew~G. Barto.
+\newblock {\em Reinforcement Learning: An Introduction}.
+\newblock 2017.
+
+\bibitem{pathtracing}
+Wikipedia.
+\newblock Path tracing.
+\newblock \url{https://en.wikipedia.org/wiki/Path_tracing}.
 
 \end{thebibliography}

@@ -1,6 +1,9 @@
 cmake_minimum_required(VERSION 3.7)
 project(Monte_Carlo_Raytracer)
 
+# Set compiler
+set(CMAKE_CXX_COMPILER "icc")
+
 # Compiler Flags
 set(CMAKE_CXX_FLAGS "-pipe -Wall -g -Wno-switch -fopenmp -g3 -O3 -lm -ffast-math -funroll-loops -ftree-vectorize -flto=full")
 

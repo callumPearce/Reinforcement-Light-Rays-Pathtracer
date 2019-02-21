@@ -83,30 +83,46 @@ I also introduced \verb|openmp| to the project to speed things up by parallelisi
 ScratchPixel 2.0 \cite{scratch-pixel} provided an excellent description of Monte Carlo global illumination for a ray-tracer. As for the object loader, opengl gave a great tutorial for simple processing of \verb|.obj| files \cite{opengl-obj}. 
 
 \subsection{Reflection}
-Monte Carlo global illumination was available for a custom scene as I had set out to achieve in this week. I also introduced an object loader which allows me to load in a scene of my choice, which will become especially useful when comparing different methods later on in the coursework. However, due to the introduction of 
+Monte Carlo global illumination was available for a custom scene as I had set out to achieve in this week. I also introduced an object loader which allows me to load in a scene of my choice, which will become especially useful when comparing different methods later on in the coursework. However, due to the introduction of global illumination the ray-tracer is far slower and takes a significant amount of time (nearly a day) to render a high quality image.
 
 \section*{Week 3}
+With global illumination in hand and a custom scene to test it on the project moved on to begin working on reimplementing the \textit{Learning Light transport the reinforced} way \cite{dahm2017learning} paper.
 
 \subsection{Goals}
 \begin{enumerate}
-\item 
+\item Take detailed notes of the \cite{dahm2017learning} paper and understand what needs to be changed with my current ray-tracer
+\item Read through \cite{reinforcement-learning-book} Introduction, Markov Decision Processes and Temporal Difference learning chapters in order to understand the basis of Reinforcement learning.
+\item Begin implementing the Radiance Volume data structure specified in \cite{dahm2017learning}.
 \end{enumerate}
 
 \subsection{Research/Implementation Goals}
+I began my week by first reading the Reinforcement Learning textbook \cite{reinforcement-learning-book} as to attain the second goal. I took many notes and gained a good understanding of temporal difference learning and how it builds on Markov Decision Processes as a model for reinforcement learning. I then read the NVIDIA paper  \cite{dahm2017learning} which I found out that I needed to use Expected Sarsa as my form of temporal difference learning for the path tracing algorithm created by NVIDIA. 
+
+From this reading I found that I needed to first convert my ray-tracer into a path-tracer, where we simulate light paths (rays) bouncing round the room until they hit a light surface. Only when the ray intersects with an area light does it gain luminance which then dictates the irradiance of a given point in the room along with the diffuse surfaces it bounced off. This required me to remodel my point light and convert it into an area light as well as redesign my implementation of \verb|Triangles| and create the child classes \verb|Surfaces| and \verb|AreaLight| which extend from it. Whilst also modifying the ray-tracing Monte Carlo global illumination method to be a path-tracing Monte Carlo global illumination method \cite{pathtracing}. Instead of scattering the rays every bounce, I instead sample many rays for a single pixel to begin with and just trace that single ray until it reaches a light source (or other terminating conditions).
+
+With the path-tracer ready, I was able to begin working on reimplementing the data structure which \cite{dahm2017learning} relies on, The Irradiance Volume \cite{greger1998irradiance}. The irradiance volume data structure stores the irradiance for many sampled points in the room, for which when you intersect with some geometry in the scene, you can interpolate between the precomputed irradiance values stored at these points to find the predicted irradiance at any point in the scene. The more sample points you have in the room the more accurate your estimate will be. For every sampled point the irradiance is calculated by finding the radiance at the given point by calculating all light incoming from uniformly sampled discretized angles (a grid converted into a hemisphere around the sample point). I managed to implement a single Irradiance Hemisphere and visualise it in the scene before the end of the week.
 
 \subsection{Resources}
+The most useful sources this week were the NVIDIA paper \cite{dahm2017learning} (which I will no longer mention in these sections as the thesis is essentially based around it) and the reinforcement learning book \cite{reinforcement-learning-book}.
 
 \subsection{Reflection}
-
+This week was different from those so far, I really focused on research and have a lot of notes to show for it, as compared to the past two weeks which have essentially been based around implementation of a ray-tracer. The work is getting more challenging and open to thought and interpretation of what cutting edge work has already been done by NVIDIA. I can safely say I met my 3 goals I outlined for this week.
 
 \section*{Week 4}
+I now have a basis point to start off with the Irradiance Volume \cite{greger1998irradiance} implementation as I have successfully simulated a single \verb|RadianceVolume| (class). It was now time to build this structure into the rendering pipeline and using these sampled point estimates into my approximation of global illumination for given point in the scene.
 
 \subsection{Goals}
 \begin{enumerate}
-\item 
+\item Find a way to sample radiance volumes around the scene uniformly and use their estimates in the rendering pipeline to create a perceptually realistic image.
+\item Create KD-Tree in order to quickly look up the closest Radiance Volumes around a given point in the scene. Also introduce the \verb|icc| Intel compiler to speed up programs performance.
+\item Use Trilinear interpolation between the radiance volumes in the scene to find the irradiance estimate for a given point in the scene.
+\item Begin implementing the reinforcement learning approach with the Irradiance Volume data structure.
 \end{enumerate}
 
 \subsection{Research/Implementation Goals}
+As for the first goal, I decided to sample the radiance volumes uniformly by sampling $n$ radiance volumes on a given surface (using that surfaces normal), where the value of $n$ is determined by the area of that triangle. This meant the algorithm is able to adapt to different scenes. This is different to what is proposed by \cite{greger1998irradiance} where a bilevel grid is used. This would likely give a more accurate estimate on surfaces as will focus all of our radiance volumes on surfaces rather then in the middle of the scene. This technique seems to produce good quality images.
+
+The KD-Tree was a fairly straightforward implementation based upon code from my 3rd year computer graphics unit we implemented for a Photon Map. This made it quick to get working for an irradiance volume data structure and
 
 \subsection{Resources}
 
