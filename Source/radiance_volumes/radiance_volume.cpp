@@ -45,27 +45,34 @@ void RadianceVolume::get_radiance_estimate(vector<Surface *> surfaces, vector<Ar
     // the centre of each sector to determine the radiance incoming from that direction
     for (int x = 0; x < GRID_RESOLUTION; x++){
         for (int y = 0; y < GRID_RESOLUTION; y++){
-            // Get the 3D coordinates of the centre of the sector
-            float sector_x, sector_y, sector_z;
-            map(
-                (x + 0.5f)/(float)GRID_RESOLUTION,
-                (y + 0.5f)/(float)GRID_RESOLUTION,
-                sector_x, 
-                sector_y, 
-                sector_z
-            );
-            sector_x *= DIAMETER;
-            sector_y *= DIAMETER;
-            sector_z *= DIAMETER;
-            // Convert the position to world space
-            vec4 world_position = this->transformation_matrix * vec4(sector_x, sector_y, sector_z, 1.f);
-            // Calculate the direction and starting position of the ray
-            vec4 dir = world_position - vec4(this->position.x, this->position.y, this->position.z, 0.f);
-            vec4 start = this->position + 0.00001f * dir;
-            start.w = 1.f;
-            // Create the ray and path trace to find the radiance in that direction
-            Ray ray = Ray(start, dir);
-            this->radiance_grid[x][y] = path_trace(true, ray, surfaces, light_planes, 0);
+            // Path trace SAMPLES_PER_PIXEL rays and average their value
+            vec3 radiance = vec3(0);
+            for (int i = 0; i < SAMPLES_PER_PIXEL; i++){
+                // Get the 3D coordinates of a random point in the sector
+                float r1 = ((float) rand() / (RAND_MAX));
+                float r2 = ((float) rand() / (RAND_MAX));
+                float sector_x, sector_y, sector_z;
+                map(
+                    (x + r1)/(float)GRID_RESOLUTION,
+                    (y + r2)/(float)GRID_RESOLUTION,
+                    sector_x, 
+                    sector_y, 
+                    sector_z
+                );
+                sector_x *= DIAMETER;
+                sector_y *= DIAMETER;
+                sector_z *= DIAMETER;
+                // Convert the position to world space
+                vec4 world_position = this->transformation_matrix * vec4(sector_x, sector_y, sector_z, 1.f);
+                // Calculate the direction and starting position of the ray
+                vec4 dir = world_position - vec4(this->position.x, this->position.y, this->position.z, 0.f);
+                vec4 start = this->position + 0.00001f * dir;
+                start.w = 1.f;
+                // Create the ray and path trace to find the radiance in that direction
+                Ray ray = Ray(start, dir);
+                radiance += path_trace(ray, surfaces, light_planes, 0);
+            }
+            this->radiance_grid[x][y] = radiance / (float)SAMPLES_PER_PIXEL;
         }
     }
 }

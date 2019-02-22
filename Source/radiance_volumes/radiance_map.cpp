@@ -93,26 +93,15 @@ vec3 RadianceMap::get_irradiance_estimate(const Intersection& intersection, vect
     // and calculate the radiance whilst applying the filter
     if (volumes > 0){
         float furthest_distance = distance(vec3(closest_volumes[0]->get_position()), vec3(intersection.position));
-        // Calculate the gaussian coefficients and ensure that their total adds up volumes
-        float gaussian_sum = 0.f;
-        vector<float> gaussian_coeffs;
         for (int i = 0; i < volumes; i++){
-            float dist = distance(vec3(closest_volumes[i]->get_position()), vec3(intersection.position));
-            float gaussian_coeff = calculate_gaussian_filter(dist, furthest_distance);
-            gaussian_coeffs.push_back(gaussian_coeff);
-            gaussian_sum += gaussian_coeff;
-        }
-        // Calculate the radiance with the scaled gaussian coefficient applied
-        float gaussian_scale = volumes/gaussian_sum;
-        for (int i = 0; i < volumes; i++){
-            radiance += closest_volumes[i]->get_total_irradiance(intersection, surfaces) * gaussian_coeffs[i] * gaussian_scale;
+            radiance += closest_volumes[i]->get_total_irradiance(intersection, surfaces);
         }
         radiance /= (float)volumes;
     }
     return radiance;
 }
 
-//Calculates a gaussian filter constant for the passed in radiance volume distance and max radiance volume distance
+// Calculates a gaussian filter constant for the passed in radiance volume distance and max radiance volume distance
 float RadianceMap::calculate_gaussian_filter(float volume_distance, float furthest_volume_distance){
     float alpha = 0.918f;
     float beta = 1.953f;
