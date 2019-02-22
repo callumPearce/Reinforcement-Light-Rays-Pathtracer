@@ -1,6 +1,7 @@
 #include <iostream>
 #include <algorithm>
 #include "object_importer.h"
+#include <cstring>
 
 // Load a given object file into the scene to be rendered
 bool load_scene(const char* path, vector<Surface>& surfaces){
