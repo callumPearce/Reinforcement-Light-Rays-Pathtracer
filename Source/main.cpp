@@ -92,7 +92,7 @@ int main (int argc, char* argv[]) {
     // Load the shapes within the scene
     vector<Surface> surfaces_load;
     vector<AreaLightPlane> light_planes_load;
-    get_monte_carlo_shapes(surfaces_load, light_planes_load);
+    get_cornell_shapes(surfaces_load, light_planes_load);
     // load_scene("Models/simple_room.obj", surfaces_load);
 
     // Create the camera

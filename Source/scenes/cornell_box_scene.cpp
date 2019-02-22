@@ -25,10 +25,10 @@ void get_cornell_shapes(std::vector<Surface>& Surfaces, std::vector<AreaLightPla
     vec4 G(l,l,l,1);
     vec4 H(0,l,l,1);
 
-    vec4 I(l/3, l, (2*l)/3, 1);
-    vec4 J((2*l)/3, l, (2*l)/3, 1);
-    vec4 K(l/3, l, l/3, 1);
-    vec4 L((2*l)/3, l, l/3, 1);
+    vec4 I(l/4, l, (3*l)/4, 1);
+    vec4 J((3*l)/4, l, (3*l)/4, 1);
+    vec4 K(l/4, l, l/4, 1);
+    vec4 L((3*l)/4, l, l/4, 1);
 
     // Surfaces now take a material as an argument rather than a colour
     // Floor:

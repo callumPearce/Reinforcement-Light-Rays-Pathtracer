@@ -153,10 +153,10 @@ void RadianceVolume::get_vertices(vector<vector<vec4>>& vertices){
     }
 }
 
-// Gets the total radiance incident on the point from all incoming directions with
-// current recorded estimates
-vec3 RadianceVolume::get_total_irradiance(const Intersection& intersection, vector<Surface *> surfaces){
-    vec3 total_radiance = vec3(0);
+// Gets the irradiance for an intersection point by solving the rendering equations (summing up 
+// radiance from all directions whilst multiplying by BRDF and cos(theta))
+vec3 RadianceVolume::get_irradiance(const Intersection& intersection, vector<Surface *> surfaces){
+    vec3 irradiance = vec3(0);
     for (int x = 0; x < GRID_RESOLUTION; x++){
         for (int y = 0; y < GRID_RESOLUTION; y++){
             // Get the coordinates on the unit hemisphere
@@ -173,12 +173,12 @@ vec3 RadianceVolume::get_total_irradiance(const Intersection& intersection, vect
             vec3 dir = normalize(world_position3 - vec3(this->position));
             // Get the angle between the dir vector and the normal
             float cos_theta = dot(dir, this->normal); // No need to divide by lengths as they have been normalized
-            total_radiance += cos_theta * this->radiance_grid[x][y];
+            irradiance += cos_theta * this->radiance_grid[x][y];
         }
     }
-    total_radiance /= ((float)(GRID_RESOLUTION * GRID_RESOLUTION)) * (1.f / (2.f * M_PI));
-    total_radiance *= surfaces[intersection.index]->get_material().get_diffuse_c();
-    return total_radiance;
+    irradiance /= ((float)(GRID_RESOLUTION * GRID_RESOLUTION)) * (1.f / (2.f * M_PI));
+    irradiance *= surfaces[intersection.index]->get_material().get_diffuse_c();
+    return irradiance;
 }
 
 /*

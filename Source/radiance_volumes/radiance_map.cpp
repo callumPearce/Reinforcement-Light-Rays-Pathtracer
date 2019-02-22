@@ -5,6 +5,7 @@
 #include <omp.h>
 #include <iostream>
 #include <ctime>
+#include "interpolation.h"
 
 RadianceMap::RadianceMap(vector<Surface *> surfaces, vector<AreaLightPlane *> light_planes, vector<Surface>& surfaces_builder){
     cout << "Sampling radiance volumes..." << endl;
@@ -89,12 +90,28 @@ vec3 RadianceMap::get_irradiance_estimate(const Intersection& intersection, vect
     vec3 radiance = vec3(0.f);
     int volumes = closest_volumes.size();
 
-    // Get the largest distance between nearest radiance volumes (closest being the first one in the returned list)
-    // and calculate the radiance whilst applying the filter
-    if (volumes > 0){
-        float furthest_distance = distance(vec3(closest_volumes[0]->get_position()), vec3(intersection.position));
+    // Use barycentric interpolation if three radiance volumes have been found
+    if (volumes == 3){
+        float u, v;
+        // // Check that P lies in the triangle defined
+        // if (compute_barycentric(closest_volumes[0]->get_position(), closest_volumes[1]->get_position(), closest_volumes[2]->get_position(), intersection.position, u, v)){
+        //     vec3 u_colour = closest_volumes[0]->get_irradiance(intersection, surfaces);
+        //     vec3 v_colour = closest_volumes[1]->get_irradiance(intersection, surfaces);
+        //     vec3 w_colour = closest_volumes[2]->get_irradiance(intersection, surfaces);
+        //     radiance = u_colour * u + v_colour * v + w_colour * (1 - u - v);
+        // }
+        // // Else just take an average
+        // else{
+            for (int i = 0; i < volumes; i++){
+                radiance += closest_volumes[i]->get_irradiance(intersection, surfaces);
+            }
+            radiance /= (float)volumes;
+        // }
+    }
+    // Otherwise just take an average
+    else if(volumes > 0){
         for (int i = 0; i < volumes; i++){
-            radiance += closest_volumes[i]->get_total_irradiance(intersection, surfaces);
+            radiance += closest_volumes[i]->get_irradiance(intersection, surfaces);
         }
         radiance /= (float)volumes;
     }
