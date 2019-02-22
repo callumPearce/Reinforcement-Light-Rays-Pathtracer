@@ -122,9 +122,12 @@ I now have a basis point to start off with the Irradiance Volume \cite{greger199
 \subsection{Research/Implementation Goals}
 As for the first goal, I decided to sample the radiance volumes uniformly by sampling $n$ radiance volumes on a given surface (using that surfaces normal), where the value of $n$ is determined by the area of that triangle. This meant the algorithm is able to adapt to different scenes. This is different to what is proposed by \cite{greger1998irradiance} where a bilevel grid is used. This would likely give a more accurate estimate on surfaces as will focus all of our radiance volumes on surfaces rather then in the middle of the scene. This technique seems to produce good quality images.
 
-The KD-Tree was a fairly straightforward implementation based upon code from my 3rd year computer graphics unit we implemented for a Photon Map. This made it quick to get working for an irradiance volume data structure and I saw a massive speedup in query time, $O(\log{n})$ (on average) to find the closest irradiance volume to given point in the scene.
+The KD-Tree was a fairly straightforward implementation based upon code from my 3rd year computer graphics unit we implemented for a Photon Map. This made it quick to get working for an irradiance volume data structure and it made a massive improvement on query time, $O(\log{n})$ (on average) to find the closest irradiance volume to given point in the scene.
 
 \subsection{Resources}
+Clearly the Irradiance Volume paper \cite{greger1998irradiance} by Peter Shirley (who is an important person in graphics research) was a huge help for implementing the Radiance Volume, even if my version is quite heavily modified in how it used. 
+
+As for the KD-Tree my Github repository for my 3rd years constructed Photon Map was very useful. 
 
 \subsection{Reflection}
 
