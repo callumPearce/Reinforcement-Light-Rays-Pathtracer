@@ -28,6 +28,7 @@ include_directories(Source/lights)
 include_directories(Source/sdl)
 include_directories(Source/rays)
 include_directories(Source/radiance_volumes)
+include_directories(Source/path_tracing)
 
 # Set the sources
 set(
@@ -47,7 +48,9 @@ set(
     Source/utils/interpolation.cpp
     Source/lights/area_light.cpp
     Source/lights/area_light_plane.cpp
-    Source/rays/path_tracing.cpp
+    Source/path_tracing/default_path_tracing.cpp
+    Source/path_tracing/importance_sampling_path_tracing.cpp
+    Source/path_tracing/precompute_irradiance_path_tracing.cpp
     Source/radiance_volumes/radiance_volume.cpp
     Source/radiance_volumes/radiance_map.cpp
     Source/radiance_volumes/radiance_volume_comparator.cpp

@@ -3,6 +3,10 @@
 
 #include <glm/glm.hpp>
 #include "surface.h"
+#include "radiance_volumes_settings.h"
+#include "hemisphere_helpers.h"
+#include "default_path_tracing.h"
+#include "printing.h"
 
 using glm::vec3;
 using glm::mat3;

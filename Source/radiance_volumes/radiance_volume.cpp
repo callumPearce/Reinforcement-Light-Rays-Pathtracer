@@ -1,8 +1,4 @@
 #include "radiance_volume.h"
-#include "radiance_volumes_settings.h"
-#include "hemisphere_helpers.h"
-#include "path_tracing.h"
-#include "printing.h"
 #include <iostream>
 
 RadianceVolume::RadianceVolume(){

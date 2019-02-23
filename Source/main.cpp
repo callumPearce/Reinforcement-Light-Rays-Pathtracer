@@ -19,9 +19,13 @@
 #include "printing.h"
 #include "camera.h"
 #include "area_light_plane.h"
-#include "path_tracing.h"
 #include "radiance_map.h"
 #include "radiance_tree.h"
+
+// Path Tracing Types
+#include "default_path_tracing.h"
+#include "importance_sampling_path_tracing.h"
+#include "precompute_irradiance_path_tracing.h"
 
 using glm::vec3;
 using glm::mat3;
