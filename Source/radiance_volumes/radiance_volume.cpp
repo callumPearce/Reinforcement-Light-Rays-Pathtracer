@@ -28,7 +28,7 @@ void RadianceVolume::update_transformation_matrix(){
 // Intialises a 2D grid to store radiance values at each grid point
 void RadianceVolume::initialise_radiance_grid(){
     for (int x = 0; x < GRID_RESOLUTION; x++){
-        vector<vec3> grid_row;
+        std::vector<vec3> grid_row;
         for (int y = 0; y < GRID_RESOLUTION; y++){
             grid_row.push_back(vec3(0));
         }
@@ -40,7 +40,7 @@ void RadianceVolume::initialise_radiance_grid(){
 // populates radiance_grid with the estimates
 // NOTE: This should be called before any radiance_volumes are instantiated
 // in the scene by surfaces or these surfaces will be taken into account
-void RadianceVolume::get_radiance_estimate(vector<Surface *> surfaces, vector<AreaLightPlane *> light_planes){
+void RadianceVolume::get_radiance_estimate(std::vector<Surface *> surfaces, std::vector<AreaLightPlane *> light_planes){
     // Path trace a ray in the direction from the centre of hemisphere towards
     // the centre of each sector to determine the radiance incoming from that direction
     for (int x = 0; x < GRID_RESOLUTION; x++){
@@ -79,9 +79,9 @@ void RadianceVolume::get_radiance_estimate(vector<Surface *> surfaces, vector<Ar
 
 // Builds a radiance volume out of Surfaces, where each surfaces colour
 // represents the incoming radiance at that position from that angle
-void RadianceVolume::build_radiance_volume_shapes(vector<Surface>& surfaces){
+void RadianceVolume::build_radiance_volume_shapes(std::vector<Surface>& surfaces){
     // Get its vertices
-    vector<vector<vec4>> vertices;
+    std::vector<std::vector<vec4>> vertices;
     this->get_vertices(vertices);
     // Build Surfaces using the vertices
     for (int x = 0; x < GRID_RESOLUTION; x++){
@@ -101,9 +101,9 @@ void RadianceVolume::build_radiance_volume_shapes(vector<Surface>& surfaces){
 
 // Builds a radiance volume out of Surfaces, where each surfaces colour
 // represents the incoming radiance at that position from that angle
-void RadianceVolume::build_radiance_magnitude_volume_shapes(vector<Surface>& surfaces){
+void RadianceVolume::build_radiance_magnitude_volume_shapes(std::vector<Surface>& surfaces){
     // Get its vertices
-    vector<vector<vec4>> vertices;
+    std::vector<std::vector<vec4>> vertices;
     this->get_vertices(vertices);
     // Find the max radiance magnitude of the hemisphere
     float max_radiance = 0.0001f;
@@ -132,10 +132,10 @@ void RadianceVolume::build_radiance_magnitude_volume_shapes(vector<Surface>& sur
 }
 
 // Returns a list of vertices for the generated radiance volume
-void RadianceVolume::get_vertices(vector<vector<vec4>>& vertices){
+void RadianceVolume::get_vertices(std::vector<std::vector<vec4>>& vertices){
     // For every grid coordinate, add the corresponding 3D world coordinate
     for (int x = 0; x <= GRID_RESOLUTION; x++){
-        vector<vec4> vertices_row;
+        std::vector<vec4> vertices_row;
         for (int y = 0; y <= GRID_RESOLUTION; y++){
             // Get the coordinates on the unit hemisphere
             float x_h, y_h, z_h;
@@ -155,7 +155,7 @@ void RadianceVolume::get_vertices(vector<vector<vec4>>& vertices){
 
 // Gets the irradiance for an intersection point by solving the rendering equations (summing up 
 // radiance from all directions whilst multiplying by BRDF and cos(theta))
-vec3 RadianceVolume::get_irradiance(const Intersection& intersection, vector<Surface *> surfaces){
+vec3 RadianceVolume::get_irradiance(const Intersection& intersection, std::vector<Surface *> surfaces){
     vec3 irradiance = vec3(0);
     for (int x = 0; x < GRID_RESOLUTION; x++){
         for (int y = 0; y < GRID_RESOLUTION; y++){
@@ -171,7 +171,7 @@ vec3 RadianceVolume::get_irradiance(const Intersection& intersection, vector<Sur
             vec3 world_position3 = vec3(world_position.x, world_position.y, world_position.z);
             // Get the direction
             vec3 dir = normalize(world_position3 - vec3(this->position));
-            // Get the angle between the dir vector and the normal
+            // Get the angle between the dir std::vector and the normal
             float cos_theta = dot(dir, this->normal); // No need to divide by lengths as they have been normalized
             irradiance += cos_theta * this->radiance_grid[x][y];
         }

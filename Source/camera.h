@@ -3,7 +3,6 @@
 
 #include <glm/glm.hpp>
 
-using namespace std;
 using glm::vec3;
 using glm::mat3;
 using glm::vec4;

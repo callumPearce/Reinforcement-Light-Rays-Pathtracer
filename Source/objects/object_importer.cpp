@@ -4,7 +4,7 @@
 #include <cstring>
 
 // Load a given object file into the scene to be rendered
-bool load_scene(const char* path, vector<Surface>& surfaces){
+bool load_scene(const char* path, std::vector<Surface>& surfaces){
 
     // Attempt to open the object file in the supplied path
     FILE* file = fopen(path, "r");
@@ -14,8 +14,8 @@ bool load_scene(const char* path, vector<Surface>& surfaces){
     }
 
     // Data storage
-    vector<vec3> vertex_indices;
-    vector<vec3> temp_vertices;
+    std::vector<vec3> vertex_indices;
+    std::vector<vec3> temp_vertices;
 
     // Read the file until EOF
     while (1){
@@ -44,17 +44,17 @@ bool load_scene(const char* path, vector<Surface>& surfaces){
                 if (fgets(face_line, 256, file) != NULL){
 
                     // Split the input up on spaces and append into args
-                    vector<string> args;
-                    string line = face_line;
+                    std::vector<std::string> args;
+                    std::string line = face_line;
                     split_string(args, line, " ");
 
                     // Further parse the x/x/x format
-                    if (args.size() > 0 && args[0].find("/") != string::npos){
+                    if (args.size() > 0 && args[0].find("/") != std::string::npos){
 
                         // For every args extract the first intege, this is the vertex dimension
-                       vector<int> indices;
+                       std::vector<int> indices;
                         for (int i = 0; i < args.size(); i++){
-                            vector<string> temp_args;
+                            std::vector<std::string> temp_args;
                             split_string(temp_args, args[i], "/");
                             indices.push_back(stoi(temp_args[0], nullptr, 10));
                         }
@@ -83,7 +83,7 @@ bool load_scene(const char* path, vector<Surface>& surfaces){
 }
 
 // Convert the temporary stored data into triangles for rendering
-void build_surfaces(vector<Surface>& surfaces, vector<vec3>& vertex_indices, vector<vec3>& temp_vertices){
+void build_surfaces(std::vector<Surface>& surfaces, std::vector<vec3>& vertex_indices, std::vector<vec3>& temp_vertices){
 
     // Find the max and min vertex position of each dimension
     float max_pos[3] = {0.f};
@@ -148,15 +148,15 @@ void build_surfaces(vector<Surface>& surfaces, vector<vec3>& vertex_indices, vec
     }
 }
 
-// Given a string, seperate the string on a given delimiter and adds sub_strs to the vector
-void split_string(vector<string>& sub_strs, string search_string, string delimiter){
-    string token;
+// Given a std::string, seperate the std::string on a given delimiter and adds sub_strs to the std::vector
+void split_string(std::vector<std::string>& sub_strs, std::string search_string, std::string delimiter){
+    std::string token;
     size_t pos = 0;
-    while ((pos = search_string.find(delimiter)) != string::npos) {
+    while ((pos = search_string.find(delimiter)) != std::string::npos) {
         // Get the substring
         token = search_string.substr(0, pos);
         
-        // Check if there exists another delimter where we are not at the end of the string
+        // Check if there exists another delimter where we are not at the end of the std::string
         if (token != ""){
             // Convert to an int and add to list
             sub_strs.push_back(token);

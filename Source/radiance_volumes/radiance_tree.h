@@ -7,7 +7,6 @@
 #include <algorithm>
 #include <queue>
 
-using namespace std;
 using glm::vec3;
 using glm::mat3;
 using glm::vec4;
@@ -24,7 +23,7 @@ class RadianceTree{
     private:
         float median;
         Dimension dimension;
-        vector<RadianceVolume *> radiance_volumes;
+        std::vector<RadianceVolume *> radiance_volumes;
         std::unique_ptr<RadianceTree> left_tree;
         std::unique_ptr<RadianceTree> right_tree;      
 
@@ -33,26 +32,26 @@ class RadianceTree{
 
         // Check if left radiance rv is less then right for current 
         //dimension of radiance_tree
-        bool sort_radiance_volumes_on_dimension(vector<RadianceVolume*>& radiance_volumes);
+        bool sort_radiance_volumes_on_dimension(std::vector<RadianceVolume*>& radiance_volumes);
         static bool sort_on_x(RadianceVolume* left, RadianceVolume* right);
         static bool sort_on_y(RadianceVolume* left, RadianceVolume* right);
         static bool sort_on_z(RadianceVolume* left, RadianceVolume* right);
 
         // Fill the priority queue with the closest n radiance volumes within max_dist
         // around position
-        void populate_closest_volumes_queue(int n, float max_dist, vec4 position, priority_queue<RadianceVolumeComparator>& sorted_queue);
+        void populate_closest_volumes_queue(int n, float max_dist, vec4 position, std::priority_queue<RadianceVolumeComparator>& sorted_queue);
 
         // Attempt to insert each Radiance Volume in the current tree into the sorted priority queue
-        void radiance_volume_sorted_queue_insert(vec4 position, priority_queue<RadianceVolumeComparator>& sorted_queue, float max_dist, int n);
+        void radiance_volume_sorted_queue_insert(vec4 position, std::priority_queue<RadianceVolumeComparator>& sorted_queue, float max_dist, int n);
     
     public:
     
         // Constructors
         RadianceTree();
-        RadianceTree(vector<RadianceVolume*>& radiance_volumes, Dimension dimension);
+        RadianceTree(std::vector<RadianceVolume*>& radiance_volumes, Dimension dimension);
 
         // Get the closest n RadianceVolumes within max_dist from position
-        vector<RadianceVolume*> find_closest_radiance_volumes(int n, float max_dist, vec4 position);
+        std::vector<RadianceVolume*> find_closest_radiance_volumes(int n, float max_dist, vec4 position);
 };
 
 #endif

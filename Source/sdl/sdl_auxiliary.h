@@ -24,33 +24,10 @@ void SDL_SaveImage(screen *s, const char* filename);
 
 void SDL_SaveImage(screen *s, const char* filename)
 {
-  uint32_t rmask, gmask, bmask, amask;
-
-  if(SDL_BYTEORDER == SDL_BIG_ENDIAN)
-    {
-      amask = 0xff << 0;
-      rmask = 0xff << 8;
-      gmask = 0xff << 16;
-      bmask = 0xff << 24;
-    }
-  else
-    {
-      amask = 0xff << 24;
-      rmask = 0xff << 16;
-      gmask = 0xff << 8;
-      bmask = 0xff << 0;
-    }
-
-  SDL_Surface* surf = SDL_CreateRGBSurfaceFrom((void*)s->buffer, s->width, s->height,
-					       32, s->width*sizeof(uint32_t),
-					       rmask,gmask,bmask,amask);
-  if(SDL_SaveBMP(surf, filename) !=0)
-    {
-      std::cout << "Failed to save image: "
-		<< SDL_GetError() << std::endl;
-      exit(1);
-    }
-  
+  SDL_Surface *sshot = SDL_CreateRGBSurface(0, s->width, s->height, 32, 0x00ff0000, 0x0000ff00, 0x000000ff, 0xff000000);
+  SDL_RenderReadPixels(s->renderer, NULL, SDL_PIXELFORMAT_ARGB8888, sshot->pixels, sshot->pitch);
+  SDL_SaveBMP(sshot, "Images/render.bmp");
+  SDL_FreeSurface(sshot);
 }
 
 void KillSDL(screen* s)

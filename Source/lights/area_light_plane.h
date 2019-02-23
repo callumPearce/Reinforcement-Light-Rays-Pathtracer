@@ -6,11 +6,11 @@
 #include "ray.h"
 #include <vector>
 
-using namespace std;
 using glm::vec3;
 using glm::mat3;
 using glm::vec4;
 using glm::mat4;
+
 
 /*
     Defines a plane of area lights i.e. multiple triangular area lights
@@ -20,21 +20,21 @@ using glm::mat4;
 class AreaLightPlane{
 
     private:
-        vector<AreaLight> area_lights;
+        std::vector<AreaLight> area_lights;
         vec3 diffuse_p;
 
         // Generate the area lights from the vertices (fan triangulation)
-        void generate_area_lights(vector<vec4> vertices);
+        void generate_area_lights(std::vector<vec4> vertices);
 
     public:
         // Constructor
-        AreaLightPlane(vector<vec4> vertices, vec3 diffuse_p);
+        AreaLightPlane(std::vector<vec4> vertices, vec3 diffuse_p);
 
         // Check if a given ray intersects with the light plane closer then the current intersction
         bool light_plane_intersects(Ray * ray, Intersection& intersction, int index);
 
         // Getters
-        vector<AreaLight> get_area_lights();
+        std::vector<AreaLight> get_area_lights();
         vec3 get_diffuse_p();
 
         // Setters

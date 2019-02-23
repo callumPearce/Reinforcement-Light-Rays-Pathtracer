@@ -1,7 +1,7 @@
 #include <stdexcept>
 #include "area_light_plane.h"
 
-AreaLightPlane::AreaLightPlane(vector<vec4> vertices, vec3 diffuse_p){
+AreaLightPlane::AreaLightPlane(std::vector<vec4> vertices, vec3 diffuse_p){
     if (vertices.size() < 3){
         throw std::invalid_argument( "At 3 vertices must be provided to define a plane in 3D!" );
     } else{
@@ -11,7 +11,7 @@ AreaLightPlane::AreaLightPlane(vector<vec4> vertices, vec3 diffuse_p){
 }
 
 // Generate the area lights from the vertices (fan triangulation)
-void AreaLightPlane::generate_area_lights(vector<vec4> vertices){
+void AreaLightPlane::generate_area_lights(std::vector<vec4> vertices){
     vec4 initial_v = vertices[0];
     // Fan triangulation to create area lights
     for (int i = 1; i < vertices.size()-1; i++){
@@ -33,7 +33,7 @@ bool AreaLightPlane::light_plane_intersects(Ray * ray, Intersection& intersction
 }
 
 // Getters
-vector<AreaLight> AreaLightPlane::get_area_lights(){
+std::vector<AreaLight> AreaLightPlane::get_area_lights(){
     return this->area_lights;
 }
 

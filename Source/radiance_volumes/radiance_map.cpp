@@ -1,14 +1,12 @@
 #include "radiance_map.h"
-#include "printing.h"
-#include "radiance_volumes_settings.h"
 #include <algorithm>
 #include <omp.h>
 #include <iostream>
 #include <ctime>
-#include "interpolation.h"
 
-RadianceMap::RadianceMap(vector<Surface *> surfaces, vector<AreaLightPlane *> light_planes, vector<Surface>& surfaces_builder){
-    cout << "Sampling radiance volumes..." << endl;
+RadianceMap::RadianceMap(std::vector<Surface *> surfaces, std::vector<AreaLightPlane *> light_planes, std::vector<Surface>& surfaces_builder){
+    
+    std::cout << "Sampling radiance volumes..." << std::endl;
     
     // Find the time
     time_t start_time;
@@ -26,24 +24,24 @@ RadianceMap::RadianceMap(vector<Surface *> surfaces, vector<AreaLightPlane *> li
     // Find the time
     end_time = time(NULL);
     temp_time = end_time - start_time; 
-    cout << "Sampled " << this->radiance_volumes.size() << " Radiance Volumes in " << temp_time << "s" << endl;
+    std::cout << "Sampled " << this->radiance_volumes.size() << " Radiance Volumes in " << temp_time << "s" << std::endl;
     
     // Get the radiance estimate for every radiance volume
     start_time = end_time;
-    cout << "Getting radiance estimate for the radiance volumes..." << endl;
+    std::cout << "Getting radiance estimate for the radiance volumes..." << std::endl;
     get_radiance_estimates(surfaces, light_planes);
     end_time = time(NULL);
     temp_time = end_time - start_time;
-    cout << "Radiance Volume Found in " << temp_time << "s" << endl;
+    std::cout << "Radiance Volume Found in " << temp_time << "s" << std::endl;
 
     
     // Create the RadianceTree (KDTree) from the radiance volumes
     start_time = end_time;
-    cout << "Building Radiance Tree..." << endl; 
+    std::cout << "Building Radiance Tree..." << std::endl; 
     this->radiance_tree = std::unique_ptr<RadianceTree>(new RadianceTree(this->radiance_volumes, X_DIM));
     end_time = time(NULL);
     temp_time = end_time - start_time;
-    cout << "Radiance Tree constructed in " << temp_time << endl;
+    std::cout << "Radiance Tree constructed in " << temp_time << std::endl;
 }
 
 /*             Construction                */
@@ -62,7 +60,7 @@ void RadianceMap::uniformly_sample_radiance_volumes(Surface surface){
 }
 
 // Get the radiance estimate for all radiance volumes in the RadianceMap
-void RadianceMap::get_radiance_estimates(vector<Surface *> surfaces, vector<AreaLightPlane *> light_planes){
+void RadianceMap::get_radiance_estimates(std::vector<Surface *> surfaces, std::vector<AreaLightPlane *> light_planes){
     int volumes = this->radiance_volumes.size();
     #pragma omp parallel for
     for (int i = 0; i < volumes; i++){
@@ -71,7 +69,7 @@ void RadianceMap::get_radiance_estimates(vector<Surface *> surfaces, vector<Area
 }
 
 // Builds all RadianceVolumes which are part of the RadianceMap into the scene
-void RadianceMap::build_radiance_map_shapes(vector<Surface>& surfaces){
+void RadianceMap::build_radiance_map_shapes(std::vector<Surface>& surfaces){
     int volumes = this->radiance_volumes.size();
     for (int i = 0; i < volumes; i++){
         this->radiance_volumes[i]->build_radiance_volume_shapes(surfaces);
@@ -81,10 +79,10 @@ void RadianceMap::build_radiance_map_shapes(vector<Surface>& surfaces){
 /*              Querying                */
 // Get the estimated radiance for a given intersection point within the scene
 // based on interpolation of the radiance map stored estimates 
-vec3 RadianceMap::get_irradiance_estimate(const Intersection& intersection, vector<Surface *> surfaces){
+vec3 RadianceMap::get_irradiance_estimate(const Intersection& intersection, std::vector<Surface *> surfaces){
 
     // Get the closest n points by maintaining a heap of values
-    vector<RadianceVolume*> closest_volumes = this->radiance_tree->find_closest_radiance_volumes(CLOSEST_QUERY_COUNT, MAX_DIST, intersection.position);
+    std::vector<RadianceVolume*> closest_volumes = this->radiance_tree->find_closest_radiance_volumes(CLOSEST_QUERY_COUNT, MAX_DIST, intersection.position);
     
     // For each index, get the radiance and average the total radiance
     vec3 radiance = vec3(0.f);
@@ -93,20 +91,20 @@ vec3 RadianceMap::get_irradiance_estimate(const Intersection& intersection, vect
     // Use barycentric interpolation if three radiance volumes have been found
     if (volumes == 3){
         float u, v;
-        // // Check that P lies in the triangle defined
-        // if (compute_barycentric(closest_volumes[0]->get_position(), closest_volumes[1]->get_position(), closest_volumes[2]->get_position(), intersection.position, u, v)){
-        //     vec3 u_colour = closest_volumes[0]->get_irradiance(intersection, surfaces);
-        //     vec3 v_colour = closest_volumes[1]->get_irradiance(intersection, surfaces);
-        //     vec3 w_colour = closest_volumes[2]->get_irradiance(intersection, surfaces);
-        //     radiance = u_colour * u + v_colour * v + w_colour * (1 - u - v);
-        // }
-        // // Else just take an average
-        // else{
+        // Check that P lies in the triangle defined
+        if (compute_barycentric(closest_volumes[0]->get_position(), closest_volumes[1]->get_position(), closest_volumes[2]->get_position(), intersection.position, u, v)){
+            vec3 u_colour = closest_volumes[0]->get_irradiance(intersection, surfaces);
+            vec3 v_colour = closest_volumes[1]->get_irradiance(intersection, surfaces);
+            vec3 w_colour = closest_volumes[2]->get_irradiance(intersection, surfaces);
+            radiance = u_colour * u + v_colour * v + w_colour * (1 - u - v);
+        }
+        // Else just take an average
+        else{
             for (int i = 0; i < volumes; i++){
                 radiance += closest_volumes[i]->get_irradiance(intersection, surfaces);
             }
             radiance /= (float)volumes;
-        // }
+        }
     }
     // Otherwise just take an average
     else if(volumes > 0){

@@ -2,16 +2,15 @@
 #define RAY_H
 
 #include <glm/glm.hpp>
-#include <vector>
 #include <string>
 #include <memory>
+#include <vector>
 
 class Shape;
 class Triangle;
 class Surface;
 class AreaLightPlane;
 
-using namespace std;
 using glm::vec3;
 using glm::vec2;
 using glm::mat3;
@@ -39,7 +38,7 @@ struct Intersection {
 };
 
 /*
-    Defines a ray, which is a 4D vector (Homogeneous coordinates)
+    Defines a ray, which is a 4D std::vector (Homogeneous coordinates)
     with a direcion and starting position
 */
 class Ray {
@@ -53,7 +52,7 @@ class Ray {
         Ray(vec4 start, vec4 direction);
 
         // Find the closest intersection for the given ray with an shape in the scene
-        void closest_intersection(vector<Surface *> surfaces, vector<AreaLightPlane *> light_planes, Intersection& closest_intersection);
+        void closest_intersection(std::vector<Surface *> surfaces, std::vector<AreaLightPlane *> light_planes, Intersection& closest_intersection);
 
         // Cramers rule for solving a system of linear equations
         bool cramers(mat3 A, vec3 b, vec3& solution);

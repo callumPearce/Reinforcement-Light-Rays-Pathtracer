@@ -1,13 +1,8 @@
 #ifndef INTERPOLATION_H
 #define INTERPOLATION_H
 
-#include <vector>
 #include <glm/glm.hpp>
-#include "radiance_volume.h"
-#include "ray.h"
-#include "radiance_tree.h"
 
-using namespace std;
 using glm::vec3;
 using glm::mat3;
 using glm::vec4;

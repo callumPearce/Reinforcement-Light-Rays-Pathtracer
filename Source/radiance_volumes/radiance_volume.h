@@ -1,11 +1,9 @@
 #ifndef RADIANCE_VOLUME_H
 #define RADIANCE_VOLUME_H
 
-#include <vector>
 #include <glm/glm.hpp>
 #include "surface.h"
 
-using namespace std;
 using glm::vec3;
 using glm::mat3;
 using glm::vec4;
@@ -21,7 +19,7 @@ class RadianceVolume{
 
     private:
         vec4 position;
-        vector<vector<vec3>> radiance_grid;
+        std::vector<std::vector<vec3>> radiance_grid;
         // For coordinate system
         vec3 normal;
         mat4 transformation_matrix;
@@ -38,7 +36,7 @@ class RadianceVolume{
         */
         static void map(float x, float y, float& x_ret, float& y_ret, float& z_ret);
 
-        // Initialises square grid as a 2D vector of vec3s (radiance stores for each angle)
+        // Initialises square grid as a 2D std::vector of vec3s (radiance stores for each angle)
         void initialise_radiance_grid();
 
     public:
@@ -52,25 +50,25 @@ class RadianceVolume{
         void update_transformation_matrix();
 
         // Get vertices of radiance volume in world space
-        void get_vertices(vector<vector<vec4>>& vertices);
+        void get_vertices(std::vector<std::vector<vec4>>& vertices);
 
         // Gets the incoming radiance values from all grid samples and
         // populates radiance_grid with the estimates
         // NOTE: This should be called before any radiance_volumes are instantiated
         // in the scene by surfaces or these surfaces will be taken into account
-        void get_radiance_estimate(vector<Surface *> surfaces, vector<AreaLightPlane *> light_planes);
+        void get_radiance_estimate(std::vector<Surface *> surfaces, std::vector<AreaLightPlane *> light_planes);
 
         // Builds a radiance volume out of Surfaces, where each surfaces colour
         // represents the incoming radiance at that position from that angle
-        void build_radiance_volume_shapes(vector<Surface>& surfaces);
+        void build_radiance_volume_shapes(std::vector<Surface>& surfaces);
 
         // Builds a radiance volume out of Surfaces, where each surfaces colour
         // represents the magnitude of incoming radiance compared to the other directions
-        void build_radiance_magnitude_volume_shapes(vector<Surface>& surfaces);
+        void build_radiance_magnitude_volume_shapes(std::vector<Surface>& surfaces);
 
         // Gets the irradiance for an intersection point by solving the rendering equations (summing up 
         // radiance from all directions whilst multiplying by BRDF and cos(theta))
-        vec3 get_irradiance(const Intersection& intersection, vector<Surface *> surfaces);
+        vec3 get_irradiance(const Intersection& intersection, std::vector<Surface *> surfaces);
 
         // Getters
         vec4 get_position();

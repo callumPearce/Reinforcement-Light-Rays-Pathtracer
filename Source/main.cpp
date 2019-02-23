@@ -23,7 +23,6 @@
 #include "radiance_map.h"
 #include "radiance_tree.h"
 
-using namespace std;
 using glm::vec3;
 using glm::mat3;
 using glm::vec4;
@@ -36,7 +35,7 @@ void Update(Camera& camera){
     float dt = float(t2-t);
     t = t2;
 
-    cout << "Render time: " << dt << "ms." << endl;
+    std::cout << "Render time: " << dt << "ms." << std::endl;
 
     /* Update variables*/
     const Uint8* keystate = SDL_GetKeyboardState(NULL);
@@ -55,7 +54,7 @@ void Update(Camera& camera){
     }
 }
 
-void Draw(screen* screen, Camera& camera, vector<AreaLightPlane *> light_planes, vector<Surface *> surfaces, RadianceMap& radiance_map){
+void Draw(screen* screen, Camera& camera, std::vector<AreaLightPlane *> light_planes, std::vector<Surface *> surfaces, RadianceMap& radiance_map){
 
     // Reset the SDL screen to black
     memset(screen->buffer, 0, screen->height*screen->width*sizeof(uint32_t));
@@ -90,8 +89,8 @@ int main (int argc, char* argv[]) {
     screen *screen = InitializeSDL(SCREEN_WIDTH, SCREEN_HEIGHT, FULLSCREEN_MODE);
 
     // Load the shapes within the scene
-    vector<Surface> surfaces_load;
-    vector<AreaLightPlane> light_planes_load;
+    std::vector<Surface> surfaces_load;
+    std::vector<AreaLightPlane> light_planes_load;
     get_cornell_shapes(surfaces_load, light_planes_load);
     // load_scene("Models/simple_room.obj", surfaces_load);
 
@@ -99,14 +98,14 @@ int main (int argc, char* argv[]) {
     Camera camera = Camera(vec4(0, 0, -3, 1));
 
     // Convert all surfaces into a unified list of pointers to them
-    vector<Surface *> surfaces;
+    std::vector<Surface *> surfaces;
     for (int i = 0 ; i < surfaces_load.size(); i++) {
         Surface * sptr (&surfaces_load[i]);
         surfaces.push_back(sptr);
     }
 
     // Convert all area lights into a unified list of pointers to them
-    vector<AreaLightPlane* > light_planes;
+    std::vector<AreaLightPlane* > light_planes;
     for (int i = 0 ; i < light_planes_load.size(); i++) {
         AreaLightPlane * sptr (&light_planes_load[i]);
         light_planes.push_back(sptr);
@@ -124,11 +123,12 @@ int main (int argc, char* argv[]) {
     // }
 
     // Render
-    while (NoQuitMessageSDL()){
-        Update(camera);
-        Draw(screen, camera, light_planes, surfaces, radiance_map);
-        SDL_Renderframe(screen);
-    }
+    // while (NoQuitMessageSDL()){
+    Update(camera);
+    Draw(screen, camera, light_planes, surfaces, radiance_map);
+    SDL_Renderframe(screen);
+    SDL_SaveImage(screen, "test.bmp");
+    // }
 
     KillSDL(screen);
     

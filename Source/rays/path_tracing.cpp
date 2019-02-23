@@ -4,7 +4,7 @@
 
 // Traces the path of a ray following monte carlo path tracer in order to estimate the radiance for a ray shot
 // from its angle and starting position
-vec3 path_trace(Ray ray, vector<Surface *> surfaces, vector<AreaLightPlane *> light_planes, int bounces){
+vec3 path_trace(Ray ray, std::vector<Surface *> surfaces, std::vector<AreaLightPlane *> light_planes, int bounces){
     
     // Trace the path of the ray to find the closest intersection
     Intersection closest_intersection;
@@ -38,7 +38,7 @@ vec3 path_trace(Ray ray, vector<Surface *> surfaces, vector<AreaLightPlane *> li
 
 // Traces the path of a ray following monte carlo path tracer in order to estimate the radiance for a ray shot
 // from its angle and starting position
-vec3 path_trace_radiance_map(RadianceMap& radiance_map, Ray ray, vector<Surface *> surfaces, vector<AreaLightPlane *> light_planes){
+vec3 path_trace_radiance_map(RadianceMap& radiance_map, Ray ray, std::vector<Surface *> surfaces, std::vector<AreaLightPlane *> light_planes){
 
     // Trace the path of the ray to find the closest intersection
     Intersection closest_intersection;
@@ -68,7 +68,7 @@ vec3 path_trace_radiance_map(RadianceMap& radiance_map, Ray ray, vector<Surface 
 
 // For a given intersection point, return the radiance of the surface resulting
 // from indirect illumination (i.e. other shapes in the scene) via the Monte Carlo Raytracing
-vec3 indirect_radiance(const Intersection& intersection, vector<Surface *> surfaces, vector<AreaLightPlane *> light_planes, int bounces){
+vec3 indirect_radiance(const Intersection& intersection, std::vector<Surface *> surfaces, std::vector<AreaLightPlane *> light_planes, int bounces){
 
     // 1) Create new coordinate system (tranformation matrix)
     vec3 normal = vec3(intersection.normal.x, intersection.normal.y, intersection.normal.z);

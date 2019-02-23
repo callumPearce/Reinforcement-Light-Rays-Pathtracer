@@ -11,8 +11,8 @@ Ray::Ray(vec4 start, vec4 direction) {
 }
 
 // Find (if there is) the closest intersection with a given ray and a shape
-void Ray::closest_intersection(vector<Surface *> surfaces, vector<AreaLightPlane *> light_planes, Intersection& closest_intersection) {
-    closest_intersection.distance = numeric_limits<float>::max();
+void Ray::closest_intersection(std::vector<Surface *> surfaces, std::vector<AreaLightPlane *> light_planes, Intersection& closest_intersection) {
+    closest_intersection.distance = std::numeric_limits<float>::max();
     // Find intersection with surface
     for (int i = 0; i < surfaces.size(); i++) {
         if (surfaces[i]->intersects(this, closest_intersection, i)) {
