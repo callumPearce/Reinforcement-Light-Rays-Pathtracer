@@ -2,6 +2,7 @@
 #define HEMISPHERE_HELPERS_H
 
 #include <glm/glm.hpp>
+#include "ray.h"
 
 using glm::vec3;
 using glm::vec2;
@@ -17,5 +18,8 @@ vec3 uniform_hemisphere_sample(float r1, float r2);
 
 // Create the transformation matrix for a unit hemisphere
 mat4 create_transformation_matrix(vec3 normal, vec4 position);
+
+// Sample a random direction in a unit hemisphere around an intersection point
+vec4 sample_random_direction_around_intersection(const Intersection& intersection, float& cos_theta);
 
 #endif 

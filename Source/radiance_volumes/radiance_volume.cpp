@@ -177,6 +177,12 @@ vec3 RadianceVolume::get_irradiance(const Intersection& intersection, std::vecto
     return irradiance;
 }
 
+// Normalizes this RadianceVolume so that all radiance values 
+// i.e. their grid values all sum to 1 (taking the length of each vec3)
+void RadianceVolume::normalize_radiance_volume(){
+    
+}
+
 /*
 * This function takes a point in the unit square,
 * and maps it to a point on the unit hemisphere.

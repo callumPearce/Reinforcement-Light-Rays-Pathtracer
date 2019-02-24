@@ -28,7 +28,7 @@ vec3 path_trace(Ray ray, std::vector<Surface *> surfaces, std::vector<AreaLightP
             if (bounces == MAX_RAY_BOUNCES){
                 return vec3(0);
             } else{
-                return indirect_radiance(closest_intersection, surfaces, light_planes, bounces);
+                return indirect_irradiance(closest_intersection, surfaces, light_planes, bounces);
             }
             break;
     }
@@ -38,35 +38,15 @@ vec3 path_trace(Ray ray, std::vector<Surface *> surfaces, std::vector<AreaLightP
 
 // For a given intersection point, return the radiance of the surface resulting
 // from indirect illumination (i.e. other shapes in the scene) via the Monte Carlo Raytracing
-vec3 indirect_radiance(const Intersection& intersection, std::vector<Surface *> surfaces, std::vector<AreaLightPlane *> light_planes, int bounces){
+vec3 indirect_irradiance(const Intersection& intersection, std::vector<Surface *> surfaces, std::vector<AreaLightPlane *> light_planes, int bounces){
 
-    // 1) Create new coordinate system (tranformation matrix)
-    vec3 normal = vec3(intersection.normal.x, intersection.normal.y, intersection.normal.z);
-    vec3 normal_T = vec3(0);
-    vec3 normal_B = vec3(0);
-    create_normal_coordinate_system(normal, normal_T, normal_B);
-
-    // Calculate the estiamted total radiance estimate
-    // (\int L(w_i) * roh / pi * cos(w_i, N) dw)
-        
-    // Generate random number for monte carlo sampling of theta and phi
-    float cos_theta = ((float) rand() / (RAND_MAX)); //r1
-    float r2 = ((float) rand() / (RAND_MAX));
-
-    // 2) Sample uniformly coordinates on unit hemisphere
-    vec3 sample = uniform_hemisphere_sample(cos_theta, r2);
-
-    // 3) Transform random sampled direction into the world coordinate system
-    vec3 sampled_direction = vec3(
-        sample.x * normal_B.x + sample.y * normal.x + sample.z * normal_T.x, 
-        sample.x * normal_B.y + sample.y * normal.y + sample.z * normal_T.y, 
-        sample.x * normal_B.z + sample.y * normal.z + sample.z * normal_T.z
-    );
+    float cos_theta;
+    vec4 sampled_direction = sample_random_direction_around_intersection(intersection, cos_theta);
 
     // Create the new bounced ray
-    vec4 start = intersection.position + (0.00001f * vec4(sampled_direction, 1));
+    vec4 start = intersection.position + (0.00001f * sampled_direction);
     start[3] = 1.f;
-    Ray ray = Ray(start, vec4(sampled_direction, 1));
+    Ray ray = Ray(start, sampled_direction);
 
     // 4) Get the radiance contribution for this ray and add to the sum
     vec3 radiance = path_trace(ray, surfaces, light_planes, bounces+1);

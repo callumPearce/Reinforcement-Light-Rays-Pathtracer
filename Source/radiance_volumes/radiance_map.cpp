@@ -76,6 +76,16 @@ void RadianceMap::build_radiance_map_shapes(std::vector<Surface>& surfaces){
     }
 }
 
+// Normalizes all RadianceVolumes radiance values i.e. their grid values
+// all sum to 1 (taking the length of each vec3)
+void RadianceMap::normalize_radiance_volumes(){
+    int volumes = this->radiance_volumes.size();
+    #pragma omp parallel for
+    for (int i = 0; i < volumes; i++){
+        this->radiance_volumes[i]->normalize_radiance_volume();
+    }
+}
+
 /*              Querying                */
 // Get the estimated radiance for a given intersection point within the scene
 // based on interpolation of the radiance map stored estimates 
@@ -124,4 +134,28 @@ float RadianceMap::calculate_gaussian_filter(float volume_distance, float furthe
     float denominator = 1.0f - exp(-beta);
     float w_pc = alpha * ( numerator / denominator);
     return w_pc;
+}
+
+// Given an intersection point, importance sample a ray direction according to the
+// cumulative distribution formed by the closest RadianceVolume's radiance_map
+vec4 RadianceMap::importance_sample_ray_direction(const Intersection& intersection){
+
+    // 1) Find the closest RadianceVolume
+    std::vector<RadianceVolume*> closest_volumes = this->radiance_tree->find_closest_radiance_volumes(1, MAX_DIST, intersection.position);
+
+    // If a radiance volume is not found, just sample randomly 
+    if (closest_volumes.size() < 1){
+        float cos_theta;
+        return sample_random_direction_around_intersection(intersection, cos_theta);
+    }
+
+    // 2) Calculate the cumulative sum of the radiance_map stored in the volume
+
+
+    // 3) Generate a random float uniformly between [0,1]
+
+    // 4) Find which part of the cumulative distribution this number
+    //    falls in range of i.e. sample from the inverse of the cumulative
+    //    distribution. This gives the location on the grid we sample
+    //    our direction from
 }

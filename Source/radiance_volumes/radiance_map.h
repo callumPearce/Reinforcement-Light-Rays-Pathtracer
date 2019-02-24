@@ -8,6 +8,7 @@
 #include "printing.h"
 #include "radiance_volumes_settings.h"
 #include "interpolation.h"
+#include "hemisphere_helpers.h"
 
 using glm::vec3;
 using glm::mat3;
@@ -41,6 +42,14 @@ class RadianceMap{
 
         // Calculate the Gaussian filter for radiance contribution
         float calculate_gaussian_filter(float volume_distance, float furthest_volume_distance);
+
+        // Given an intersection point, importance sample a ray direction according to the
+        // cumulative distribution formed by the closest RadianceVolume's radiance_map
+        vec4 RadianceMap::importance_sample_ray_direction(const Intersection& intersection);
+
+        // Normalizes all RadianceVolumes radiance values i.e. their grid values
+        // all sum to 1 (taking the length of each vec3)
+        void RadianceMap::normalize_radiance_volumes();
 };
 
 #endif

@@ -74,6 +74,10 @@ class RadianceVolume{
         // radiance from all directions whilst multiplying by BRDF and cos(theta))
         vec3 get_irradiance(const Intersection& intersection, std::vector<Surface *> surfaces);
 
+        // Normalizes this RadianceVolume so that all radiance values 
+        // i.e. their grid values all sum to 1 (taking the length of each vec3)
+        void RadianceVolume::normalize_radiance_volume();
+
         // Getters
         vec4 get_position();
         vec3 get_normal();

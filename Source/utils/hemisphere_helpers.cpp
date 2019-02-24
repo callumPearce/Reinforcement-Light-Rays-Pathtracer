@@ -55,3 +55,29 @@ mat4 create_transformation_matrix(vec3 normal, vec4 position){
     position.w = 1.f;
     return mat4(normal_T4, normal4, normal_B4, position);
 }
+
+// Sample a random direction in a unit hemisphere around an intersection point
+vec4 sample_random_direction_around_intersection(const Intersection& intersection, float& cos_theta){
+
+    // Create new coordinate system (tranformation matrix)
+    vec3 normal = vec3(intersection.normal.x, intersection.normal.y, intersection.normal.z);
+    vec3 normal_T = vec3(0);
+    vec3 normal_B = vec3(0);
+    create_normal_coordinate_system(normal, normal_T, normal_B);
+        
+    // Generate random number for monte carlo sampling of theta and phi
+    cos_theta = ((float) rand() / (RAND_MAX)); //r1
+    float r2 = ((float) rand() / (RAND_MAX));
+
+    // Sample uniformly coordinates on unit hemisphere
+    vec3 sample = uniform_hemisphere_sample(cos_theta, r2);
+
+    // Transform random sampled direction into the world coordinate system
+    vec3 sampled_direction = vec3(
+        sample.x * normal_B.x + sample.y * normal.x + sample.z * normal_T.x, 
+        sample.x * normal_B.y + sample.y * normal.y + sample.z * normal_T.y, 
+        sample.x * normal_B.z + sample.y * normal.z + sample.z * normal_T.z
+    );
+
+    return vec4(sampled_direction, 1.f);
+}
