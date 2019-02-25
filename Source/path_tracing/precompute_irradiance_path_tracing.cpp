@@ -2,7 +2,14 @@
 
 // Traces the path of a ray following monte carlo path tracer in order to estimate the radiance for a ray shot
 // from its angle and starting position
-vec3 path_trace_radiance_map(RadianceMap& radiance_map, Ray ray, std::vector<Surface *> surfaces, std::vector<AreaLightPlane *> light_planes){
+vec3 path_trace_radiance_map(Camera& camera, int pixel_x, int pixel_y, RadianceMap& radiance_map, std::vector<Surface *> surfaces, std::vector<AreaLightPlane *> light_planes){
+
+    // Set direction to pass through pixel (pixel space -> Camera space)
+    vec4 dir(((float)pixel_x - (float)SCREEN_WIDTH / 2.f) , ((float)pixel_y - (float)SCREEN_HEIGHT / 2.f) , (float)FOCAL_LENGTH , 1);
+    
+    // Create a ray that we will change the direction for below
+    Ray ray(camera.get_position(), dir);
+    ray.rotate_ray(camera.get_yaw());
 
     // Trace the path of the ray to find the closest intersection
     Intersection closest_intersection;

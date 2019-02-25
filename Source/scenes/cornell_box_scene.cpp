@@ -25,10 +25,10 @@ void get_cornell_shapes(std::vector<Surface>& Surfaces, std::vector<AreaLightPla
     vec4 G(l,l,l,1);
     vec4 H(0,l,l,1);
 
-    vec4 I(l/4, l, (3*l)/4, 1);
-    vec4 J((3*l)/4, l, (3*l)/4, 1);
-    vec4 K(l/4, l, l/4, 1);
-    vec4 L((3*l)/4, l, l/4, 1);
+    vec4 I(l/3, l, (2*l)/3, 1);
+    vec4 J((2*l)/3, l, (2*l)/3, 1);
+    vec4 K(l/3, l, l/3, 1);
+    vec4 L((2*l)/3, l, l/3, 1);
 
     // Surfaces now take a material as an argument rather than a colour
     // Floor:
@@ -199,7 +199,7 @@ void get_cornell_shapes(std::vector<Surface>& Surfaces, std::vector<AreaLightPla
 
     }
 
-    vec3 diffuse_p = 2.0f * vec3(1, 1, 0.9);
+    vec3 diffuse_p = 1.f * vec3(1, 1, 0.9);
     AreaLightPlane ceiling_light = AreaLightPlane(ceiling_light_vectors, diffuse_p);
     area_light_planes.push_back(ceiling_light);
 }

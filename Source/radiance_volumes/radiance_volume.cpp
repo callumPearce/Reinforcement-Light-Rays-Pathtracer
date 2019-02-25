@@ -9,6 +9,7 @@ RadianceVolume::RadianceVolume(){
 
 RadianceVolume::RadianceVolume(vec4 position, vec4 normal){
     initialise_radiance_grid();
+    initialise_radiance_distribution();
     set_position(position);
     set_normal(vec3(normal.x, normal.y, normal.z));
 
@@ -29,6 +30,17 @@ void RadianceVolume::initialise_radiance_grid(){
             grid_row.push_back(vec3(0));
         }
         this->radiance_grid.push_back(grid_row);
+    }
+}
+
+// Initialise radiance distribution to be equal in all angles initially
+void RadianceVolume::initialise_radiance_distribution(){
+    for (int x = 0; x < GRID_RESOLUTION; x++){
+        std::vector<float> distribution_row;
+        for (int y = 0; y < GRID_RESOLUTION; y++){
+            distribution_row.push_back(1.f/((float)GRID_RESOLUTION * (float)GRID_RESOLUTION));
+        }
+        this->radiance_distribution.push_back(distribution_row);
     }
 }
 
@@ -66,7 +78,7 @@ void RadianceVolume::get_radiance_estimate(std::vector<Surface *> surfaces, std:
                 start.w = 1.f;
                 // Create the ray and path trace to find the radiance in that direction
                 Ray ray = Ray(start, dir);
-                radiance += path_trace(ray, surfaces, light_planes, 0);
+                radiance += path_trace_recursive(ray, surfaces, light_planes, 0);
             }
             this->radiance_grid[x][y] = radiance / (float)SAMPLES_PER_PIXEL;
         }
@@ -179,8 +191,50 @@ vec3 RadianceVolume::get_irradiance(const Intersection& intersection, std::vecto
 
 // Normalizes this RadianceVolume so that all radiance values 
 // i.e. their grid values all sum to 1 (taking the length of each vec3)
-void RadianceVolume::normalize_radiance_volume(){
+void RadianceVolume::update_radiance_distribution(){
+    // Get the total radiance from all directions (as a float)
+    vec3 total_rgb = vec3(0.f);
+    for (int x = 0; x < GRID_RESOLUTION; x++){
+        for (int y = 0; y < GRID_RESOLUTION; y++){
+            total_rgb += this->radiance_grid[x][y];
+        }
+    }
+    // Use this total to convert all radiance_grid values into probabilities
+    // and store in the radiance_distribution
+    float total = length(total_rgb);
+    for (int x = 0; x < GRID_RESOLUTION; x++){
+        for (int y = 0; y < GRID_RESOLUTION; y++){
+            this->radiance_distribution[x][y] = length(this->radiance_grid[x][y])/total;
+        }
+    }
+}
+
+// Samples a direction from the radiance_distribution of this radiance
+// volume
+vec4 RadianceVolume::sample_direction_from_radiance_distribution(){
     
+    // Generate a random float uniformly between [0,1]
+    float r = ((float) rand() / (RAND_MAX));
+
+    // Sample from the inverse cumulative distribution
+    float cumulative_sum = 0.f;
+    for (int x = 0; x < GRID_RESOLUTION; x++){
+        for (int y = 0; y < GRID_RESOLUTION; y++){
+            cumulative_sum += this->radiance_distribution[x][y];
+            // We have found where in the inverse cumulative distribution our
+            // sample is. There for return an anlge at this location
+            if ( r <= cumulative_sum ){
+                // Get the coordinates on the unit hemisphere
+                float x_h, y_h, z_h;
+                map(x/(float)GRID_RESOLUTION, y/(float)GRID_RESOLUTION, x_h, y_h, z_h);
+                // Convert to world space
+                vec4 world_position = this->transformation_matrix * vec4(x_h, y_h, z_h, 1.f);
+                vec3 world_position3 = vec3(world_position.x, world_position.y, world_position.z);
+                // Get the direction
+                return vec4(normalize(world_position3 - vec3(this->position)),1.f);
+            }
+        }
+    }
 }
 
 /*

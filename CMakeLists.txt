@@ -51,6 +51,7 @@ set(
     Source/path_tracing/default_path_tracing.cpp
     Source/path_tracing/importance_sampling_path_tracing.cpp
     Source/path_tracing/precompute_irradiance_path_tracing.cpp
+    Source/path_tracing/reinforcement_path_tracing.cpp
     Source/radiance_volumes/radiance_volume.cpp
     Source/radiance_volumes/radiance_map.cpp
     Source/radiance_volumes/radiance_volume_comparator.cpp

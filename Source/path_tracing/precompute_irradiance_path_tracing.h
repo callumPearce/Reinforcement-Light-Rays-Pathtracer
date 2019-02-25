@@ -11,6 +11,7 @@
 #include "monte_carlo_settings.h"
 #include "hemisphere_helpers.h"
 #include "radiance_map.h"
+#include "image_settings.h"
 
 using glm::vec3;
 using glm::vec2;
@@ -24,6 +25,6 @@ using glm::mat4;
     values to find the irradiance of that point in the scene.
 */
 
-vec3 path_trace_radiance_map(RadianceMap& radiance_map, Ray ray, std::vector<Surface *> surfaces, std::vector<AreaLightPlane *> light_planes);
+vec3 path_trace_radiance_map(Camera& camera, int pixel_x, int pixel_y, RadianceMap& radiance_map, std::vector<Surface *> surfaces, std::vector<AreaLightPlane *> light_planes);
 
 #endif

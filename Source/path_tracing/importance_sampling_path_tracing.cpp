@@ -1,7 +1,29 @@
 #include "importance_sampling_path_tracing.h"
 
-/* Importance Sampling Path Tracing */
-vec3 path_trace_importance_sampling(RadianceMap& radiance_map, Ray ray, std::vector<Surface *> surfaces, std::vector<AreaLightPlane *> light_planes, int bounces){
+vec3 path_trace_importance_sampling(RadianceMap& radiance_map, Camera& camera, int pixel_x, int pixel_y, std::vector<Surface *> surfaces, std::vector<AreaLightPlane *> light_planes){
+
+    vec3 irradiance = vec3(0.f);
+    for (int i = 0; i < SAMPLES_PER_PIXEL; i++){
+        
+        // Generate the random point within a pixel for the ray to pass through
+        float x = (float)pixel_x + ((float) rand() / (RAND_MAX));
+        float y = (float)pixel_y + ((float) rand() / (RAND_MAX));
+
+        // Set direction to pass through pixel (pixel space -> Camera space)
+        vec4 dir((x - (float)SCREEN_WIDTH / 2.f) , (y - (float)SCREEN_HEIGHT / 2.f) , (float)FOCAL_LENGTH , 1);
+        
+        // Create a ray that we will change the direction for below
+        Ray ray(camera.get_position(), dir);
+        ray.rotate_ray(camera.get_yaw());
+
+        // Trace the path of the ray
+        irradiance += path_trace_importance_sampling_recursive(radiance_map, ray, surfaces, light_planes, 0);
+    }
+    irradiance /= (float)SAMPLES_PER_PIXEL;
+    return irradiance;
+}
+
+vec3 path_trace_importance_sampling_recursive(RadianceMap& radiance_map, Ray ray, std::vector<Surface *> surfaces, std::vector<AreaLightPlane *> light_planes, int bounces){
     // Trace the path of the ray to find the closest intersection
     Intersection closest_intersection;
     ray.closest_intersection(surfaces, light_planes, closest_intersection);
@@ -43,7 +65,7 @@ vec3 importance_sample_ray(const Intersection& intersection, RadianceMap& radian
     Ray ray = Ray(start, sampled_direction);
 
     // 2) Get the radiance contribution for this ray
-    vec3 radiance = path_trace_importance_sampling(radiance_map, ray, surfaces, light_planes, bounces+1);
+    vec3 radiance = path_trace_importance_sampling_recursive(radiance_map, ray, surfaces, light_planes, bounces+1);
 
     // 3) Solve the rendering equation
     // BRDF = reflectance / M_PI (equal from all angles for diffuse)

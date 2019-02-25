@@ -67,20 +67,10 @@ void Draw(screen* screen, Camera& camera, std::vector<AreaLightPlane *> light_pl
     for (int x = 0; x < SCREEN_WIDTH; x++){
         for (int y = 0; y < SCREEN_HEIGHT; y++){
 
-            // Change the ray's direction to work for the current pixel (pixel space -> Camera space)
-            vec4 dir((x - SCREEN_WIDTH / 2) , (y - SCREEN_HEIGHT / 2) , FOCAL_LENGTH , 1);
-
-            // Create a ray that we will change the direction for below
-            Ray ray(camera.get_position(), dir);
-            ray.rotate_ray(camera.get_yaw());
-
-            // Initialise the closest intersection
-            Intersection closest_intersection;
-
             // Path trace the ray to find the colour to paint the pixel
-            // vec3 radiance = path_trace(false, ray, surfaces, light_planes, 0);
-            vec3 radiance = path_trace_radiance_map(radiance_map, ray, surfaces, light_planes);
-            PutPixelSDL(screen, x, y, radiance);
+            vec3 irradiance = path_trace_importance_sampling(radiance_map, camera, x, y, surfaces, light_planes);
+            // vec3 irradiance = path_trace(camera, x, y, surfaces, light_planes);
+            PutPixelSDL(screen, x, y, irradiance);
         }
     }
 }
@@ -117,7 +107,8 @@ int main (int argc, char* argv[]) {
 
     // Initialise the radiance map
     RadianceMap radiance_map = RadianceMap(surfaces, light_planes, surfaces_load);
-    radiance_map.normalize_radiance_volumes();
+    // Update radiance distribution functions of all pre-computed radiance volumes
+    radiance_map.update_radiance_distributions();
 
     // Clear the list of surfaces and add the surfaces for the radiance spheres to be rendered
     // radiance_map.build_radiance_map_shapes(surfaces_load);

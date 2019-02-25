@@ -24,6 +24,7 @@ class RadianceVolume{
     private:
         vec4 position;
         std::vector<std::vector<vec3>> radiance_grid;
+        std::vector<std::vector<float>> radiance_distribution;
         // For coordinate system
         vec3 normal;
         mat4 transformation_matrix;
@@ -42,6 +43,10 @@ class RadianceVolume{
 
         // Initialises square grid as a 2D std::vector of vec3s (radiance stores for each angle)
         void initialise_radiance_grid();
+
+        // Initialises square grid as a 2D vector of floats representing the radiance distribution
+        // for the radiance volume
+        void initialise_radiance_distribution();
 
     public:
         // Default Constructor
@@ -76,7 +81,11 @@ class RadianceVolume{
 
         // Normalizes this RadianceVolume so that all radiance values 
         // i.e. their grid values all sum to 1 (taking the length of each vec3)
-        void RadianceVolume::normalize_radiance_volume();
+        void update_radiance_distribution();
+
+        // Samples a direction from the radiance_distribution of this radiance
+        // volume
+        vec4 sample_direction_from_radiance_distribution();
 
         // Getters
         vec4 get_position();

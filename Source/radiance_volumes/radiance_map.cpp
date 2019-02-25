@@ -78,11 +78,11 @@ void RadianceMap::build_radiance_map_shapes(std::vector<Surface>& surfaces){
 
 // Normalizes all RadianceVolumes radiance values i.e. their grid values
 // all sum to 1 (taking the length of each vec3)
-void RadianceMap::normalize_radiance_volumes(){
+void RadianceMap::update_radiance_distributions(){
     int volumes = this->radiance_volumes.size();
     #pragma omp parallel for
     for (int i = 0; i < volumes; i++){
-        this->radiance_volumes[i]->normalize_radiance_volume();
+        this->radiance_volumes[i]->update_radiance_distribution();
     }
 }
 
@@ -148,14 +148,11 @@ vec4 RadianceMap::importance_sample_ray_direction(const Intersection& intersecti
         float cos_theta;
         return sample_random_direction_around_intersection(intersection, cos_theta);
     }
-
-    // 2) Calculate the cumulative sum of the radiance_map stored in the volume
-
-
-    // 3) Generate a random float uniformly between [0,1]
-
-    // 4) Find which part of the cumulative distribution this number
-    //    falls in range of i.e. sample from the inverse of the cumulative
-    //    distribution. This gives the location on the grid we sample
-    //    our direction from
+    else{
+        // 2) Generate a random float uniformly between [0,1] and find which 
+        //    part of the cumulative distribution this number falls in range
+        //    of i.e. sample from the inverse of the cumulative distribution.
+        //    This gives the location on the grid we sample our direction from
+        return closest_volumes[0]->sample_direction_from_radiance_distribution();
+    }
 }

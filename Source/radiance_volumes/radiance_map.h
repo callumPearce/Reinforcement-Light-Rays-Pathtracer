@@ -45,11 +45,11 @@ class RadianceMap{
 
         // Given an intersection point, importance sample a ray direction according to the
         // cumulative distribution formed by the closest RadianceVolume's radiance_map
-        vec4 RadianceMap::importance_sample_ray_direction(const Intersection& intersection);
+        vec4 importance_sample_ray_direction(const Intersection& intersection);
 
         // Normalizes all RadianceVolumes radiance values i.e. their grid values
         // all sum to 1 (taking the length of each vec3)
-        void RadianceMap::normalize_radiance_volumes();
+        void update_radiance_distributions();
 };
 
 #endif

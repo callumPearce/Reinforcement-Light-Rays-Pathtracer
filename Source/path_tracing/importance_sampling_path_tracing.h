@@ -11,6 +11,8 @@
 #include "monte_carlo_settings.h"
 #include "hemisphere_helpers.h"
 #include "radiance_map.h"
+#include "camera.h"
+#include "image_settings.h"
 
 using glm::vec3;
 using glm::vec2;
@@ -26,7 +28,9 @@ using glm::mat4;
     direction, finding the light faster.
 */
 
-vec3 path_trace_importance_sampling(RadianceMap& radiance_map, Ray ray, std::vector<Surface *> surfaces, std::vector<AreaLightPlane *> light_planes, int bounces);
+vec3 path_trace_importance_sampling(RadianceMap& radiance_map, Camera& camera, int pixel_x, int pixel_y, std::vector<Surface *> surfaces, std::vector<AreaLightPlane *> light_planes);
+
+vec3 path_trace_importance_sampling_recursive(RadianceMap& radiance_map, Ray ray, std::vector<Surface *> surfaces, std::vector<AreaLightPlane *> light_planes, int bounces);
 
 vec3 importance_sample_ray(const Intersection& intersection, RadianceMap& radiance_map, std::vector<Surface *> surfaces, std::vector<AreaLightPlane *> light_planes, int bounces);
 

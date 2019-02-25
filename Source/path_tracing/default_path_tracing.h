@@ -10,6 +10,8 @@
 #include "area_light_plane.h"
 #include "monte_carlo_settings.h"
 #include "hemisphere_helpers.h"
+#include "camera.h"
+#include "image_settings.h"
 
 using glm::vec3;
 using glm::vec2;
@@ -22,7 +24,9 @@ using glm::mat4;
     https://en.wikipedia.org/wiki/Path_tracing
 */
 
-vec3 path_trace(Ray ray, std::vector<Surface *> surfaces, std::vector<AreaLightPlane *> light_planes, int bounces);
+vec3 path_trace(Camera& camera, int pixel_x, int pixel_y, std::vector<Surface *> surfaces, std::vector<AreaLightPlane *> light_planes);
+
+vec3 path_trace_recursive(Ray ray, std::vector<Surface *> surfaces, std::vector<AreaLightPlane *> light_planes, int bounces);
 
 vec3 indirect_irradiance(const Intersection& intersection, std::vector<Surface *> surfaces, std::vector<AreaLightPlane *> light_planes, int bounces);
 
