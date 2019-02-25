@@ -124,13 +124,29 @@ As for the first goal, I decided to sample the radiance volumes uniformly by sam
 
 The KD-Tree was a fairly straightforward implementation based upon code from my 3rd year computer graphics unit we implemented for a Photon Map. This made it quick to get working for an irradiance volume data structure and it made a massive improvement on query time, $O(\log{n})$ (on average) to find the closest irradiance volume to given point in the scene.
 
+With an efficient way to lookup the radiance estimate at a point in the scene, I created a way for visualizing the scene using interpolation between the stored radiance values alone. This is similar to a photon mapper and it enabled me to render images in almost real-time (after the pre-compute of the radiance volumes of course). I also implemented a barycentric coordinate system to interpolate between radiance volumes location to find an irradiance estimate. However, all of this was more or less just to check if my radiance map was implemented correctly by visualizing the result, it is not the rendering approach \cite{dahm2017learning} take.
+
 \subsection{Resources}
 Clearly the Irradiance Volume paper \cite{greger1998irradiance} by Peter Shirley (who is an important person in graphics research) was a huge help for implementing the Radiance Volume, even if my version is quite heavily modified in how it used. 
 
 As for the KD-Tree my Github repository for my 3rd years constructed Photon Map was very useful. 
 
 \subsection{Reflection}
+This week my work was heavily focused around creating this Radiance Map and visualizing it. I have managed to get some good evidence of its correctness and this is essential as it is key that it is implemented correctly for the reinforcement learning approach undertaken by \cite{dahm2017learning} to work.
 
+\section*{Week 5}
+With the radiance map created and validated, this week brings together a lot of what I have previously implemented and mainly involves implementing the reinforcement learning for light paths rendering approach. 
+
+\subsection{Goals}
+\begin{enumerate}
+\item Implement an importance sampling approach based on the pre-computed data from the radiance map
+\item Implement an initial version of the reinforcement learning approach and attempt to get similar results to that seen in  \cite{dahm2017learning}
+\end{enumerate}
+
+\subsection{Research/Implementation Goals}
+I quickly managed to get an importance sampling version of the path-tracer working by converting the radiance-volume values into a cumulative distribution which I could sample from the inverse of, in order to fire rays more likely towards light sources. This worked well at increasing the number of light rays which intersect with the area light source however some artefacts and strange patterns are present in the image, could this be to do with what \cite{dahm2017learning} suggests about this not being a complete approximation?
+
+I then moved on to implementing the reinforcement learning path tracer which was also fairly quick to implement. This does not perform the pre-computation step and clearly traces light paths towards the light far more effectively then randomly sampling, however once again there are artefacts present. I believe this is to do with my implementation of the radiance map, therefore I am going to plot the Voronoi render of my scene for the radiance volumes as shown in \cite{dahm2017learning} to validate I have a similar layout. This will be effective in the future for debugging and visualizing the density of my samples. I have also realised that \cite{dahm2017learning} might use a different sampling method for radiance volume locations using a low-discrepancy sequence  (Hammersley) which I am planning on researching as well. I need to get this base datastructure correct before I can validate my reinforcement learning approach.
 
 \bibliographystyle{plain}
 \bibliography{weekly-summaries}
