@@ -27,6 +27,22 @@ void Ray::closest_intersection(std::vector<Surface *> surfaces, std::vector<Area
     }
 }
 
+// Sample a ray which passes through the pixel at the specified coordinates from the camera
+Ray Ray::sample_ray_through_pixel(Camera& camera, int pixel_x, int pixel_y){
+    // Generate the random point within a pixel for the ray to pass through
+    float x = (float)pixel_x + ((float) rand() / (RAND_MAX));
+    float y = (float)pixel_y + ((float) rand() / (RAND_MAX));
+
+    // Set direction to pass through pixel (pixel space -> Camera space)
+    vec4 dir((x - (float)SCREEN_WIDTH / 2.f) , (y - (float)SCREEN_HEIGHT / 2.f) , (float)FOCAL_LENGTH , 1);
+    
+    // Create a ray that we will change the direction for below
+    Ray ray(camera.get_position(), dir);
+    ray.rotate_ray(camera.get_yaw());
+
+    return ray;
+}
+
 // Rotate a ray by "yaw"
 void Ray::rotate_ray(float yaw) {
     mat4 R = mat4(1.0);

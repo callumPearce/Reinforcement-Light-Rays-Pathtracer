@@ -107,8 +107,6 @@ int main (int argc, char* argv[]) {
 
     // Initialise the radiance map
     RadianceMap radiance_map = RadianceMap(surfaces, light_planes, surfaces_load);
-    // Update radiance distribution functions of all pre-computed radiance volumes
-    radiance_map.update_radiance_distributions();
 
     // Clear the list of surfaces and add the surfaces for the radiance spheres to be rendered
     // radiance_map.build_radiance_map_shapes(surfaces_load);

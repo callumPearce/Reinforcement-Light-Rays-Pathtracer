@@ -29,4 +29,6 @@ using glm::mat4;
 
 vec3 path_trace_reinforcement(Camera& camera, int pixel_x, int pixel_y, RadianceMap& radiance_map, std::vector<Surface *> surfaces, std::vector<AreaLightPlane *> light_planes);
 
+vec3 path_trace_reinforcement_iterative(RadianceMap& radiance_map, Ray ray, std::vector<Surface *> surfaces, std::vector<AreaLightPlane *> light_planes);
+
 #endif

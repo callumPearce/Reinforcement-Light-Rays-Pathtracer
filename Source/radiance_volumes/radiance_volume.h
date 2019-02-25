@@ -85,7 +85,11 @@ class RadianceVolume{
 
         // Samples a direction from the radiance_distribution of this radiance
         // volume
-        vec4 sample_direction_from_radiance_distribution();
+        vec4 sample_direction_from_radiance_distribution(int& sector_x, int& sector_y);
+
+        // Performs a temporal difference update for the current radiance volume for the incident
+        // radiance in the sector specified with the intersection surfaces irradiance value
+        void temporal_difference_update(vec3 next_irradiance, int sector_x, int sector_y);
 
         // Getters
         vec4 get_position();

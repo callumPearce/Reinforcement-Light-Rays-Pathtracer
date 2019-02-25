@@ -5,6 +5,8 @@
 #include <string>
 #include <memory>
 #include <vector>
+#include "camera.h"
+#include "image_settings.h"
 
 class Shape;
 class Triangle;
@@ -59,6 +61,9 @@ class Ray {
 
         // Rotate a ray by "yaw"
         void rotate_ray(float yaw);
+
+        // Sample a ray which passes through the pixel at the specified coordinates from the camera
+        static Ray sample_ray_through_pixel(Camera& camera, int pixel_x, int pixel_y);
 
         // Getters
         vec4 get_start();

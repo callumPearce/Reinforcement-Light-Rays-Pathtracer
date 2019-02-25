@@ -211,7 +211,7 @@ void RadianceVolume::update_radiance_distribution(){
 
 // Samples a direction from the radiance_distribution of this radiance
 // volume
-vec4 RadianceVolume::sample_direction_from_radiance_distribution(){
+vec4 RadianceVolume::sample_direction_from_radiance_distribution(int& sector_x, int& sector_y){
     
     // Generate a random float uniformly between [0,1]
     float r = ((float) rand() / (RAND_MAX));
@@ -224,6 +224,8 @@ vec4 RadianceVolume::sample_direction_from_radiance_distribution(){
             // We have found where in the inverse cumulative distribution our
             // sample is. There for return an anlge at this location
             if ( r <= cumulative_sum ){
+                sector_x = x;
+                sector_y = y;
                 // Get the coordinates on the unit hemisphere
                 float x_h, y_h, z_h;
                 map(x/(float)GRID_RESOLUTION, y/(float)GRID_RESOLUTION, x_h, y_h, z_h);
@@ -235,6 +237,12 @@ vec4 RadianceVolume::sample_direction_from_radiance_distribution(){
             }
         }
     }
+}
+
+// Performs a temporal difference update for the current radiance volume for the incident
+// radiance in the sector specified with the intersection surfaces irradiance value
+void RadianceVolume::temporal_difference_update(vec3 next_irradiance, int sector_x, int sector_y){
+    this->radiance_grid[sector_x][sector_y] = ((1.f - (ALPHA)) * this->radiance_grid[sector_x][sector_y]) + (ALPHA * next_irradiance);
 }
 
 /*

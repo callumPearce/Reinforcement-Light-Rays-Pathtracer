@@ -5,16 +5,7 @@ vec3 path_trace_importance_sampling(RadianceMap& radiance_map, Camera& camera, i
     vec3 irradiance = vec3(0.f);
     for (int i = 0; i < SAMPLES_PER_PIXEL; i++){
         
-        // Generate the random point within a pixel for the ray to pass through
-        float x = (float)pixel_x + ((float) rand() / (RAND_MAX));
-        float y = (float)pixel_y + ((float) rand() / (RAND_MAX));
-
-        // Set direction to pass through pixel (pixel space -> Camera space)
-        vec4 dir((x - (float)SCREEN_WIDTH / 2.f) , (y - (float)SCREEN_HEIGHT / 2.f) , (float)FOCAL_LENGTH , 1);
-        
-        // Create a ray that we will change the direction for below
-        Ray ray(camera.get_position(), dir);
-        ray.rotate_ray(camera.get_yaw());
+        Ray ray = Ray::sample_ray_through_pixel(camera, pixel_x, pixel_y);
 
         // Trace the path of the ray
         irradiance += path_trace_importance_sampling_recursive(radiance_map, ray, surfaces, light_planes, 0);
@@ -57,7 +48,9 @@ vec3 path_trace_importance_sampling_recursive(RadianceMap& radiance_map, Ray ray
 vec3 importance_sample_ray(const Intersection& intersection, RadianceMap& radiance_map, std::vector<Surface *> surfaces, std::vector<AreaLightPlane *> light_planes, int bounces){
 
     //1) Sample the rays direction via importance sampling from the closest RadianceVolume
-    vec4 sampled_direction = radiance_map.importance_sample_ray_direction(intersection);
+    vec4 sampled_direction = vec4(0.f);
+    int sector_x, sector_y;
+    radiance_map.importance_sample_ray_direction(intersection,sector_x, sector_y, sampled_direction);
 
     // Create the new bounced ray
     vec4 start = intersection.position + (0.00001f * sampled_direction);
