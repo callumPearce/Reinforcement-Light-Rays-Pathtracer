@@ -25,6 +25,7 @@ class RadianceVolume{
         vec4 position;
         std::vector<std::vector<vec3>> radiance_grid;
         std::vector<std::vector<float>> radiance_distribution;
+        std::vector<std::vector<float>> visits;
         // For coordinate system
         vec3 normal;
         mat4 transformation_matrix;
@@ -47,6 +48,9 @@ class RadianceVolume{
         // Initialises square grid as a 2D vector of floats representing the radiance distribution
         // for the radiance volume
         void initialise_radiance_distribution();
+
+        // Initialises thge alpha-value for all state-action pairs to be 1.f
+        void initialise_visits();
 
     public:
         // Default Constructor

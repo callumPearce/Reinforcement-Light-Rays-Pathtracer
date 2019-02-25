@@ -27,12 +27,12 @@ RadianceMap::RadianceMap(std::vector<Surface *> surfaces, std::vector<AreaLightP
     std::cout << "Sampled " << this->radiance_volumes.size() << " Radiance Volumes in " << temp_time << "s" << std::endl;
     
     // Get the radiance estimate for every radiance volume
-    start_time = end_time;
-    std::cout << "Getting radiance estimate for the radiance volumes..." << std::endl;
-    get_radiance_estimates(surfaces, light_planes);
-    end_time = time(NULL);
-    temp_time = end_time - start_time;
-    std::cout << "Radiance Volume Found in " << temp_time << "s" << std::endl;
+    // start_time = end_time;
+    // std::cout << "Getting radiance estimate for the radiance volumes..." << std::endl;
+    // get_radiance_estimates(surfaces, light_planes);
+    // end_time = time(NULL);
+    // temp_time = end_time - start_time;
+    // std::cout << "Radiance Volume Estimates Found in " << temp_time << "s" << std::endl;
 
     
     // Create the RadianceTree (KDTree) from the radiance volumes
@@ -162,18 +162,30 @@ RadianceVolume* RadianceMap::importance_sample_ray_direction(const Intersection&
 }
 
 // Performs the temporal difference update for the radiance volume passed in given the sampled ray direction lead to the intersection
-void RadianceMap::temporal_difference_update_radiance_volume_sector(RadianceVolume* current_radiance_volume, int current_sector_x, int current_sector_y, Intersection& intersection, std::vector<Surface *> surfaces){
+void RadianceMap::temporal_difference_update_radiance_volume_sector(RadianceVolume* current_radiance_volume, int current_sector_x, int current_sector_y, Intersection& intersection, std::vector<Surface *> surfaces, std::vector<AreaLightPlane *> light_planes){
 
-    // Get the radiance volume closest to the intersection point
-    std::vector<RadianceVolume*> closest_volumes = this->radiance_tree->find_closest_radiance_volumes(1, MAX_DIST, intersection.position);
+    switch (intersection.intersection_type){
 
-    if (closest_volumes.size() < 1){
-        return;
+        case NOTHING:
+            current_radiance_volume->temporal_difference_update(vec3(0.f), current_sector_x, current_sector_y);
+            break;
+        
+        case AREA_LIGHT_PLANE:
+            current_radiance_volume->temporal_difference_update(light_planes[intersection.index]->get_diffuse_p(), current_sector_x, current_sector_y);
+            break;
+        
+        case SURFACE:
+            // Get the radiance volume closest to the intersection point
+            std::vector<RadianceVolume*> closest_volumes = this->radiance_tree->find_closest_radiance_volumes(1, MAX_DIST, intersection.position);
+
+            if (closest_volumes.size() < 1){
+                return;
+            }
+            else{
+                // Get the radiance incident from all directions for the next position and perform temporal diff update
+                vec3 next_pos_irradiance = closest_volumes[0]->get_irradiance(intersection, surfaces);
+                current_radiance_volume->temporal_difference_update(next_pos_irradiance, current_sector_x, current_sector_y);
+            }
+            break;
     }
-    else{
-        // Get the radiance incident from all directions for the next position and perform temporal diff update
-        vec3 next_pos_irradiance = closest_volumes[0]->get_irradiance(intersection, surfaces);
-        current_radiance_volume->temporal_difference_update(next_pos_irradiance, current_sector_x, current_sector_y);
-    }
-
 }

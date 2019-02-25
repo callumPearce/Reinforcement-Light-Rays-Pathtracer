@@ -33,9 +33,11 @@ vec3 path_trace_reinforcement_iterative(RadianceMap& radiance_map, Ray ray, std:
             // Update Q
             // where x = ray.start, y = intersection.position
             // Check that a radiance volume has been found to update its sector
-            if (current_radiance_volume){
-                radiance_map.temporal_difference_update_radiance_volume_sector(current_radiance_volume, current_sector_x, current_sector_y, closest_intersection, surfaces);
-            }
+            if (current_radiance_volume && current_sector_x != -1 && current_sector_y != -1){
+                radiance_map.temporal_difference_update_radiance_volume_sector(current_radiance_volume, current_sector_x, current_sector_y, closest_intersection, surfaces, light_planes);
+                current_sector_x = -1;
+                current_sector_y = -1;
+            } 
         }
 
         // Check what they ray intersected with...
@@ -67,4 +69,5 @@ vec3 path_trace_reinforcement_iterative(RadianceMap& radiance_map, Ray ray, std:
                 break;
             }
     }
+    return vec3(0);
 }

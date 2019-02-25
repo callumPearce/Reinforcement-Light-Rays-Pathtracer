@@ -52,7 +52,7 @@ class RadianceMap{
         void update_radiance_distributions();
 
         // Performs the temporal difference update for the radiance volume passed in given the sampled ray direction lead to the intersection
-        void temporal_difference_update_radiance_volume_sector(RadianceVolume* current_radiance_volume, int current_sector_x, int current_sector_y, Intersection& intersection, std::vector<Surface *> surfaces);
+        void temporal_difference_update_radiance_volume_sector(RadianceVolume* current_radiance_volume, int current_sector_x, int current_sector_y, Intersection& intersection, std::vector<Surface *> surfaces, std::vector<AreaLightPlane *> light_planes);
 };
 
 #endif

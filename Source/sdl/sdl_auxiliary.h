@@ -26,7 +26,7 @@ void SDL_SaveImage(screen *s, const char* filename)
 {
   SDL_Surface *sshot = SDL_CreateRGBSurface(0, s->width, s->height, 32, 0x00ff0000, 0x0000ff00, 0x000000ff, 0xff000000);
   SDL_RenderReadPixels(s->renderer, NULL, SDL_PIXELFORMAT_ARGB8888, sshot->pixels, sshot->pitch);
-  SDL_SaveBMP(sshot, "Images/render.bmp");
+  SDL_SaveBMP(sshot, filename);
   SDL_FreeSurface(sshot);
 }
 

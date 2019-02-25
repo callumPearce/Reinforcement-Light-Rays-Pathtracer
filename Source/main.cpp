@@ -26,6 +26,7 @@
 #include "default_path_tracing.h"
 #include "importance_sampling_path_tracing.h"
 #include "precompute_irradiance_path_tracing.h"
+#include "reinforcement_path_tracing.h"
 
 using glm::vec3;
 using glm::mat3;
@@ -63,12 +64,13 @@ void Draw(screen* screen, Camera& camera, std::vector<AreaLightPlane *> light_pl
     // Reset the SDL screen to black
     memset(screen->buffer, 0, screen->height*screen->width*sizeof(uint32_t));
 
-    #pragma omp parallel for
+    //#pragma omp parallel for
     for (int x = 0; x < SCREEN_WIDTH; x++){
         for (int y = 0; y < SCREEN_HEIGHT; y++){
 
             // Path trace the ray to find the colour to paint the pixel
-            vec3 irradiance = path_trace_importance_sampling(radiance_map, camera, x, y, surfaces, light_planes);
+            // vec3 irradiance = path_trace_importance_sampling(radiance_map, camera, x, y, surfaces, light_planes);
+            vec3 irradiance = path_trace_reinforcement(camera, x, y, radiance_map, surfaces, light_planes);
             // vec3 irradiance = path_trace(camera, x, y, surfaces, light_planes);
             PutPixelSDL(screen, x, y, irradiance);
         }
@@ -121,7 +123,7 @@ int main (int argc, char* argv[]) {
     Update(camera);
     Draw(screen, camera, light_planes, surfaces, radiance_map);
     SDL_Renderframe(screen);
-    SDL_SaveImage(screen, "test.bmp");
+    SDL_SaveImage(screen, "Images/render.bmp");
     // }
 
     KillSDL(screen);

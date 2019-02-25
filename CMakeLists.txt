@@ -5,7 +5,7 @@ project(Monte_Carlo_Raytracer)
 set(CMAKE_CXX_COMPILER "icc")
 
 # Compiler Flags
-set(CMAKE_CXX_FLAGS "-std=c++11 -pipe -Wall -Wno-switch -qopenmp -O3 -no-prec-div -lSDL2main -lSDL2 -static-intel") #-flto=full -lm -ftree-vectorize
+set(CMAKE_CXX_FLAGS "-std=c++11 -pipe -Wall -Wno-switch -qopenmp -O3 -g -no-prec-div -lSDL2main -lSDL2 -static-intel") #-flto=full -lm -ftree-vectorize
 
 # Set output directory for executables
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_HOME_DIRECTORY}/Build)

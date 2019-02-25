@@ -10,6 +10,7 @@ RadianceVolume::RadianceVolume(){
 RadianceVolume::RadianceVolume(vec4 position, vec4 normal){
     initialise_radiance_grid();
     initialise_radiance_distribution();
+    initialise_visits();
     set_position(position);
     set_normal(vec3(normal.x, normal.y, normal.z));
 
@@ -27,7 +28,7 @@ void RadianceVolume::initialise_radiance_grid(){
     for (int x = 0; x < GRID_RESOLUTION; x++){
         std::vector<vec3> grid_row;
         for (int y = 0; y < GRID_RESOLUTION; y++){
-            grid_row.push_back(vec3(0));
+            grid_row.push_back(vec3(1.f/((float)GRID_RESOLUTION * (float)GRID_RESOLUTION)));
         }
         this->radiance_grid.push_back(grid_row);
     }
@@ -41,6 +42,17 @@ void RadianceVolume::initialise_radiance_distribution(){
             distribution_row.push_back(1.f/((float)GRID_RESOLUTION * (float)GRID_RESOLUTION));
         }
         this->radiance_distribution.push_back(distribution_row);
+    }
+}
+
+// Initialises the alpha values (weighting of state-action pairs) to be 1
+void RadianceVolume::initialise_visits(){
+    for (int x = 0; x < GRID_RESOLUTION; x++){
+        std::vector<float> visits_row;
+        for (int y = 0; y < GRID_RESOLUTION; y++){
+            visits_row.push_back(0.f);
+        }
+        this->visits.push_back(visits_row);
     }
 }
 
@@ -242,7 +254,13 @@ vec4 RadianceVolume::sample_direction_from_radiance_distribution(int& sector_x, 
 // Performs a temporal difference update for the current radiance volume for the incident
 // radiance in the sector specified with the intersection surfaces irradiance value
 void RadianceVolume::temporal_difference_update(vec3 next_irradiance, int sector_x, int sector_y){
-    this->radiance_grid[sector_x][sector_y] = ((1.f - (ALPHA)) * this->radiance_grid[sector_x][sector_y]) + (ALPHA * next_irradiance);
+    #pragma omp critical
+    {
+        // Calculate alpha and update the radiance grid values and increment the number of visits
+        float alpha = 1.f / (1.f + this->visits[sector_x][sector_y]);
+        this->radiance_grid[sector_x][sector_y] = ((1.f - (alpha)) * this->radiance_grid[sector_x][sector_y]) + (alpha * next_irradiance);
+        this->visits[sector_x][sector_y] += 1;
+    }
 }
 
 /*
