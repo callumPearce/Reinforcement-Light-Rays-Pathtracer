@@ -1,6 +1,21 @@
 #include "default_path_tracing.h"
 #include <iostream>
-#include "printing.h"
+#include <omp.h>
+
+void draw_default_path_tracing(SDLScreen screen, Camera& camera, std::vector<AreaLightPlane *> light_planes, std::vector<Surface *> surfaces){
+    // Reset the SDL screen to black
+    memset(screen.buffer, 0, screen.height*screen.width*sizeof(uint32_t));
+
+    #pragma omp parallel for
+    for (int x = 0; x < SCREEN_WIDTH; x++){
+        for (int y = 0; y < SCREEN_HEIGHT; y++){
+
+            // Path trace the ray to find the colour to paint the pixel
+            vec3 irradiance = path_trace(camera, x, y, surfaces, light_planes);
+            screen.PutPixelSDL(x, y, irradiance);
+        }
+    }
+}
 
 vec3 path_trace(Camera& camera, int pixel_x, int pixel_y, std::vector<Surface *> surfaces, std::vector<AreaLightPlane *> light_planes){
 

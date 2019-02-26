@@ -6,7 +6,7 @@
 #include <iostream>
 #include <glm/glm.hpp>
 #include <SDL.h>
-#include "sdl_auxiliary.h"
+#include "sdl_screen.h"
 #include <stdint.h>
 #include <memory>
 #include <vector>
@@ -59,30 +59,12 @@ void Update(Camera& camera){
     }
 }
 
-void Draw(screen* screen, Camera& camera, std::vector<AreaLightPlane *> light_planes, std::vector<Surface *> surfaces, RadianceMap& radiance_map){
-
-    // Reset the SDL screen to black
-    memset(screen->buffer, 0, screen->height*screen->width*sizeof(uint32_t));
-
-    //#pragma omp parallel for
-    for (int x = 0; x < SCREEN_WIDTH; x++){
-        for (int y = 0; y < SCREEN_HEIGHT; y++){
-
-            // Path trace the ray to find the colour to paint the pixel
-            // vec3 irradiance = path_trace_importance_sampling(radiance_map, camera, x, y, surfaces, light_planes);
-            vec3 irradiance = path_trace_reinforcement(camera, x, y, radiance_map, surfaces, light_planes);
-            // vec3 irradiance = path_trace(camera, x, y, surfaces, light_planes);
-            PutPixelSDL(screen, x, y, irradiance);
-        }
-    }
-}
-
 int main (int argc, char* argv[]) {
 
     omp_set_num_threads(6);
     
     // Initialise SDL screen
-    screen *screen = InitializeSDL(SCREEN_WIDTH, SCREEN_HEIGHT, FULLSCREEN_MODE);
+    SDLScreen screen = SDLScreen(SCREEN_WIDTH, SCREEN_HEIGHT, FULLSCREEN_MODE);
 
     // Load the shapes within the scene
     std::vector<Surface> surfaces_load;
@@ -100,6 +82,7 @@ int main (int argc, char* argv[]) {
         surfaces.push_back(sptr);
     }
 
+    /*                  Filling buffer                   */
     // Convert all area lights into a unified list of pointers to them
     std::vector<AreaLightPlane* > light_planes;
     for (int i = 0 ; i < light_planes_load.size(); i++) {
@@ -107,8 +90,41 @@ int main (int argc, char* argv[]) {
         light_planes.push_back(sptr);
     }
 
-    // Initialise the radiance map
-    RadianceMap radiance_map = RadianceMap(surfaces, light_planes, surfaces_load);
+    // Reinforcment Learning path tracer
+    if (PATH_TRACING_METHOD == 0){
+        // Initialise the radiance map without pre-compute
+        RadianceMap radiance_map = RadianceMap(false, surfaces, light_planes, surfaces_load);
+        Update(camera);
+        draw_reinforcement_path_tracing(screen, camera, radiance_map, light_planes, surfaces);
+    }
+    
+    // Importance sampling with pre-computed radiance map values
+    else if(PATH_TRACING_METHOD == 1){
+        // Initialise the radiance map with pre-compute
+        RadianceMap radiance_map = RadianceMap(true, surfaces, light_planes, surfaces_load);
+        Update(camera);
+        draw_importance_sampling_path_tracing(screen, camera, radiance_map, light_planes, surfaces);
+    }
+
+    // Irradiance estimation via average closest precomputed Radiance Volumes
+    else if(PATH_TRACING_METHOD == 2){
+        // Initialise the radiance map with pre-compute
+        RadianceMap radiance_map = RadianceMap(true, surfaces, light_planes, surfaces_load);
+        Update(camera);
+        draw_radiance_map_path_tracing(screen, camera, radiance_map, light_planes, surfaces);
+    }
+
+    // Default Path tracing algorithm
+    else if(PATH_TRACING_METHOD == 3){
+        Update(camera);
+        draw_default_path_tracing(screen, camera, light_planes, surfaces);
+    }
+
+
+    /*                  Rendering                       */
+    screen.SDL_Renderframe();
+    screen.SDL_SaveImage("Images/render.bmp");
+    screen.kill_screen();
 
     // Clear the list of surfaces and add the surfaces for the radiance spheres to be rendered
     // radiance_map.build_radiance_map_shapes(surfaces_load);
@@ -120,13 +136,10 @@ int main (int argc, char* argv[]) {
 
     // Render
     // while (NoQuitMessageSDL()){
-    Update(camera);
-    Draw(screen, camera, light_planes, surfaces, radiance_map);
-    SDL_Renderframe(screen);
-    SDL_SaveImage(screen, "Images/render.bmp");
+    // Draw(screen, camera, light_planes, surfaces, radiance_map);
+    // screen.SDL_Renderframe();
+    // screen.SDL_SaveImage("Images/render.bmp");
     // }
-
-    KillSDL(screen);
     
     return 0;
 }

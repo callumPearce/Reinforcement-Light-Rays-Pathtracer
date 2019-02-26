@@ -1,5 +1,20 @@
 #include "reinforcement_path_tracing.h"
 
+void draw_reinforcement_path_tracing(SDLScreen screen, Camera& camera, RadianceMap& radiance_map, std::vector<AreaLightPlane *> light_planes, std::vector<Surface *> surfaces){
+    // Reset the SDL screen to black
+    memset(screen.buffer, 0, screen.height*screen.width*sizeof(uint32_t));
+
+    #pragma omp parallel for
+    for (int x = 0; x < SCREEN_WIDTH; x++){
+        for (int y = 0; y < SCREEN_HEIGHT; y++){
+
+            // Path trace the ray to find the colour to paint the pixel
+            vec3 irradiance = path_trace_reinforcement(camera, x, y, radiance_map, surfaces, light_planes);
+            screen.PutPixelSDL(x, y, irradiance);
+        }
+    }
+}
+
 vec3 path_trace_reinforcement(Camera& camera, int pixel_x, int pixel_y, RadianceMap& radiance_map, std::vector<Surface *> surfaces, std::vector<AreaLightPlane *> light_planes){
     vec3 irradiance = vec3(0.f);
     for (int i = 0; i < SAMPLES_PER_PIXEL; i++){

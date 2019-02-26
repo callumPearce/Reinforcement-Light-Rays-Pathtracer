@@ -8,10 +8,10 @@
 // Building
 #define GRID_RESOLUTION 17
 #define DIAMETER 0.1f
-#define AREA_PER_SAMPLE 0.001f
+#define AREA_PER_SAMPLE 0.01f
 
 // Querying
-#define CLOSEST_QUERY_COUNT 1
+#define CLOSEST_QUERY_COUNT 2
 #define MAX_DIST 0.05f
 
 #endif

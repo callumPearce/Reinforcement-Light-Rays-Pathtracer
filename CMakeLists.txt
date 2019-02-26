@@ -35,6 +35,7 @@ set(
     SOURCES
     Source/main.cpp
     Source/camera.cpp
+    Source/sdl/sdl_screen.cpp
     Source/rays/ray.cpp
     Source/objects/material.cpp
     Source/objects/shape.cpp

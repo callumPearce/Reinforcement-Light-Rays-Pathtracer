@@ -29,7 +29,7 @@ class RadianceMap{
     public:
 
         // Constructor
-        RadianceMap(std::vector<Surface *> surfaces, std::vector<AreaLightPlane *> light_planes, std::vector<Surface>& surfaces_builder);
+        RadianceMap(bool precompute, std::vector<Surface *> surfaces, std::vector<AreaLightPlane *> light_planes, std::vector<Surface>& surfaces_builder);
 
         // Builds all RadianceVolumes which are part of the RadianceMap into the scene
         void build_radiance_map_shapes(std::vector<Surface>& surfaces);

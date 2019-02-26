@@ -12,6 +12,7 @@
 #include "hemisphere_helpers.h"
 #include "radiance_map.h"
 #include "image_settings.h"
+#include "sdl_screen.h"
 
 using glm::vec3;
 using glm::vec2;
@@ -26,6 +27,8 @@ using glm::mat4;
     is a reinforcement learning strategy. See the full paper for details:
     https://arxiv.org/abs/1701.07403
 */
+
+void draw_reinforcement_path_tracing(SDLScreen screen, Camera& camera, RadianceMap& radiance_map, std::vector<AreaLightPlane *> light_planes, std::vector<Surface *> surfaces);
 
 vec3 path_trace_reinforcement(Camera& camera, int pixel_x, int pixel_y, RadianceMap& radiance_map, std::vector<Surface *> surfaces, std::vector<AreaLightPlane *> light_planes);
 

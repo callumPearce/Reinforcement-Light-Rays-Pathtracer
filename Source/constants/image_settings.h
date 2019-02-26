@@ -11,4 +11,6 @@
 #define FOCAL_LENGTH SCREEN_HEIGHT
 #define EPS 0.00001f
 
+#define PATH_TRACING_METHOD 1 //0 = reinforcment, 1 = precompute-importance, 2 = precompute, 3 = default
+
 #endif

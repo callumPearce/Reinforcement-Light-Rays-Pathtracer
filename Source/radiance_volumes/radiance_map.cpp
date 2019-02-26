@@ -4,7 +4,7 @@
 #include <iostream>
 #include <ctime>
 
-RadianceMap::RadianceMap(std::vector<Surface *> surfaces, std::vector<AreaLightPlane *> light_planes, std::vector<Surface>& surfaces_builder){
+RadianceMap::RadianceMap(bool precompute, std::vector<Surface *> surfaces, std::vector<AreaLightPlane *> light_planes, std::vector<Surface>& surfaces_builder){
     
     std::cout << "Sampling radiance volumes..." << std::endl;
     
@@ -27,14 +27,15 @@ RadianceMap::RadianceMap(std::vector<Surface *> surfaces, std::vector<AreaLightP
     std::cout << "Sampled " << this->radiance_volumes.size() << " Radiance Volumes in " << temp_time << "s" << std::endl;
     
     // Get the radiance estimate for every radiance volume
-    // start_time = end_time;
-    // std::cout << "Getting radiance estimate for the radiance volumes..." << std::endl;
-    // get_radiance_estimates(surfaces, light_planes);
-    // end_time = time(NULL);
-    // temp_time = end_time - start_time;
-    // std::cout << "Radiance Volume Estimates Found in " << temp_time << "s" << std::endl;
+    if (precompute){
+         start_time = end_time;
+        std::cout << "Getting radiance estimate for the radiance volumes..." << std::endl;
+        get_radiance_estimates(surfaces, light_planes);
+        end_time = time(NULL);
+        temp_time = end_time - start_time;
+        std::cout << "Radiance Volume Estimates Found in " << temp_time << "s" << std::endl;   
+    }
 
-    
     // Create the RadianceTree (KDTree) from the radiance volumes
     start_time = end_time;
     std::cout << "Building Radiance Tree..." << std::endl; 
