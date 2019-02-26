@@ -93,7 +93,7 @@ void RadianceMap::update_radiance_distributions(){
 vec3 RadianceMap::get_irradiance_estimate(const Intersection& intersection, std::vector<Surface *> surfaces){
 
     // Get the closest n points by maintaining a heap of values
-    std::vector<RadianceVolume*> closest_volumes = this->radiance_tree->find_closest_radiance_volumes(CLOSEST_QUERY_COUNT, MAX_DIST, intersection.position);
+    std::vector<RadianceVolume*> closest_volumes = this->radiance_tree->find_closest_radiance_volumes(CLOSEST_QUERY_COUNT, MAX_DIST, intersection.position, intersection.normal);
     
     // For each index, get the radiance and average the total radiance
     vec3 radiance = vec3(0.f);
@@ -142,7 +142,7 @@ float RadianceMap::calculate_gaussian_filter(float volume_distance, float furthe
 RadianceVolume* RadianceMap::importance_sample_ray_direction(const Intersection& intersection, int& sector_x, int& sector_y, vec4& sampled_direction){
 
     // 1) Find the closest RadianceVolume
-    std::vector<RadianceVolume*> closest_volumes = this->radiance_tree->find_closest_radiance_volumes(1, MAX_DIST, intersection.position);
+    std::vector<RadianceVolume*> closest_volumes = this->radiance_tree->find_closest_radiance_volumes(1, MAX_DIST, intersection.position, intersection.normal);
 
     // If a radiance volume is not found, just sample randomly 
     if (closest_volumes.size() < 1){
@@ -177,7 +177,7 @@ void RadianceMap::temporal_difference_update_radiance_volume_sector(RadianceVolu
         
         case SURFACE:
             // Get the radiance volume closest to the intersection point
-            std::vector<RadianceVolume*> closest_volumes = this->radiance_tree->find_closest_radiance_volumes(1, MAX_DIST, intersection.position);
+            std::vector<RadianceVolume*> closest_volumes = this->radiance_tree->find_closest_radiance_volumes(1, MAX_DIST, intersection.position, intersection.normal);
 
             if (closest_volumes.size() < 1){
                 return;
@@ -189,4 +189,18 @@ void RadianceMap::temporal_difference_update_radiance_volume_sector(RadianceVolu
             }
             break;
     }
+}
+
+// Set the voronoi colours of all radiance volumes in the scene in the first entry of the radiance_grid[0][0]
+void RadianceMap::set_voronoi_colours(){
+    int volumes = this->radiance_volumes.size();
+    for (int i = 0; i < volumes; i++){
+        this->radiance_volumes[i]->set_voronoi_colour();
+    }
+}
+
+// Get the voronoi colour of the closest radiance volume
+vec3 RadianceMap::get_voronoi_colour(const Intersection& intersection){
+    std::vector<RadianceVolume*> closest_volumes = this->radiance_tree->find_closest_radiance_volumes(1, 5.f , intersection.position, intersection.normal);
+    return closest_volumes[0]->get_voronoi_colour();
 }

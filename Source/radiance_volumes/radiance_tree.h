@@ -39,10 +39,10 @@ class RadianceTree{
 
         // Fill the priority queue with the closest n radiance volumes within max_dist
         // around position
-        void populate_closest_volumes_queue(int n, float max_dist, vec4 position, std::priority_queue<RadianceVolumeComparator>& sorted_queue);
+        void populate_closest_volumes_queue(int n, float max_dist, vec4 position, vec4 normal, std::priority_queue<RadianceVolumeComparator>& sorted_queue);
 
         // Attempt to insert each Radiance Volume in the current tree into the sorted priority queue
-        void radiance_volume_sorted_queue_insert(vec4 position, std::priority_queue<RadianceVolumeComparator>& sorted_queue, float max_dist, int n);
+        void radiance_volume_sorted_queue_insert(vec4 position, vec4 normal, std::priority_queue<RadianceVolumeComparator>& sorted_queue, float max_dist, int n);
     
     public:
     
@@ -51,7 +51,7 @@ class RadianceTree{
         RadianceTree(std::vector<RadianceVolume*>& radiance_volumes, Dimension dimension);
 
         // Get the closest n RadianceVolumes within max_dist from position
-        std::vector<RadianceVolume*> find_closest_radiance_volumes(int n, float max_dist, vec4 position);
+        std::vector<RadianceVolume*> find_closest_radiance_volumes(int n, float max_dist, vec4 position, vec4 normal);
 };
 
 #endif

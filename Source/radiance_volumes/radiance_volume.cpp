@@ -221,11 +221,11 @@ void RadianceVolume::update_radiance_distribution(){
     }
 }
 
-// Samples a direction from the radiance_distribution of this radiance
+// Samples a direction from the radiance_disset_voronoi_colours()
 // volume
 vec4 RadianceVolume::sample_direction_from_radiance_distribution(int& sector_x, int& sector_y){
     
-    // Generate a random float uniformly between [0,1]
+    // Generate a random float uniformly betset_voronoi_colours()
     float r = ((float) rand() / (RAND_MAX));
 
     // Sample from the inverse cumulative distribution
@@ -261,6 +261,19 @@ void RadianceVolume::temporal_difference_update(vec3 next_irradiance, int sector
         this->radiance_grid[sector_x][sector_y] = ((1.f - (alpha)) * this->radiance_grid[sector_x][sector_y]) + (alpha * next_irradiance);
         this->visits[sector_x][sector_y] += 1;
     }
+}
+
+// Sets a voronoi colour for the radiance volume (random colour) in the first entry of its radiance grid
+void RadianceVolume::set_voronoi_colour(){
+    float r = ((float) rand() / (RAND_MAX));
+    float g = ((float) rand() / (RAND_MAX));
+    float b = ((float) rand() / (RAND_MAX));
+    this->radiance_grid[0][0] = vec3(r,g,b);
+}
+
+// Gets the voronoi colour of the radiance volume
+vec3 RadianceVolume::get_voronoi_colour(){
+    return this->radiance_grid[0][0];
 }
 
 /*

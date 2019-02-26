@@ -4,7 +4,6 @@ void draw_reinforcement_path_tracing(SDLScreen screen, Camera& camera, RadianceM
     // Reset the SDL screen to black
     memset(screen.buffer, 0, screen.height*screen.width*sizeof(uint32_t));
 
-    #pragma omp parallel for
     for (int x = 0; x < SCREEN_WIDTH; x++){
         for (int y = 0; y < SCREEN_HEIGHT; y++){
 
@@ -17,6 +16,7 @@ void draw_reinforcement_path_tracing(SDLScreen screen, Camera& camera, RadianceM
 
 vec3 path_trace_reinforcement(Camera& camera, int pixel_x, int pixel_y, RadianceMap& radiance_map, std::vector<Surface *> surfaces, std::vector<AreaLightPlane *> light_planes){
     vec3 irradiance = vec3(0.f);
+    #pragma omp parallel for
     for (int i = 0; i < SAMPLES_PER_PIXEL; i++){
         
         Ray ray = Ray::sample_ray_through_pixel(camera, pixel_x, pixel_y);

@@ -53,6 +53,12 @@ class RadianceMap{
 
         // Performs the temporal difference update for the radiance volume passed in given the sampled ray direction lead to the intersection
         void temporal_difference_update_radiance_volume_sector(RadianceVolume* current_radiance_volume, int current_sector_x, int current_sector_y, Intersection& intersection, std::vector<Surface *> surfaces, std::vector<AreaLightPlane *> light_planes);
+
+        // Set the voronoi colours of all radiance volumes in the scene in the first entry of the radiance_grid[0][0]
+        void set_voronoi_colours();
+
+        // Get the voronoi colour of the interesection point from the closest radiance volume
+        vec3 get_voronoi_colour(const Intersection& intersection);
 };
 
 #endif

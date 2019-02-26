@@ -27,6 +27,7 @@
 #include "importance_sampling_path_tracing.h"
 #include "precompute_irradiance_path_tracing.h"
 #include "reinforcement_path_tracing.h"
+#include "voronoi_trace.h"
 
 using glm::vec3;
 using glm::mat3;
@@ -118,6 +119,13 @@ int main (int argc, char* argv[]) {
     else if(PATH_TRACING_METHOD == 3){
         Update(camera);
         draw_default_path_tracing(screen, camera, light_planes, surfaces);
+    }
+
+    // Voronoi Ploat
+    else if(PATH_TRACING_METHOD == 4){
+        RadianceMap radiance_map = RadianceMap(false, surfaces, light_planes, surfaces_load);
+        Update(camera);
+        draw_voronoi_trace(screen, radiance_map, camera, light_planes, surfaces);
     }
 
 

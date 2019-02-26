@@ -95,6 +95,12 @@ class RadianceVolume{
         // radiance in the sector specified with the intersection surfaces irradiance value
         void temporal_difference_update(vec3 next_irradiance, int sector_x, int sector_y);
 
+        // Sets a voronoi colour for the radiance volume (random colour) in the first entry of its radiance grid
+        void set_voronoi_colour();
+
+        // Gets the voronoi colour of the radiance volume
+        vec3 get_voronoi_colour();
+
         // Getters
         vec4 get_position();
         vec3 get_normal();

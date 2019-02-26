@@ -107,11 +107,11 @@ bool RadianceTree::sort_on_z(RadianceVolume* left, RadianceVolume* right){
     return left->get_position()[2] < right->get_position()[2];
 }
 
-// Get the closest n RadianceVolumes within max_dist from position
-std::vector<RadianceVolume*> RadianceTree::find_closest_radiance_volumes(int n, float max_dist, vec4 position){
+// Get the closest n RadianceVolumes within max_dist from position and having the same normal
+std::vector<RadianceVolume*> RadianceTree::find_closest_radiance_volumes(int n, float max_dist, vec4 position, vec4 normal){
     // Create the priority queue and populate it with the closest radiance volumes
     std::priority_queue<RadianceVolumeComparator> sorted_queue;
-    populate_closest_volumes_queue(n, max_dist, position, sorted_queue);
+    populate_closest_volumes_queue(n, max_dist, position, normal, sorted_queue);
     // Add all radiance volumes in the sorted queue to the list of nearest_volumes
     std::vector<RadianceVolume*> nearest_volumes;
     while (!sorted_queue.empty()){
@@ -124,32 +124,32 @@ std::vector<RadianceVolume*> RadianceTree::find_closest_radiance_volumes(int n, 
 
 // Fill the priority queue with the closest n radiance volumes within max_dist
 // around position
-void RadianceTree::populate_closest_volumes_queue(int n, float max_dist, vec4 position, std::priority_queue<RadianceVolumeComparator>& sorted_queue){
+void RadianceTree::populate_closest_volumes_queue(int n, float max_dist, vec4 position, vec4 normal, std::priority_queue<RadianceVolumeComparator>& sorted_queue){
 
     float delta = position[this->dimension] - this->median;
     int volumes = this->radiance_volumes.size();
     // Base Case: There exist radiance volumes on this branch, try to add them in
     if (volumes > 0){
-        radiance_volume_sorted_queue_insert(position, sorted_queue, max_dist, n);
+        radiance_volume_sorted_queue_insert(position, normal, sorted_queue, max_dist, n);
     }
     // Recursive Case:: No radiance volumes so we recurse down the tree
     else{
         if (delta < 0){
             // Left branch
-            (this->left_tree)->populate_closest_volumes_queue(n, max_dist, position, sorted_queue);
+            (this->left_tree)->populate_closest_volumes_queue(n, max_dist, position, normal, sorted_queue);
             // Check right branch if it is within the range of max_dist from the point.
             // As we may actually be closer to some radiance volumes on the right then
             // the ones added on the left still.
             if (std::fabs(delta) < std::fabs(max_dist)){
-                (this->right_tree)->populate_closest_volumes_queue(n, max_dist, position, sorted_queue);
+                (this->right_tree)->populate_closest_volumes_queue(n, max_dist, position, normal, sorted_queue);
                 if (sorted_queue.size() == n) return;
             }
         } else{
             // Right branch
-            (this->right_tree)->populate_closest_volumes_queue(n, max_dist, position, sorted_queue);
+            (this->right_tree)->populate_closest_volumes_queue(n, max_dist, position, normal, sorted_queue);
             // Check left branch if it is within the range of max_dist from the point
             if (std::fabs(delta) < std::fabs(max_dist)){
-                (this->left_tree)->populate_closest_volumes_queue(n, max_dist, position, sorted_queue);
+                (this->left_tree)->populate_closest_volumes_queue(n, max_dist, position, normal, sorted_queue);
                 if (sorted_queue.size() == n) return;
             }
         }
@@ -157,11 +157,16 @@ void RadianceTree::populate_closest_volumes_queue(int n, float max_dist, vec4 po
 }
 
 // For the current list of radiance volumes, attempt to add them into the priority queue
-void RadianceTree::radiance_volume_sorted_queue_insert(vec4 position, std::priority_queue<RadianceVolumeComparator>& sorted_queue, float max_dist, int n){
+void RadianceTree::radiance_volume_sorted_queue_insert(vec4 position, vec4 normal, std::priority_queue<RadianceVolumeComparator>& sorted_queue, float max_dist, int n){
     int volumes = this->radiance_volumes.size();
     for (int i = 0; i < volumes; i++){
         float dist = glm::distance(position, this->radiance_volumes[i]->get_position());
         RadianceVolumeComparator rvc = RadianceVolumeComparator(this->radiance_volumes[i], dist);
+        vec3 rv_normal = this->radiance_volumes[i]->get_normal();
+        // Ensure that the radiance volume is on the same surface
+        if (rv_normal != vec3(normal)){
+            continue;
+        }
         if (sorted_queue.size() < n){
             sorted_queue.push(rvc);
         } else if (rvc < sorted_queue.top()){
