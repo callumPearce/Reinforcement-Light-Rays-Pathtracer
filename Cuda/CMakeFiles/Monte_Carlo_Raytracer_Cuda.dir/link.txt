@@ -1,0 +1,1 @@
+nvcc       -o Build/Monte_Carlo_Raytracer_Cuda -lSDL2 
