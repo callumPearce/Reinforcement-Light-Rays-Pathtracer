@@ -7,7 +7,7 @@
 
 #include "ray.h"
 #include "surface.h"
-#include "area_light_plane.h"
+#include "area_light.h"
 #include "monte_carlo_settings.h"
 #include "hemisphere_helpers.h"
 #include "camera.h"
@@ -25,12 +25,12 @@ using glm::mat4;
     Traces the path of a ray following monte carlo path tracing algorithm:
     https://en.wikipedia.org/wiki/Path_tracing
 */
-void draw_default_path_tracing(SDLScreen screen, Camera& camera, std::vector<AreaLightPlane *> light_planes, std::vector<Surface *> surfaces);
+void draw_default_path_tracing(SDLScreen screen, Camera& camera, AreaLight* light_planes, Surface* surfaces, int light_plane_count, int surfaces_count);
 
-vec3 path_trace(Camera& camera, int pixel_x, int pixel_y, std::vector<Surface *> surfaces, std::vector<AreaLightPlane *> light_planes);
+vec3 path_trace(Camera& camera, int pixel_x, int pixel_y, Surface* surfaces, AreaLight* light_planes, int light_plane_count, int surfaces_count);
 
-vec3 path_trace_recursive(Ray ray, std::vector<Surface *> surfaces, std::vector<AreaLightPlane *> light_planes, int bounces);
+vec3 path_trace_recursive(Ray ray, Surface* surfaces, AreaLight* light_planes, int bounces, int light_plane_count, int surfaces_count);
 
-vec3 indirect_irradiance(const Intersection& intersection, std::vector<Surface *> surfaces, std::vector<AreaLightPlane *> light_planes, int bounces);
+vec3 indirect_irradiance(const Intersection& intersection, Surface* surfaces, AreaLight* light_planes, int bounces, int light_plane_count, int surfaces_count);
 
 #endif

@@ -1,6 +1,6 @@
 #include "cornell_box_scene.h"
 
-void get_cornell_shapes(std::vector<Surface>& Surfaces, std::vector<AreaLightPlane>& area_light_planes) {
+void get_cornell_shapes(std::vector<Surface>& Surfaces, std::vector<AreaLight>& light_planes) {
     
     // Materials
     Material blue = Material(vec3(0.15f, 0.15f, 0.75f));
@@ -77,11 +77,12 @@ void get_cornell_shapes(std::vector<Surface>& Surfaces, std::vector<AreaLightPla
     Surface clng8 = Surface(H, G, I, cyan);
     Surfaces.push_back(clng8);
 
-    std::vector<vec4> ceiling_light_vectors;
-    ceiling_light_vectors.push_back(K);
-    ceiling_light_vectors.push_back(I);
-    ceiling_light_vectors.push_back(J);
-    ceiling_light_vectors.push_back(L);
+    vec3 diffuse_p = 1.f * vec3(1, 1, 0.9);
+    AreaLight a1 = AreaLight(K, I, J, diffuse_p);
+    light_planes.push_back(a1);
+
+    AreaLight a2 = AreaLight(K, J, L, diffuse_p);
+    light_planes.push_back(a2);
 
     // Back wall
     Surface bckWall1 = Surface(G, D, C, yellow);
@@ -188,18 +189,32 @@ void get_cornell_shapes(std::vector<Surface>& Surfaces, std::vector<AreaLightPla
         Surfaces[i].compute_and_set_normal();
     }
     
-    for (size_t i = 0 ; i < ceiling_light_vectors.size() ; ++i) {
-        ceiling_light_vectors[i] *= (2 / l);
+    for (size_t i = 0 ; i < light_planes.size() ; ++i) {
+        light_planes[i].setV0(light_planes[i].getV0() * (2 / l));
+        light_planes[i].setV1(light_planes[i].getV1() * (2 / l));
+        light_planes[i].setV2(light_planes[i].getV2() * (2 / l));
 
-        ceiling_light_vectors[i] -= vec4(1,1,1,1);
+        light_planes[i].setV0(light_planes[i].getV0() - vec4(1,1,1,1));
+        light_planes[i].setV1(light_planes[i].getV1() - vec4(1,1,1,1));
+        light_planes[i].setV2(light_planes[i].getV2() - vec4(1,1,1,1));
 
-        ceiling_light_vectors[i].x *= -1;
-        ceiling_light_vectors[i].y *= -1;
-        ceiling_light_vectors[i].w = 1.0;
+        vec4 newV0 = light_planes[i].getV0();
+        newV0.x *= -1;
+        newV0.y *= -1;
+        newV0.w = 1.0;
+        light_planes[i].setV0(newV0);
 
+        vec4 newV1 = light_planes[i].getV1();
+        newV1.x *= -1;
+        newV1.y *= -1;
+        newV1.w = 1.0;
+        light_planes[i].setV1(newV1);
+
+        vec4 newV2 = light_planes[i].getV2();
+        newV2.x *= -1;
+        newV2.y *= -1;
+        newV2.w = 1.0;
+        light_planes[i].setV2(newV2);
     }
 
-    vec3 diffuse_p = 1.f * vec3(1, 1, 0.9);
-    AreaLightPlane ceiling_light = AreaLightPlane(ceiling_light_vectors, diffuse_p);
-    area_light_planes.push_back(ceiling_light);
 }

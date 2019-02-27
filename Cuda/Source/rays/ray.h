@@ -11,7 +11,7 @@
 class Shape;
 class Triangle;
 class Surface;
-class AreaLightPlane;
+class AreaLight;
 
 using glm::vec3;
 using glm::vec2;
@@ -24,7 +24,7 @@ using glm::mat4;
 */
 enum IntersectionType {
     NOTHING,
-    AREA_LIGHT_PLANE,
+    AREA_LIGHT,
     SURFACE
 };
 
@@ -54,7 +54,7 @@ class Ray {
         Ray(vec4 start, vec4 direction);
 
         // Find the closest intersection for the given ray with an shape in the scene
-        void closest_intersection(std::vector<Surface *> surfaces, std::vector<AreaLightPlane *> light_planes, Intersection& closest_intersection);
+        void closest_intersection(Surface* surfaces, AreaLight* light_planes, Intersection& closest_intersection, int light_plane_count, int surfaces_count);
 
         // Cramers rule for solving a system of linear equations
         bool cramers(mat3 A, vec3 b, vec3& solution);

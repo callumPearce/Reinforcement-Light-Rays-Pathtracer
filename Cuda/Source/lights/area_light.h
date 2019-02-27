@@ -24,6 +24,9 @@ class AreaLight : public Triangle{
         vec3 diffuse_p;
 
     public:
+        // Default Constructor
+        AreaLight();
+
         // Constructor
         AreaLight(vec4 v0, vec4 v1, vec4 v2, vec3 diffuse_p);
 

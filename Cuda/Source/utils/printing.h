@@ -9,8 +9,8 @@ using glm::mat3;
 using glm::vec4;
 using glm::mat4;
 
-void print_vec3(std::string name, vec3 v);
+void print_vec3(char name[], vec3 v);
 
-void print_vec4(std::string name, vec4 v);
+void print_vec4(char name[], vec4 v);
 
 #endif

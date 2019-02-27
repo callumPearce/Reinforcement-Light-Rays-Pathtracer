@@ -5,7 +5,7 @@ project(Monte_Carlo_Raytracer_Cuda LANGUAGES CXX CUDA)
 set(CMAKE_CXX_COMPILER "nvcc")
 
 # Compiler Flags
-set(CUDA_NVCC_FLAGS "${CUDA_NVCC_FLAGS} -std=c++11 -Xptxas -use_fast_math")
+set(CUDA_NVCC_FLAGS "${CUDA_NVCC_FLAGS} -std=c++11 -g -Xptxas -use_fast_math")
 
 # Set output directory for executables
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_HOME_DIRECTORY}/Build)
@@ -27,7 +27,6 @@ include_directories(Source/utils)
 include_directories(Source/lights)
 include_directories(Source/sdl)
 include_directories(Source/rays)
-include_directories(Source/radiance_volumes)
 include_directories(Source/path_tracing)
 
 # Set the sources
@@ -41,29 +40,18 @@ set(
     Source/objects/shape.cpp
     Source/objects/triangle.cpp
     Source/objects/surface.cpp
-    Source/objects/object_importer.cpp
     Source/scenes/cornell_box_scene.cpp
-    Source/scenes/monte_carlo_test_scene.cpp
     Source/utils/printing.cpp
     Source/utils/hemisphere_helpers.cpp
     Source/utils/interpolation.cpp
     Source/lights/area_light.cpp
-    Source/lights/area_light_plane.cpp
-    Source/path_tracing/default_path_tracing.cpp
-    Source/path_tracing/importance_sampling_path_tracing.cpp
-    Source/path_tracing/precompute_irradiance_path_tracing.cpp
-    Source/path_tracing/reinforcement_path_tracing.cpp
-    Source/path_tracing/voronoi_trace.cpp
-    Source/radiance_volumes/radiance_volume.cpp
-    Source/radiance_volumes/radiance_map.cpp
-    Source/radiance_volumes/radiance_volume_comparator.cpp
-    Source/radiance_volumes/radiance_tree.cpp
+    Source/path_tracing/default_path_tracing.cu
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES})
 target_link_libraries(${PROJECT_NAME} ${SDL2_LIBRARIES})
 
 # CUDA properties
-target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_11)
+# target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_11)
 set_target_properties(${PROJECT_NAME} PROPERTIES CUDA_SEPARABLE_COMPILATION ON)
 set_target_properties(${PROJECT_NAME} PROPERTIES LINKER_LANGUAGE CXX)

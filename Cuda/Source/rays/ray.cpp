@@ -1,6 +1,6 @@
 #include "ray.h"
 #include "surface.h"
-#include "area_light_plane.h"
+#include "area_light.h"
 #include <limits>
 
 Ray::Ray(vec4 start, vec4 direction) {
@@ -10,18 +10,18 @@ Ray::Ray(vec4 start, vec4 direction) {
 }
 
 // Find (if there is) the closest intersection with a given ray and a shape
-void Ray::closest_intersection(std::vector<Surface *> surfaces, std::vector<AreaLightPlane *> light_planes, Intersection& closest_intersection) {
+void Ray::closest_intersection(Surface* surfaces, AreaLight* light_planes, Intersection& closest_intersection, int light_plane_count, int surfaces_count) {
     closest_intersection.distance = 9999999999.f;
     // Find intersection with surface
-    for (int i = 0; i < surfaces.size(); i++) {
-        if (surfaces[i]->intersects(this, closest_intersection, i)) {
+    for (int i = 0; i < surfaces_count; i++) {
+        if (surfaces[i].intersects(this, closest_intersection, i)) {
             closest_intersection.intersection_type = SURFACE;
         }
     }
     // Find intersection with area lights
-    for (int i = 0; i < light_planes.size(); i++) { //TODO: Enum on type of closest intersction
-        if (light_planes[i]->light_plane_intersects(this, closest_intersection, i)) {
-            closest_intersection.intersection_type = AREA_LIGHT_PLANE;
+    for (int i = 0; i < light_plane_count; i++) { //TODO: Enum on type of closest intersction
+        if (light_planes[i].intersects(this, closest_intersection, i)) {
+            closest_intersection.intersection_type = AREA_LIGHT;
         }
     }
 }
