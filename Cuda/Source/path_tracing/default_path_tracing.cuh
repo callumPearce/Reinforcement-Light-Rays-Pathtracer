@@ -25,12 +25,17 @@ using glm::mat4;
     Traces the path of a ray following monte carlo path tracing algorithm:
     https://en.wikipedia.org/wiki/Path_tracing
 */
+
+__global__
 void draw_default_path_tracing(SDLScreen screen, Camera& camera, AreaLight* light_planes, Surface* surfaces, int light_plane_count, int surfaces_count);
 
+__device__
 vec3 path_trace(Camera& camera, int pixel_x, int pixel_y, Surface* surfaces, AreaLight* light_planes, int light_plane_count, int surfaces_count);
 
+__device__
 vec3 path_trace_recursive(Ray ray, Surface* surfaces, AreaLight* light_planes, int bounces, int light_plane_count, int surfaces_count);
 
+__device__
 vec3 indirect_irradiance(const Intersection& intersection, Surface* surfaces, AreaLight* light_planes, int bounces, int light_plane_count, int surfaces_count);
 
 #endif

@@ -17,7 +17,7 @@
 #include "area_light.h"
 
 // Path Tracing Types
-#include "default_path_tracing.h"
+#include "default_path_tracing.cuh"
 
 using glm::vec3;
 using glm::mat3;
@@ -80,10 +80,25 @@ int main (int argc, char* argv[]) {
 
     // Default Path tracing algorithm
     if(PATH_TRACING_METHOD == 0){
-        Update(camera);
-        draw_default_path_tracing(screen, camera, light_planes, surfaces, light_plane_count, surfaces_count);
-    }
 
+        // Create the shared RGB screen buffer
+        vec3 * shared_buffer;
+        cudaMallocManaged(&shared_buffer, (float)SCREEN_HEIGHT*(float)SCREEN_WIDTH*sizeof(vec3));
+
+        Update(camera);
+        dim3 block_size(8, 8);
+        int blocks_x = (SCREEN_WIDTH + block_size.x - 1)/block_size.x;
+        int blocks_y = (SCREEN_HEIGHT + block_size.y - 1)/block_size.y;
+        dim3 num_blocks(blocks_x, blocks_y);
+        draw_default_path_tracing<<<num_blocks, block_size>>>(shared_buffer, camera, light_planes, surfaces, light_plane_count, surfaces_count);
+
+        // Put pixels in the SDL buffer, ready for rendering
+        for (int x = 0; x < SCREEN_WIDTH; x++){
+            for (int y = 0; y < SCREEN_HEIGHT; y++){
+                screen.PutPixelSDL(x, y, shared_buffer[x*(int)SCREEN_HEIGHT + y]);
+            }
+        }
+    }
 
     /*                  Rendering                       */
     screen.SDL_Renderframe();

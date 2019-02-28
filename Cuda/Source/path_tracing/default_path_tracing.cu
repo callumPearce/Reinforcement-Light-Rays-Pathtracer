@@ -1,31 +1,22 @@
 #include "default_path_tracing.h"
 #include <iostream>
 
-#define checkCudaErrors(val) check_cuda( (val), #val, __FILE__, __LINE__ )
-void check_cuda(cudaError_t result, char const *const func, const char *const file, int const line) {
-    if (result) {
-        std::cerr << "CUDA error = " << static_cast<unsigned int>(result) << " at " <<
-        file << ":" << line << " '" << func << "' \n";
-        // Make sure we call CUDA Device Reset before exiting
-        cudaDeviceReset();
-        exit(99);
-    }
-}
-
-void draw_default_path_tracing(SDLScreen screen, Camera& camera, AreaLight* light_planes, Surface* surfaces, int light_plane_count, int surfaces_count){
-    // Reset the SDL screen to black
-    memset(screen.buffer, 0, screen.height*screen.width*sizeof(uint32_t));
-
+// global means running on GPU, callable from CPU -> global functions are kernels
+__global__
+void draw_default_path_tracing(vec3* shared_buffer, Camera& camera, AreaLight* light_planes, Surface* surfaces, int light_plane_count, int surfaces_count){
+    
+    // Populate the shared GPU/CPU screen buffer
+    // TODO: Calculate x, y using cuda values rather then for loop
     for (int x = 0; x < SCREEN_WIDTH; x++){
         for (int y = 0; y < SCREEN_HEIGHT; y++){
-
             // Path trace the ray to find the colour to paint the pixel
-            vec3 irradiance = path_trace(camera, x, y, surfaces, light_planes, light_plane_count, surfaces_count);
-            screen.PutPixelSDL(x, y, irradiance);
+            shared_buffer[x*(int)SCREEN_HEIGHT + y] = path_trace(camera, x, y, surfaces, light_planes, light_plane_count, surfaces_count);
         }
     }
+
 }
 
+__device__
 vec3 path_trace(Camera& camera, int pixel_x, int pixel_y, Surface* surfaces, AreaLight* light_planes, int light_plane_count, int surfaces_count){
 
     vec3 irradiance = vec3(0.f);
@@ -52,6 +43,7 @@ vec3 path_trace(Camera& camera, int pixel_x, int pixel_y, Surface* surfaces, Are
 
 // Traces the path of a ray following monte carlo path tracer in order to estimate the radiance for a ray shot
 // from its angle and starting position
+__device__
 vec3 path_trace_recursive(Ray ray, Surface* surfaces, AreaLight* light_planes, int bounces, int light_plane_count, int surfaces_count){
     
     // Trace the path of the ray to find the closest intersection
@@ -86,6 +78,7 @@ vec3 path_trace_recursive(Ray ray, Surface* surfaces, AreaLight* light_planes, i
 
 // For a given intersection point, return the radiance of the surface resulting
 // from indirect illumination (i.e. other shapes in the scene) via the Monte Carlo Raytracing
+__device__
 vec3 indirect_irradiance(const Intersection& intersection, Surface* surfaces, AreaLight* light_planes, int bounces, int light_plane_count, int surfaces_count){
 
     float cos_theta;

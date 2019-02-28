@@ -806,32 +806,6 @@ Source/objects/triangle.h
 shape.h
 Source/objects/shape.h
 
-Source/path_tracing/default_path_tracing.h
-glm/glm.hpp
--
-string
--
-memory
--
-ray.h
-Source/path_tracing/ray.h
-surface.h
-Source/path_tracing/surface.h
-area_light.h
-Source/path_tracing/area_light.h
-monte_carlo_settings.h
-Source/path_tracing/monte_carlo_settings.h
-hemisphere_helpers.h
-Source/path_tracing/hemisphere_helpers.h
-camera.h
-Source/path_tracing/camera.h
-image_settings.h
-Source/path_tracing/image_settings.h
-printing.h
-Source/path_tracing/printing.h
-sdl_screen.h
-Source/path_tracing/sdl_screen.h
-
 Source/rays/ray.h
 glm/glm.hpp
 -
@@ -865,12 +839,6 @@ glm/glm.hpp
 -
 stdint.h
 -
-
-Source/utils/hemisphere_helpers.h
-glm/glm.hpp
--
-ray.h
-Source/utils/ray.h
 
 Source/utils/printing.h
 iostream
