@@ -39,10 +39,10 @@ void get_cornell_shapes(std::vector<Surface>& Surfaces, std::vector<AreaLight>& 
     Surfaces.push_back(flrTri2);
 
     // Left wall
-    Surface lftWall1 = Surface(A, E, C, red);
+    Surface lftWall1 = Surface(A, E, C, white);
     Surfaces.push_back(lftWall1);
 
-    Surface lftWall2 = Surface(C, E, G, red);
+    Surface lftWall2 = Surface(C, E, G, white);
     Surfaces.push_back(lftWall2);
 
     // Right wall
@@ -77,7 +77,7 @@ void get_cornell_shapes(std::vector<Surface>& Surfaces, std::vector<AreaLight>& 
     Surface clng8 = Surface(H, G, I, cyan);
     Surfaces.push_back(clng8);
 
-    vec3 diffuse_p = 1.5f * vec3(1, 1, 0.9);
+    vec3 diffuse_p = 3.f * vec3(1, 1, 0.9);
     AreaLight a1 = AreaLight(K, I, J, diffuse_p);
     light_planes.push_back(a1);
 
