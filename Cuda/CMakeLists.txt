@@ -32,19 +32,18 @@ include_directories(Source/path_tracing)
 # Set the sources
 set(
     SOURCES
-    Source/main.cpp
-    Source/camera.cpp
+    Source/main.cu
+    Source/camera.cu
     Source/sdl/sdl_screen.cpp
-    Source/rays/ray.cpp
-    Source/objects/material.cpp
-    Source/objects/shape.cpp
-    Source/objects/triangle.cpp
-    Source/objects/surface.cpp
-    Source/scenes/cornell_box_scene.cpp
+    Source/rays/ray.cu
+    Source/objects/material.cu
+    Source/objects/shape.cu
+    Source/objects/triangle.cu
+    Source/objects/surface.cu
+    Source/scenes/cornell_box_scene.cu
     Source/utils/printing.cpp
-    Source/utils/hemisphere_helpers.cpp
-    Source/utils/interpolation.cpp
-    Source/lights/area_light.cpp
+    Source/utils/hemisphere_helpers.cu
+    Source/lights/area_light.cu
     Source/path_tracing/default_path_tracing.cu
 )
 
