@@ -50,13 +50,15 @@ class Ray {
         vec4 direction;
 
     public:
+        Intersection intersection;
+
         // Constructor
         __device__
         Ray(vec4 start, vec4 direction);
 
         // Find the closest intersection for the given ray with an shape in the scene
         __device__
-        void closest_intersection(Surface* surfaces, AreaLight* light_planes, Intersection& closest_intersection, int light_plane_count, int surfaces_count);
+        void closest_intersection(Surface* surfaces, AreaLight* light_planes, int light_plane_count, int surfaces_count);
 
         // Cramers rule for solving a system of linear equations
         __device__

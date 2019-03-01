@@ -25,10 +25,10 @@ void get_cornell_shapes(std::vector<Surface>& Surfaces, std::vector<AreaLight>& 
     vec4 G(l,l,l,1);
     vec4 H(0,l,l,1);
 
-    vec4 I(l/3, l, (2*l)/3, 1);
-    vec4 J((2*l)/3, l, (2*l)/3, 1);
-    vec4 K(l/3, l, l/3, 1);
-    vec4 L((2*l)/3, l, l/3, 1);
+    vec4 I(l/4, l, (3*l)/4, 1);
+    vec4 J((3*l)/4, l, (3*l)/4, 1);
+    vec4 K(l/4, l, l/4, 1);
+    vec4 L((3*l)/4, l, l/4, 1);
 
     // Surfaces now take a material as an argument rather than a colour
     // Floor:
@@ -39,10 +39,10 @@ void get_cornell_shapes(std::vector<Surface>& Surfaces, std::vector<AreaLight>& 
     Surfaces.push_back(flrTri2);
 
     // Left wall
-    Surface lftWall1 = Surface(A, E, C, white);
+    Surface lftWall1 = Surface(A, E, C, red);
     Surfaces.push_back(lftWall1);
 
-    Surface lftWall2 = Surface(C, E, G, white);
+    Surface lftWall2 = Surface(C, E, G, red);
     Surfaces.push_back(lftWall2);
 
     // Right wall
@@ -77,7 +77,7 @@ void get_cornell_shapes(std::vector<Surface>& Surfaces, std::vector<AreaLight>& 
     Surface clng8 = Surface(H, G, I, cyan);
     Surfaces.push_back(clng8);
 
-    vec3 diffuse_p = 1.f * vec3(1, 1, 0.9);
+    vec3 diffuse_p = 1.5f * vec3(1, 1, 0.9);
     AreaLight a1 = AreaLight(K, I, J, diffuse_p);
     light_planes.push_back(a1);
 
@@ -171,19 +171,19 @@ void get_cornell_shapes(std::vector<Surface>& Surfaces, std::vector<AreaLight>& 
         vec4 newV0 = Surfaces[i].getV0();
         newV0.x *= -1;
         newV0.y *= -1;
-        newV0.w = 1.0;
+        newV0.w = 1.0f;
         Surfaces[i].setV0(newV0);
 
         vec4 newV1 = Surfaces[i].getV1();
         newV1.x *= -1;
         newV1.y *= -1;
-        newV1.w = 1.0;
+        newV1.w = 1.0f;
         Surfaces[i].setV1(newV1);
 
         vec4 newV2 = Surfaces[i].getV2();
         newV2.x *= -1;
         newV2.y *= -1;
-        newV2.w = 1.0;
+        newV2.w = 1.0f;
         Surfaces[i].setV2(newV2);
 
         Surfaces[i].compute_and_set_normal();
@@ -201,19 +201,19 @@ void get_cornell_shapes(std::vector<Surface>& Surfaces, std::vector<AreaLight>& 
         vec4 newV0 = light_planes[i].getV0();
         newV0.x *= -1;
         newV0.y *= -1;
-        newV0.w = 1.0;
+        newV0.w = 1.0f;
         light_planes[i].setV0(newV0);
 
         vec4 newV1 = light_planes[i].getV1();
         newV1.x *= -1;
         newV1.y *= -1;
-        newV1.w = 1.0;
+        newV1.w = 1.0f;
         light_planes[i].setV1(newV1);
 
         vec4 newV2 = light_planes[i].getV2();
         newV2.x *= -1;
         newV2.y *= -1;
-        newV2.w = 1.0;
+        newV2.w = 1.0f;
         light_planes[i].setV2(newV2);
     }
 

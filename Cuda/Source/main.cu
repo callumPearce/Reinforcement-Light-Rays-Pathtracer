@@ -70,7 +70,7 @@ void check_cuda(cudaError_t result, char const *const func, const char *const fi
 __global__ void init_rand_state(curandState* d_rand_state) {
     int x = threadIdx.x + blockIdx.x * blockDim.x;
     int y = threadIdx.y + blockIdx.y * blockDim.y;
-    printf("(%d,%d)",x,y);
+
     if((x >= SCREEN_WIDTH) || (y >= SCREEN_HEIGHT)) return;
     int pixel_index = x*SCREEN_HEIGHT + y;
     //Each thread gets same seed, a different sequence number, no offset
@@ -112,19 +112,19 @@ int main (int argc, char* argv[]) {
 
         // Create the shared RGB screen buffer
         vec3 * device_buffer;
-        size_t screen_size = (float)SCREEN_HEIGHT * (float)SCREEN_WIDTH * sizeof(vec3);
-        cudaMalloc(&device_buffer, screen_size);
-        cudaMemset(device_buffer, 0, screen_size);
+        size_t screen_size = SCREEN_HEIGHT * SCREEN_WIDTH * sizeof(vec3);
+        checkCudaErrors(cudaMalloc(&device_buffer, SCREEN_HEIGHT * SCREEN_WIDTH * sizeof(vec3)));
+        // checkCudaErrors(cudaMemset(device_buffer, 0, screen_size));
         
         // Copy surfaces into device memory space
         Surface* device_surfaces;
-        cudaMalloc(&device_surfaces, surfaces_count * sizeof(Surface));
-        cudaMemcpy(device_surfaces, surfaces, surfaces_count * sizeof(Surface), cudaMemcpyHostToDevice);
+        checkCudaErrors(cudaMalloc(&device_surfaces, surfaces_count * sizeof(Surface)));
+        checkCudaErrors(cudaMemcpy(device_surfaces, surfaces, surfaces_count * sizeof(Surface), cudaMemcpyHostToDevice));
 
         // Copy light planes into device memory space
         AreaLight* device_light_planes;
-        cudaMalloc(&device_light_planes, light_plane_count * sizeof(AreaLight));
-        cudaMemcpy(device_light_planes, light_planes, light_plane_count * sizeof(AreaLight), cudaMemcpyHostToDevice);
+        checkCudaErrors(cudaMalloc(&device_light_planes, light_plane_count * sizeof(AreaLight)));
+        checkCudaErrors(cudaMemcpy(device_light_planes, light_planes, light_plane_count * sizeof(AreaLight), cudaMemcpyHostToDevice));
 
         // Get the block size and block count to compute over all pixels
         dim3 block_size(8, 8);
@@ -134,16 +134,19 @@ int main (int argc, char* argv[]) {
 
         // Create the random state array for random number generation
         curandState * d_rand_state;
-        cudaMalloc(&d_rand_state, screen_size);
+        checkCudaErrors(cudaMalloc(&d_rand_state, (float)SCREEN_HEIGHT * (float)SCREEN_WIDTH * sizeof(curandState)));
         init_rand_state<<<num_blocks, block_size>>>(d_rand_state);
 
-        cudaDeviceSynchronize();
+        printf("Block Size: (%d,%d)\n", block_size.x, block_size.y);
+        printf("Block Count: (%d,%d)\n", num_blocks.x, num_blocks.y);
 
         draw_default_path_tracing<<<num_blocks, block_size>>>(device_buffer, d_rand_state, camera, device_light_planes, device_surfaces, light_plane_count, surfaces_count);
 
+        // cudaDeviceSynchronize();
+
         // Copy the render back to the host
         vec3* host_buffer = new vec3[ SCREEN_HEIGHT * SCREEN_WIDTH ];
-        cudaMemcpy(host_buffer, device_buffer, screen_size, cudaMemcpyDeviceToHost);
+        checkCudaErrors(cudaMemcpy(host_buffer, device_buffer, SCREEN_HEIGHT * SCREEN_WIDTH * sizeof(vec3), cudaMemcpyDeviceToHost));
 
         // Put pixels in the SDL buffer, ready for rendering
         for (int x = 0; x < SCREEN_WIDTH; x++){

@@ -74,10 +74,9 @@ vec4 sample_random_direction_around_intersection(curandState* d_rand_state, cons
     // Generate random number for monte carlo sampling of theta and phi
     int x = blockIdx.x * blockDim.x + threadIdx.x;
     int y = blockIdx.y * blockDim.y + threadIdx.y;
-    curandState x_rand_state = d_rand_state[x*(int)SCREEN_HEIGHT + y];
-    curandState y_rand_state = d_rand_state[x*(int)SCREEN_HEIGHT + y];
-    cos_theta = curand_uniform(&x_rand_state);
-    float r2 = curand_uniform(&y_rand_state);
+
+    cos_theta = curand_uniform(&d_rand_state[x*(int)SCREEN_HEIGHT + y]);
+    float r2 = curand_uniform(&d_rand_state[x*(int)SCREEN_HEIGHT + y]);
 
     // Sample uniformly coordinates on unit hemisphere
     vec3 sample = uniform_hemisphere_sample(cos_theta, r2);

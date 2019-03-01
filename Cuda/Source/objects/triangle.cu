@@ -12,7 +12,8 @@ Triangle::Triangle(vec4 v0, vec4 v1, vec4 v2){
 
 // Tests whether the triangle intersects a ray, closer to the current closest intersection
 __device__
-bool Triangle::intersects(Ray * ray, Intersection& intersection, int index) {
+bool Triangle::intersects(Ray * ray, int index) {
+
     bool returnVal = false;
     vec4 start = ray->get_start();
     vec4 dir = ray->get_direction();
@@ -36,12 +37,12 @@ bool Triangle::intersects(Ray * ray, Intersection& intersection, int index) {
     bool crmr = cramer(A, b, solution);
 
     if (crmr && solution.x >= 0.0f && solution.y >= 0.0f && solution.z >= 0.0f && solution.y + solution.z <= 1.0f) {
-        if (solution.x < intersection.distance + EPS && solution.x > EPS) {
-            intersection.position = start + solution.x * dir;
-            intersection.position[3] = 1;
-            intersection.distance = solution.x;
-            intersection.normal = normal;
-            intersection.index = index;
+        if (solution.x < ray->intersection.distance + EPS && solution.x > EPS) {
+            ray->intersection.position = start + solution.x * dir;
+            ray->intersection.position[3] = 1;
+            ray->intersection.distance = solution.x;
+            ray->intersection.normal = normal;
+            ray->intersection.index = index;
             returnVal = true;
         }
     }
