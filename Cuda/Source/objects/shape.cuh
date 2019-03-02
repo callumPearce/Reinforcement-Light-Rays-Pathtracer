@@ -17,6 +17,7 @@ class Shape {
 
     public:
         // Constructor
+        __host__
         Shape();
 
 };

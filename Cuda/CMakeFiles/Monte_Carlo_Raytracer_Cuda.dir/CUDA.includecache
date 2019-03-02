@@ -150,6 +150,26 @@ curand.h
 curand_kernel.h
 -
 
+/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/radiance_volumes/radiance_volume.cu
+radiance_volume.cuh
+/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/radiance_volumes/radiance_volume.cuh
+iostream
+-
+
+/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/radiance_volumes/radiance_volume.cuh
+glm/glm.hpp
+-
+surface.cuh
+/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/radiance_volumes/surface.cuh
+radiance_volumes_settings.h
+/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/radiance_volumes/radiance_volumes_settings.h
+hemisphere_helpers.cuh
+/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/radiance_volumes/hemisphere_helpers.cuh
+default_path_tracing.cuh
+/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/radiance_volumes/default_path_tracing.cuh
+printing.h
+/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/radiance_volumes/printing.h
+
 /home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/rays/ray.cu
 ray.cuh
 /home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/rays/ray.cuh
@@ -793,6 +813,8 @@ glm/glm.hpp
 Source/constants/image_settings.h
 
 Source/constants/monte_carlo_settings.h
+
+Source/constants/radiance_volumes_settings.h
 
 Source/lights/area_light.cuh
 glm/glm.hpp

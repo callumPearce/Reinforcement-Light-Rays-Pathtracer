@@ -18,11 +18,12 @@ __device__
 void create_normal_coordinate_system(vec3& normal, vec3& normal_T, vec3& normal_B);
 
 // Sample a direction on a unit hemisphere
-__device__
+__device__ __host__
 vec3 uniform_hemisphere_sample(float r1, float r2);
 
 // // Create the transformation matrix for a unit hemisphere
-// mat4 create_transformation_matrix(vec3 normal, vec4 position);
+__host__
+mat4 create_transformation_matrix(vec3 normal, vec4 position);
 
 // Sample a random direction in a unit hemisphere around an intersection point
 __device__

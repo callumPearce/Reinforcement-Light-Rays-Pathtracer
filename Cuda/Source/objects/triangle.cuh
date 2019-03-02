@@ -19,14 +19,18 @@ class Triangle : public Shape {
         vec4 normal;
 
         // Constructor
+        __host__
         Triangle(vec4 v0, vec4 v1, vec4 v2);
 
         // Gets the surface area of a triangle
+        __device__
         float compute_area();
 
         // Samples a position on the triangle plane
+        __device__
         vec4 sample_position_on_plane();
 
+        __host__
         void compute_and_set_normal();
 
 };

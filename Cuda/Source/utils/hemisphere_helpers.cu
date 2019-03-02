@@ -27,7 +27,7 @@ vec3 uniform_hemisphere_sample(float r1, float r2){
 // Create the new coordinate system based on the normal being the y-axis unit vector.
 // In other words, create a **basis** set of vectors which any vector in the 3D space
 // can be created with by taking a linear combination of these 3 vectors
-__device__
+__device__ __host__
 void create_normal_coordinate_system(vec3& normal, vec3& normal_T, vec3& normal_B){
     // normal_T is found by setting either x or y to 0
     // i.e. the two define a plane
@@ -44,22 +44,23 @@ void create_normal_coordinate_system(vec3& normal, vec3& normal_T, vec3& normal_
 }
 
 // // Create the transformation matrix for a unit hemisphere
-// mat4 create_transformation_matrix(vec3 normal, vec4 position){
-//     // Create coordinate system (i.e. 3 basis vectors to define rotation)
-//     vec3 normal_T;
-//     vec3 normal_B;
-//     create_normal_coordinate_system(normal, normal_T, normal_B);
-//     // Build the transformation matrix
-//     // [ right
-//     //   up
-//     //   forward
-//     //   translation ]
-//     vec4 normal4 = vec4(normal, 0.f);
-//     vec4 normal_T4 = vec4(normal_T, 0.f);
-//     vec4 normal_B4 = vec4(normal_B, 0.f);
-//     position.w = 1.f;
-//     return mat4(normal_T4, normal4, normal_B4, position);
-// }
+__host__
+mat4 create_transformation_matrix(vec3 normal, vec4 position){
+    // Create coordinate system (i.e. 3 basis vectors to define rotation)
+    vec3 normal_T;
+    vec3 normal_B;
+    create_normal_coordinate_system(normal, normal_T, normal_B);
+    // Build the transformation matrix
+    // [ right
+    //   up
+    //   forward
+    //   translation ]
+    vec4 normal4 = vec4(normal, 0.f);
+    vec4 normal_T4 = vec4(normal_T, 0.f);
+    vec4 normal_B4 = vec4(normal_B, 0.f);
+    position.w = 1.f;
+    return mat4(normal_T4, normal4, normal_B4, position);
+}
 
 // Sample a random direction in a unit hemisphere around an intersection point
 __device__

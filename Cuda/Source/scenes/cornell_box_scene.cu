@@ -1,5 +1,6 @@
 #include "cornell_box_scene.cuh"
 
+__host__
 void get_cornell_shapes(std::vector<Surface>& Surfaces, std::vector<AreaLight>& light_planes) {
     
     // Materials

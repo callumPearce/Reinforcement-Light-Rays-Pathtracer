@@ -22,6 +22,7 @@ class Material{
         vec3 diffuse_c;
 
         //Constructor
+        __host__
         Material(vec3 diffuse_c);
 };
 

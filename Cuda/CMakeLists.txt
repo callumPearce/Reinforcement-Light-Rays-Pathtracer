@@ -28,6 +28,7 @@ include_directories(Source/lights)
 include_directories(Source/sdl)
 include_directories(Source/rays)
 include_directories(Source/path_tracing)
+include_directories(Source/radiance_volumes)
 
 # Set the sources
 set(
@@ -40,6 +41,7 @@ set(
     Source/objects/shape.cu
     Source/objects/triangle.cu
     Source/objects/surface.cu
+    Source/radiance_volumes/radiance_volume.cu
     Source/scenes/cornell_box_scene.cu
     Source/utils/printing.cpp
     Source/utils/hemisphere_helpers.cu
