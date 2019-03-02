@@ -19,9 +19,6 @@ class Shape {
         // Constructor
         Shape();
 
-        // Tests whether the shape intersects a ray
-        __device__
-        virtual bool intersects(Ray * ray, int index)=0;
 };
 
 #endif

@@ -46,10 +46,18 @@ struct Intersection {
 class Ray {
 
     private:
-        vec4 start;
-        vec4 direction;
+        __device__
+        static bool cramer(mat3 A, vec3 b, vec3& solution);
+
+        __device__
+        bool intersects(int index, Surface* surfaces);
+
+        __device__
+        bool intersects(int index, AreaLight* area_lights);
 
     public:
+        vec4 start;
+        vec4 direction;
         Intersection intersection;
 
         // Constructor
@@ -68,17 +76,6 @@ class Ray {
         __device__
         void rotate_ray(float yaw);
 
-        // Getters
-        __device__
-        vec4 get_start();
-        __device__
-        vec4 get_direction();
-
-        // Setters
-        __device__
-        void set_start(vec4 start);
-        __device__
-        void set_direction(vec4 direction);
 };
 
 #endif

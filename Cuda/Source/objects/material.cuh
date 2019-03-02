@@ -17,18 +17,12 @@ using glm::mat4;
 class Material{
 
     private:
-        vec3 diffuse_c;
     
     public:
+        vec3 diffuse_c;
+
         //Constructor
         Material(vec3 diffuse_c);
-
-        //Getters
-        __device__
-        vec3 get_diffuse_c();
-
-        //Setters
-        void set_diffuse_c(vec3 diffuse_c);
 };
 
 #endif

@@ -21,21 +21,15 @@ using glm::mat4;
 class AreaLight : public Triangle{
 
     private:
-        vec3 diffuse_p;
 
     public:
+        vec3 diffuse_p;
+        
         // Default Constructor
         AreaLight();
 
         // Constructor
         AreaLight(vec4 v0, vec4 v1, vec4 v2, vec3 diffuse_p);
-
-        // Getters
-        __device__
-        vec3 get_diffuse_p();
-
-        // Setters
-        void set_diffuse_p(vec3 diffuse_p);
 };
 
 #endif

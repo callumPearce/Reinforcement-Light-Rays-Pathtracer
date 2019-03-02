@@ -160,61 +160,63 @@ void get_cornell_shapes(std::vector<Surface>& Surfaces, std::vector<AreaLight>& 
 
 
     for (size_t i = 0 ; i < Surfaces.size() ; ++i) {
-        Surfaces[i].setV0(Surfaces[i].getV0() * (2 / l));
-        Surfaces[i].setV1(Surfaces[i].getV1() * (2 / l));
-        Surfaces[i].setV2(Surfaces[i].getV2() * (2 / l));
+        Surfaces[i].v0 = Surfaces[i].v0 * (2 / l);
+        Surfaces[i].v1 = Surfaces[i].v1 * (2 / l);
+        Surfaces[i].v2 = Surfaces[i].v2 * (2 / l);
 
-        Surfaces[i].setV0(Surfaces[i].getV0() - vec4(1,1,1,1));
-        Surfaces[i].setV1(Surfaces[i].getV1() - vec4(1,1,1,1));
-        Surfaces[i].setV2(Surfaces[i].getV2() - vec4(1,1,1,1));
+        Surfaces[i].v0 = Surfaces[i].v0 - vec4(1,1,1,1);
+        Surfaces[i].v1 = Surfaces[i].v1 - vec4(1,1,1,1);
+        Surfaces[i].v2 = Surfaces[i].v2 - vec4(1,1,1,1);
 
-        vec4 newV0 = Surfaces[i].getV0();
+        vec4 newV0 = Surfaces[i].v0;
         newV0.x *= -1;
         newV0.y *= -1;
         newV0.w = 1.0f;
-        Surfaces[i].setV0(newV0);
+        Surfaces[i].v0 = newV0;
 
-        vec4 newV1 = Surfaces[i].getV1();
+        vec4 newV1 = Surfaces[i].v1;
         newV1.x *= -1;
         newV1.y *= -1;
         newV1.w = 1.0f;
-        Surfaces[i].setV1(newV1);
+        Surfaces[i].v1 = newV1;
 
-        vec4 newV2 = Surfaces[i].getV2();
+        vec4 newV2 = Surfaces[i].v2;
         newV2.x *= -1;
         newV2.y *= -1;
         newV2.w = 1.0f;
-        Surfaces[i].setV2(newV2);
+        Surfaces[i].v2 = newV2;
 
         Surfaces[i].compute_and_set_normal();
     }
     
     for (size_t i = 0 ; i < light_planes.size() ; ++i) {
-        light_planes[i].setV0(light_planes[i].getV0() * (2 / l));
-        light_planes[i].setV1(light_planes[i].getV1() * (2 / l));
-        light_planes[i].setV2(light_planes[i].getV2() * (2 / l));
+        light_planes[i].v0 = light_planes[i].v0 * (2 / l);
+        light_planes[i].v1 = light_planes[i].v1 * (2 / l);
+        light_planes[i].v2 = light_planes[i].v2 * (2 / l);
 
-        light_planes[i].setV0(light_planes[i].getV0() - vec4(1,1,1,1));
-        light_planes[i].setV1(light_planes[i].getV1() - vec4(1,1,1,1));
-        light_planes[i].setV2(light_planes[i].getV2() - vec4(1,1,1,1));
+        light_planes[i].v0 = light_planes[i].v0 - vec4(1,1,1,1);
+        light_planes[i].v1 = light_planes[i].v1 - vec4(1,1,1,1);
+        light_planes[i].v2 = light_planes[i].v2 - vec4(1,1,1,1);
 
-        vec4 newV0 = light_planes[i].getV0();
+        vec4 newV0 = light_planes[i].v0;
         newV0.x *= -1;
         newV0.y *= -1;
         newV0.w = 1.0f;
-        light_planes[i].setV0(newV0);
+        light_planes[i].v0 = newV0;
 
-        vec4 newV1 = light_planes[i].getV1();
+        vec4 newV1 = light_planes[i].v1;
         newV1.x *= -1;
         newV1.y *= -1;
         newV1.w = 1.0f;
-        light_planes[i].setV1(newV1);
+        light_planes[i].v1 = newV1;
 
-        vec4 newV2 = light_planes[i].getV2();
+        vec4 newV2 = light_planes[i].v2;
         newV2.x *= -1;
         newV2.y *= -1;
         newV2.w = 1.0f;
-        light_planes[i].setV2(newV2);
+        light_planes[i].v2 = newV2;
+
+        light_planes[i].compute_and_set_normal();
     }
 
 }

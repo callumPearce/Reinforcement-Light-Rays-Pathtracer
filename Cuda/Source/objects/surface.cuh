@@ -18,21 +18,15 @@ using glm::mat4;
 class Surface : public Triangle{
 
     private:
-        Material material = Material(vec3(0));
 
     public:
+        Material material = Material(vec3(0));
+
         // Default constructor
         Surface();
 
         // Constructor
         Surface(vec4 v0, vec4 v1, vec4 v2, Material material);
-
-        // Getters
-        __device__
-        Material get_material();
-
-        // Setters
-        void set_material(Material material);
 };
 
 #endif

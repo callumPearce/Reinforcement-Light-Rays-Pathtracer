@@ -40,4 +40,7 @@ vec3 path_trace_recursive(curandState* d_rand_state, Ray ray, Surface* surfaces,
 __device__
 vec3 indirect_irradiance(curandState* d_rand_state, const Ray incident_ray, Surface* surfaces, AreaLight* light_planes, int bounces, int light_plane_count, int surfaces_count);
 
+__device__
+vec3 path_trace_iterative(curandState* d_rand_state, Ray ray, Surface* surfaces, AreaLight* light_planes, int light_plane_count, int surfaces_count);
+
 #endif
