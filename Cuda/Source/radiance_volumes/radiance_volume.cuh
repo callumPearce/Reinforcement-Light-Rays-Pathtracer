@@ -22,13 +22,6 @@ using glm::mat4;
 class RadianceVolume{
 
     private:
-        vec4 position;
-        vec3* radiance_grid;
-        float* radiance_distribution;
-        float* visits;
-        // For coordinate system
-        vec3 normal;
-        mat4 transformation_matrix;
 
         /*
         * This function takes a point in the unit square,
@@ -53,6 +46,15 @@ class RadianceVolume{
         void initialise_visits();
 
     public:
+        bool initialised = false;
+        vec4 position;
+        vec3* radiance_grid;
+        float* radiance_distribution;
+        float* visits;
+        // For coordinate system
+        vec3 normal;
+        mat4 transformation_matrix;
+
         // Default Constructor
         RadianceVolume();
         
@@ -100,14 +102,6 @@ class RadianceVolume{
 
         // Gets the voronoi colour of the radiance volume
         vec3 get_voronoi_colour();
-
-        // Getters
-        vec4 get_position();
-        vec3 get_normal();
-
-        // Setters
-        void set_position(vec4 position);
-        void set_normal(vec3 normal);
 };
 
 #endif

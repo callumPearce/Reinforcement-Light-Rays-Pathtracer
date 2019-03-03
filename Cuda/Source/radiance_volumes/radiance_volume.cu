@@ -11,11 +11,12 @@ RadianceVolume::RadianceVolume(vec4 position, vec4 normal){
     initialise_radiance_grid();
     initialise_radiance_distribution();
     initialise_visits();
-    set_position(position);
-    set_normal(vec3(normal.x, normal.y, normal.z));
+    this->position = position;
+    this->normal = vec3(normal.x, normal.y, normal.z);
 
     // Create the transformation matrix for this hemisphere: local->world
     this->transformation_matrix = create_transformation_matrix(normal, position);
+    this->initialised = true;
 }
 
 // Updates the transformation matrix with the current set values of the normal and position
@@ -374,22 +375,4 @@ void RadianceVolume::map(float x, float y, float& x_ret, float& y_ret, float& z_
     x_ret = sin(theta)*cos(phi);
     y_ret = cos(theta);
     z_ret = sin(theta)*sin(phi);
-}
-
-// Getters
-vec4 RadianceVolume::get_position(){
-    return this->position;
-}
-
-vec3 RadianceVolume::get_normal(){
-    return this->normal;
-}
-
-// Setters
-void RadianceVolume::set_position(vec4 position){
-    this->position = position;
-}
-
-void RadianceVolume::set_normal(vec3 normal){
-    this->normal = normal;
 }

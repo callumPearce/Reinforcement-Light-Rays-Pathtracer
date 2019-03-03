@@ -2,10 +2,8 @@
 #define RADIANCE_TREE_H
 
 #include <glm/glm.hpp>
-#include "radiance_volume.h"
-#include "radiance_volume_comparator.h"
-#include <algorithm>
-#include <queue>
+#include "radiance_volume.cuh"
+#include "radiance_volume_comparator.cuh"
 
 using glm::vec3;
 using glm::mat3;
@@ -43,6 +41,9 @@ class RadianceTree{
 
         // // Attempt to insert each Radiance Volume in the current tree into the sorted priority queue
         // void radiance_volume_sorted_queue_insert(vec4 position, vec4 normal, std::priority_queue<RadianceVolumeComparator>& sorted_queue, float max_dist, int n);
+
+        // Find the closest radiance volume wrapped in the radiance volume comparator
+        RadianceVolumeComparator find_closest_radiance_volume_comparator(float max_dist, vec4 position, vec4 normal, RadianceVolumeComparator current_closest);
     
     public:
     
@@ -50,8 +51,14 @@ class RadianceTree{
         RadianceTree();
         RadianceTree(std::vector<RadianceVolume*>& radiance_volumes, Dimension dimension);
 
+        // Destructor
+        ~RadianceTree();
+
         // Get the closest n RadianceVolumes within max_dist from position
         // std::vector<RadianceVolume*> find_closest_radiance_volumes(int n, float max_dist, vec4 position, vec4 normal);
+
+        // Get the closest radiance volume to the position passed in within max_dist
+        RadianceVolume find_closest_radiance_volume(float max_dist, vec4 position, vec4 normal);
 };
 
 #endif

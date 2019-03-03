@@ -42,6 +42,9 @@ set(
     Source/objects/triangle.cu
     Source/objects/surface.cu
     Source/radiance_volumes/radiance_volume.cu
+    Source/radiance_volumes/radiance_volume_comparator.cu
+    Source/radiance_volumes/radiance_tree.cu
+    Source/radiance_volumes/radiance_map.cu
     Source/scenes/cornell_box_scene.cu
     Source/utils/printing.cpp
     Source/utils/hemisphere_helpers.cu

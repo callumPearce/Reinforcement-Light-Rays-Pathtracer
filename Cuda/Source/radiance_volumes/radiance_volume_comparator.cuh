@@ -12,10 +12,11 @@ using glm::mat4;
 class RadianceVolumeComparator{
 
     private:
-        float distance;
-        RadianceVolume* radiance_volume;
 
     public:
+
+        float distance;
+        RadianceVolume* radiance_volume;
         
         // Constructor
         RadianceVolumeComparator(RadianceVolume* radiance_volume, float distance);
@@ -23,9 +24,6 @@ class RadianceVolumeComparator{
         // Weak ordering
         friend bool operator<(const RadianceVolumeComparator& lhs, const RadianceVolumeComparator& rhs);
 
-        // Getters
-        RadianceVolume* get_radiance_volume();
-        float get_distance();
 };
 
 #endif

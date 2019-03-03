@@ -8,12 +8,3 @@ RadianceVolumeComparator::RadianceVolumeComparator(RadianceVolume* radiance_volu
 bool operator<(const RadianceVolumeComparator & lhs, const RadianceVolumeComparator & rhs){
     return lhs.distance < rhs.distance;
 }
-
-// Getters
-RadianceVolume* RadianceVolumeComparator::get_radiance_volume(){
-    return this->radiance_volume;
-}
-
-float RadianceVolumeComparator::get_distance(){
-    return this->distance;
-}

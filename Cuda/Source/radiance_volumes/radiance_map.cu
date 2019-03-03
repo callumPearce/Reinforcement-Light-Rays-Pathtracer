@@ -1,10 +1,10 @@
-#include "radiance_map.h"
+#include "radiance_map.cuh"
 #include <algorithm>
 #include <omp.h>
 #include <iostream>
 #include <ctime>
 
-RadianceMap::RadianceMap(bool precompute, std::vector<Surface *> surfaces, std::vector<AreaLightPlane *> light_planes, std::vector<Surface>& surfaces_builder){
+RadianceMap::RadianceMap(bool precompute, Surface* surfaces, AreaLight light_planes, int surfaces_count, int light_planes_count){
     
     std::cout << "Sampling radiance volumes..." << std::endl;
     
@@ -16,7 +16,6 @@ RadianceMap::RadianceMap(bool precompute, std::vector<Surface *> surfaces, std::
 
     // For every surface in the scene, uniformly sample N Radiance
     // Volumes where N is based on the triangles surface area
-    int surfaces_count = surfaces.size();
     for (int i = 0; i < surfaces_count; i++){
         uniformly_sample_radiance_volumes(*surfaces[i]);
     }
