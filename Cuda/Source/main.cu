@@ -105,29 +105,32 @@ int main (int argc, char* argv[]) {
         light_planes[i] = area_lights_load[i];
     }
 
-    // Default path tracing pointers
+    /* Setup defautl CUDA memory */
     vec3 * device_buffer;
     Surface* device_surfaces;
     AreaLight* device_light_planes;
     curandState * d_rand_state;
     vec3* host_buffer = new vec3[ SCREEN_HEIGHT * SCREEN_WIDTH ];
 
-    // Default Path tracing algorithm
+    // Create the shared RGB screen buffer
+    size_t screen_size = SCREEN_HEIGHT * SCREEN_WIDTH * sizeof(vec3);
+    checkCudaErrors(cudaMalloc(&device_buffer, SCREEN_HEIGHT * SCREEN_WIDTH * sizeof(vec3)));
+    
+    // Copy surfaces into device memory space
+    checkCudaErrors(cudaMalloc(&device_surfaces, surfaces_count * sizeof(Surface)));
+    checkCudaErrors(cudaMemcpy(device_surfaces, surfaces, surfaces_count * sizeof(Surface), cudaMemcpyHostToDevice));
+
+    // Copy light planes into device memory space
+    checkCudaErrors(cudaMalloc(&device_light_planes, light_plane_count * sizeof(AreaLight)));
+    checkCudaErrors(cudaMemcpy(device_light_planes, light_planes, light_plane_count * sizeof(AreaLight), cudaMemcpyHostToDevice));
+
+    // Create the random state array for random number generation
+    checkCudaErrors(cudaMalloc(&d_rand_state, (float)SCREEN_HEIGHT * (float)SCREEN_WIDTH * sizeof(curandState)));
+
+    /* Render with specified rendering approach */
     if(PATH_TRACING_METHOD == 0){
 
         Update(camera);
-
-        // Create the shared RGB screen buffer
-        size_t screen_size = SCREEN_HEIGHT * SCREEN_WIDTH * sizeof(vec3);
-        checkCudaErrors(cudaMalloc(&device_buffer, SCREEN_HEIGHT * SCREEN_WIDTH * sizeof(vec3)));
-        
-        // Copy surfaces into device memory space
-        checkCudaErrors(cudaMalloc(&device_surfaces, surfaces_count * sizeof(Surface)));
-        checkCudaErrors(cudaMemcpy(device_surfaces, surfaces, surfaces_count * sizeof(Surface), cudaMemcpyHostToDevice));
-
-        // Copy light planes into device memory space
-        checkCudaErrors(cudaMalloc(&device_light_planes, light_plane_count * sizeof(AreaLight)));
-        checkCudaErrors(cudaMemcpy(device_light_planes, light_planes, light_plane_count * sizeof(AreaLight), cudaMemcpyHostToDevice));
 
         // Get the block size and block count to compute over all pixels
         dim3 block_size(8, 8);
@@ -135,8 +138,6 @@ int main (int argc, char* argv[]) {
         int blocks_y = (SCREEN_HEIGHT + block_size.y - 1)/block_size.y;
         dim3 num_blocks(blocks_x, blocks_y);
 
-        // Create the random state array for random number generation
-        checkCudaErrors(cudaMalloc(&d_rand_state, (float)SCREEN_HEIGHT * (float)SCREEN_WIDTH * sizeof(curandState)));
         init_rand_state<<<num_blocks, block_size>>>(d_rand_state);
 
         draw_default_path_tracing<<<num_blocks, block_size>>>(device_buffer, d_rand_state, camera, device_light_planes, device_surfaces, light_plane_count, surfaces_count);
@@ -152,7 +153,7 @@ int main (int argc, char* argv[]) {
         }
     }
 
-    // Free memeory within CPU/GPU
+    /* Free memeory within CPU/GPU */
     delete [] host_buffer;
     delete [] surfaces;
     delete [] light_planes;

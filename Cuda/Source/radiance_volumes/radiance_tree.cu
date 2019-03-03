@@ -191,15 +191,15 @@ bool RadianceTree::sort_on_z(RadianceVolume* left, RadianceVolume* right){
 
 /* GPU ready find closest radiance volume (Singular) */
 // Get the closest radiance volume
-RadianceVolume RadianceTree::find_closest_radiance_volume(float max_dist, vec4 position, vec4 normal){
+RadianceVolume* RadianceTree::find_closest_radiance_volume(float max_dist, vec4 position, vec4 normal){
     RadianceVolume temp_rv = RadianceVolume();
     RadianceVolumeComparator initial_rvc = RadianceVolumeComparator(&temp_rv, 999999.f);
     RadianceVolumeComparator closest_rvc = find_closest_radiance_volume_comparator(max_dist, position, normal, initial_rvc);
     if (closest_rvc.radiance_volume->initialised){
-        return *(closest_rvc.radiance_volume);
+        return closest_rvc.radiance_volume;
     }
     else {
-        return RadianceVolume();
+        return NULL;
     }
 }
 

@@ -58,7 +58,7 @@ class RadianceTree{
         // std::vector<RadianceVolume*> find_closest_radiance_volumes(int n, float max_dist, vec4 position, vec4 normal);
 
         // Get the closest radiance volume to the position passed in within max_dist
-        RadianceVolume find_closest_radiance_volume(float max_dist, vec4 position, vec4 normal);
+        RadianceVolume* find_closest_radiance_volume(float max_dist, vec4 position, vec4 normal);
 };
 
 #endif

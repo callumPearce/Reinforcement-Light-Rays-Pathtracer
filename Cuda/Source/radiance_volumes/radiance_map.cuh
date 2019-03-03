@@ -6,8 +6,7 @@
 #include "ray.cuh"
 #include "radiance_tree.cuh"
 #include "printing.h"
-#include "radiance_volumes_settings.cuh"
-#include "interpolation.h"
+#include "radiance_volumes_settings.h"
 #include "hemisphere_helpers.cuh"
 
 using glm::vec3;
@@ -23,24 +22,29 @@ class RadianceMap{
 
     private:
 
-        void uniformly_sample_radiance_volumes(Surface surface);
+        void uniformly_sample_radiance_volumes(Surface surface, std::vector<RadianceVolume*>& radiance_vs);
 
     public:
 
-        RadianceVolume* radiance_volumes;
+        // Pointer to a list of pointers
+        RadianceVolume** radiance_volumes;
         RadianceTree* radiance_tree;
+        int radiance_volumes_count = 0;
 
         // Constructor
         RadianceMap(bool precompute, Surface* surfaces, AreaLight light_planes, int surfaces_count, int light_planes_count);
+
+        // Destructor
+        ~RadianceMap();
 
         // Builds all RadianceVolumes which are part of the RadianceMap into the scene
         void build_radiance_map_shapes(std::vector<Surface>& surfaces);
 
         // Get the radiance estimate for every radiance volume in the RadianceMap
-        void get_radiance_estimates(std::vector<Surface *> surfaces, std::vector<AreaLightPlane *> light_planes);
+        void get_radiance_estimates(Surface* surfaces, AreaLight* light_planes);
 
         // Get radiance estimate at the intersection point
-        vec3 get_irradiance_estimate(const Intersection& intersection, std::vector<Surface *> surfaces);
+        // vec3 get_irradiance_estimate(const Intersection& intersection, Surface* surfaces);
 
         // Calculate the Gaussian filter for radiance contribution
         float calculate_gaussian_filter(float volume_distance, float furthest_volume_distance);
@@ -54,7 +58,7 @@ class RadianceMap{
         void update_radiance_distributions();
 
         // Performs the temporal difference update for the radiance volume passed in given the sampled ray direction lead to the intersection
-        void temporal_difference_update_radiance_volume_sector(RadianceVolume* current_radiance_volume, int current_sector_x, int current_sector_y, Intersection& intersection, std::vector<Surface *> surfaces, std::vector<AreaLightPlane *> light_planes);
+        void temporal_difference_update_radiance_volume_sector(RadianceVolume* current_radiance_volume, int current_sector_x, int current_sector_y, Intersection& intersection, Surface* surfaces, AreaLight* light_planes);
 
         // Set the voronoi colours of all radiance volumes in the scene in the first entry of the radiance_grid[0][0]
         void set_voronoi_colours();

@@ -321,9 +321,33 @@ CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/radiance_volumes/radiance_tree.
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/radiance_volumes/radiance_tree.cu.o.provides.build: CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/radiance_volumes/radiance_tree.cu.o
 
 
+CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/radiance_volumes/radiance_map.cu.o: CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/flags.make
+CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/radiance_volumes/radiance_map.cu.o: Source/radiance_volumes/radiance_map.cu
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CUDA object CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/radiance_volumes/radiance_map.cu.o"
+	/usr/local/cuda-10.1/bin/nvcc  $(CUDA_DEFINES) $(CUDA_INCLUDES) $(CUDA_FLAGS) -x cu -dc /home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/radiance_volumes/radiance_map.cu -o CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/radiance_volumes/radiance_map.cu.o
+
+CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/radiance_volumes/radiance_map.cu.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CUDA source to CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/radiance_volumes/radiance_map.cu.i"
+	$(CMAKE_COMMAND) -E cmake_unimplemented_variable CMAKE_CUDA_CREATE_PREPROCESSED_SOURCE
+
+CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/radiance_volumes/radiance_map.cu.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CUDA source to assembly CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/radiance_volumes/radiance_map.cu.s"
+	$(CMAKE_COMMAND) -E cmake_unimplemented_variable CMAKE_CUDA_CREATE_ASSEMBLY_SOURCE
+
+CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/radiance_volumes/radiance_map.cu.o.requires:
+
+.PHONY : CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/radiance_volumes/radiance_map.cu.o.requires
+
+CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/radiance_volumes/radiance_map.cu.o.provides: CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/radiance_volumes/radiance_map.cu.o.requires
+	$(MAKE) -f CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/build.make CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/radiance_volumes/radiance_map.cu.o.provides.build
+.PHONY : CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/radiance_volumes/radiance_map.cu.o.provides
+
+CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/radiance_volumes/radiance_map.cu.o.provides.build: CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/radiance_volumes/radiance_map.cu.o
+
+
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/scenes/cornell_box_scene.cu.o: CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/flags.make
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/scenes/cornell_box_scene.cu.o: Source/scenes/cornell_box_scene.cu
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CUDA object CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/scenes/cornell_box_scene.cu.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CUDA object CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/scenes/cornell_box_scene.cu.o"
 	/usr/local/cuda-10.1/bin/nvcc  $(CUDA_DEFINES) $(CUDA_INCLUDES) $(CUDA_FLAGS) -x cu -dc /home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/scenes/cornell_box_scene.cu -o CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/scenes/cornell_box_scene.cu.o
 
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/scenes/cornell_box_scene.cu.i: cmake_force
@@ -347,7 +371,7 @@ CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/scenes/cornell_box_scene.cu.o.p
 
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/utils/printing.cpp.o: CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/flags.make
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/utils/printing.cpp.o: Source/utils/printing.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/utils/printing.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/utils/printing.cpp.o"
 	nvcc  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/utils/printing.cpp.o -c /home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/utils/printing.cpp
 
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/utils/printing.cpp.i: cmake_force
@@ -371,7 +395,7 @@ CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/utils/printing.cpp.o.provides.b
 
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/utils/hemisphere_helpers.cu.o: CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/flags.make
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/utils/hemisphere_helpers.cu.o: Source/utils/hemisphere_helpers.cu
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CUDA object CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/utils/hemisphere_helpers.cu.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CUDA object CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/utils/hemisphere_helpers.cu.o"
 	/usr/local/cuda-10.1/bin/nvcc  $(CUDA_DEFINES) $(CUDA_INCLUDES) $(CUDA_FLAGS) -x cu -dc /home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/utils/hemisphere_helpers.cu -o CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/utils/hemisphere_helpers.cu.o
 
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/utils/hemisphere_helpers.cu.i: cmake_force
@@ -395,7 +419,7 @@ CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/utils/hemisphere_helpers.cu.o.p
 
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/lights/area_light.cu.o: CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/flags.make
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/lights/area_light.cu.o: Source/lights/area_light.cu
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CUDA object CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/lights/area_light.cu.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building CUDA object CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/lights/area_light.cu.o"
 	/usr/local/cuda-10.1/bin/nvcc  $(CUDA_DEFINES) $(CUDA_INCLUDES) $(CUDA_FLAGS) -x cu -dc /home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/lights/area_light.cu -o CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/lights/area_light.cu.o
 
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/lights/area_light.cu.i: cmake_force
@@ -419,7 +443,7 @@ CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/lights/area_light.cu.o.provides
 
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/path_tracing/default_path_tracing.cu.o: CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/flags.make
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/path_tracing/default_path_tracing.cu.o: Source/path_tracing/default_path_tracing.cu
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building CUDA object CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/path_tracing/default_path_tracing.cu.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Building CUDA object CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/path_tracing/default_path_tracing.cu.o"
 	/usr/local/cuda-10.1/bin/nvcc  $(CUDA_DEFINES) $(CUDA_INCLUDES) $(CUDA_FLAGS) -x cu -dc /home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/path_tracing/default_path_tracing.cu -o CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/path_tracing/default_path_tracing.cu.o
 
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/path_tracing/default_path_tracing.cu.i: cmake_force
@@ -454,6 +478,7 @@ Monte_Carlo_Raytracer_Cuda_OBJECTS = \
 "CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/radiance_volumes/radiance_volume.cu.o" \
 "CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/radiance_volumes/radiance_volume_comparator.cu.o" \
 "CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/radiance_volumes/radiance_tree.cu.o" \
+"CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/radiance_volumes/radiance_map.cu.o" \
 "CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/scenes/cornell_box_scene.cu.o" \
 "CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/utils/printing.cpp.o" \
 "CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/utils/hemisphere_helpers.cu.o" \
@@ -474,6 +499,7 @@ CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/cmake_device_link.o: CMakeFiles/Monte_
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/cmake_device_link.o: CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/radiance_volumes/radiance_volume.cu.o
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/cmake_device_link.o: CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/radiance_volumes/radiance_volume_comparator.cu.o
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/cmake_device_link.o: CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/radiance_volumes/radiance_tree.cu.o
+CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/cmake_device_link.o: CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/radiance_volumes/radiance_map.cu.o
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/cmake_device_link.o: CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/scenes/cornell_box_scene.cu.o
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/cmake_device_link.o: CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/utils/printing.cpp.o
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/cmake_device_link.o: CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/utils/hemisphere_helpers.cu.o
@@ -481,7 +507,7 @@ CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/cmake_device_link.o: CMakeFiles/Monte_
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/cmake_device_link.o: CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/path_tracing/default_path_tracing.cu.o
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/cmake_device_link.o: CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/build.make
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/cmake_device_link.o: CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/dlink.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Linking CUDA device code CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/cmake_device_link.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Linking CUDA device code CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/cmake_device_link.o"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/dlink.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -502,6 +528,7 @@ Monte_Carlo_Raytracer_Cuda_OBJECTS = \
 "CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/radiance_volumes/radiance_volume.cu.o" \
 "CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/radiance_volumes/radiance_volume_comparator.cu.o" \
 "CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/radiance_volumes/radiance_tree.cu.o" \
+"CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/radiance_volumes/radiance_map.cu.o" \
 "CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/scenes/cornell_box_scene.cu.o" \
 "CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/utils/printing.cpp.o" \
 "CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/utils/hemisphere_helpers.cu.o" \
@@ -522,6 +549,7 @@ Build/Monte_Carlo_Raytracer_Cuda: CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Sour
 Build/Monte_Carlo_Raytracer_Cuda: CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/radiance_volumes/radiance_volume.cu.o
 Build/Monte_Carlo_Raytracer_Cuda: CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/radiance_volumes/radiance_volume_comparator.cu.o
 Build/Monte_Carlo_Raytracer_Cuda: CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/radiance_volumes/radiance_tree.cu.o
+Build/Monte_Carlo_Raytracer_Cuda: CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/radiance_volumes/radiance_map.cu.o
 Build/Monte_Carlo_Raytracer_Cuda: CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/scenes/cornell_box_scene.cu.o
 Build/Monte_Carlo_Raytracer_Cuda: CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/utils/printing.cpp.o
 Build/Monte_Carlo_Raytracer_Cuda: CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/utils/hemisphere_helpers.cu.o
@@ -530,7 +558,7 @@ Build/Monte_Carlo_Raytracer_Cuda: CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Sour
 Build/Monte_Carlo_Raytracer_Cuda: CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/build.make
 Build/Monte_Carlo_Raytracer_Cuda: CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/cmake_device_link.o
 Build/Monte_Carlo_Raytracer_Cuda: CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Linking CXX executable Build/Monte_Carlo_Raytracer_Cuda"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/CMakeFiles --progress-num=$(CMAKE_PROGRESS_19) "Linking CXX executable Build/Monte_Carlo_Raytracer_Cuda"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -549,6 +577,7 @@ CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/requires: CMakeFiles/Monte_Carlo_Raytr
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/requires: CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/radiance_volumes/radiance_volume.cu.o.requires
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/requires: CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/radiance_volumes/radiance_volume_comparator.cu.o.requires
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/requires: CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/radiance_volumes/radiance_tree.cu.o.requires
+CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/requires: CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/radiance_volumes/radiance_map.cu.o.requires
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/requires: CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/scenes/cornell_box_scene.cu.o.requires
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/requires: CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/utils/printing.cpp.o.requires
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/requires: CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/utils/hemisphere_helpers.cu.o.requires
