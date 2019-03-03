@@ -18,12 +18,7 @@ enum Dimension{
 
 class RadianceTree{
 
-    private:
-        float median;
-        Dimension dimension;
-        RadianceVolume* radiance_volume;
-        RadianceTree* left_tree;
-        RadianceTree* right_tree;      
+    private:    
 
         // Get the next dimension given the current one
         Dimension get_next_dimension(Dimension dimension);
@@ -46,7 +41,13 @@ class RadianceTree{
         RadianceVolumeComparator find_closest_radiance_volume_comparator(float max_dist, vec4 position, vec4 normal, RadianceVolumeComparator current_closest);
     
     public:
-    
+
+        float median;
+        Dimension dimension;
+        RadianceVolume* radiance_volume = NULL;
+        RadianceTree* left_tree;
+        RadianceTree* right_tree;  
+
         // Constructors
         RadianceTree();
         RadianceTree(std::vector<RadianceVolume*>& radiance_volumes, Dimension dimension);

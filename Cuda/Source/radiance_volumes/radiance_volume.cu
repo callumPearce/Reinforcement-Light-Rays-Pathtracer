@@ -221,11 +221,11 @@ void RadianceVolume::update_radiance_distribution(){
     }
 }
 
-// Samples a direction from the radiance_disset_voronoi_colours()
+// Samples a direction from the radiance volume
 // volume
 vec4 RadianceVolume::sample_direction_from_radiance_distribution(int& sector_x, int& sector_y){
     
-    // Generate a random float uniformly betset_voronoi_colours()
+    // Generate a random float uniformly 
     float r = ((float) rand() / (RAND_MAX));
 
     // Sample from the inverse cumulative distribution

@@ -1,5 +1,4 @@
 #include "default_path_tracing.cuh"
-#include <iostream>
 //cuRand
 #include <curand.h>
 #include <curand_kernel.h>
@@ -20,16 +19,7 @@ vec3 path_trace(curandState* d_rand_state, Camera camera, int pixel_x, int pixel
     vec3 irradiance = vec3(0.f);
     for (int i = 0; i < SAMPLES_PER_PIXEL; i++){
         
-        // Generate the random point within a pixel for the ray to pass through
-        float x = (float)pixel_x + curand_uniform(&d_rand_state[pixel_x*SCREEN_HEIGHT + pixel_y]);
-        float y = (float)pixel_y + curand_uniform(&d_rand_state[pixel_x*SCREEN_HEIGHT + pixel_y]);
-
-        // Set direction to pass through pixel (pixel space -> Camera space)
-        vec4 dir((x - (float)SCREEN_WIDTH / 2.f) , (y - (float)SCREEN_HEIGHT / 2.f) , (float)FOCAL_LENGTH , 1);
-        
-        // Create a ray that we will change the direction for below
-        Ray ray(camera.position, dir);
-        ray.rotate_ray(camera.yaw);
+        Ray ray = Ray::sample_ray_through_pixel(d_rand_state, camera, pixel_x, pixel_y);
 
         // Trace the path of the ray
         irradiance += path_trace_iterative(d_rand_state, ray, surfaces, light_planes, light_plane_count, surfaces_count);

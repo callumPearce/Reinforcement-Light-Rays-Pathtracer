@@ -16,6 +16,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/utils/hemisphere_helpers.cu.o"
   "CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/lights/area_light.cu.o"
   "CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/path_tracing/default_path_tracing.cu.o"
+  "CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/path_tracing/reinforcement_path_tracing.cu.o"
+  "CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/path_tracing/voronoi_trace.cu.o"
   "CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/cmake_device_link.o"
   "Build/Monte_Carlo_Raytracer_Cuda.pdb"
   "Build/Monte_Carlo_Raytracer_Cuda"

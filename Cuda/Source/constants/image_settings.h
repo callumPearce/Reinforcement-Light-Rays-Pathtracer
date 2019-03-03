@@ -11,6 +11,6 @@
 #define FOCAL_LENGTH SCREEN_HEIGHT
 #define EPS 0.00001f
 
-#define PATH_TRACING_METHOD 0 //0 = default
+#define PATH_TRACING_METHOD 2 //0 = default, 1 = reinforcement, 2 = voronoi
 
 #endif

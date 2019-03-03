@@ -3,8 +3,9 @@
 #include <omp.h>
 #include <iostream>
 #include <ctime>
+#include "printing.h"
 
-RadianceMap::RadianceMap(bool precompute, Surface* surfaces, AreaLight light_planes, int surfaces_count, int light_planes_count){
+RadianceMap::RadianceMap(Surface* surfaces, int surfaces_count){
     
     std::cout << "Sampling radiance volumes..." << std::endl;
     
@@ -24,10 +25,10 @@ RadianceMap::RadianceMap(bool precompute, Surface* surfaces, AreaLight light_pla
     // Copy radiance volumes sampled into a fixed size array in dynamic memory
     this->radiance_volumes_count = radiance_vs.size();
     this->radiance_volumes = new RadianceVolume*[ this->radiance_volumes_count * sizeof(RadianceVolume*) ];
-    for (int i = 0; this->radiance_volumes_count; i++){
-        radiance_volumes[i] = radiance_vs[i];
+    for (int i = 0; i < this->radiance_volumes_count; i++){
+        this->radiance_volumes[i] = radiance_vs[i];
     }
-    
+
     // Find the time
     end_time = time(NULL);
     temp_time = end_time - start_time; 

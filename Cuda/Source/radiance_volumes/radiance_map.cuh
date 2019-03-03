@@ -32,7 +32,7 @@ class RadianceMap{
         int radiance_volumes_count = 0;
 
         // Constructor
-        RadianceMap(bool precompute, Surface* surfaces, AreaLight light_planes, int surfaces_count, int light_planes_count);
+        RadianceMap(Surface* surfaces, int surfaces_count);
 
         // Destructor
         ~RadianceMap();

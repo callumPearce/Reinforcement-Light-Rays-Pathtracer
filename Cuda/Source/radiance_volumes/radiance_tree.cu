@@ -1,5 +1,6 @@
 #include "radiance_tree.cuh"
 #include <algorithm>
+#include "printing.h"
 
 RadianceTree::RadianceTree(){
     this->dimension = X_DIM;

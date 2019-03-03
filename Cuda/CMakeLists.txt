@@ -50,6 +50,8 @@ set(
     Source/utils/hemisphere_helpers.cu
     Source/lights/area_light.cu
     Source/path_tracing/default_path_tracing.cu
+    Source/path_tracing/reinforcement_path_tracing.cu
+    Source/path_tracing/voronoi_trace.cu
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES})

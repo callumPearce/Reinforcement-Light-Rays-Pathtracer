@@ -18,6 +18,8 @@
 
 // Path Tracing Types
 #include "default_path_tracing.cuh"
+#include "reinforcement_path_tracing.cuh"
+#include "voronoi_trace.cuh"
 
 //cuRand
 #include <curand_kernel.h>
@@ -81,6 +83,9 @@ int main (int argc, char* argv[]) {
     
     // Initialise SDL screen
     SDLScreen screen = SDLScreen(SCREEN_WIDTH, SCREEN_HEIGHT, FULLSCREEN_MODE);
+    
+    // Reset the SDL screen to black
+    memset(screen.buffer, 0, screen.height*screen.width*sizeof(uint32_t));
 
     // Load the shapes within the scene
     std::vector<Surface> surfaces_load;
@@ -113,7 +118,6 @@ int main (int argc, char* argv[]) {
     vec3* host_buffer = new vec3[ SCREEN_HEIGHT * SCREEN_WIDTH ];
 
     // Create the shared RGB screen buffer
-    size_t screen_size = SCREEN_HEIGHT * SCREEN_WIDTH * sizeof(vec3);
     checkCudaErrors(cudaMalloc(&device_buffer, SCREEN_HEIGHT * SCREEN_WIDTH * sizeof(vec3)));
     
     // Copy surfaces into device memory space
@@ -128,6 +132,7 @@ int main (int argc, char* argv[]) {
     checkCudaErrors(cudaMalloc(&d_rand_state, (float)SCREEN_HEIGHT * (float)SCREEN_WIDTH * sizeof(curandState)));
 
     /* Render with specified rendering approach */
+    //DEFAULT
     if(PATH_TRACING_METHOD == 0){
 
         Update(camera);
@@ -140,10 +145,89 @@ int main (int argc, char* argv[]) {
 
         init_rand_state<<<num_blocks, block_size>>>(d_rand_state);
 
-        draw_default_path_tracing<<<num_blocks, block_size>>>(device_buffer, d_rand_state, camera, device_light_planes, device_surfaces, light_plane_count, surfaces_count);
+        draw_default_path_tracing<<<num_blocks, block_size>>>(
+            device_buffer, 
+            d_rand_state, 
+            camera, 
+            device_light_planes, 
+            device_surfaces, 
+            light_plane_count, 
+            surfaces_count
+        );
 
         // Copy the render back to the host
         checkCudaErrors(cudaMemcpy(host_buffer, device_buffer, SCREEN_HEIGHT * SCREEN_WIDTH * sizeof(vec3), cudaMemcpyDeviceToHost));
+
+        // Put pixels in the SDL buffer, ready for rendering
+        for (int x = 0; x < SCREEN_WIDTH; x++){
+            for (int y = 0; y < SCREEN_HEIGHT; y++){
+                screen.PutPixelSDL(x, y, host_buffer[x*(int)SCREEN_HEIGHT + y]);
+            }
+        }
+    }
+    // REINFORCEMENT
+    else if(PATH_TRACING_METHOD == 1){
+
+        Update(camera);
+
+        // Get the block size and block count to compute over all pixels
+        dim3 block_size(8, 8);
+        int blocks_x = (SCREEN_WIDTH + block_size.x - 1)/block_size.x;
+        int blocks_y = (SCREEN_HEIGHT + block_size.y - 1)/block_size.y;
+        dim3 num_blocks(blocks_x, blocks_y);
+
+        init_rand_state<<<num_blocks, block_size>>>(d_rand_state);
+
+        // Setup the radiance map
+        RadianceMap* radiance_map = new RadianceMap(
+            surfaces,
+            surfaces_count
+        );
+
+        // // Copy the radiance map onto the device
+        // RadianceMap* device_radiance_map;
+        // checkCudaErrors(cudaMalloc(&device_radiance_map, sizeof));
+
+        draw_reinforcement_path_tracing<<<num_blocks, block_size>>>(
+            device_buffer, 
+            d_rand_state, 
+            camera, 
+            device_light_planes, 
+            device_surfaces, 
+            light_plane_count, 
+            surfaces_count
+        );
+
+        // Copy the render back to the host
+        checkCudaErrors(cudaMemcpy(host_buffer, device_buffer, SCREEN_HEIGHT * SCREEN_WIDTH * sizeof(vec3), cudaMemcpyDeviceToHost));
+
+        // Put pixels in the SDL buffer, ready for rendering
+        for (int x = 0; x < SCREEN_WIDTH; x++){
+            for (int y = 0; y < SCREEN_HEIGHT; y++){
+                screen.PutPixelSDL(x, y, host_buffer[x*(int)SCREEN_HEIGHT + y]);
+            }
+        }
+    }
+    // VORONOI
+    else if(PATH_TRACING_METHOD == 2){
+        
+        Update(camera);
+
+        // Setup the radiance map
+        RadianceMap* radiance_map = new RadianceMap(
+            surfaces,
+            surfaces_count
+        );
+
+        draw_voronoi_trace(
+            host_buffer,
+            radiance_map,
+            camera,
+            light_planes,
+            surfaces,
+            light_plane_count,
+            surfaces_count
+        );
 
         // Put pixels in the SDL buffer, ready for rendering
         for (int x = 0; x < SCREEN_WIDTH; x++){
