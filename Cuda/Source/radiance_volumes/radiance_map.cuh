@@ -28,7 +28,7 @@ class RadianceMap{
 
         // Pointer to a list of pointers
         RadianceVolume** radiance_volumes;
-        RadianceTree* radiance_tree;
+        // RadianceTree* radiance_tree;
         int radiance_volumes_count = 0;
 
         // Constructor
@@ -65,6 +65,10 @@ class RadianceMap{
 
         // Get the voronoi colour of the interesection point from the closest radiance volume
         vec3 get_voronoi_colour(const Intersection& intersection);
+
+        // Find the closest radiance volume in linear time by traversing the list of radiance volumes
+        RadianceVolume* get_closest_radiance_volume_linear(float max_dist, vec4 position, vec4 normal);
+
 };
 
 #endif

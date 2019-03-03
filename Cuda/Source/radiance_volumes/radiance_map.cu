@@ -1,6 +1,5 @@
 #include "radiance_map.cuh"
 #include <algorithm>
-#include <omp.h>
 #include <iostream>
 #include <ctime>
 #include "printing.h"
@@ -17,9 +16,8 @@ RadianceMap::RadianceMap(Surface* surfaces, int surfaces_count){
 
     // For every surface in the scene, uniformly sample N Radiance
     // Volumes where N is based on the triangles surface area
-    std::vector<RadianceVolume*> radiance_vs;
     for (int i = 0; i < surfaces_count; i++){
-        uniformly_sample_radiance_volumes(surfaces[i], radiance_vs);
+        uniformly_sample_radiance_volumes(surfaces[i], radiance_volumes);
     }
 
     // Copy radiance volumes sampled into a fixed size array in dynamic memory
@@ -35,12 +33,12 @@ RadianceMap::RadianceMap(Surface* surfaces, int surfaces_count){
     std::cout << "Sampled " << radiance_volumes_count << " Radiance Volumes in " << temp_time << "s" << std::endl;
 
     // Create the RadianceTree (KDTree) from the radiance volumes
-    start_time = end_time;
-    std::cout << "Building Radiance Tree..." << std::endl; 
-    this->radiance_tree = new RadianceTree(radiance_vs, X_DIM);
-    end_time = time(NULL);
-    temp_time = end_time - start_time;
-    std::cout << "Radiance Tree constructed in " << temp_time << std::endl;
+    // start_time = end_time;
+    // std::cout << "Building Radiance Tree..." << std::endl; 
+    // this->radiance_tree = new RadianceTree(radiance_vs, X_DIM);
+    // end_time = time(NULL);
+    // temp_time = end_time - start_time;
+    // std::cout << "Radiance Tree constructed in " << temp_time << std::endl;
 }
 
 // Destructor
@@ -140,7 +138,8 @@ float RadianceMap::calculate_gaussian_filter(float volume_distance, float furthe
 RadianceVolume* RadianceMap::importance_sample_ray_direction(const Intersection& intersection, int& sector_x, int& sector_y, vec4& sampled_direction){
 
     // 1) Find the closest RadianceVolume
-    RadianceVolume* closest_volume = this->radiance_tree->find_closest_radiance_volume(MAX_DIST, intersection.position, intersection.normal);
+    // RadianceVolume* closest_volume = this->radiance_tree->find_closest_radiance_volume(MAX_DIST, intersection.position, intersection.normal);
+    RadianceVolume* closest_volume = this->get_closest_radiance_volume_linear(MAX_DIST, intersection.position, intersection.normal);
 
     // If a radiance volume is not found, just sample randomly 
     if (closest_volume == NULL){
@@ -175,7 +174,8 @@ void RadianceMap::temporal_difference_update_radiance_volume_sector(RadianceVolu
         
         case SURFACE:
             // Get the radiance volume closest to the intersection point
-            RadianceVolume* closest_volume = this->radiance_tree->find_closest_radiance_volume(MAX_DIST, intersection.position, intersection.normal);
+            // RadianceVolume* closest_volume = this->radiance_tree->find_closest_radiance_volume(MAX_DIST, intersection.position, intersection.normal);
+            RadianceVolume* closest_volume = this->get_closest_radiance_volume_linear(MAX_DIST, intersection.position, intersection.normal);
 
             if (closest_volume == NULL){
                 return;
@@ -198,11 +198,26 @@ void RadianceMap::set_voronoi_colours(){
 
 // Get the voronoi colour of the closest radiance volume
 vec3 RadianceMap::get_voronoi_colour(const Intersection& intersection){
-    RadianceVolume* closest_volume = this->radiance_tree->find_closest_radiance_volume(5.f, intersection.position, intersection.normal);
+    // RadianceVolume* closest_volume = this->radiance_tree->find_closest_radiance_volume(MAX_DIST, intersection.position, intersection.normal);
+    RadianceVolume* closest_volume = this->get_closest_radiance_volume_linear(MAX_DIST, intersection.position, intersection.normal);
     if (closest_volume != NULL){
         return closest_volume->get_voronoi_colour();   
     }
     else{
         return vec3(0.f);
     }
+}
+
+// Find the closest radiance volume in linear time by traversing the list of radiance volumes
+RadianceVolume* RadianceMap::get_closest_radiance_volume_linear(float max_dist, vec4 position, vec4 normal){
+    RadianceVolume* current_closest = this->radiance_volumes[0];
+    float closest_distance = glm::distance(this->radiance_volumes[0]->position, position);
+    for (int i = 1; i < this->radiance_volumes_count; i++){
+        float temp_dist = glm::distance(this->radiance_volumes[0]->position, position);
+        if ( temp_dist < closest_distance){
+            current_closest = this->radiance_volumes[i];
+            closest_distance = temp_dist;
+        }
+    }
+    return current_closest;
 }

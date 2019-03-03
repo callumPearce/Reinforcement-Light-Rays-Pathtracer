@@ -217,8 +217,6 @@ radiance_map.cuh
 /home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/radiance_volumes/radiance_map.cuh
 algorithm
 -
-omp.h
--
 iostream
 -
 ctime
