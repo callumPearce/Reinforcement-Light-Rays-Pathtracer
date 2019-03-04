@@ -29,12 +29,12 @@ using glm::mat4;
 */
 
 __global__
-void draw_reinforcement_path_tracing(vec3* device_buffer, curandState* d_rand_state, Camera camera, AreaLight* light_planes, Surface* surfaces, int light_plane_count, int surfaces_count);
+void draw_reinforcement_path_tracing(vec3* device_buffer, curandState* d_rand_state, curandState* volume_rand_state, RadianceMap* radiance_map, Camera camera, AreaLight* light_planes, Surface* surfaces, int light_plane_count, int surfaces_count);
 
 __device__
-vec3 path_trace_reinforcement(curandState* d_rand_state, Camera camera, int pixel_x, int pixel_y, Surface* surfaces, AreaLight* light_planes, int light_plane_count, int surfaces_count);
+vec3 path_trace_reinforcement(curandState* d_rand_state, curandState* volume_rand_state, RadianceMap* radiance_map, Camera camera, int pixel_x, int pixel_y, Surface* surfaces, AreaLight* light_planes, int light_plane_count, int surfaces_count);
 
 __device__
-vec3 path_trace_reinforcement_iterative(curandState* d_rand_state, Ray ray, Surface* surfaces, AreaLight* light_planes, int light_plane_count, int surfaces_count);
+vec3 path_trace_reinforcement_iterative(curandState* d_rand_state, curandState* volume_rand_state, RadianceMap* radiance_map, Ray ray, Surface* surfaces, AreaLight* light_planes, int light_plane_count, int surfaces_count);
 
 #endif

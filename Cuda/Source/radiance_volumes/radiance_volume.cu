@@ -1,16 +1,20 @@
 #include "radiance_volume.cuh"
 #include <iostream>
 
+
+__device__ __host__
 RadianceVolume::RadianceVolume(){
     this->position = vec4(0.f);
     this->normal = vec3(0.f);
     this->transformation_matrix = mat4(0.f);
 }
 
+__host__
 RadianceVolume::RadianceVolume(vec4 position, vec4 normal){
     initialise_radiance_grid();
     initialise_radiance_distribution();
     initialise_visits();
+
     this->position = position;
     this->normal = vec3(normal.x, normal.y, normal.z);
 
@@ -20,13 +24,15 @@ RadianceVolume::RadianceVolume(vec4 position, vec4 normal){
 }
 
 // Updates the transformation matrix with the current set values of the normal and position
+__host__
 void RadianceVolume::update_transformation_matrix(){
     this->transformation_matrix = create_transformation_matrix(normal, position);
 } 
 
 // Intialises a 2D grid to store radiance values at each grid point
+__host__
 void RadianceVolume::initialise_radiance_grid(){
-    this->radiance_grid = new vec3[ GRID_RESOLUTION * GRID_RESOLUTION ];
+    // this->radiance_grid = vec3[ GRID_RESOLUTION * GRID_RESOLUTION ];
     for (int x = 0; x < GRID_RESOLUTION; x++){
         for (int y = 0; y < GRID_RESOLUTION; y++){
             this->radiance_grid[ x*GRID_RESOLUTION + y ] = vec3(1.f/((float)GRID_RESOLUTION * (float)GRID_RESOLUTION));
@@ -35,8 +41,9 @@ void RadianceVolume::initialise_radiance_grid(){
 }
 
 // Initialise radiance distribution to be equal in all angles initially
+__host__
 void RadianceVolume::initialise_radiance_distribution(){
-    this->radiance_distribution = new float[ GRID_RESOLUTION * GRID_RESOLUTION ];
+    // this->radiance_distribution = new float[ GRID_RESOLUTION * GRID_RESOLUTION ];
     for (int x = 0; x < GRID_RESOLUTION; x++){
         for (int y = 0; y < GRID_RESOLUTION; y++){
             this->radiance_distribution[ x*GRID_RESOLUTION + y] = 1.f/((float)GRID_RESOLUTION * (float)GRID_RESOLUTION);
@@ -45,8 +52,9 @@ void RadianceVolume::initialise_radiance_distribution(){
 }
 
 // Initialises the alpha values (weighting of state-action pairs) to be 1
+__host__
 void RadianceVolume::initialise_visits(){
-    this->visits = new float[ GRID_RESOLUTION * GRID_RESOLUTION ];
+    // this->visits = new float[ GRID_RESOLUTION * GRID_RESOLUTION ];
     for (int x = 0; x < GRID_RESOLUTION; x++){
         for (int y = 0; y < GRID_RESOLUTION; y++){
             this->visits[ x*GRID_RESOLUTION + y ] = 0.f;
@@ -59,7 +67,7 @@ void RadianceVolume::initialise_visits(){
 // NOTE: This should be called before any radiance_volumes are instantiated
 // in the scene by surfaces or these surfaces will be taken into account
 __device__
-void RadianceVolume::get_radiance_estimate_per_sector(Surface* surfaces, AreaLight* light_planes){
+void RadianceVolume::get_radiance_estimate_per_sector(curandState* volume_rand_state, Surface* surfaces, AreaLight* light_planes){
     // Path trace a ray in the direction from the centre of hemisphere towards
     // the centre of each sector to determine the radiance incoming from that direction
     for (int x = 0; x < GRID_RESOLUTION; x++){
@@ -68,8 +76,8 @@ void RadianceVolume::get_radiance_estimate_per_sector(Surface* surfaces, AreaLig
             vec3 radiance = vec3(0);
             for (int i = 0; i < SAMPLES_PER_PIXEL; i++){
                 // Get the 3D coordinates of a random point in the sector
-                float r1 = ((float) rand() / (RAND_MAX));
-                float r2 = ((float) rand() / (RAND_MAX));
+                float r1 = curand_uniform(&volume_rand_state[x*SCREEN_HEIGHT + y]);
+                float r2 = curand_uniform(&volume_rand_state[x*SCREEN_HEIGHT + y]);
                 float sector_x, sector_y, sector_z;
                 map(
                     (x + r1)/(float)GRID_RESOLUTION,
@@ -99,59 +107,62 @@ void RadianceVolume::get_radiance_estimate_per_sector(Surface* surfaces, AreaLig
 
 // Builds a radiance volume out of Surfaces, where each surfaces colour
 // represents the incoming radiance at that position from that angle
-void RadianceVolume::build_radiance_volume_shapes(std::vector<Surface>& surfaces){
-    // Get its vertices
-    vec4* vertices = this->get_vertices();
-    // Build Surfaces using the vertices
-    for (int x = 0; x < GRID_RESOLUTION; x++){
-        for (int y = 0; y < GRID_RESOLUTION; y++){
-            vec4 v1 = vertices[ x*GRID_RESOLUTION + y ];
-            vec4 v2 = vertices[ (x+1)*GRID_RESOLUTION + y ];
-            vec4 v3 = vertices[ x*GRID_RESOLUTION + (y+1) ];
-            vec4 v4 = vertices[ (x+1)*GRID_RESOLUTION + (y+1) ];
-            float r1 = ((float) rand() / (RAND_MAX));
-            float r2 = ((float) rand() / (RAND_MAX));
-            float r3 = ((float) rand() / (RAND_MAX));
-            surfaces.push_back(Surface(v1, v3, v2, Material(this->radiance_grid[ x*GRID_RESOLUTION + y ])));
-            surfaces.push_back(Surface(v2, v3, v4, Material(this->radiance_grid[ x*GRID_RESOLUTION + y ])));
-        }
-    }
-    delete [] vertices;
-}
+// __device__
+// void RadianceVolume::build_radiance_volume_shapes(std::vector<Surface>& surfaces){
+//     // Get its vertices
+//     vec4* vertices = this->get_vertices();
+//     // Build Surfaces using the vertices
+//     for (int x = 0; x < GRID_RESOLUTION; x++){
+//         for (int y = 0; y < GRID_RESOLUTION; y++){
+//             vec4 v1 = vertices[ x*GRID_RESOLUTION + y ];
+//             vec4 v2 = vertices[ (x+1)*GRID_RESOLUTION + y ];
+//             vec4 v3 = vertices[ x*GRID_RESOLUTION + (y+1) ];
+//             vec4 v4 = vertices[ (x+1)*GRID_RESOLUTION + (y+1) ];
+//             float r1 = ((float) rand() / (RAND_MAX));
+//             float r2 = ((float) rand() / (RAND_MAX));
+//             float r3 = ((float) rand() / (RAND_MAX));
+//             surfaces.push_back(Surface(v1, v3, v2, Material(this->radiance_grid[ x*GRID_RESOLUTION + y ])));
+//             surfaces.push_back(Surface(v2, v3, v4, Material(this->radiance_grid[ x*GRID_RESOLUTION + y ])));
+//         }
+//     }
+//     delete [] vertices;
+// }
 
 // Builds a radiance volume out of Surfaces, where each surfaces colour
 // represents the incoming radiance at that position from that angle
-void RadianceVolume::build_radiance_magnitude_volume_shapes(std::vector<Surface>& surfaces){
-    // Get its vertices
-    vec4* vertices = this->get_vertices();
-    // Find the max radiance magnitude of the hemisphere
-    float max_radiance = 0.0001f;
-    for (int x = 0; x < GRID_RESOLUTION; x++){
-        for (int y = 0; y < GRID_RESOLUTION; y++){
-            if(length(this->radiance_grid[ x*GRID_RESOLUTION + y ]) > max_radiance){
-                max_radiance = length(this->radiance_grid[ x*GRID_RESOLUTION + y ]);
-            }
-        }
-    }
-    // Build Surfaces using the vertices
-    for (int x = 0; x < GRID_RESOLUTION; x++){
-        for (int y = 0; y < GRID_RESOLUTION; y++){
-            vec4 v1 = vertices[ x*GRID_RESOLUTION + y ];
-            vec4 v2 = vertices[ (x+1)*GRID_RESOLUTION + y ];
-            vec4 v3 = vertices[ x*GRID_RESOLUTION + (y+1) ];
-            vec4 v4 = vertices[ (x+1)*GRID_RESOLUTION + (y+1) ];
-            float r1 = ((float) rand() / (RAND_MAX));
-            float r2 = ((float) rand() / (RAND_MAX));
-            float r3 = ((float) rand() / (RAND_MAX));
-            vec3 colour = vec3(1.f) - length(this->radiance_grid[ x*GRID_RESOLUTION + y ])/max_radiance * vec3(1.f);
-            surfaces.push_back(Surface(v1, v3, v2, Material(colour)));
-            surfaces.push_back(Surface(v2, v3, v4, Material(colour)));
-        }
-    }
-    delete [] vertices;
-}
+// __device__
+// void RadianceVolume::build_radiance_magnitude_volume_shapes(std::vector<Surface>& surfaces){
+//     // Get its vertices
+//     vec4* vertices = this->get_vertices();
+//     // Find the max radiance magnitude of the hemisphere
+//     float max_radiance = 0.0001f;
+//     for (int x = 0; x < GRID_RESOLUTION; x++){
+//         for (int y = 0; y < GRID_RESOLUTION; y++){
+//             if(length(this->radiance_grid[ x*GRID_RESOLUTION + y ]) > max_radiance){
+//                 max_radiance = length(this->radiance_grid[ x*GRID_RESOLUTION + y ]);
+//             }
+//         }
+//     }
+//     // Build Surfaces using the vertices
+//     for (int x = 0; x < GRID_RESOLUTION; x++){
+//         for (int y = 0; y < GRID_RESOLUTION; y++){
+//             vec4 v1 = vertices[ x*GRID_RESOLUTION + y ];
+//             vec4 v2 = vertices[ (x+1)*GRID_RESOLUTION + y ];
+//             vec4 v3 = vertices[ x*GRID_RESOLUTION + (y+1) ];
+//             vec4 v4 = vertices[ (x+1)*GRID_RESOLUTION + (y+1) ];
+//             float r1 = ((float) rand() / (RAND_MAX));
+//             float r2 = ((float) rand() / (RAND_MAX));
+//             float r3 = ((float) rand() / (RAND_MAX));
+//             vec3 colour = vec3(1.f) - length(this->radiance_grid[ x*GRID_RESOLUTION + y ])/max_radiance * vec3(1.f);
+//             surfaces.push_back(Surface(v1, v3, v2, Material(colour)));
+//             surfaces.push_back(Surface(v2, v3, v4, Material(colour)));
+//         }
+//     }
+//     delete [] vertices;
+// }
 
 // Returns a list of vertices for the generated radiance volume
+__device__
 vec4* RadianceVolume::get_vertices(){
     vec4* vertices = new vec4[ (GRID_RESOLUTION+1) * (GRID_RESOLUTION+1) ];
     // For every grid coordinate, add the corresponding 3D world coordinate
@@ -175,6 +186,7 @@ vec4* RadianceVolume::get_vertices(){
 
 // Gets the irradiance for an intersection point by solving the rendering equations (summing up 
 // radiance from all directions whilst multiplying by BRDF and cos(theta))
+__device__
 vec3 RadianceVolume::get_irradiance(const Intersection& intersection, Surface* surfaces){
     vec3 irradiance = vec3(0);
     for (int x = 0; x < GRID_RESOLUTION; x++){
@@ -203,6 +215,7 @@ vec3 RadianceVolume::get_irradiance(const Intersection& intersection, Surface* s
 
 // Normalizes this RadianceVolume so that all radiance values 
 // i.e. their grid values all sum to 1 (taking the length of each vec3)
+__device__
 void RadianceVolume::update_radiance_distribution(){
     // Get the total radiance from all directions (as a float)
     vec3 total_rgb = vec3(0.f);
@@ -223,10 +236,11 @@ void RadianceVolume::update_radiance_distribution(){
 
 // Samples a direction from the radiance volume
 // volume
-vec4 RadianceVolume::sample_direction_from_radiance_distribution(int& sector_x, int& sector_y){
+__device__
+vec4 RadianceVolume::sample_direction_from_radiance_distribution(curandState* volume_rand_state, int& sector_x, int& sector_y){
     
     // Generate a random float uniformly 
-    float r = ((float) rand() / (RAND_MAX));
+    float r = curand_uniform(&volume_rand_state[sector_x*SCREEN_HEIGHT + sector_y]);
 
     // Sample from the inverse cumulative distribution
     float cumulative_sum = 0.f;
@@ -253,6 +267,7 @@ vec4 RadianceVolume::sample_direction_from_radiance_distribution(int& sector_x, 
 
 // Performs a temporal difference update for the current radiance volume for the incident
 // radiance in the sector specified with the intersection surfaces irradiance value
+__device__
 void RadianceVolume::temporal_difference_update(vec3 next_irradiance, int sector_x, int sector_y){
     // Calculate alpha and update the radiance grid values and increment the number of visits
     float alpha = 1.f / (1.f + this->visits[ sector_x*GRID_RESOLUTION + sector_y ]);
@@ -261,6 +276,7 @@ void RadianceVolume::temporal_difference_update(vec3 next_irradiance, int sector
 }
 
 // Sets a voronoi colour for the radiance volume (random colour) in the first entry of its radiance grid
+__host__
 void RadianceVolume::set_voronoi_colour(){
     float r = ((float) rand() / (RAND_MAX));
     float g = ((float) rand() / (RAND_MAX));
@@ -269,6 +285,7 @@ void RadianceVolume::set_voronoi_colour(){
 }
 
 // Gets the voronoi colour of the radiance volume
+__device__
 vec3 RadianceVolume::get_voronoi_colour(){
     return this->radiance_grid[0];
 }
@@ -283,6 +300,7 @@ vec3 RadianceVolume::get_voronoi_colour(){
 * for any purpose, commercial or non-commercial,
 * as long as attribution is maintained.
 */
+__device__ 
 void RadianceVolume::map(float x, float y, float& x_ret, float& y_ret, float& z_ret) {
     float xx, yy, offset, theta, phi;
     x = 2*x - 1;

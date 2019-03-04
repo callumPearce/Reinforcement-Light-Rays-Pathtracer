@@ -4,6 +4,7 @@
 #include <ctime>
 #include "printing.h"
 
+__host__
 RadianceMap::RadianceMap(Surface* surfaces, int surfaces_count){
     
     std::cout << "Sampling radiance volumes..." << std::endl;
@@ -16,16 +17,11 @@ RadianceMap::RadianceMap(Surface* surfaces, int surfaces_count){
 
     // For every surface in the scene, uniformly sample N Radiance
     // Volumes where N is based on the triangles surface area
-    for (int i = 0; i < surfaces_count; i++){
-        uniformly_sample_radiance_volumes(surfaces[i], radiance_volumes);
-    }
-
-    // Copy radiance volumes sampled into a fixed size array in dynamic memory
-    this->radiance_volumes_count = radiance_vs.size();
-    this->radiance_volumes = new RadianceVolume*[ this->radiance_volumes_count * sizeof(RadianceVolume*) ];
-    for (int i = 0; i < this->radiance_volumes_count; i++){
-        this->radiance_volumes[i] = radiance_vs[i];
-    }
+    get_radiance_volumes_count(surfaces, surfaces_count);
+    size_t size = this->radiance_volumes_count * sizeof(RadianceVolume);
+    printf("RadianceMap size: %zu bytes\n",size);
+    this->radiance_volumes = new RadianceVolume[ this->radiance_volumes_count * sizeof(RadianceVolume) ];
+    uniformly_sample_radiance_volumes(surfaces, surfaces_count);
 
     // Find the time
     end_time = time(NULL);
@@ -42,44 +38,62 @@ RadianceMap::RadianceMap(Surface* surfaces, int surfaces_count){
 }
 
 // Destructor
+__host__
 RadianceMap::~RadianceMap(){
     delete [] this->radiance_volumes;
 }
 
 /*             Construction                */
 
+__host__
+void RadianceMap::get_radiance_volumes_count(Surface* surfaces, int surfaces_count){
+    // Get sample count
+    int total_sample_count = 0;
+    for (int i = 0; i < surfaces_count; i++){
+        total_sample_count += (int)floor(surfaces[i].compute_area() / AREA_PER_SAMPLE);
+    }
+    this->radiance_volumes_count = total_sample_count;
+}
+
 // Uniformly sample N Radiance volumes on a triangle based on the
 // triangles surface area
-void RadianceMap::uniformly_sample_radiance_volumes(Surface surface, std::vector<RadianceVolume*>& radiance_vs){
-    // Calculate the number of radaince volumes to sample in that triangle
-    int sample_count = (int)floor(surface.compute_area() / AREA_PER_SAMPLE);
-    // Sample sample_count RadianceVolumes on the given surface
-    for (int i = 0; i < sample_count; i++){
-        vec4 sampled_position = surface.sample_position_on_plane();
-        RadianceVolume* rv = new RadianceVolume(sampled_position, surface.normal);
-        radiance_vs.push_back(rv);
+__host__
+void RadianceMap::uniformly_sample_radiance_volumes(Surface* surfaces, int surfaces_count){
+    int x = 0;
+    for (int j = 0; j < surfaces_count; j++){
+        // Calculate the number of radaince volumes to sample in that triangle
+        int sample_count = (int)floor(surfaces[j].compute_area() / AREA_PER_SAMPLE);
+        // Sample sample_count RadianceVolumes on the given surface
+        for (int i = 0; i < sample_count; i++){
+            vec4 sampled_position = surfaces[j].sample_position_on_plane();
+            this->radiance_volumes[x] = RadianceVolume(sampled_position, surfaces[j].normal);
+            x++;
+        }
     }
 }
 
 // Get the radiance estimate for all radiance volumes in the RadianceMap
-void RadianceMap::get_radiance_estimates(Surface* surfaces, AreaLight* light_planes){
+__device__
+void RadianceMap::get_radiance_estimates(curandState* volume_rand_state, Surface* surfaces, AreaLight* light_planes){
     for (int i = 0; i < this->radiance_volumes_count; i++){
-        this->radiance_volumes[i]->get_radiance_estimate_per_sector(surfaces, light_planes);
+        this->radiance_volumes[i].get_radiance_estimate_per_sector(volume_rand_state, surfaces, light_planes);
     }
 }
 
-// Builds all RadianceVolumes which are part of the RadianceMap into the scene
-void RadianceMap::build_radiance_map_shapes(std::vector<Surface>& surfaces){
-    for (int i = 0; i < this->radiance_volumes_count; i++){
-        this->radiance_volumes[i]->build_radiance_volume_shapes(surfaces);
-    }
-}
+// // Builds all RadianceVolumes which are part of the RadianceMap into the scene
+// __host__
+// void RadianceMap::build_radiance_map_shapes(std::vector<Surface>& surfaces){
+//     for (int i = 0; i < this->radiance_volumes_count; i++){
+//         this->radiance_volumes[i].build_radiance_volume_shapes(surfaces);
+//     }
+// }
 
 // Normalizes all RadianceVolumes radiance values i.e. their grid values
 // all sum to 1 (taking the length of each vec3)
+__device__
 void RadianceMap::update_radiance_distributions(){
     for (int i = 0; i < this->radiance_volumes_count; i++){
-        this->radiance_volumes[i]->update_radiance_distribution();
+        this->radiance_volumes[i].update_radiance_distribution();
     }
 }
 
@@ -124,6 +138,7 @@ void RadianceMap::update_radiance_distributions(){
 // }
 
 // Calculates a gaussian filter constant for the passed in radiance volume distance and max radiance volume distance
+__device__
 float RadianceMap::calculate_gaussian_filter(float volume_distance, float furthest_volume_distance){
     float alpha = 0.918f;
     float beta = 1.953f;
@@ -135,7 +150,8 @@ float RadianceMap::calculate_gaussian_filter(float volume_distance, float furthe
 
 // Given an intersection point, importance sample a ray direction according to the
 // cumulative distribution formed by the closest RadianceVolume's radiance_map
-RadianceVolume* RadianceMap::importance_sample_ray_direction(const Intersection& intersection, int& sector_x, int& sector_y, vec4& sampled_direction){
+__device__
+RadianceVolume* RadianceMap::importance_sample_ray_direction(curandState* volume_rand_state, const Intersection& intersection, int& sector_x, int& sector_y, vec4& sampled_direction){
 
     // 1) Find the closest RadianceVolume
     // RadianceVolume* closest_volume = this->radiance_tree->find_closest_radiance_volume(MAX_DIST, intersection.position, intersection.normal);
@@ -154,12 +170,13 @@ RadianceVolume* RadianceMap::importance_sample_ray_direction(const Intersection&
         //    This gives the location on the grid we sample our direction from
         //    Update the radiance distribution before attempting to sample
         closest_volume->update_radiance_distribution();
-        sampled_direction = closest_volume->sample_direction_from_radiance_distribution(sector_x, sector_y);
+        sampled_direction = closest_volume->sample_direction_from_radiance_distribution(volume_rand_state, sector_x, sector_y);
         return closest_volume;
     }
 }
 
 // Performs the temporal difference update for the radiance volume passed in given the sampled ray direction lead to the intersection
+__device__
 void RadianceMap::temporal_difference_update_radiance_volume_sector(RadianceVolume* current_radiance_volume, int current_sector_x, int current_sector_y, Intersection& intersection, Surface* surfaces, AreaLight* light_planes){
 
     switch (intersection.intersection_type){
@@ -190,16 +207,19 @@ void RadianceMap::temporal_difference_update_radiance_volume_sector(RadianceVolu
 }
 
 // Set the voronoi colours of all radiance volumes in the scene in the first entry of the radiance_grid[0][0]
+__host__
 void RadianceMap::set_voronoi_colours(){
     for (int i = 0; i < this->radiance_volumes_count; i++){
-        this->radiance_volumes[i]->set_voronoi_colour();
+        this->radiance_volumes[i].set_voronoi_colour();
     }
 }
 
 // Get the voronoi colour of the closest radiance volume
+__device__
 vec3 RadianceMap::get_voronoi_colour(const Intersection& intersection){
     // RadianceVolume* closest_volume = this->radiance_tree->find_closest_radiance_volume(MAX_DIST, intersection.position, intersection.normal);
     RadianceVolume* closest_volume = this->get_closest_radiance_volume_linear(MAX_DIST, intersection.position, intersection.normal);
+    vec4 pos = closest_volume->position;
     if (closest_volume != NULL){
         return closest_volume->get_voronoi_colour();   
     }
@@ -209,13 +229,17 @@ vec3 RadianceMap::get_voronoi_colour(const Intersection& intersection){
 }
 
 // Find the closest radiance volume in linear time by traversing the list of radiance volumes
+__device__
 RadianceVolume* RadianceMap::get_closest_radiance_volume_linear(float max_dist, vec4 position, vec4 normal){
-    RadianceVolume* current_closest = this->radiance_volumes[0];
-    float closest_distance = glm::distance(this->radiance_volumes[0]->position, position);
+    RadianceVolume* current_closest = &(this->radiance_volumes[0]);
+    // vec4 pos = current_closest->position;
+    // printf("%f,%f,%f,%f\n", pos.x, pos.y, pos.z, pos.w);
+    float closest_distance = glm::distance(this->radiance_volumes[0].position, position);
+
     for (int i = 1; i < this->radiance_volumes_count; i++){
-        float temp_dist = glm::distance(this->radiance_volumes[0]->position, position);
-        if ( temp_dist < closest_distance){
-            current_closest = this->radiance_volumes[i];
+        float temp_dist = glm::distance(this->radiance_volumes[i].position, position);
+        if ( temp_dist < closest_distance && vec3(normal) == this->radiance_volumes[i].normal){
+            current_closest = &this->radiance_volumes[i];
             closest_distance = temp_dist;
         }
     }

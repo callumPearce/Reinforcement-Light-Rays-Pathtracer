@@ -19,9 +19,11 @@ class RadianceVolumeComparator{
         RadianceVolume* radiance_volume;
         
         // Constructor
+        __device__
         RadianceVolumeComparator(RadianceVolume* radiance_volume, float distance);
 
         // Weak ordering
+        __device__
         friend bool operator<(const RadianceVolumeComparator& lhs, const RadianceVolumeComparator& rhs);
 
 };
