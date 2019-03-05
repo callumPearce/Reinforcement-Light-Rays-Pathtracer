@@ -35,7 +35,7 @@ void RadianceVolume::initialise_radiance_grid(){
     // this->radiance_grid = vec3[ GRID_RESOLUTION * GRID_RESOLUTION ];
     for (int x = 0; x < GRID_RESOLUTION; x++){
         for (int y = 0; y < GRID_RESOLUTION; y++){
-            this->radiance_grid[ x*GRID_RESOLUTION + y ] = vec3(1.f/((float)GRID_RESOLUTION * (float)GRID_RESOLUTION));
+            this->radiance_grid[ x*GRID_RESOLUTION + y ] = vec3((1.f/((float)GRID_RESOLUTION * (float)GRID_RESOLUTION))/3.f);
         }
     }
 }
@@ -271,7 +271,8 @@ __device__
 void RadianceVolume::temporal_difference_update(vec3 next_irradiance, int sector_x, int sector_y){
     // Calculate alpha and update the radiance grid values and increment the number of visits
     float alpha = 1.f / (1.f + this->visits[ sector_x*GRID_RESOLUTION + sector_y ]);
-    this->radiance_grid[ sector_x*GRID_RESOLUTION + sector_y ] = ((1.f - (alpha)) * this->radiance_grid[ sector_x*GRID_RESOLUTION + sector_y ]) + (alpha * next_irradiance);
+    vec3 update = ((1.f - (alpha)) * this->radiance_grid[ sector_x*GRID_RESOLUTION + sector_y ]) + (alpha * next_irradiance);
+    this->radiance_grid[ sector_x*GRID_RESOLUTION + sector_y ] = (length(update) > length(vec3(RADIANCE_THRESHOLD)) ? update : vec3(RADIANCE_THRESHOLD));
     this->visits[ sector_x*GRID_RESOLUTION + sector_y ] += 1;
 }
 
