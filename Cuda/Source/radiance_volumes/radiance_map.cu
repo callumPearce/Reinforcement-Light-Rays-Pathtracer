@@ -20,7 +20,7 @@ RadianceMap::RadianceMap(Surface* surfaces, int surfaces_count){
     get_radiance_volumes_count(surfaces, surfaces_count);
     size_t size = this->radiance_volumes_count * sizeof(RadianceVolume);
     printf("RadianceMap size: %zu bytes\n",size);
-    this->radiance_volumes = new RadianceVolume[ this->radiance_volumes_count * sizeof(RadianceVolume) ];
+    this->radiance_volumes =  vector<RadianceVolume>(this->radiance_volumes_count);
     uniformly_sample_radiance_volumes(surfaces, surfaces_count);
 
     // Find the time

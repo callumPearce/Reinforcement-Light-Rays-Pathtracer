@@ -34,7 +34,7 @@ class RadianceMap{
     public:
 
         // Pointer to a list of pointers
-        RadianceVolume* radiance_volumes;
+        std::vector<RadianceVolume> radiance_volumes;
         // RadianceTree* radiance_tree;
         int radiance_volumes_count = 0;
 
