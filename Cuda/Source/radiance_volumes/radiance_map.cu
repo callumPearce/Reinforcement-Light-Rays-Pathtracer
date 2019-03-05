@@ -5,7 +5,7 @@
 #include "printing.h"
 
 __host__
-RadianceMap::RadianceMap(Surface* surfaces, int surfaces_count){
+RadianceMap::RadianceMap(Surface* surfaces, int surfaces_count, std::vector<RadianceVolume>& temp_rvs){
     
     std::cout << "Sampling radiance volumes..." << std::endl;
     
@@ -20,13 +20,13 @@ RadianceMap::RadianceMap(Surface* surfaces, int surfaces_count){
     get_radiance_volumes_count(surfaces, surfaces_count);
     size_t size = this->radiance_volumes_count * sizeof(RadianceVolume);
     printf("RadianceMap size: %zu bytes\n",size);
-    this->radiance_volumes =  vector<RadianceVolume>(this->radiance_volumes_count);
-    uniformly_sample_radiance_volumes(surfaces, surfaces_count);
+    temp_rvs =  std::vector<RadianceVolume>(this->radiance_volumes_count);
+    uniformly_sample_radiance_volumes(surfaces, surfaces_count, temp_rvs);
 
     // Find the time
     end_time = time(NULL);
     temp_time = end_time - start_time; 
-    std::cout << "Sampled " << radiance_volumes_count << " Radiance Volumes in " << temp_time << "s" << std::endl;
+    std::cout << "Sampled " << temp_rvs.size() << " Radiance Volumes in " << temp_time << "s" << std::endl;
 
     // Create the RadianceTree (KDTree) from the radiance volumes
     // start_time = end_time;
@@ -37,11 +37,6 @@ RadianceMap::RadianceMap(Surface* surfaces, int surfaces_count){
     // std::cout << "Radiance Tree constructed in " << temp_time << std::endl;
 }
 
-// Destructor
-__host__
-RadianceMap::~RadianceMap(){
-    delete [] this->radiance_volumes;
-}
 
 /*             Construction                */
 
@@ -58,7 +53,7 @@ void RadianceMap::get_radiance_volumes_count(Surface* surfaces, int surfaces_cou
 // Uniformly sample N Radiance volumes on a triangle based on the
 // triangles surface area
 __host__
-void RadianceMap::uniformly_sample_radiance_volumes(Surface* surfaces, int surfaces_count){
+void RadianceMap::uniformly_sample_radiance_volumes(Surface* surfaces, int surfaces_count, std::vector<RadianceVolume>& temp_rvs){
     int x = 0;
     for (int j = 0; j < surfaces_count; j++){
         // Calculate the number of radaince volumes to sample in that triangle
@@ -66,7 +61,7 @@ void RadianceMap::uniformly_sample_radiance_volumes(Surface* surfaces, int surfa
         // Sample sample_count RadianceVolumes on the given surface
         for (int i = 0; i < sample_count; i++){
             vec4 sampled_position = surfaces[j].sample_position_on_plane();
-            this->radiance_volumes[x] = RadianceVolume(sampled_position, surfaces[j].normal);
+            temp_rvs[x] = RadianceVolume(sampled_position, surfaces[j].normal);
             x++;
         }
     }
@@ -208,9 +203,9 @@ void RadianceMap::temporal_difference_update_radiance_volume_sector(RadianceVolu
 
 // Set the voronoi colours of all radiance volumes in the scene in the first entry of the radiance_grid[0][0]
 __host__
-void RadianceMap::set_voronoi_colours(){
+void RadianceMap::set_voronoi_colours(std::vector<RadianceVolume>& temp_rvs){
     for (int i = 0; i < this->radiance_volumes_count; i++){
-        this->radiance_volumes[i].set_voronoi_colour();
+        temp_rvs[i].set_voronoi_colour();
     }
 }
 

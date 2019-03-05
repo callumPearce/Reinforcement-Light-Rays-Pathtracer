@@ -29,22 +29,18 @@ class RadianceMap{
         void get_radiance_volumes_count(Surface* surfaces, int surfaces_count);
 
         __host__
-        void uniformly_sample_radiance_volumes(Surface* surfaces, int surfaces_count);
+        void uniformly_sample_radiance_volumes(Surface* surfaces, int surfaces_count, std::vector<RadianceVolume>& temp_rvs);
 
     public:
 
         // Pointer to a list of pointers
-        std::vector<RadianceVolume> radiance_volumes;
+        RadianceVolume* radiance_volumes;
         // RadianceTree* radiance_tree;
         int radiance_volumes_count = 0;
 
         // Constructor
         __host__
-        RadianceMap(Surface* surfaces, int surfaces_count);
-
-        // Destructor
-        __host__
-        ~RadianceMap();
+        RadianceMap(Surface* surfaces, int surfaces_count, std::vector<RadianceVolume>& temp_rvs);
 
         // Builds all RadianceVolumes which are part of the RadianceMap into the scene
         // __host__
@@ -77,7 +73,7 @@ class RadianceMap{
 
         // Set the voronoi colours of all radiance volumes in the scene in the first entry of the radiance_grid[0][0]
         __host__
-        void set_voronoi_colours();
+        void set_voronoi_colours(std::vector<RadianceVolume>& temp_rvs);
 
         // Get the voronoi colour of the interesection point from the closest radiance volume
         __device__

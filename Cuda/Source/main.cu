@@ -190,13 +190,12 @@ int main (int argc, char* argv[]) {
         init_rand_state<<<num_radiance_vols, block_size>>>(volume_rand_state, GRID_RESOLUTION, GRID_RESOLUTION);
 
         // Setup the radiance map
+        std::vector<RadianceVolume> host_rvs;
         RadianceMap* radiance_map = new RadianceMap(
             surfaces,
-            surfaces_count
+            surfaces_count,
+            host_rvs
         );
-        
-        // Setup the colours of the voronoi plot
-        radiance_map->set_voronoi_colours();
 
         // Copy the radiance map onto the device
         RadianceMap* device_radiance_map;
@@ -207,7 +206,10 @@ int main (int argc, char* argv[]) {
         int volumes = radiance_map->radiance_volumes_count;
         RadianceVolume* device_radiance_volumes;
         checkCudaErrors(cudaMalloc(&device_radiance_volumes, sizeof(RadianceVolume) * volumes));
-        checkCudaErrors(cudaMemcpy(device_radiance_volumes, radiance_map->radiance_volumes, sizeof(RadianceVolume)*volumes, cudaMemcpyHostToDevice));
+        // for (int i = 0; i < volumes; i++){
+        //     checkCudaErrors(cudaMemcpy(&(device_radiance_volumes[i]), &(host_rvs[i]), sizeof(RadianceVolume), cudaMemcpyHostToDevice));
+        // }
+        cudaMemcpy(device_radiance_volumes, &host_rvs[0], host_rvs.size() * sizeof(RadianceVolume), cudaMemcpyHostToDevice);
 
         // Copy the top level pointer value of RadianceMap.radiance_volumes 
         checkCudaErrors(cudaMemcpy(&(device_radiance_map->radiance_volumes), &device_radiance_volumes, sizeof(RadianceMap*), cudaMemcpyHostToDevice));
@@ -235,7 +237,6 @@ int main (int argc, char* argv[]) {
         }
         
         // Delete radiance map variables
-        delete radiance_map;
         cudaFree(device_radiance_volumes);
         cudaFree(device_radiance_map);
         cudaFree(volume_rand_state);
@@ -263,13 +264,15 @@ int main (int argc, char* argv[]) {
         init_rand_state<<<num_radiance_vols, block_size>>>(volume_rand_state, GRID_RESOLUTION, GRID_RESOLUTION);
 
         // Setup the radiance map
+        std::vector<RadianceVolume> temp_rvs;
         RadianceMap* radiance_map = new RadianceMap(
             surfaces,
-            surfaces_count
+            surfaces_count,
+            temp_rvs
         );
         
         // Setup the colours of the voronoi plot
-        radiance_map->set_voronoi_colours();
+        radiance_map->set_voronoi_colours(temp_rvs);
 
         // Copy the radiance map onto the device
         RadianceMap* device_radiance_map;
@@ -280,7 +283,10 @@ int main (int argc, char* argv[]) {
         int volumes = radiance_map->radiance_volumes_count;
         RadianceVolume* device_radiance_volumes;
         checkCudaErrors(cudaMalloc(&device_radiance_volumes, sizeof(RadianceVolume) * volumes));
-        checkCudaErrors(cudaMemcpy(device_radiance_volumes, radiance_map->radiance_volumes, sizeof(RadianceVolume)*volumes, cudaMemcpyHostToDevice));
+        // for (int i = 0; i < volumes; i++){
+        //     checkCudaErrors(cudaMemcpy(&(device_radiance_volumes[i]), &(temp_rvs[i]), sizeof(RadianceVolume), cudaMemcpyHostToDevice));
+        // }
+        cudaMemcpy(device_radiance_volumes, &temp_rvs[0], temp_rvs.size() * sizeof(RadianceVolume), cudaMemcpyHostToDevice);
 
         // Copy the top level pointer value of RadianceMap.radiance_volumes 
         checkCudaErrors(cudaMemcpy(&(device_radiance_map->radiance_volumes), &device_radiance_volumes, sizeof(RadianceMap*), cudaMemcpyHostToDevice));
@@ -308,7 +314,6 @@ int main (int argc, char* argv[]) {
         }
         
         // Delete radiance map variables
-        delete radiance_map;
         cudaFree(device_radiance_volumes);
         cudaFree(device_radiance_map);
         cudaFree(volume_rand_state);
