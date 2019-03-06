@@ -52,7 +52,7 @@ class RadianceVolume{
     public:
         bool initialised = false;
         vec4 position;
-        float radiance_grid [GRID_RESOLUTION * GRID_RESOLUTION];
+        float radiance_grid [GRID_RESOLUTION * GRID_RESOLUTION * 3];
         float radiance_distribution [GRID_RESOLUTION * GRID_RESOLUTION];
         unsigned int visits [GRID_RESOLUTION * GRID_RESOLUTION];
         // For coordinate system

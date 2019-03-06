@@ -173,7 +173,8 @@ void RadianceMap::temporal_difference_update_radiance_volume_sector(RadianceVolu
         
         case AREA_LIGHT:
             vec3 diffuse_light_power = light_planes[intersection.index].diffuse_p; 
-            current_radiance_volume->temporal_difference_update(diffuse_light_power.x + diffuse_light_power.y + diffuse_light_power.z, current_sector_x, current_sector_y);
+            float luminance = sqrt(0.299 * pow(diffuse_light_power.x,2) + 0.587 * pow(diffuse_light_power.y,2) + 0.114 * pow(diffuse_light_power.z,2));
+            current_radiance_volume->temporal_difference_update(luminance, current_sector_x, current_sector_y);
             break;
         
         case SURFACE:

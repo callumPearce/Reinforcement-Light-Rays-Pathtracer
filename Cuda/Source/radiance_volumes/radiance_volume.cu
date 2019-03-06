@@ -35,7 +35,9 @@ void RadianceVolume::initialise_radiance_grid(){
     // this->radiance_grid = vec3[ GRID_RESOLUTION * GRID_RESOLUTION ];
     for (int x = 0; x < GRID_RESOLUTION; x++){
         for (int y = 0; y < GRID_RESOLUTION; y++){
-            this->radiance_grid[ x*GRID_RESOLUTION + y ] = 1.f/((float)GRID_RESOLUTION * (float)GRID_RESOLUTION);
+            this->radiance_grid[ x*GRID_RESOLUTION + (y*3) ] = (1.f/((float)GRID_RESOLUTION * (float)GRID_RESOLUTION))/3.f;
+            this->radiance_grid[ x*GRID_RESOLUTION + (y*3) + 1 ] = (1.f/((float)GRID_RESOLUTION * (float)GRID_RESOLUTION))/3.f;
+            this->radiance_grid[ x*GRID_RESOLUTION + (y*3) + 2 ] = (1.f/((float)GRID_RESOLUTION * (float)GRID_RESOLUTION))/3.f;
         }
     }
 }
@@ -218,16 +220,6 @@ float RadianceVolume::get_irradiance(const Intersection& intersection, Surface* 
 // i.e. their grid values all sum to 1 (taking the length of each vec3)
 __device__
 void RadianceVolume::update_radiance_distribution(){
-
-    // float t2 = 0.f;
-    // for (int x = 0; x < GRID_RESOLUTION; x++){
-    //     for (int y = 0; y < GRID_RESOLUTION; y++){
-    //         t2 += this->radiance_distribution[ x*GRID_RESOLUTION + y ];
-    //     }
-    // }
-
-    // if (t2 < 0.99f)
-    //     printf("%.3f\n",t2);
 
     // Get the total radiance from all directions (as a float)
     float total = 0.000001f;
