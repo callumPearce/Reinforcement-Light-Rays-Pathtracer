@@ -95,7 +95,7 @@ class RadianceVolume{
         // Gets the irradiance for an intersection point by solving the rendering equations (summing up 
         // radiance from all directions whilst multiplying by BRDF and cos(theta))
         __device__
-        float get_irradiance(const Intersection& intersection, Surface* surfaces);
+        vec3 get_irradiance(const Intersection& intersection, Surface* surfaces);
 
         // Normalizes this RadianceVolume so that all radiance values 
         // i.e. their grid values all sum to 1 (taking the length of each vec3)
@@ -110,7 +110,7 @@ class RadianceVolume{
         // Performs a temporal difference update for the current radiance volume for the incident
         // radiance in the sector specified with the intersection surfaces irradiance value
         __device__
-        void temporal_difference_update(float next_irradiance, int sector_x, int sector_y);
+        void temporal_difference_update(vec3 next_irradiance, int sector_x, int sector_y);
 
         // Sets a voronoi colour for the radiance volume (random colour) in the first entry of its radiance grid
         __host__

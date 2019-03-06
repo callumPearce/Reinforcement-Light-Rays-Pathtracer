@@ -168,13 +168,12 @@ void RadianceMap::temporal_difference_update_radiance_volume_sector(RadianceVolu
     switch (intersection.intersection_type){
 
         case NOTHING:
-            current_radiance_volume->temporal_difference_update(0.f, current_sector_x, current_sector_y);
+            current_radiance_volume->temporal_difference_update(vec3(0.f), current_sector_x, current_sector_y);
             break;
         
         case AREA_LIGHT:
             vec3 diffuse_light_power = light_planes[intersection.index].diffuse_p; 
-            float luminance = sqrt(0.299 * pow(diffuse_light_power.x,2) + 0.587 * pow(diffuse_light_power.y,2) + 0.114 * pow(diffuse_light_power.z,2));
-            current_radiance_volume->temporal_difference_update(luminance, current_sector_x, current_sector_y);
+            current_radiance_volume->temporal_difference_update(diffuse_light_power, current_sector_x, current_sector_y);
             break;
         
         case SURFACE:
@@ -187,7 +186,7 @@ void RadianceMap::temporal_difference_update_radiance_volume_sector(RadianceVolu
             }
             else{
                 // Get the radiance incident from all directions for the next position and perform temporal diff update
-                float next_pos_irradiance = closest_volume->get_irradiance(intersection, surfaces);
+                vec3 next_pos_irradiance = closest_volume->get_irradiance(intersection, surfaces);
                 current_radiance_volume->temporal_difference_update(next_pos_irradiance, current_sector_x, current_sector_y);
             }
             break;
