@@ -60,12 +60,7 @@ class RadianceMap{
         // Given an intersection point, importance sample a ray direction according to the
         // cumulative distribution formed by the closest RadianceVolume's radiance_map
         __device__
-        RadianceVolume* importance_sample_ray_direction(curandState* volume_rand_state, const Intersection& intersection, int& sector_x, int& sector_y, vec4& sampled_direction);
-
-        // Normalizes all RadianceVolumes radiance values i.e. their grid values
-        // all sum to 1 (taking the length of each vec3)
-        __device__
-        void update_radiance_distributions();
+        RadianceVolume* importance_sample_ray_direction(curandState* volume_rand_state, const Intersection& intersection, int& sector_x, int& sector_y, int x, int y, vec4& sampled_direction);
 
         // Performs the temporal difference update for the radiance volume passed in given the sampled ray direction lead to the intersection
         __device__

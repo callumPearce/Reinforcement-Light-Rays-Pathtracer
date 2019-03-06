@@ -2,16 +2,16 @@
 #include <iostream>
 
 __global__
-void draw_voronoi_trace(vec3* device_buffer, curandState* d_rand_state, curandState* volume_rand_state, RadianceMap* radiance_map, Camera camera, AreaLight* light_planes, Surface* surfaces, int light_plane_count, int surfaces_count){
+void draw_voronoi_trace(vec3* device_buffer, curandState* d_rand_state, RadianceMap* radiance_map, Camera camera, AreaLight* light_planes, Surface* surfaces, int light_plane_count, int surfaces_count){
 
     // Populate the shared GPU/CPU screen buffer
     int x = blockIdx.x * blockDim.x + threadIdx.x;
     int y = blockIdx.y * blockDim.y + threadIdx.y;
-    device_buffer[ x*SCREEN_HEIGHT + y ] = voronoi_trace(d_rand_state, volume_rand_state, camera, radiance_map, x, y, surfaces, light_planes, light_plane_count, surfaces_count);
+    device_buffer[ x*SCREEN_HEIGHT + y ] = voronoi_trace(d_rand_state, camera, radiance_map, x, y, surfaces, light_planes, light_plane_count, surfaces_count);
 }
 
 __device__
-vec3 voronoi_trace(curandState* d_rand_state, curandState* volume_rand_state, Camera camera, RadianceMap* radiance_map, int pixel_x, int pixel_y, Surface* surfaces, AreaLight* light_planes, int light_plane_count, int surfaces_count){
+vec3 voronoi_trace(curandState* d_rand_state, Camera camera, RadianceMap* radiance_map, int pixel_x, int pixel_y, Surface* surfaces, AreaLight* light_planes, int light_plane_count, int surfaces_count){
         // Generate the random point within a pixel for the ray to pass through
         float x = (float)pixel_x + curand_uniform(&d_rand_state[pixel_x*(int)SCREEN_HEIGHT + pixel_y]);
         float y = (float)pixel_y + curand_uniform(&d_rand_state[pixel_x*(int)SCREEN_HEIGHT + pixel_y]);

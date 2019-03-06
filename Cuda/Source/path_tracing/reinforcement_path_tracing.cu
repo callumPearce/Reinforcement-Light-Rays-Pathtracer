@@ -4,33 +4,40 @@
 #include <curand_kernel.h>
 
 __global__
-void draw_reinforcement_path_tracing(vec3* device_buffer, curandState* d_rand_state, curandState* volume_rand_state, RadianceMap* radiance_map, Camera camera, AreaLight* light_planes, Surface* surfaces, int light_plane_count, int surfaces_count){
+void update_radiance_volume_distributions(RadianceMap* radiance_map){
+    
+    int i = blockIdx.x * blockDim.x + threadIdx.x;
+    radiance_map->radiance_volumes[i].update_radiance_distribution();
+}
+
+__global__
+void draw_reinforcement_path_tracing(vec3* device_buffer, curandState* d_rand_state, RadianceMap* radiance_map, Camera camera, AreaLight* light_planes, Surface* surfaces, int light_plane_count, int surfaces_count){
     
     // Populate the shared GPU/CPU screen buffer
     int x = blockIdx.x * blockDim.x + threadIdx.x;
     int y = blockIdx.y * blockDim.y + threadIdx.y;
 
     // Path trace the ray to find the colour to paint the pixel
-    device_buffer[x*(int)SCREEN_HEIGHT + y] = path_trace_reinforcement(d_rand_state, volume_rand_state, radiance_map, camera, x, y, surfaces, light_planes, light_plane_count, surfaces_count);
+    device_buffer[x*(int)SCREEN_HEIGHT + y] = path_trace_reinforcement(d_rand_state, radiance_map, camera, x, y, surfaces, light_planes, light_plane_count, surfaces_count);
 
 }
 
 __device__
-vec3 path_trace_reinforcement(curandState* d_rand_state, curandState* volume_rand_state, RadianceMap* radiance_map, Camera camera, int pixel_x, int pixel_y, Surface* surfaces, AreaLight* light_planes, int light_plane_count, int surfaces_count){
+vec3 path_trace_reinforcement(curandState* d_rand_state, RadianceMap* radiance_map, Camera camera, int pixel_x, int pixel_y, Surface* surfaces, AreaLight* light_planes, int light_plane_count, int surfaces_count){
     vec3 irradiance = vec3(0.f);
     for (int i = 0; i < SAMPLES_PER_PIXEL; i++){
-        
-        Ray ray = Ray::sample_ray_through_pixel(d_rand_state, camera, pixel_x, pixel_y);
 
         // Trace the path of the ray
-        irradiance += path_trace_reinforcement_iterative(d_rand_state, volume_rand_state, radiance_map, ray, surfaces, light_planes, light_plane_count, surfaces_count);
+        irradiance += path_trace_reinforcement_iterative(pixel_x, pixel_y, camera, d_rand_state, radiance_map, surfaces, light_planes, light_plane_count, surfaces_count);
     }
     irradiance /= (float)SAMPLES_PER_PIXEL;
     return irradiance;
 }
 
 __device__
-vec3 path_trace_reinforcement_iterative(curandState* d_rand_state, curandState* volume_rand_state, RadianceMap* radiance_map, Ray ray, Surface* surfaces, AreaLight* light_planes, int light_plane_count, int surfaces_count){
+vec3 path_trace_reinforcement_iterative(int pixel_x, int pixel_y, Camera& camera, curandState* d_rand_state, RadianceMap* radiance_map, Surface* surfaces, AreaLight* light_planes, int light_plane_count, int surfaces_count){
+
+    Ray ray = Ray::sample_ray_through_pixel(d_rand_state, camera, pixel_x, pixel_y);
 
     vec3 throughput = vec3(1.f);
     
@@ -72,7 +79,7 @@ vec3 path_trace_reinforcement_iterative(curandState* d_rand_state, curandState* 
             case SURFACE:
 
                 vec4 sampled_direction = vec4(0.f);
-                current_radiance_volume = radiance_map->importance_sample_ray_direction(volume_rand_state, ray.intersection, current_sector_x, current_sector_y, sampled_direction);
+                current_radiance_volume = radiance_map->importance_sample_ray_direction(d_rand_state, ray.intersection, current_sector_x, current_sector_y, pixel_x, pixel_y, sampled_direction);
 
                 vec3 BRDF = surfaces[ray.intersection.index].material.diffuse_c / (float)M_PI;
                 float cos_theta = dot(vec3(surfaces[ray.intersection.index].normal), vec3(sampled_direction));

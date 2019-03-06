@@ -170,24 +170,13 @@ int main (int argc, char* argv[]) {
     // REINFORCEMENT
     else if(PATH_TRACING_METHOD == 1){
 
-        Update(camera);
-
         // Get the block size and block count to compute over all pixels
-        dim3 block_size(8, 8);
-        int blocks_x = (SCREEN_WIDTH + block_size.x - 1)/block_size.x;
-        int blocks_y = (SCREEN_HEIGHT + block_size.y - 1)/block_size.y;
-        dim3 num_blocks(blocks_x, blocks_y);
+        dim3 render_block_size(8, 8);
+        int blocks_x = (SCREEN_WIDTH + render_block_size.x - 1)/render_block_size.x;
+        int blocks_y = (SCREEN_HEIGHT + render_block_size.y - 1)/render_block_size.y;
+        dim3 render_num_blocks(blocks_x, blocks_y);
 
-        init_rand_state<<<num_blocks, block_size>>>(d_rand_state, SCREEN_WIDTH, SCREEN_HEIGHT);
-
-        // Create the random state array for radiance volumes
-        curandState * volume_rand_state;
-        int vols_x = (GRID_RESOLUTION + block_size.x - 1)/block_size.x;
-        int vols_y = (GRID_RESOLUTION + block_size.y - 1)/block_size.y;
-        dim3 num_radiance_vols(vols_x, vols_y);
-        checkCudaErrors(cudaMalloc(&volume_rand_state, (float)SCREEN_HEIGHT * (float)SCREEN_WIDTH * sizeof(curandState)));
-
-        init_rand_state<<<num_radiance_vols, block_size>>>(volume_rand_state, GRID_RESOLUTION, GRID_RESOLUTION);
+        init_rand_state<<<render_num_blocks, render_block_size>>>(d_rand_state, SCREEN_WIDTH, SCREEN_HEIGHT);
 
         // Setup the radiance map
         std::vector<RadianceVolume> host_rvs;
@@ -206,40 +195,59 @@ int main (int argc, char* argv[]) {
         int volumes = radiance_map->radiance_volumes_count;
         RadianceVolume* device_radiance_volumes;
         checkCudaErrors(cudaMalloc(&device_radiance_volumes, sizeof(RadianceVolume) * volumes));
-        // for (int i = 0; i < volumes; i++){
-        //     checkCudaErrors(cudaMemcpy(&(device_radiance_volumes[i]), &(host_rvs[i]), sizeof(RadianceVolume), cudaMemcpyHostToDevice));
-        // }
         cudaMemcpy(device_radiance_volumes, &host_rvs[0], host_rvs.size() * sizeof(RadianceVolume), cudaMemcpyHostToDevice);
 
         // Copy the top level pointer value of RadianceMap.radiance_volumes 
         checkCudaErrors(cudaMemcpy(&(device_radiance_map->radiance_volumes), &device_radiance_volumes, sizeof(RadianceMap*), cudaMemcpyHostToDevice));
 
-        draw_reinforcement_path_tracing<<<num_blocks, block_size>>>(
-            device_buffer,
-            d_rand_state,
-            volume_rand_state,
-            device_radiance_map,
-            camera,
-            device_light_planes, 
-            device_surfaces, 
-            light_plane_count, 
-            surfaces_count
-        );
+        // Get the number of blocks for updating the radiance volumes list
+        int radiance_volume_block_size = 32;
+        int radaince_volume_num_blocks = (volumes + radiance_volume_block_size - 1) / radiance_volume_block_size;
+        
+        // RENDER LOOP
+        while (1){
+            Update(camera);
 
-        // Copy the render back to the host
-        checkCudaErrors(cudaMemcpy(host_buffer, device_buffer, SCREEN_HEIGHT * SCREEN_WIDTH * sizeof(vec3), cudaMemcpyDeviceToHost));
+            draw_reinforcement_path_tracing<<<render_num_blocks, render_block_size>>>(
+                device_buffer,
+                d_rand_state,
+                device_radiance_map,
+                camera,
+                device_light_planes, 
+                device_surfaces, 
+                light_plane_count, 
+                surfaces_count
+            );
 
-        // Put pixels in the SDL buffer, ready for rendering
-        for (int x = 0; x < SCREEN_WIDTH; x++){
-            for (int y = 0; y < SCREEN_HEIGHT; y++){
-                screen.PutPixelSDL(x, y, host_buffer[x*(int)SCREEN_HEIGHT + y]);
+            cudaDeviceSynchronize();
+
+            update_radiance_volume_distributions<<<radaince_volume_num_blocks, radiance_volume_block_size>>>(
+                device_radiance_map
+            );
+
+            cudaDeviceSynchronize();
+
+            // Copy the render back to the host
+            checkCudaErrors(cudaMemcpy(host_buffer, device_buffer, SCREEN_HEIGHT * SCREEN_WIDTH * sizeof(vec3), cudaMemcpyDeviceToHost));
+            
+            cudaDeviceSynchronize();
+
+            // Put pixels in the SDL buffer, ready for rendering
+            for (int x = 0; x < SCREEN_WIDTH; x++){
+                for (int y = 0; y < SCREEN_HEIGHT; y++){
+                    screen.PutPixelSDL(x, y, host_buffer[x*(int)SCREEN_HEIGHT + y]);
+                }
             }
+
+            cudaMemset(device_buffer, 0.f, sizeof(vec3)* SCREEN_HEIGHT * SCREEN_WIDTH);
+
+            screen.SDL_Renderframe();
+            // screen.SDL_SaveImage("../Images/render.bmp");
         }
         
         // Delete radiance map variables
         cudaFree(device_radiance_volumes);
         cudaFree(device_radiance_map);
-        cudaFree(volume_rand_state);
     }
     // VORONOI
     else if(PATH_TRACING_METHOD == 2){
@@ -253,15 +261,6 @@ int main (int argc, char* argv[]) {
         dim3 num_blocks(blocks_x, blocks_y);
 
         init_rand_state<<<num_blocks, block_size>>>(d_rand_state, SCREEN_WIDTH, SCREEN_HEIGHT);
-
-        // Create the random state array for radiance volumes
-        curandState * volume_rand_state;
-        int vols_x = (GRID_RESOLUTION + block_size.x - 1)/block_size.x;
-        int vols_y = (GRID_RESOLUTION + block_size.y - 1)/block_size.y;
-        dim3 num_radiance_vols(vols_x, vols_y);
-        checkCudaErrors(cudaMalloc(&volume_rand_state, (float)SCREEN_HEIGHT * (float)SCREEN_WIDTH * sizeof(curandState)));
-
-        init_rand_state<<<num_radiance_vols, block_size>>>(volume_rand_state, GRID_RESOLUTION, GRID_RESOLUTION);
 
         // Setup the radiance map
         std::vector<RadianceVolume> temp_rvs;
@@ -283,9 +282,6 @@ int main (int argc, char* argv[]) {
         int volumes = radiance_map->radiance_volumes_count;
         RadianceVolume* device_radiance_volumes;
         checkCudaErrors(cudaMalloc(&device_radiance_volumes, sizeof(RadianceVolume) * volumes));
-        // for (int i = 0; i < volumes; i++){
-        //     checkCudaErrors(cudaMemcpy(&(device_radiance_volumes[i]), &(temp_rvs[i]), sizeof(RadianceVolume), cudaMemcpyHostToDevice));
-        // }
         cudaMemcpy(device_radiance_volumes, &temp_rvs[0], temp_rvs.size() * sizeof(RadianceVolume), cudaMemcpyHostToDevice);
 
         // Copy the top level pointer value of RadianceMap.radiance_volumes 
@@ -294,7 +290,6 @@ int main (int argc, char* argv[]) {
         draw_voronoi_trace<<<num_blocks, block_size>>>(
             device_buffer,
             d_rand_state,
-            volume_rand_state,
             device_radiance_map,
             camera,
             device_light_planes, 
@@ -316,7 +311,6 @@ int main (int argc, char* argv[]) {
         // Delete radiance map variables
         cudaFree(device_radiance_volumes);
         cudaFree(device_radiance_map);
-        cudaFree(volume_rand_state);
     }
 
     /* Free memeory within CPU/GPU */
