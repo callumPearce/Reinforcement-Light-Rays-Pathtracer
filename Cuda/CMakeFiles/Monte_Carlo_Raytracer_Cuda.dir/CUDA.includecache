@@ -61,6 +61,8 @@ area_light.cuh
 /home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/area_light.cuh
 radiance_map.cuh
 /home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/radiance_map.cuh
+scene.cuh
+/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/scene.cuh
 default_path_tracing.cuh
 /home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/default_path_tracing.cuh
 reinforcement_path_tracing.cuh
@@ -137,10 +139,8 @@ memory
 -
 ray.cuh
 /home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/path_tracing/ray.cuh
-surface.cuh
-/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/path_tracing/surface.cuh
-area_light.cuh
-/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/path_tracing/area_light.cuh
+scene.cuh
+/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/path_tracing/scene.cuh
 monte_carlo_settings.h
 /home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/path_tracing/monte_carlo_settings.h
 hemisphere_helpers.cuh
@@ -187,6 +187,8 @@ image_settings.h
 /home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/path_tracing/image_settings.h
 sdl_screen.h
 /home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/path_tracing/sdl_screen.h
+scene.cuh
+/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/path_tracing/scene.cuh
 
 /home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/path_tracing/voronoi_trace.cu
 voronoi_trace.cuh
@@ -215,6 +217,8 @@ image_settings.h
 /home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/path_tracing/image_settings.h
 sdl_screen.h
 /home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/path_tracing/sdl_screen.h
+scene.cuh
+/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/path_tracing/scene.cuh
 curand_kernel.h
 -
 curand.h
@@ -247,6 +251,8 @@ radiance_volumes_settings.h
 /home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/radiance_volumes/radiance_volumes_settings.h
 hemisphere_helpers.cuh
 /home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/radiance_volumes/hemisphere_helpers.cuh
+scene.cuh
+/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/radiance_volumes/scene.cuh
 curand.h
 -
 curand_kernel.h
@@ -293,6 +299,8 @@ surface.cuh
 /home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/rays/surface.cuh
 area_light.cuh
 /home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/rays/area_light.cuh
+scene.cuh
+/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/rays/scene.cuh
 
 /home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/rays/ray.cuh
 glm/glm.hpp
@@ -325,6 +333,22 @@ surface.cuh
 /home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/scenes/surface.cuh
 area_light.cuh
 /home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/scenes/area_light.cuh
+
+/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/scenes/scene.cu
+scene.cuh
+/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/scenes/scene.cuh
+
+/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/scenes/scene.cuh
+glm/glm.hpp
+-
+surface.cuh
+/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/scenes/surface.cuh
+area_light.cuh
+/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/scenes/area_light.cuh
+cornell_box_scene.cuh
+/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/scenes/cornell_box_scene.cuh
+ray.cuh
+/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/scenes/ray.cuh
 
 /home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/utils/hemisphere_helpers.cu
 hemisphere_helpers.cuh
@@ -971,10 +995,8 @@ memory
 -
 ray.cuh
 Source/path_tracing/ray.cuh
-surface.cuh
-Source/path_tracing/surface.cuh
-area_light.cuh
-Source/path_tracing/area_light.cuh
+scene.cuh
+Source/path_tracing/scene.cuh
 monte_carlo_settings.h
 Source/path_tracing/monte_carlo_settings.h
 hemisphere_helpers.cuh
@@ -1013,6 +1035,8 @@ image_settings.h
 Source/path_tracing/image_settings.h
 sdl_screen.h
 Source/path_tracing/sdl_screen.h
+scene.cuh
+Source/path_tracing/scene.cuh
 
 Source/path_tracing/voronoi_trace.cuh
 glm/glm.hpp
@@ -1035,6 +1059,8 @@ image_settings.h
 Source/path_tracing/image_settings.h
 sdl_screen.h
 Source/path_tracing/sdl_screen.h
+scene.cuh
+Source/path_tracing/scene.cuh
 curand_kernel.h
 -
 curand.h
@@ -1055,6 +1081,8 @@ radiance_volumes_settings.h
 Source/radiance_volumes/radiance_volumes_settings.h
 hemisphere_helpers.cuh
 Source/radiance_volumes/hemisphere_helpers.cuh
+scene.cuh
+Source/radiance_volumes/scene.cuh
 curand.h
 -
 curand_kernel.h
@@ -1103,6 +1131,18 @@ surface.cuh
 Source/scenes/surface.cuh
 area_light.cuh
 Source/scenes/area_light.cuh
+
+Source/scenes/scene.cuh
+glm/glm.hpp
+-
+surface.cuh
+Source/scenes/surface.cuh
+area_light.cuh
+Source/scenes/area_light.cuh
+cornell_box_scene.cuh
+Source/scenes/cornell_box_scene.cuh
+ray.cuh
+Source/scenes/ray.cuh
 
 Source/sdl/sdl_screen.h
 SDL.h

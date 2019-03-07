@@ -17,6 +17,7 @@
 #include "camera.cuh"
 #include "area_light.cuh"
 #include "radiance_map.cuh"
+#include "scene.cuh"
 
 // Path Tracing Types
 #include "default_path_tracing.cuh"
@@ -89,31 +90,16 @@ int main (int argc, char* argv[]) {
     // Reset the SDL screen to black
     memset(screen.buffer, 0, screen.height*screen.width*sizeof(uint32_t));
 
-    // Load the shapes within the scene
-    std::vector<Surface> surfaces_load;
-    std::vector<AreaLight> area_lights_load;
-    get_cornell_shapes(surfaces_load, area_lights_load);
-    // load_scene("Models/simple_room.obj", surfaces_load);
-
     // Create the camera
     Camera camera = Camera(vec4(0, 0, -3, 1));
 
-    // Convert the vector of surfaces into a fixed size array
-    int surfaces_count = surfaces_load.size();
-    Surface* surfaces = new Surface[ surfaces_load.size() ];
-    for (int i = 0 ; i < surfaces_count; i++) {
-        surfaces[i] = surfaces_load[i];
-    }
-
-    // Convert the vector of light planes into a fixed size array
-    int light_plane_count = area_lights_load.size();
-    AreaLight* light_planes = new AreaLight[ area_lights_load.size() ];
-    for (int i = 0 ; i < light_plane_count; i++) {
-        light_planes[i] = area_lights_load[i];
-    }
+    // Initialise the scene
+    Scene scene = Scene();
+    scene.load_cornell_box_scene();
 
     /* Setup defautl CUDA memory */
     vec3 * device_buffer;
+    Scene* device_scene;
     Surface* device_surfaces;
     AreaLight* device_light_planes;
     curandState * d_rand_state;
@@ -123,12 +109,18 @@ int main (int argc, char* argv[]) {
     checkCudaErrors(cudaMalloc(&device_buffer, SCREEN_HEIGHT * SCREEN_WIDTH * sizeof(vec3)));
     
     // Copy surfaces into device memory space
-    checkCudaErrors(cudaMalloc(&device_surfaces, surfaces_count * sizeof(Surface)));
-    checkCudaErrors(cudaMemcpy(device_surfaces, surfaces, surfaces_count * sizeof(Surface), cudaMemcpyHostToDevice));
+    checkCudaErrors(cudaMalloc(&device_surfaces, scene.surfaces_count * sizeof(Surface)));
+    checkCudaErrors(cudaMemcpy(device_surfaces, scene.surfaces, scene.surfaces_count * sizeof(Surface), cudaMemcpyHostToDevice));
 
     // Copy light planes into device memory space
-    checkCudaErrors(cudaMalloc(&device_light_planes, light_plane_count * sizeof(AreaLight)));
-    checkCudaErrors(cudaMemcpy(device_light_planes, light_planes, light_plane_count * sizeof(AreaLight), cudaMemcpyHostToDevice));
+    checkCudaErrors(cudaMalloc(&device_light_planes, scene.area_light_count * sizeof(AreaLight)));
+    checkCudaErrors(cudaMemcpy(device_light_planes, scene.area_lights, scene.area_light_count * sizeof(AreaLight), cudaMemcpyHostToDevice));
+
+    // Copy the scene structure into the device and its corresponding pointers to Surfaces and Area Lights
+    checkCudaErrors(cudaMalloc(&device_scene, sizeof(Scene)));
+    checkCudaErrors(cudaMemcpy(device_scene, &scene, sizeof(Scene), cudaMemcpyHostToDevice));
+    checkCudaErrors(cudaMemcpy(&(device_scene->surfaces), &device_surfaces, sizeof(Surface*), cudaMemcpyHostToDevice));
+    checkCudaErrors(cudaMemcpy(&(device_scene->area_lights), &device_light_planes, sizeof(AreaLight*), cudaMemcpyHostToDevice));
 
     // Create the random state array for random number generation
     checkCudaErrors(cudaMalloc(&d_rand_state, (float)SCREEN_HEIGHT * (float)SCREEN_WIDTH * sizeof(curandState)));
@@ -151,10 +143,7 @@ int main (int argc, char* argv[]) {
             device_buffer, 
             d_rand_state, 
             camera, 
-            device_light_planes, 
-            device_surfaces, 
-            light_plane_count, 
-            surfaces_count
+            device_scene
         );
 
         // Copy the render back to the host
@@ -181,8 +170,8 @@ int main (int argc, char* argv[]) {
         // Setup the radiance map
         std::vector<RadianceVolume> host_rvs;
         RadianceMap* radiance_map = new RadianceMap(
-            surfaces,
-            surfaces_count,
+            scene.surfaces,
+            scene.surfaces_count,
             host_rvs
         );
 
@@ -213,10 +202,7 @@ int main (int argc, char* argv[]) {
                 d_rand_state,
                 device_radiance_map,
                 camera,
-                device_light_planes, 
-                device_surfaces, 
-                light_plane_count, 
-                surfaces_count
+                device_scene
             );
 
             cudaDeviceSynchronize();
@@ -264,8 +250,8 @@ int main (int argc, char* argv[]) {
         // Setup the radiance map
         std::vector<RadianceVolume> temp_rvs;
         RadianceMap* radiance_map = new RadianceMap(
-            surfaces,
-            surfaces_count,
+            scene.surfaces,
+            scene.surfaces_count,
             temp_rvs
         );
         
@@ -291,10 +277,7 @@ int main (int argc, char* argv[]) {
             d_rand_state,
             device_radiance_map,
             camera,
-            device_light_planes, 
-            device_surfaces, 
-            light_plane_count, 
-            surfaces_count
+            device_scene
         );
 
         // Copy the render back to the host
@@ -314,12 +297,13 @@ int main (int argc, char* argv[]) {
 
     /* Free memeory within CPU/GPU */
     delete [] host_buffer;
-    delete [] surfaces;
-    delete [] light_planes;
+    delete [] scene.surfaces;
+    delete [] scene.area_lights;
     cudaFree(device_buffer);
     cudaFree(device_surfaces);
     cudaFree(device_light_planes);
     cudaFree(d_rand_state);
+    cudaFree(device_scene);
 
     /*                  Rendering                       */
     screen.SDL_Renderframe();

@@ -12,10 +12,11 @@
 #include <curand_kernel.h>
 
 
-class Shape;
-class Triangle;
-class Surface;
 class AreaLight;
+class Surface;
+class Triangle;
+class Scene;
+// #include "scene.cuh"
 
 using glm::vec3;
 using glm::vec2;
@@ -70,7 +71,7 @@ class Ray {
 
         // Find the closest intersection for the given ray with an shape in the scene
         __device__
-        void closest_intersection(Surface* surfaces, AreaLight* light_planes, int light_plane_count, int surfaces_count);
+        void closest_intersection(Scene* scene);
 
         // Cramers rule for solving a system of linear equations
         __device__
@@ -83,28 +84,6 @@ class Ray {
         // Rotate a ray by "yaw"
         __device__
         void rotate_ray(float yaw);
-
-        // /* Host versions */
-        // __host__
-        // Ray(vec4 start, vec4 direction, bool host);
-
-        // __host__
-        // void closest_intersection_host(Surface* surfaces, AreaLight* light_planes, int light_plane_count, int surfaces_count);
-
-        // __host__
-        // bool intersects_host(int index, Surface* surfaces);
-
-        // __host__
-        // bool intersects_host(int index, AreaLight* area_lights);
-
-        // __host__ 
-        // bool cramer_host(mat3 A, vec3 b, vec3& solution);
-
-        // __host__ 
-        // Ray sample_ray_through_pixel_host(curandState* d_rand_state, Camera& camera, int pixel_x, int pixel_y);
-        
-        // __host__
-        // void rotate_ray_host(float yaw);
 
 };
 

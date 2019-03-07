@@ -46,6 +46,7 @@ set(
     Source/radiance_volumes/radiance_tree.cu
     Source/radiance_volumes/radiance_map.cu
     Source/scenes/cornell_box_scene.cu
+    Source/scenes/scene.cu
     Source/utils/printing.cpp
     Source/utils/hemisphere_helpers.cu
     Source/lights/area_light.cu

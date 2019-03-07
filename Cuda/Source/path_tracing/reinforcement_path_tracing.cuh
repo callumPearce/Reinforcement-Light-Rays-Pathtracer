@@ -13,6 +13,7 @@
 #include "radiance_map.cuh"
 #include "image_settings.h"
 #include "sdl_screen.h"
+#include "scene.cuh"
 
 using glm::vec3;
 using glm::vec2;
@@ -32,12 +33,12 @@ __global__
 void update_radiance_volume_distributions(RadianceMap* radiance_map);
 
 __global__
-void draw_reinforcement_path_tracing(vec3* device_buffer, curandState* d_rand_state, RadianceMap* radiance_map, Camera camera, AreaLight* light_planes, Surface* surfaces, int light_plane_count, int surfaces_count);
+void draw_reinforcement_path_tracing(vec3* device_buffer, curandState* d_rand_state, RadianceMap* radiance_map, Camera camera, Scene* scene);
 
 __device__
-vec3 path_trace_reinforcement(curandState* d_rand_state, RadianceMap* radiance_map, Camera camera, int pixel_x, int pixel_y, Surface* surfaces, AreaLight* light_planes, int light_plane_count, int surfaces_count);
+vec3 path_trace_reinforcement(curandState* d_rand_state, RadianceMap* radiance_map, Camera camera, int pixel_x, int pixel_y, Scene* scene);
 
 __device__
-vec3 path_trace_reinforcement_iterative(int pixel_x, int pixel_y, Camera& camera, curandState* d_rand_state, RadianceMap* radiance_map, Surface* surfaces, AreaLight* light_planes, int light_plane_count, int surfaces_count);
+vec3 path_trace_reinforcement_iterative(int pixel_x, int pixel_y, Camera& camera, curandState* d_rand_state, RadianceMap* radiance_map, Scene* scene);
 
 #endif

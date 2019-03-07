@@ -12,6 +12,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/radiance_volumes/radiance_tree.cu.o"
   "CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/radiance_volumes/radiance_map.cu.o"
   "CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/scenes/cornell_box_scene.cu.o"
+  "CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/scenes/scene.cu.o"
   "CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/utils/printing.cpp.o"
   "CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/utils/hemisphere_helpers.cu.o"
   "CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/lights/area_light.cu.o"

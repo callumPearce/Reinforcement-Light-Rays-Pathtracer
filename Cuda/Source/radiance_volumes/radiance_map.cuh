@@ -8,6 +8,7 @@
 #include "printing.h"
 #include "radiance_volumes_settings.h"
 #include "hemisphere_helpers.cuh"
+#include "scene.cuh"
 //cuRand
 #include <curand.h>
 #include <curand_kernel.h>
@@ -42,13 +43,6 @@ class RadianceMap{
         __host__
         RadianceMap(Surface* surfaces, int surfaces_count, std::vector<RadianceVolume>& temp_rvs);
 
-        // Get the radiance estimate for every radiance volume in the RadianceMap
-        __device__
-        void get_radiance_estimates(curandState* volume_rand_state, Surface* surfaces, AreaLight* light_planes);
-
-        // Get radiance estimate at the intersection point
-        // vec3 get_irradiance_estimate(const Intersection& intersection, Surface* surfaces);
-
         // Calculate the Gaussian filter for radiance contribution
         __device__
         float calculate_gaussian_filter(float volume_distance, float furthest_volume_distance);
@@ -60,7 +54,7 @@ class RadianceMap{
 
         // Performs the temporal difference update for the radiance volume passed in given the sampled ray direction lead to the intersection
         __device__
-        RadianceVolume* temporal_difference_update_radiance_volume_sector(RadianceVolume* current_radiance_volume, int current_sector_x, int current_sector_y, Intersection& intersection, Surface* surfaces, AreaLight* light_planes);
+        RadianceVolume* temporal_difference_update_radiance_volume_sector(RadianceVolume* current_radiance_volume, int current_sector_x, int current_sector_y, Intersection& intersection, Scene* scene);
 
         // Set the voronoi colours of all radiance volumes in the scene in the first entry of the radiance_grid[0][0]
         __host__
