@@ -51,16 +51,21 @@ vec3 path_trace_reinforcement_iterative(int pixel_x, int pixel_y, Camera& camera
         ray.closest_intersection(surfaces, light_planes, light_plane_count, surfaces_count);
 
         // We cannot update Q on the first bounce as it is the camera position,
-        // not a point in the scene
+        // not a point in the scene. But we still need the closest radiance volume it intersects with
         if (i > 0){
             // Update Q
             // where x = ray.start, y = intersection.position
             // Check that a radiance volume has been found to update its sector
             if (current_radiance_volume && current_sector_x != -1 && current_sector_y != -1){
-                radiance_map->temporal_difference_update_radiance_volume_sector(current_radiance_volume, current_sector_x, current_sector_y, ray.intersection, surfaces, light_planes);
+                current_radiance_volume = radiance_map->temporal_difference_update_radiance_volume_sector(current_radiance_volume, current_sector_x, current_sector_y, ray.intersection, surfaces, light_planes);
                 current_sector_x = -1;
                 current_sector_y = -1;
             } 
+        }
+        // Get the radiance volume for the first iteration
+        else{
+            if (ray.intersection.intersection_type == SURFACE)
+                current_radiance_volume = radiance_map->get_closest_radiance_volume_linear(MAX_DIST, ray.intersection.position, ray.intersection.normal);
         }
 
         // Check what they ray intersected with...
@@ -79,7 +84,7 @@ vec3 path_trace_reinforcement_iterative(int pixel_x, int pixel_y, Camera& camera
             case SURFACE:
 
                 vec4 sampled_direction = vec4(0.f);
-                current_radiance_volume = radiance_map->importance_sample_ray_direction(d_rand_state, ray.intersection, current_sector_x, current_sector_y, pixel_x, pixel_y, sampled_direction);
+                radiance_map->importance_sample_ray_direction(d_rand_state, ray.intersection, current_sector_x, current_sector_y, pixel_x, pixel_y, sampled_direction, current_radiance_volume);
 
                 vec3 BRDF = surfaces[ray.intersection.index].material.diffuse_c / (float)M_PI;
                 float cos_theta = dot(vec3(surfaces[ray.intersection.index].normal), vec3(sampled_direction));

@@ -56,11 +56,11 @@ class RadianceMap{
         // Given an intersection point, importance sample a ray direction according to the
         // cumulative distribution formed by the closest RadianceVolume's radiance_map
         __device__
-        RadianceVolume* importance_sample_ray_direction(curandState* d_rand_state, const Intersection& intersection, int& sector_x, int& sector_y, int x, int y, vec4& sampled_direction);
+        void importance_sample_ray_direction(curandState* d_rand_state, const Intersection& intersection, int& sector_x, int& sector_y, int x, int y, vec4& sampled_direction, RadianceVolume* closest_volume);
 
         // Performs the temporal difference update for the radiance volume passed in given the sampled ray direction lead to the intersection
         __device__
-        void temporal_difference_update_radiance_volume_sector(RadianceVolume* current_radiance_volume, int current_sector_x, int current_sector_y, Intersection& intersection, Surface* surfaces, AreaLight* light_planes);
+        RadianceVolume* temporal_difference_update_radiance_volume_sector(RadianceVolume* current_radiance_volume, int current_sector_x, int current_sector_y, Intersection& intersection, Surface* surfaces, AreaLight* light_planes);
 
         // Set the voronoi colours of all radiance volumes in the scene in the first entry of the radiance_grid[0][0]
         __host__

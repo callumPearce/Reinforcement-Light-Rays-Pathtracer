@@ -86,17 +86,12 @@ float RadianceMap::calculate_gaussian_filter(float volume_distance, float furthe
 // Given an intersection point, importance sample a ray direction according to the
 // cumulative distribution formed by the closest RadianceVolume's radiance_map
 __device__
-RadianceVolume* RadianceMap::importance_sample_ray_direction(curandState* d_rand_state, const Intersection& intersection, int& sector_x, int& sector_y, int x, int y, vec4& sampled_direction){
-
-    // 1) Find the closest RadianceVolume
-    // RadianceVolume* closest_volume = this->radiance_tree->find_closest_radiance_volume(MAX_DIST, intersection.position, intersection.normal);
-    RadianceVolume* closest_volume = this->get_closest_radiance_volume_linear(MAX_DIST, intersection.position, intersection.normal);
+void RadianceMap::importance_sample_ray_direction(curandState* d_rand_state, const Intersection& intersection, int& sector_x, int& sector_y, int x, int y, vec4& sampled_direction, RadianceVolume* closest_volume){
 
     // If a radiance volume is not found, just sample randomly 
     if (closest_volume == NULL){
         float cos_theta;
         sampled_direction = sample_random_direction_around_intersection(d_rand_state, intersection, cos_theta); 
-        return NULL;
     }
     else{
         // 2) Generate a random float uniformly between [0,1] and find which 
@@ -104,23 +99,24 @@ RadianceVolume* RadianceMap::importance_sample_ray_direction(curandState* d_rand
         //    of i.e. sample from the inverse of the cumulative distribution.
         //    This gives the location on the grid we sample our direction from
         sampled_direction = closest_volume->sample_direction_from_radiance_distribution(d_rand_state, x, y, sector_x, sector_y);
-        return closest_volume;
     }
 }
 
 // Performs the temporal difference update for the radiance volume passed in given the sampled ray direction lead to the intersection
 __device__
-void RadianceMap::temporal_difference_update_radiance_volume_sector(RadianceVolume* current_radiance_volume, int current_sector_x, int current_sector_y, Intersection& intersection, Surface* surfaces, AreaLight* light_planes){
+RadianceVolume* RadianceMap::temporal_difference_update_radiance_volume_sector(RadianceVolume* current_radiance_volume, int current_sector_x, int current_sector_y, Intersection& intersection, Surface* surfaces, AreaLight* light_planes){
 
     switch (intersection.intersection_type){
 
         case NOTHING:
             current_radiance_volume->temporal_difference_update(vec3(0.f), current_sector_x, current_sector_y);
+            return NULL;
             break;
         
         case AREA_LIGHT:
             vec3 diffuse_light_power = light_planes[intersection.index].diffuse_p; 
             current_radiance_volume->temporal_difference_update(diffuse_light_power, current_sector_x, current_sector_y);
+            return NULL;
             break;
         
         case SURFACE:
@@ -129,12 +125,13 @@ void RadianceMap::temporal_difference_update_radiance_volume_sector(RadianceVolu
             RadianceVolume* closest_volume = this->get_closest_radiance_volume_linear(MAX_DIST, intersection.position, intersection.normal);
 
             if (closest_volume == NULL){
-                return;
+                return NULL;
             }
             else{
                 // Get the radiance incident from all directions for the next position and perform temporal diff update
                 vec3 next_pos_irradiance = closest_volume->get_irradiance(intersection, surfaces);
                 current_radiance_volume->temporal_difference_update(next_pos_irradiance, current_sector_x, current_sector_y);
+                return closest_volume;
             }
             break;
     }
