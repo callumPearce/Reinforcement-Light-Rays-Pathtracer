@@ -230,7 +230,6 @@ int main (int argc, char* argv[]) {
             // Copy the render back to the host
             checkCudaErrors(cudaMemcpy(host_buffer, device_buffer, SCREEN_HEIGHT * SCREEN_WIDTH * sizeof(vec3), cudaMemcpyDeviceToHost));
             
-            cudaDeviceSynchronize();
 
             // Put pixels in the SDL buffer, ready for rendering
             for (int x = 0; x < SCREEN_WIDTH; x++){

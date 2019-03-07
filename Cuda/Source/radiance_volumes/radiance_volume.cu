@@ -192,26 +192,21 @@ void RadianceVolume::temporal_difference_update(vec3 next_irradiance, int sector
     unsigned int vs = this->visits[ sector_location ];
     float alpha = 1.f / (1.f + (float)vs);
 
-    // printf("%.3f, %.3f, %.3f\n", this->radiance_grid[ sector_location_rgb  ], this->radiance_grid[ sector_location_rgb + 1 ], this->radiance_grid[ sector_location_rgb + 2] );
-    assert(alpha <= 1.00000f);
-
-    // printf("%.3f\n",alpha);
+    // assert(alpha <= 1.00000f);
 
     // Calculate the new update value
     vec3 radiance = vec3(this->radiance_grid[ sector_location_rgb ], this->radiance_grid[ sector_location_rgb + 1 ], this->radiance_grid[ sector_location_rgb + 2 ]);
     vec3 update = ((1.f - (alpha)) * radiance) + (alpha * next_irradiance);
-    // update = length(update) > (float)RADIANCE_THRESHOLD ? update : vec3((float)RADIANCE_THRESHOLD);
+    update.x = update.x > (float)RADIANCE_THRESHOLD ? update.x : (float)RADIANCE_THRESHOLD;
+    update.y = update.y > (float)RADIANCE_THRESHOLD ? update.y : (float)RADIANCE_THRESHOLD;
+    update.z = update.z > (float)RADIANCE_THRESHOLD ? update.z : (float)RADIANCE_THRESHOLD;
 
-    assert(update.x < 1.f);
-    assert(update.y < 1.f);
-    assert(update.z < 1.f);
+    // assert(update.x < 1.f);
+    // assert(update.y < 1.f);
+    // assert(update.z < 1.f);
 
     // Update the radiance grid and the alpha value
-    // this->visits[ sector_location ] += 1;
     atomicInc(&(this->visits[ sector_location ]), vs+1);
-    // this->radiance_grid[ sector_location ] = update;
-    // printf("%.3f, %.3f, %.3f\n", update.x, update.y, update.z);
-
     atomicExch(&(this->radiance_grid[ sector_location_rgb     ]), update.x);
     atomicExch(&(this->radiance_grid[ sector_location_rgb + 1 ]), update.y);
     atomicExch(&(this->radiance_grid[ sector_location_rgb + 2 ]), update.z);
