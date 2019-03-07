@@ -75,25 +75,6 @@ class RadianceVolume{
         __device__
         vec4* get_vertices();
 
-        // // Gets the incoming radiance values from all grid samples and
-        // // populates radiance_grid with the estimates
-        // // NOTE: This should be called before any radiance_volumes are instantiated
-        // // in the scene by surfaces or these surfaces will be taken into account
-        // __device__
-        // void get_radiance_estimate_per_sector(Surface* surfaces, AreaLight* light_planes);
-
-        // // Builds a radiance volume out of Surfaces, where each surfaces colour
-        // // represents the incoming radiance at that position from that angle
-        // __device__
-        // void build_radiance_volume_shapes(std::vector<Surface>& surfaces);
-
-        // // Builds a radiance volume out of Surfaces, where each surfaces colour
-        // // represents the magnitude of incoming radiance compared to the other directions
-        // __device__
-        // void build_radiance_magnitude_volume_shapes(std::vector<Surface>& surfaces);
-
-        // Gets the irradiance for an intersection point by solving the rendering equations (summing up 
-        // radiance from all directions whilst multiplying by BRDF and cos(theta))
         __device__
         vec3 get_irradiance(const Intersection& intersection, Surface* surfaces);
 
@@ -105,7 +86,7 @@ class RadianceVolume{
         // Samples a direction from the radiance_distribution of this radiance
         // volume
         __device__
-        vec4 sample_direction_from_radiance_distribution(curandState* d_rand_state, int x, int y, int& sector_x, int& sector_y);
+        vec4 sample_direction_from_radiance_distribution(curandState* d_rand_state, int pixel_x, int pixel_y, int& sector_x, int& sector_y);
 
         // Performs a temporal difference update for the current radiance volume for the incident
         // radiance in the sector specified with the intersection surfaces irradiance value

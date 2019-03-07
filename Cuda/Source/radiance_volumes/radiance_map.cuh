@@ -42,10 +42,6 @@ class RadianceMap{
         __host__
         RadianceMap(Surface* surfaces, int surfaces_count, std::vector<RadianceVolume>& temp_rvs);
 
-        // Builds all RadianceVolumes which are part of the RadianceMap into the scene
-        // __host__
-        // void build_radiance_map_shapes(std::vector<Surface>& surfaces);
-
         // Get the radiance estimate for every radiance volume in the RadianceMap
         __device__
         void get_radiance_estimates(curandState* volume_rand_state, Surface* surfaces, AreaLight* light_planes);
@@ -60,7 +56,7 @@ class RadianceMap{
         // Given an intersection point, importance sample a ray direction according to the
         // cumulative distribution formed by the closest RadianceVolume's radiance_map
         __device__
-        RadianceVolume* importance_sample_ray_direction(curandState* volume_rand_state, const Intersection& intersection, int& sector_x, int& sector_y, int x, int y, vec4& sampled_direction);
+        RadianceVolume* importance_sample_ray_direction(curandState* d_rand_state, const Intersection& intersection, int& sector_x, int& sector_y, int x, int y, vec4& sampled_direction);
 
         // Performs the temporal difference update for the radiance volume passed in given the sampled ray direction lead to the intersection
         __device__

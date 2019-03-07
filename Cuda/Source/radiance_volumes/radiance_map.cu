@@ -67,61 +67,10 @@ void RadianceMap::uniformly_sample_radiance_volumes(Surface* surfaces, int surfa
     }
 }
 
-// // Get the radiance estimate for all radiance volumes in the RadianceMap
-// __device__
-// void RadianceMap::get_radiance_estimates(curandState* volume_rand_state, Surface* surfaces, AreaLight* light_planes){
-//     for (int i = 0; i < this->radiance_volumes_count; i++){
-//         this->radiance_volumes[i].get_radiance_estimate_per_sector(volume_rand_state, surfaces, light_planes);
-//     }
-// }
-
-// // Builds all RadianceVolumes which are part of the RadianceMap into the scene
-// __host__
-// void RadianceMap::build_radiance_map_shapes(std::vector<Surface>& surfaces){
-//     for (int i = 0; i < this->radiance_volumes_count; i++){
-//         this->radiance_volumes[i].build_radiance_volume_shapes(surfaces);
-//     }
-// }
-
 /*              Querying                */
 // Get the estimated radiance for a given intersection point within the scene
 // based on interpolation of the radiance map stored estimates 
 // vec3 RadianceMap::get_irradiance_estimate(const Intersection& intersection, Surface* surfaces){
-
-//     // Get the closest n points by maintaining a heap of values
-//     std::vector<RadianceVolume*> closest_volumes = this->radiance_tree->find_closest_radiance_volumes(CLOSEST_QUERY_COUNT, MAX_DIST, intersection.position, intersection.normal);
-    
-//     // For each index, get the radiance and average the total radiance
-//     vec3 radiance = vec3(0.f);
-//     int volumes = closest_volumes.size();
-
-//     // Use barycentric interpolation if three radiance volumes have been found
-//     if (volumes == 3){
-//         float u, v;
-//         // Check that P lies in the triangle defined
-//         if (compute_barycentric(closest_volumes[0]->get_position(), closest_volumes[1]->get_position(), closest_volumes[2]->get_position(), intersection.position, u, v)){
-//             vec3 u_colour = closest_volumes[0]->get_irradiance(intersection, surfaces);
-//             vec3 v_colour = closest_volumes[1]->get_irradiance(intersection, surfaces);
-//             vec3 w_colour = closest_volumes[2]->get_irradiance(intersection, surfaces);
-//             radiance = u_colour * u + v_colour * v + w_colour * (1 - u - v);
-//         }
-//         // Else just take an average
-//         else{
-//             for (int i = 0; i < volumes; i++){
-//                 radiance += closest_volumes[i]->get_irradiance(intersection, surfaces);
-//             }
-//             radiance /= (float)volumes;
-//         }
-//     }
-//     // Otherwise just take an average
-//     else if(volumes > 0){
-//         for (int i = 0; i < volumes; i++){
-//             radiance += closest_volumes[i]->get_irradiance(intersection, surfaces);
-//         }
-//         radiance /= (float)volumes;
-//     }
-//     return radiance;
-// }
 
 // Calculates a gaussian filter constant for the passed in radiance volume distance and max radiance volume distance
 __device__
@@ -137,7 +86,7 @@ float RadianceMap::calculate_gaussian_filter(float volume_distance, float furthe
 // Given an intersection point, importance sample a ray direction according to the
 // cumulative distribution formed by the closest RadianceVolume's radiance_map
 __device__
-RadianceVolume* RadianceMap::importance_sample_ray_direction(curandState* volume_rand_state, const Intersection& intersection, int& sector_x, int& sector_y, int x, int y, vec4& sampled_direction){
+RadianceVolume* RadianceMap::importance_sample_ray_direction(curandState* d_rand_state, const Intersection& intersection, int& sector_x, int& sector_y, int x, int y, vec4& sampled_direction){
 
     // 1) Find the closest RadianceVolume
     // RadianceVolume* closest_volume = this->radiance_tree->find_closest_radiance_volume(MAX_DIST, intersection.position, intersection.normal);
@@ -146,7 +95,7 @@ RadianceVolume* RadianceMap::importance_sample_ray_direction(curandState* volume
     // If a radiance volume is not found, just sample randomly 
     if (closest_volume == NULL){
         float cos_theta;
-        // sampled_direction = sample_random_direction_around_intersection(intersection, cos_theta); TODO FIX
+        sampled_direction = sample_random_direction_around_intersection(d_rand_state, intersection, cos_theta); 
         return NULL;
     }
     else{
@@ -154,9 +103,7 @@ RadianceVolume* RadianceMap::importance_sample_ray_direction(curandState* volume
         //    part of the cumulative distribution this number falls in range
         //    of i.e. sample from the inverse of the cumulative distribution.
         //    This gives the location on the grid we sample our direction from
-        //    Update the radiance distribution before attempting to sample
-        // closest_volume->update_radiance_distribution();
-        sampled_direction = closest_volume->sample_direction_from_radiance_distribution(volume_rand_state, x, y, sector_x, sector_y);
+        sampled_direction = closest_volume->sample_direction_from_radiance_distribution(d_rand_state, x, y, sector_x, sector_y);
         return closest_volume;
     }
 }
