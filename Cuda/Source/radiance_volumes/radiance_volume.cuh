@@ -52,7 +52,7 @@ class RadianceVolume{
     public:
         bool initialised = false;
         vec4 position;
-        float radiance_grid [GRID_RESOLUTION * GRID_RESOLUTION * 3];
+        float radiance_grid [GRID_RESOLUTION * GRID_RESOLUTION ];
         float radiance_distribution [GRID_RESOLUTION * GRID_RESOLUTION];
         unsigned int visits [GRID_RESOLUTION * GRID_RESOLUTION];
         // For coordinate system
@@ -76,7 +76,7 @@ class RadianceVolume{
         vec4* get_vertices();
 
         __device__
-        vec3 get_irradiance(const Intersection& intersection, Surface* surfaces);
+        float get_irradiance(const Intersection& intersection, Surface* surfaces);
 
         // Normalizes this RadianceVolume so that all radiance values 
         // i.e. their grid values all sum to 1 (taking the length of each vec3)
@@ -91,7 +91,7 @@ class RadianceVolume{
         // Performs a temporal difference update for the current radiance volume for the incident
         // radiance in the sector specified with the intersection surfaces irradiance value
         __device__
-        void temporal_difference_update(vec3 next_irradiance, int sector_x, int sector_y);
+        void temporal_difference_update(float next_irradiance, int sector_x, int sector_y);
 
         // Sets a voronoi colour for the radiance volume (random colour) in the first entry of its radiance grid
         __host__

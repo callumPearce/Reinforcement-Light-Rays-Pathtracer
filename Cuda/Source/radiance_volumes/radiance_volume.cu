@@ -36,9 +36,7 @@ void RadianceVolume::initialise_radiance_grid(){
     float initial = 1.f/((float)GRID_RESOLUTION * (float)GRID_RESOLUTION);
     for (int x = 0; x < GRID_RESOLUTION; x++){
         for (int y = 0; y < GRID_RESOLUTION; y++){
-            this->radiance_grid[ x*GRID_RESOLUTION + (y*3) ] = initial;
-            this->radiance_grid[ x*GRID_RESOLUTION + (y*3) + 1 ] = initial;
-            this->radiance_grid[ x*GRID_RESOLUTION + (y*3) + 2 ] = initial;
+            this->radiance_grid[ x*GRID_RESOLUTION + y ] = initial;
         }
     }
 }
@@ -92,17 +90,13 @@ vec4* RadianceVolume::get_vertices(){
 // Gets the irradiance for an intersection point by solving the rendering equations (summing up 
 // radiance from all directions whilst multiplying by BRDF and cos(theta))
 __device__
-vec3 RadianceVolume::get_irradiance(const Intersection& intersection, Surface* surfaces){
-    vec3 irradiance = vec3(0.f);
+float RadianceVolume::get_irradiance(const Intersection& intersection, Surface* surfaces){
+    float irradiance = 0.f;
     for (int x = 0; x < GRID_RESOLUTION; x++){
         for (int y = 0; y < GRID_RESOLUTION; y++){
             // Get the coordinates on the unit hemisphere
             float x_h, y_h, z_h;
             map(x/(float)GRID_RESOLUTION, y/(float)GRID_RESOLUTION, x_h, y_h, z_h);
-            // Scale to the correct diameter desired of the hemisphere
-            x_h *= DIAMETER;
-            y_h *= DIAMETER;
-            z_h *= DIAMETER;
             // Convert to world space
             vec4 world_position = this->transformation_matrix * vec4(x_h, y_h, z_h, 1.f);
             vec3 world_position3 = vec3(world_position.x, world_position.y, world_position.z);
@@ -110,18 +104,11 @@ vec3 RadianceVolume::get_irradiance(const Intersection& intersection, Surface* s
             vec3 dir = normalize(world_position3 - vec3(this->position));
             // Get the angle between the dir std::vector and the normal
             float cos_theta = dot(dir, this->normal); // No need to divide by lengths as they have been normalized
-            irradiance += cos_theta * vec3(
-                this->radiance_grid[ x*GRID_RESOLUTION + (y*3) ], 
-                this->radiance_grid[ x*GRID_RESOLUTION + (y*3) + 1 ], 
-                this->radiance_grid[ x*GRID_RESOLUTION + (y*3) + 2 ]);
+            irradiance += cos_theta * this->radiance_grid[ x*GRID_RESOLUTION + y ];
         }
     }
     irradiance /= ((float)(GRID_RESOLUTION * GRID_RESOLUTION)) * (1.f / (2.f * (float)M_PI));
-    irradiance *= (surfaces[intersection.index].material.diffuse_c / (float)M_PI);
-    assert(irradiance.x < 1.f);
-    assert(irradiance.y < 1.f);
-    assert(irradiance.z < 1.f);
-    // printf("%.3f, %.3f, %.3f\n", irradiance.x, irradiance.y, irradiance.z );
+    irradiance *= length((surfaces[intersection.index].material.diffuse_c) / (float)M_PI);
     return irradiance;
 }
 
@@ -134,14 +121,14 @@ void RadianceVolume::update_radiance_distribution(){
     float total = 0.00000001f;
     for (int x = 0; x < GRID_RESOLUTION; x++){
         for (int y = 0; y < GRID_RESOLUTION; y++){
-            total += length(vec3(this->radiance_grid[ x*GRID_RESOLUTION + (y*3) ], this->radiance_grid[ x*GRID_RESOLUTION + (y*3) + 1 ], this->radiance_grid[ x*GRID_RESOLUTION + (y*3) + 2 ]));
+            total += this->radiance_grid[ x*GRID_RESOLUTION + y ];
         }
     }
     // Use this total to convert all radiance_grid values into probabilities
     // and store in the radiance_distribution
     for (int x = 0; x < GRID_RESOLUTION; x++){
         for (int y = 0; y < GRID_RESOLUTION; y++){
-            float radiance = length(vec3(this->radiance_grid[ x*GRID_RESOLUTION + (y*3) ], this->radiance_grid[ x*GRID_RESOLUTION + (y*3) + 1 ], this->radiance_grid[ x*GRID_RESOLUTION + (y*3) + 2 ]));
+            float radiance = this->radiance_grid[ x*GRID_RESOLUTION + y ];
             this->radiance_distribution[ x*GRID_RESOLUTION + y ] = radiance/total;
             // float new_val = this->radiance_grid[ x*GRID_RESOLUTION + y ]/total;
             // atomicExch(&(this->radiance_distribution[ x*GRID_RESOLUTION + y ]), new_val);
@@ -178,15 +165,15 @@ vec4 RadianceVolume::sample_direction_from_radiance_distribution(curandState* d_
             }
         }
     }
+    return vec4(0.f);
 }
 
 // Performs a temporal difference update for the current radiance volume for the incident
 // radiance in the sector specified with the intersection surfaces irradiance value
 __device__
-void RadianceVolume::temporal_difference_update(vec3 next_irradiance, int sector_x, int sector_y){
+void RadianceVolume::temporal_difference_update(float next_irradiance, int sector_x, int sector_y){
 
     int sector_location = sector_x*GRID_RESOLUTION + sector_y;
-    int sector_location_rgb = sector_x*GRID_RESOLUTION + sector_y*3;
 
     // Calculate alpha and update the radiance grid values and increment the number of visits
     unsigned int vs = this->visits[ sector_location ];
@@ -195,11 +182,9 @@ void RadianceVolume::temporal_difference_update(vec3 next_irradiance, int sector
     // assert(alpha <= 1.00000f);
 
     // Calculate the new update value
-    vec3 radiance = vec3(this->radiance_grid[ sector_location_rgb ], this->radiance_grid[ sector_location_rgb + 1 ], this->radiance_grid[ sector_location_rgb + 2 ]);
-    vec3 update = ((1.f - (alpha)) * radiance) + (alpha * next_irradiance);
-    update.x = update.x > (float)RADIANCE_THRESHOLD ? update.x : (float)RADIANCE_THRESHOLD;
-    update.y = update.y > (float)RADIANCE_THRESHOLD ? update.y : (float)RADIANCE_THRESHOLD;
-    update.z = update.z > (float)RADIANCE_THRESHOLD ? update.z : (float)RADIANCE_THRESHOLD;
+    float radiance = this->radiance_grid[ sector_location ];
+    float update = ((1.f - (alpha)) * radiance) + (alpha * next_irradiance);
+    update = update > (float)RADIANCE_THRESHOLD ? update : (float)RADIANCE_THRESHOLD;
 
     // assert(update.x < 1.f);
     // assert(update.y < 1.f);
@@ -207,9 +192,7 @@ void RadianceVolume::temporal_difference_update(vec3 next_irradiance, int sector
 
     // Update the radiance grid and the alpha value
     atomicInc(&(this->visits[ sector_location ]), vs+1);
-    atomicExch(&(this->radiance_grid[ sector_location_rgb     ]), update.x);
-    atomicExch(&(this->radiance_grid[ sector_location_rgb + 1 ]), update.y);
-    atomicExch(&(this->radiance_grid[ sector_location_rgb + 2 ]), update.z);
+    atomicExch(&(this->radiance_grid[ sector_location     ]), update);
 }
 
 // Sets a voronoi colour for the radiance volume (random colour) in the first entry of its radiance grid
