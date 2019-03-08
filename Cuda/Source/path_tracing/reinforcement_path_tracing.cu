@@ -11,7 +11,7 @@ void update_radiance_volume_distributions(RadianceMap* radiance_map){
 }
 
 __global__
-void draw_reinforcement_path_tracing(vec3* device_buffer, curandState* d_rand_state, RadianceMap* radiance_map, Camera camera, Scene* scene){
+void draw_reinforcement_path_tracing(vec3* device_buffer, curandState* d_rand_state, RadianceMap* radiance_map, Camera* camera, Scene* scene){
     
     // Populate the shared GPU/CPU screen buffer
     int x = blockIdx.x * blockDim.x + threadIdx.x;
@@ -23,7 +23,7 @@ void draw_reinforcement_path_tracing(vec3* device_buffer, curandState* d_rand_st
 }
 
 __device__
-vec3 path_trace_reinforcement(curandState* d_rand_state, RadianceMap* radiance_map, Camera camera, int pixel_x, int pixel_y, Scene* scene){
+vec3 path_trace_reinforcement(curandState* d_rand_state, RadianceMap* radiance_map, Camera* camera, int pixel_x, int pixel_y, Scene* scene){
     vec3 irradiance = vec3(0.f);
     for (int i = 0; i < SAMPLES_PER_PIXEL; i++){
 
@@ -35,9 +35,9 @@ vec3 path_trace_reinforcement(curandState* d_rand_state, RadianceMap* radiance_m
 }
 
 __device__
-vec3 path_trace_reinforcement_iterative(int pixel_x, int pixel_y, Camera& camera, curandState* d_rand_state, RadianceMap* radiance_map, Scene* scene){
+vec3 path_trace_reinforcement_iterative(int pixel_x, int pixel_y, Camera* camera, curandState* d_rand_state, RadianceMap* radiance_map, Scene* scene){
 
-    Ray ray = Ray::sample_ray_through_pixel(d_rand_state, camera, pixel_x, pixel_y);
+    Ray ray = Ray::sample_ray_through_pixel(d_rand_state, *camera, pixel_x, pixel_y);
 
     vec3 throughput = vec3(1.f);
     

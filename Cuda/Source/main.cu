@@ -33,7 +33,7 @@ using glm::mat3;
 using glm::vec4;
 using glm::mat4;
 
-void Update(Camera& camera){
+bool Update(Camera& camera){
     static int t = SDL_GetTicks();
     /* Compute frame time */
     int t2 = SDL_GetTicks();
@@ -41,22 +41,43 @@ void Update(Camera& camera){
     t = t2;
 
     printf("Render Time: %.3f ms.\n", dt);
-
-    /* Update variables*/
-    const Uint8* keystate = SDL_GetKeyboardState(NULL);
-
-    if (keystate[SDL_SCANCODE_UP]) {
-        camera.move_forwards(0.1);
+  
+    SDL_Event e;
+    while(SDL_PollEvent(&e))
+    {
+        if (e.type == SDL_QUIT)
+        {
+            return false;
+        }
+        else
+            if (e.type == SDL_KEYDOWN)
+            {
+                int key_code = e.key.keysym.sym;
+                switch(key_code)
+                {
+                    case SDLK_UP:
+                        /* Move camera forwards*/
+                        camera.move_forwards(0.01f);
+                    break;
+                    case SDLK_DOWN:
+                        /* Move camera backwards */
+                        camera.move_backwards(0.01f);
+                    break;
+                    case SDLK_LEFT:
+                        /* Move camera left */
+                        camera.rotate_left(0.008f);
+                    break;
+                    case SDLK_RIGHT:
+                        /* Move camera right */
+                        camera.rotate_right(0.008f);
+                    break;
+                    case SDLK_ESCAPE:
+                        /* Move camera quit */
+                        return false;
+                }
+            }  
     }
-    if (keystate[SDL_SCANCODE_DOWN]) {
-        camera.move_backwards(0.1);
-    }
-    if (keystate[SDL_SCANCODE_LEFT]) {
-        camera.rotate_left(0.1);
-    }
-    if (keystate[SDL_SCANCODE_RIGHT]) {
-        camera.rotate_right(0.1);
-    }
+    return true;
 }
 
 // limited version of checkCudaErrors from helper_cuda.h in CUDA examples
@@ -104,6 +125,7 @@ int main (int argc, char* argv[]) {
     AreaLight* device_light_planes;
     curandState * d_rand_state;
     vec3* host_buffer = new vec3[ SCREEN_HEIGHT * SCREEN_WIDTH ];
+    Camera* device_camera;
 
     // Create the shared RGB screen buffer
     checkCudaErrors(cudaMalloc(&device_buffer, SCREEN_HEIGHT * SCREEN_WIDTH * sizeof(vec3)));
@@ -125,11 +147,12 @@ int main (int argc, char* argv[]) {
     // Create the random state array for random number generation
     checkCudaErrors(cudaMalloc(&d_rand_state, (float)SCREEN_HEIGHT * (float)SCREEN_WIDTH * sizeof(curandState)));
 
+    // Initialise the space for the camera on the device
+    checkCudaErrors(cudaMalloc(&device_camera, sizeof(Camera)));
+
     /* Render with specified rendering approach */
     //DEFAULT
     if(PATH_TRACING_METHOD == 0){
-
-        Update(camera);
 
         // Get the block size and block count to compute over all pixels
         dim3 block_size(8, 8);
@@ -139,21 +162,34 @@ int main (int argc, char* argv[]) {
 
         init_rand_state<<<num_blocks, block_size>>>(d_rand_state, SCREEN_WIDTH, SCREEN_HEIGHT);
 
-        draw_default_path_tracing<<<num_blocks, block_size>>>(
-            device_buffer, 
-            d_rand_state, 
-            camera, 
-            device_scene
-        );
+        // RENDER LOOP
+        while (Update(camera)){
 
-        // Copy the render back to the host
-        checkCudaErrors(cudaMemcpy(host_buffer, device_buffer, SCREEN_HEIGHT * SCREEN_WIDTH * sizeof(vec3), cudaMemcpyDeviceToHost));
+            // Copy the camera to the device
+            checkCudaErrors(cudaMemcpy(device_camera, &camera, sizeof(Camera), cudaMemcpyHostToDevice));
 
-        // Put pixels in the SDL buffer, ready for rendering
-        for (int x = 0; x < SCREEN_WIDTH; x++){
-            for (int y = 0; y < SCREEN_HEIGHT; y++){
-                screen.PutPixelSDL(x, y, host_buffer[x*(int)SCREEN_HEIGHT + y]);
+            draw_default_path_tracing<<<num_blocks, block_size>>>(
+                device_buffer, 
+                d_rand_state, 
+                device_camera, 
+                device_scene
+            );
+
+            cudaDeviceSynchronize();
+
+            // Copy the render back to the host
+            checkCudaErrors(cudaMemcpy(host_buffer, device_buffer, SCREEN_HEIGHT * SCREEN_WIDTH * sizeof(vec3), cudaMemcpyDeviceToHost));
+
+            // Put pixels in the SDL buffer, ready for rendering
+            for (int x = 0; x < SCREEN_WIDTH; x++){
+                for (int y = 0; y < SCREEN_HEIGHT; y++){
+                    screen.PutPixelSDL(x, y, host_buffer[x*(int)SCREEN_HEIGHT + y]);
+                }
             }
+
+            cudaMemset(device_buffer, 0.f, sizeof(vec3)* SCREEN_HEIGHT * SCREEN_WIDTH);
+
+            screen.SDL_Renderframe();
         }
     }
     // REINFORCEMENT
@@ -194,14 +230,16 @@ int main (int argc, char* argv[]) {
         int radaince_volume_num_blocks = (volumes + radiance_volume_block_size - 1) / radiance_volume_block_size;
         
         // RENDER LOOP
-        while (1){
-            Update(camera);
+        while (Update(camera)){
+
+            // Copy the camera to the device
+            checkCudaErrors(cudaMemcpy(device_camera, &camera, sizeof(Camera), cudaMemcpyHostToDevice));
 
             draw_reinforcement_path_tracing<<<render_num_blocks, render_block_size>>>(
                 device_buffer,
                 d_rand_state,
                 device_radiance_map,
-                camera,
+                device_camera,
                 device_scene
             );
 
@@ -227,7 +265,6 @@ int main (int argc, char* argv[]) {
             cudaMemset(device_buffer, 0.f, sizeof(vec3)* SCREEN_HEIGHT * SCREEN_WIDTH);
 
             screen.SDL_Renderframe();
-            // screen.SDL_SaveImage("../Images/render.bmp");
         }
         
         // Delete radiance map variables
@@ -238,6 +275,9 @@ int main (int argc, char* argv[]) {
     else if(PATH_TRACING_METHOD == 2){
         
         Update(camera);
+
+        // Copy the camera to the device
+        checkCudaErrors(cudaMemcpy(device_camera, &camera, sizeof(Camera), cudaMemcpyHostToDevice));
 
         // Get the block size and block count to compute over all pixels
         dim3 block_size(8, 8);
@@ -272,22 +312,35 @@ int main (int argc, char* argv[]) {
         // Copy the top level pointer value of RadianceMap.radiance_volumes 
         checkCudaErrors(cudaMemcpy(&(device_radiance_map->radiance_volumes), &device_radiance_volumes, sizeof(RadianceMap*), cudaMemcpyHostToDevice));
 
-        draw_voronoi_trace<<<num_blocks, block_size>>>(
-            device_buffer,
-            d_rand_state,
-            device_radiance_map,
-            camera,
-            device_scene
-        );
+        // RENDER LOOP
+        while (Update(camera)){
 
-        // Copy the render back to the host
-        checkCudaErrors(cudaMemcpy(host_buffer, device_buffer, SCREEN_HEIGHT * SCREEN_WIDTH * sizeof(vec3), cudaMemcpyDeviceToHost));
+            // Copy the camera to the device
+            checkCudaErrors(cudaMemcpy(device_camera, &camera, sizeof(Camera), cudaMemcpyHostToDevice));
 
-        // Put pixels in the SDL buffer, ready for rendering
-        for (int x = 0; x < SCREEN_WIDTH; x++){
-            for (int y = 0; y < SCREEN_HEIGHT; y++){
-                screen.PutPixelSDL(x, y, host_buffer[x*(int)SCREEN_HEIGHT + y]);
+            draw_voronoi_trace<<<num_blocks, block_size>>>(
+                device_buffer,
+                d_rand_state,
+                device_radiance_map,
+                device_camera,
+                device_scene
+            );
+
+            cudaDeviceSynchronize();
+
+            // Copy the render back to the host
+            checkCudaErrors(cudaMemcpy(host_buffer, device_buffer, SCREEN_HEIGHT * SCREEN_WIDTH * sizeof(vec3), cudaMemcpyDeviceToHost));
+
+            // Put pixels in the SDL buffer, ready for rendering
+            for (int x = 0; x < SCREEN_WIDTH; x++){
+                for (int y = 0; y < SCREEN_HEIGHT; y++){
+                    screen.PutPixelSDL(x, y, host_buffer[x*(int)SCREEN_HEIGHT + y]);
+                }
             }
+
+            cudaMemset(device_buffer, 0.f, sizeof(vec3)* SCREEN_HEIGHT * SCREEN_WIDTH);
+
+            screen.SDL_Renderframe();
         }
         
         // Delete radiance map variables
@@ -304,6 +357,7 @@ int main (int argc, char* argv[]) {
     cudaFree(device_light_planes);
     cudaFree(d_rand_state);
     cudaFree(device_scene);
+    cudaFree(device_camera);
 
     /*                  Rendering                       */
     screen.SDL_Renderframe();

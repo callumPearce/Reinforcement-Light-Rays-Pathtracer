@@ -5,7 +5,7 @@
 
 // global means running on GPU, callable from CPU -> global functions are kernels
 __global__
-void draw_default_path_tracing(vec3* device_buffer, curandState* d_rand_state, Camera camera, Scene* scene){
+void draw_default_path_tracing(vec3* device_buffer, curandState* d_rand_state, Camera* camera, Scene* scene){
 
     // Populate the shared GPU/CPU screen buffer
     int x = blockIdx.x * blockDim.x + threadIdx.x;
@@ -14,12 +14,12 @@ void draw_default_path_tracing(vec3* device_buffer, curandState* d_rand_state, C
 }
 
 __device__
-vec3 path_trace(curandState* d_rand_state, Camera camera, int pixel_x, int pixel_y, Scene* scene){
+vec3 path_trace(curandState* d_rand_state, Camera* camera, int pixel_x, int pixel_y, Scene* scene){
 
     vec3 irradiance = vec3(0.f);
     for (int i = 0; i < SAMPLES_PER_PIXEL; i++){
         
-        Ray ray = Ray::sample_ray_through_pixel(d_rand_state, camera, pixel_x, pixel_y);
+        Ray ray = Ray::sample_ray_through_pixel(d_rand_state, *camera, pixel_x, pixel_y);
 
         // Trace the path of the ray
         irradiance += path_trace_iterative(d_rand_state, ray, scene);

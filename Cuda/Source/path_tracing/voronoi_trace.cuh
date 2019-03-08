@@ -25,9 +25,9 @@ using glm::vec4;
 using glm::mat4;
 
 __global__
-void draw_voronoi_trace(vec3* device_buffer, curandState* d_rand_state, RadianceMap* radiance_map, Camera camera, Scene* scene);
+void draw_voronoi_trace(vec3* device_buffer, curandState* d_rand_state, RadianceMap* radiance_map, Camera* camera, Scene* scene);
 
 __device__
-vec3 voronoi_trace(curandState* d_rand_state, Camera camera, RadianceMap* radiance_map, int pixel_x, int pixel_y, Scene* scene);
+vec3 voronoi_trace(curandState* d_rand_state, Camera* camera, RadianceMap* radiance_map, int pixel_x, int pixel_y, Scene* scene);
 
 #endif
