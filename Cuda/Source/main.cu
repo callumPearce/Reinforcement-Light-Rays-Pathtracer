@@ -18,6 +18,7 @@
 #include "area_light.cuh"
 #include "radiance_map.cuh"
 #include "scene.cuh"
+#include "radiance_tree.cuh"
 
 // Path Tracing Types
 #include "default_path_tracing.cuh"
@@ -205,10 +206,12 @@ int main (int argc, char* argv[]) {
 
         // Setup the radiance map
         std::vector<RadianceVolume> host_rvs;
+        std::vector<RadianceTreeElement> radiance_array_v;
         RadianceMap* radiance_map = new RadianceMap(
             scene.surfaces,
             scene.surfaces_count,
-            host_rvs
+            host_rvs,
+            radiance_array_v
         );
 
         // Copy the radiance map onto the device
@@ -220,11 +223,15 @@ int main (int argc, char* argv[]) {
         int volumes = radiance_map->radiance_volumes_count;
         RadianceVolume* device_radiance_volumes;
         checkCudaErrors(cudaMalloc(&device_radiance_volumes, sizeof(RadianceVolume) * volumes));
-        cudaMemcpy(device_radiance_volumes, &host_rvs[0], host_rvs.size() * sizeof(RadianceVolume), cudaMemcpyHostToDevice);
-
-        // Copy the top level pointer value of RadianceMap.radiance_volumes 
+        checkCudaErrors(cudaMemcpy(device_radiance_volumes, &host_rvs[0], host_rvs.size() * sizeof(RadianceVolume), cudaMemcpyHostToDevice));
         checkCudaErrors(cudaMemcpy(&(device_radiance_map->radiance_volumes), &device_radiance_volumes, sizeof(RadianceMap*), cudaMemcpyHostToDevice));
 
+        // Copy the radiance_array onto the device
+        RadianceTreeElement* device_radiance_array;
+        checkCudaErrors(cudaMalloc(&device_radiance_array, sizeof(RadianceTreeElement) * radiance_map->radiance_array_size));
+        checkCudaErrors(cudaMemcpy(device_radiance_array, &radiance_array_v[0], sizeof(RadianceTreeElement) * radiance_map->radiance_array_size, cudaMemcpyHostToDevice));
+        checkCudaErrors(cudaMemcpy(&(device_radiance_map->radiance_array), &device_radiance_array, sizeof(RadianceTreeElement*), cudaMemcpyHostToDevice));
+        
         // Get the number of blocks for updating the radiance volumes list
         int radiance_volume_block_size = 32;
         int radaince_volume_num_blocks = (volumes + radiance_volume_block_size - 1) / radiance_volume_block_size;
@@ -289,11 +296,15 @@ int main (int argc, char* argv[]) {
 
         // Setup the radiance map
         std::vector<RadianceVolume> temp_rvs;
+        std::vector<RadianceTreeElement> radiance_array_v;
         RadianceMap* radiance_map = new RadianceMap(
             scene.surfaces,
             scene.surfaces_count,
-            temp_rvs
+            temp_rvs,
+            radiance_array_v
         );
+
+        // printf("%d, %d\n", radiance_array_v[20].left_idx, radiance_array_v[20].right_idx);
         
         // Setup the colours of the voronoi plot
         radiance_map->set_voronoi_colours(temp_rvs);
@@ -307,10 +318,14 @@ int main (int argc, char* argv[]) {
         int volumes = radiance_map->radiance_volumes_count;
         RadianceVolume* device_radiance_volumes;
         checkCudaErrors(cudaMalloc(&device_radiance_volumes, sizeof(RadianceVolume) * volumes));
-        cudaMemcpy(device_radiance_volumes, &temp_rvs[0], temp_rvs.size() * sizeof(RadianceVolume), cudaMemcpyHostToDevice);
-
-        // Copy the top level pointer value of RadianceMap.radiance_volumes 
+        checkCudaErrors(cudaMemcpy(device_radiance_volumes, &temp_rvs[0], temp_rvs.size() * sizeof(RadianceVolume), cudaMemcpyHostToDevice));
         checkCudaErrors(cudaMemcpy(&(device_radiance_map->radiance_volumes), &device_radiance_volumes, sizeof(RadianceMap*), cudaMemcpyHostToDevice));
+
+        // Copy the radiance_array onto the device
+        RadianceTreeElement* device_radiance_array;
+        checkCudaErrors(cudaMalloc(&device_radiance_array, sizeof(RadianceTreeElement) * radiance_array_v.size()));
+        checkCudaErrors(cudaMemcpy(device_radiance_array, &radiance_array_v[0], sizeof(RadianceTreeElement) * radiance_array_v.size(), cudaMemcpyHostToDevice));
+        checkCudaErrors(cudaMemcpy(&(device_radiance_map->radiance_array), &device_radiance_array, sizeof(RadianceTreeElement*), cudaMemcpyHostToDevice));
 
         // RENDER LOOP
         while (Update(camera)){

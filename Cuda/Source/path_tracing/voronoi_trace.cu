@@ -4,6 +4,9 @@
 __global__
 void draw_voronoi_trace(vec3* device_buffer, curandState* d_rand_state, RadianceMap* radiance_map, Camera* camera, Scene* scene){
 
+    // int i = radiance_map->radiance_array[1000].data;
+    // printf("%d\n", i);
+
     // Populate the shared GPU/CPU screen buffer
     int x = blockIdx.x * blockDim.x + threadIdx.x;
     int y = blockIdx.y * blockDim.y + threadIdx.y;
@@ -21,7 +24,7 @@ vec3 voronoi_trace(curandState* d_rand_state, Camera* camera, RadianceMap* radia
         // Create a ray that we will change the direction for below
         Ray ray(camera->position, dir);
         ray.rotate_ray(camera->yaw);
-
+        
         // Trace the path of the ray to find the closest intersection
         ray.closest_intersection(scene);
 

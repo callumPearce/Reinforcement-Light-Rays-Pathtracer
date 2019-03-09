@@ -50,7 +50,6 @@ class RadianceVolume{
         void initialise_visits();
 
     public:
-        bool initialised = false;
         vec4 position;
         float radiance_grid [GRID_RESOLUTION * GRID_RESOLUTION ];
         float radiance_distribution [GRID_RESOLUTION * GRID_RESOLUTION];
@@ -58,6 +57,7 @@ class RadianceVolume{
         // For coordinate system
         vec3 normal;
         mat4 transformation_matrix;
+        int index = -1;
 
         // Default Constructor
         __host__ __device__
@@ -65,7 +65,7 @@ class RadianceVolume{
         
         // Constructor
         __host__
-        RadianceVolume(vec4 position, vec4 normal);
+        RadianceVolume(vec4 position, vec4 normal, int idx);
 
         // Update the transformation matrix with the current normal and position values
         __host__

@@ -1,65 +1,87 @@
-// #ifndef RADIANCE_TREE_H
-// #define RADIANCE_TREE_H
+#ifndef RADIANCE_TREE_H
+#define RADIANCE_TREE_H
 
-// #include <glm/glm.hpp>
-// #include "radiance_volume.cuh"
-// #include "radiance_volume_comparator.cuh"
+#include <glm/glm.hpp>
+#include "radiance_volume.cuh"
+#include "radiance_volume_comparator.cuh"
 
-// using glm::vec3;
-// using glm::mat3;
-// using glm::vec4;
-// using glm::mat4;
+using glm::vec3;
+using glm::mat3;
+using glm::vec4;
+using glm::mat4;
 
-// enum Dimension{
-//     X_DIM = 0,
-//     Y_DIM = 1,
-//     Z_DIM = 2
-// };
+enum Dimension{
+    X_DIM = 0,
+    Y_DIM = 1,
+    Z_DIM = 2
+};
 
-// class RadianceTree{
+struct RadianceTreeElement{
+    Dimension dimension;
+    bool leaf;
+    int left_idx;
+    int right_idx;
+    float data;
+};
 
-//     private:    
+class RadianceTree{
 
-//         // Get the next dimension given the current one
-//         Dimension get_next_dimension(Dimension dimension);
+    private:   
 
-//         // Check if left radiance rv is less then right for current 
-//         //dimension of radiance_tree
-//         bool sort_radiance_volumes_on_dimension(std::vector<RadianceVolume*>& radiance_volumes);
-//         static bool sort_on_x(RadianceVolume* left, RadianceVolume* right);
-//         static bool sort_on_y(RadianceVolume* left, RadianceVolume* right);
-//         static bool sort_on_z(RadianceVolume* left, RadianceVolume* right);
+        // Check if left radiance rv is less then right for current 
+        //dimension of radiance_tree
+        __host__
+        bool sort_radiance_volumes_on_dimension(std::vector<RadianceVolume*>& radiance_volumes);
 
-//         // Fill the priority queue with the closest n radiance volumes within max_dist
-//         // // around position
-//         // void populate_closest_volumes_queue(int n, float max_dist, vec4 position, vec4 normal, std::priority_queue<RadianceVolumeComparator>& sorted_queue);
+        __host__
+        static bool sort_on_x(RadianceVolume* left, RadianceVolume* right);
 
-//         // // Attempt to insert each Radiance Volume in the current tree into the sorted priority queue
-//         // void radiance_volume_sorted_queue_insert(vec4 position, vec4 normal, std::priority_queue<RadianceVolumeComparator>& sorted_queue, float max_dist, int n);
+        __host__
+        static bool sort_on_y(RadianceVolume* left, RadianceVolume* right);
 
-//         // Find the closest radiance volume wrapped in the radiance volume comparator
-//         RadianceVolumeComparator find_closest_radiance_volume_comparator(float max_dist, vec4 position, vec4 normal, RadianceVolumeComparator current_closest);
-    
-//     public:
+        __host__
+        static bool sort_on_z(RadianceVolume* left, RadianceVolume* right);
 
-//         float median;
-//         Dimension dimension;
-//         RadianceVolume* radiance_volume = NULL;
-//         RadianceTree* left_tree;
-//         RadianceTree* right_tree;  
+        // Recursively traverse the tree adding elements to the supplied vector
+        __host__
+        void traverse_and_insert(std::vector<RadianceTreeElement>& radiance_array_v, int parent_idx);
 
-//         // Constructors
-//         RadianceTree();
-//         RadianceTree(std::vector<RadianceVolume*>& radiance_volumes, Dimension dimension);
+        __host__
+        static int test_array_traversal(std::vector<RadianceTreeElement>& radiance_array_v, int index);
 
-//         // Destructor
-//         ~RadianceTree();
+    public:
 
-//         // Get the closest n RadianceVolumes within max_dist from position
-//         // std::vector<RadianceVolume*> find_closest_radiance_volumes(int n, float max_dist, vec4 position, vec4 normal);
+        float median = 0.f;
+        Dimension dimension;
+        RadianceVolume* radiance_volume = NULL;
+        RadianceTree* left_tree;
+        RadianceTree* right_tree;
+        RadianceTreeElement* radiance_array;
 
-//         // Get the closest radiance volume to the position passed in within max_dist
-//         RadianceVolume* find_closest_radiance_volume(float max_dist, vec4 position, vec4 normal);
-// };
+        // Constructors
+        __device__
+        RadianceTree();
 
-// #endif
+        __host__
+        RadianceTree(std::vector<RadianceVolume*>& radiance_volumes, Dimension dimension);
+
+        // Destructor
+        __host__
+        ~RadianceTree();
+
+        // Convert to an array representation
+        __host__
+        void convert_to_array(int& radiance_array_size, std::vector<RadianceTreeElement>& radiance_array_v);
+
+        // Get the next dimension given the current one
+        __host__ __device__
+        static Dimension get_next_dimension(Dimension dimension);
+
+        __host__
+        static int count_array_elements(std::vector<RadianceTreeElement>& radiance_array_v);
+
+        __host__
+        int count_tree_elements(int count);
+};
+
+#endif

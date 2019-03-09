@@ -63,6 +63,8 @@ radiance_map.cuh
 /home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/radiance_map.cuh
 scene.cuh
 /home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/scene.cuh
+radiance_tree.cuh
+/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/radiance_tree.cuh
 default_path_tracing.cuh
 /home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/default_path_tracing.cuh
 reinforcement_path_tracing.cuh
@@ -259,8 +261,20 @@ curand_kernel.h
 -
 
 /home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/radiance_volumes/radiance_tree.cu
+radiance_tree.cuh
+/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/radiance_volumes/radiance_tree.cuh
+algorithm
+-
+printing.h
+/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/radiance_volumes/printing.h
 
 /home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/radiance_volumes/radiance_tree.cuh
+glm/glm.hpp
+-
+radiance_volume.cuh
+/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/radiance_volumes/radiance_volume.cuh
+radiance_volume_comparator.cuh
+/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/radiance_volumes/radiance_volume_comparator.cuh
 
 /home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/radiance_volumes/radiance_volume.cu
 radiance_volume.cuh
@@ -1089,6 +1103,12 @@ curand_kernel.h
 -
 
 Source/radiance_volumes/radiance_tree.cuh
+glm/glm.hpp
+-
+radiance_volume.cuh
+Source/radiance_volumes/radiance_volume.cuh
+radiance_volume_comparator.cuh
+Source/radiance_volumes/radiance_volume_comparator.cuh
 
 Source/radiance_volumes/radiance_volume.cuh
 glm/glm.hpp
@@ -1103,6 +1123,12 @@ default_path_tracing.cuh
 Source/radiance_volumes/default_path_tracing.cuh
 printing.h
 Source/radiance_volumes/printing.h
+
+Source/radiance_volumes/radiance_volume_comparator.cuh
+glm/glm.hpp
+-
+radiance_volume.cuh
+Source/radiance_volumes/radiance_volume.cuh
 
 Source/rays/ray.cuh
 glm/glm.hpp

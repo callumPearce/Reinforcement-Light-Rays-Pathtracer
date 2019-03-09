@@ -10,7 +10,7 @@ RadianceVolume::RadianceVolume(){
 }
 
 __host__
-RadianceVolume::RadianceVolume(vec4 position, vec4 normal){
+RadianceVolume::RadianceVolume(vec4 position, vec4 normal, int idx){
     initialise_radiance_grid();
     initialise_radiance_distribution();
     initialise_visits();
@@ -20,7 +20,7 @@ RadianceVolume::RadianceVolume(vec4 position, vec4 normal){
 
     // Create the transformation matrix for this hemisphere: local->world
     this->transformation_matrix = create_transformation_matrix(normal, position);
-    this->initialised = true;
+    this->index = idx;
 }
 
 // Updates the transformation matrix with the current set values of the normal and position

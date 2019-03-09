@@ -36,12 +36,13 @@ class RadianceMap{
 
         // Pointer to a list of pointers
         RadianceVolume* radiance_volumes;
-        // RadianceTree* radiance_tree;
+        RadianceTreeElement* radiance_array;
         int radiance_volumes_count = 0;
+        int radiance_array_size;
 
         // Constructor
         __host__
-        RadianceMap(Surface* surfaces, int surfaces_count, std::vector<RadianceVolume>& temp_rvs);
+        RadianceMap(Surface* surfaces, int surfaces_count, std::vector<RadianceVolume>& temp_rvs, std::vector<RadianceTreeElement>& radaince_array_v);
 
         // Calculate the Gaussian filter for radiance contribution
         __device__
@@ -67,6 +68,12 @@ class RadianceMap{
         // Find the closest radiance volume in linear time by traversing the list of radiance volumes
         __device__
         RadianceVolume* get_closest_radiance_volume_linear(float max_dist, vec4 position, vec4 normal);
+
+        __device__
+        RadianceVolume* find_closest_radiance_volume(float max_dist, vec4 position, vec4 normal);
+
+        __device__
+        void find_closest_radiance_volume_recursive(float max_dist, vec4 position, vec4 normal, RadianceVolume*& current_closest, float& closest_distance, int current_index);
 
 };
 

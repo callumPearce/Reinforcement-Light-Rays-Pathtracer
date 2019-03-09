@@ -5,7 +5,7 @@
 #include "printing.h"
 
 __host__
-RadianceMap::RadianceMap(Surface* surfaces, int surfaces_count, std::vector<RadianceVolume>& temp_rvs){
+RadianceMap::RadianceMap(Surface* surfaces, int surfaces_count, std::vector<RadianceVolume>& temp_rvs, std::vector<RadianceTreeElement>& radiance_array_v){
     
     std::cout << "Sampling radiance volumes..." << std::endl;
     
@@ -23,18 +23,32 @@ RadianceMap::RadianceMap(Surface* surfaces, int surfaces_count, std::vector<Radi
     temp_rvs =  std::vector<RadianceVolume>(this->radiance_volumes_count);
     uniformly_sample_radiance_volumes(surfaces, surfaces_count, temp_rvs);
 
+    // Get a list of pointers
+    std::vector<RadianceVolume*> temp_rvs_pointers;
+    for (int i = 0; i < temp_rvs.size(); i++){
+        temp_rvs_pointers.push_back(&(temp_rvs[i]));
+        // printf("%d\n",temp_rvs_pointers[i]->index);
+    }
+
     // Find the time
     end_time = time(NULL);
     temp_time = end_time - start_time; 
     std::cout << "Sampled " << temp_rvs.size() << " Radiance Volumes in " << temp_time << "s" << std::endl;
 
     // Create the RadianceTree (KDTree) from the radiance volumes
-    // start_time = end_time;
-    // std::cout << "Building Radiance Tree..." << std::endl; 
-    // this->radiance_tree = new RadianceTree(radiance_vs, X_DIM);
-    // end_time = time(NULL);
-    // temp_time = end_time - start_time;
-    // std::cout << "Radiance Tree constructed in " << temp_time << std::endl;
+    start_time = end_time;
+    std::cout << "Building Radiance Tree..." << std::endl; 
+
+    RadianceTree* radiance_tree = new RadianceTree(temp_rvs_pointers, X_DIM);
+    int radiance_array_s;
+
+    radiance_tree->convert_to_array(radiance_array_s, radiance_array_v);
+    RadianceTree::count_array_elements(radiance_array_v);
+    this->radiance_array_size =radiance_array_s;
+
+    end_time = time(NULL);
+    temp_time = end_time - start_time;
+    std::cout << "Radiance Tree constructed in " << temp_time << std::endl;
 }
 
 
@@ -61,7 +75,7 @@ void RadianceMap::uniformly_sample_radiance_volumes(Surface* surfaces, int surfa
         // Sample sample_count RadianceVolumes on the given surface
         for (int i = 0; i < sample_count; i++){
             vec4 sampled_position = surfaces[j].sample_position_on_plane();
-            temp_rvs[x] = RadianceVolume(sampled_position, surfaces[j].normal);
+            temp_rvs[x] = RadianceVolume(sampled_position, surfaces[j].normal, x);
             x++;
         }
     }
@@ -122,7 +136,7 @@ RadianceVolume* RadianceMap::temporal_difference_update_radiance_volume_sector(R
         case SURFACE:
             // Get the radiance volume closest to the intersection point
             // RadianceVolume* closest_volume = this->radiance_tree->find_closest_radiance_volume(MAX_DIST, intersection.position, intersection.normal);
-            RadianceVolume* closest_volume = this->get_closest_radiance_volume_linear(MAX_DIST, intersection.position, intersection.normal);
+            RadianceVolume* closest_volume = this->find_closest_radiance_volume(MAX_DIST, intersection.position, intersection.normal);
 
             if (closest_volume == NULL){
                 return NULL;
@@ -149,7 +163,7 @@ void RadianceMap::set_voronoi_colours(std::vector<RadianceVolume>& temp_rvs){
 __device__
 vec3 RadianceMap::get_voronoi_colour(const Intersection& intersection){
     // RadianceVolume* closest_volume = this->radiance_tree->find_closest_radiance_volume(MAX_DIST, intersection.position, intersection.normal);
-    RadianceVolume* closest_volume = this->get_closest_radiance_volume_linear(MAX_DIST, intersection.position, intersection.normal);
+    RadianceVolume* closest_volume = this->find_closest_radiance_volume(MAX_DIST, intersection.position, intersection.normal);
     vec4 pos = closest_volume->position;
     if (closest_volume != NULL){
         return closest_volume->get_voronoi_colour();   
@@ -175,4 +189,47 @@ RadianceVolume* RadianceMap::get_closest_radiance_volume_linear(float max_dist, 
         }
     }
     return current_closest;
+}
+
+
+__device__
+RadianceVolume* RadianceMap::find_closest_radiance_volume(float max_dist, vec4 position, vec4 normal){
+
+    RadianceVolume* rv = &(this->radiance_volumes[0]);
+    float dist = glm::distance(position, rv->position);
+    find_closest_radiance_volume_recursive(max_dist, position, normal, rv, dist, 0);
+    return rv;
+}
+
+// Get the closest radiance volume comparator recursively
+__device__
+void RadianceMap::find_closest_radiance_volume_recursive(float max_dist, vec4 position, vec4 normal, RadianceVolume*& current_closest, float& closest_distance, int current_index){
+
+    RadianceTreeElement current_element = this->radiance_array[current_index];
+    if (current_element.leaf){
+        RadianceVolume* rv = &(this->radiance_volumes[int(current_element.data)]);
+        float dist = glm::distance(position, rv->position);
+        if (vec3(normal) == rv->normal && dist < closest_distance){
+            current_closest = rv;
+            closest_distance = dist;
+        }
+    } 
+    else{
+        float delta = position[current_element.dimension] - this->radiance_array[current_index].data;
+        if (delta < 0){
+            // Left Branch
+            find_closest_radiance_volume_recursive(max_dist, position, normal, current_closest, closest_distance, current_element.left_idx);
+            if ( pow(delta,2) < max_dist){
+                find_closest_radiance_volume_recursive(max_dist, position, normal, current_closest, closest_distance, current_element.right_idx);
+            }
+        }
+        else{
+            // Right Branch
+            find_closest_radiance_volume_recursive(max_dist, position, normal, current_closest, closest_distance, current_element.right_idx);
+            if( pow(delta,2) < max_dist){
+                find_closest_radiance_volume_recursive(max_dist, position, normal, current_closest, closest_distance, current_element.left_idx);
+            }
+        }
+    }
+    // return current_closest;
 }
