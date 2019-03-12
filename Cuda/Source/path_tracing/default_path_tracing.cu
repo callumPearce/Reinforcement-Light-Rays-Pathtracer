@@ -45,7 +45,7 @@ vec3 path_trace_iterative(curandState* d_rand_state, Ray ray, Scene* scene){
 
             // Interescted with nothing, so no radiance
             case NOTHING:
-                return vec3(0.f);
+                return throughput * vec3(ENVIRONMENT_LIGHT);
                 break;
             
             // Intersected with light plane, so return its diffuse_p

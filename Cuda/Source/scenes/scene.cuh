@@ -6,6 +6,7 @@
 #include "area_light.cuh"
 #include "cornell_box_scene.cuh"
 #include "ray.cuh"
+#include "object_importer.cuh"
 
 using glm::vec3;
 using glm::vec2;
@@ -33,6 +34,7 @@ class Scene{
 
         void load_cornell_box_scene();
 
+        void load_custom_scene(const char* filename);
 };
 
 #endif

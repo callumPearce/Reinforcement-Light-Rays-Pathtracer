@@ -123,7 +123,8 @@ RadianceVolume* RadianceMap::temporal_difference_update_radiance_volume_sector(R
     switch (intersection.intersection_type){
 
         case NOTHING:
-            current_radiance_volume->temporal_difference_update(0.f, current_sector_x, current_sector_y);
+            float env_update = length(vec3(ENVIRONMENT_LIGHT));
+            current_radiance_volume->temporal_difference_update(env_update, current_sector_x, current_sector_y);
             return NULL;
             break;
         
@@ -136,7 +137,7 @@ RadianceVolume* RadianceMap::temporal_difference_update_radiance_volume_sector(R
         case SURFACE:
             // Get the radiance volume closest to the intersection point
             // RadianceVolume* closest_volume = this->radiance_tree->find_closest_radiance_volume(MAX_DIST, intersection.position, intersection.normal);
-            RadianceVolume* closest_volume = this->find_closest_radiance_volume(MAX_DIST, intersection.position, intersection.normal);
+            RadianceVolume* closest_volume = this->find_closest_radiance_volume_iterative(MAX_DIST, intersection.position, intersection.normal);
 
             if (closest_volume == NULL){
                 return NULL;
@@ -163,7 +164,7 @@ void RadianceMap::set_voronoi_colours(std::vector<RadianceVolume>& temp_rvs){
 __device__
 vec3 RadianceMap::get_voronoi_colour(const Intersection& intersection){
     // RadianceVolume* closest_volume = this->radiance_tree->find_closest_radiance_volume(MAX_DIST, intersection.position, intersection.normal);
-    RadianceVolume* closest_volume = this->find_closest_radiance_volume(MAX_DIST, intersection.position, intersection.normal);
+    RadianceVolume* closest_volume = this->find_closest_radiance_volume_iterative(MAX_DIST, intersection.position, intersection.normal);
     vec4 pos = closest_volume->position;
     if (closest_volume != NULL){
         return closest_volume->get_voronoi_colour();   
@@ -191,45 +192,98 @@ RadianceVolume* RadianceMap::get_closest_radiance_volume_linear(float max_dist, 
     return current_closest;
 }
 
-
+// Get the closest radiance volume iteratively
 __device__
-RadianceVolume* RadianceMap::find_closest_radiance_volume(float max_dist, vec4 position, vec4 normal){
+RadianceVolume* RadianceMap::find_closest_radiance_volume_iterative(float max_dist, vec4 position, vec4 normal){
 
-    RadianceVolume* rv = &(this->radiance_volumes[0]);
-    float dist = glm::distance(position, rv->position);
-    find_closest_radiance_volume_recursive(max_dist, position, normal, rv, dist, 0);
-    return rv;
-}
+    // Intiliase the stack to keep track of tree search
+    Stack stack = Stack(this->radiance_array_size);
 
-// Get the closest radiance volume comparator recursively
-__device__
-void RadianceMap::find_closest_radiance_volume_recursive(float max_dist, vec4 position, vec4 normal, RadianceVolume*& current_closest, float& closest_distance, int current_index){
+    // Push the head of the tree index to begin the search
+    stack.push(0);
 
-    RadianceTreeElement current_element = this->radiance_array[current_index];
-    if (current_element.leaf){
-        RadianceVolume* rv = &(this->radiance_volumes[int(current_element.data)]);
-        float dist = glm::distance(position, rv->position);
-        if (vec3(normal) == rv->normal && dist < closest_distance){
-            current_closest = rv;
-            closest_distance = dist;
-        }
-    } 
-    else{
-        float delta = position[current_element.dimension] - this->radiance_array[current_index].data;
-        if (delta < 0){
-            // Left Branch
-            find_closest_radiance_volume_recursive(max_dist, position, normal, current_closest, closest_distance, current_element.left_idx);
-            if ( pow(delta,2) < max_dist){
-                find_closest_radiance_volume_recursive(max_dist, position, normal, current_closest, closest_distance, current_element.right_idx);
+    // Initialise to our search for the closest rv to the first rv
+    RadianceVolume* closest_rv = &(this->radiance_volumes[0]);
+    float closest_dist = glm::distance(closest_rv->position, position);
+
+    // Search the tree
+    int index = 0;
+    while(stack.pop(index)){
+
+        // printf("%d\n",index);
+
+        // Check if the current index is a leaf and update accordingly
+        RadianceTreeElement current_rte = this->radiance_array[index];
+        if (current_rte.leaf){
+            RadianceVolume* rv = &(this->radiance_volumes[int(current_rte.data)]);
+            float dist = glm::distance(position, rv->position);
+            if (vec3(normal) == rv->normal && dist < closest_dist){
+                closest_rv = rv;
+                closest_dist = dist;
             }
-        }
+        } 
+
+        // Otherwise, search left or right
         else{
-            // Right Branch
-            find_closest_radiance_volume_recursive(max_dist, position, normal, current_closest, closest_distance, current_element.right_idx);
-            if( pow(delta,2) < max_dist){
-                find_closest_radiance_volume_recursive(max_dist, position, normal, current_closest, closest_distance, current_element.left_idx);
+            float delta = position[current_rte.dimension] - this->radiance_array[index].data;
+            if (delta < 0){
+                if ( pow(delta,2) < max_dist){
+                    stack.push(current_rte.right_idx);
+                }
+                // Left Branch
+                stack.push(current_rte.left_idx);
+            }
+            else{
+                if( pow(delta,2) < max_dist){
+                    stack.push(current_rte.left_idx);
+                }
+                // Right Branch
+                stack.push(current_rte.right_idx);
             }
         }
     }
-    // return current_closest;
+
+    // return the found closest radiance volume
+    return closest_rv;
 }
+
+// __device__
+// RadianceVolume* RadianceMap::find_closest_radiance_volume(float max_dist, vec4 position, vec4 normal){
+
+//     RadianceVolume* rv = &(this->radiance_volumes[0]);
+//     float dist = glm::distance(position, rv->position);
+//     find_closest_radiance_volume_recursive(max_dist, position, normal, rv, dist, 0);
+//     return rv;
+// }
+
+// // Get the closest radiance volume recursively
+// __device__
+// void RadianceMap::find_closest_radiance_volume_recursive(float max_dist, vec4 position, vec4 normal, RadianceVolume*& current_closest, float& closest_distance, int current_index){
+
+//     RadianceTreeElement current_element = this->radiance_array[current_index];
+//     if (current_element.leaf){
+//         RadianceVolume* rv = &(this->radiance_volumes[int(current_element.data)]);
+//         float dist = glm::distance(position, rv->position);
+//         if (vec3(normal) == rv->normal && dist < closest_distance){
+//             current_closest = rv;
+//             closest_distance = dist;
+//         }
+//     } 
+//     else{
+//         float delta = position[current_element.dimension] - this->radiance_array[current_index].data;
+//         if (delta < 0){
+//             // Left Branch
+//             find_closest_radiance_volume_recursive(max_dist, position, normal, current_closest, closest_distance, current_element.left_idx);
+//             if ( pow(delta,2) < max_dist){
+//                 find_closest_radiance_volume_recursive(max_dist, position, normal, current_closest, closest_distance, current_element.right_idx);
+//             }
+//         }
+//         else{
+//             // Right Branch
+//             find_closest_radiance_volume_recursive(max_dist, position, normal, current_closest, closest_distance, current_element.right_idx);
+//             if( pow(delta,2) < max_dist){
+//                 find_closest_radiance_volume_recursive(max_dist, position, normal, current_closest, closest_distance, current_element.left_idx);
+//             }
+//         }
+//     }
+// }

@@ -9,6 +9,7 @@
 #include "radiance_volumes_settings.h"
 #include "hemisphere_helpers.cuh"
 #include "scene.cuh"
+#include "stack.cuh"
 //cuRand
 #include <curand.h>
 #include <curand_kernel.h>
@@ -70,10 +71,13 @@ class RadianceMap{
         RadianceVolume* get_closest_radiance_volume_linear(float max_dist, vec4 position, vec4 normal);
 
         __device__
-        RadianceVolume* find_closest_radiance_volume(float max_dist, vec4 position, vec4 normal);
+        RadianceVolume* find_closest_radiance_volume_iterative(float max_dist, vec4 position, vec4 normal);
 
-        __device__
-        void find_closest_radiance_volume_recursive(float max_dist, vec4 position, vec4 normal, RadianceVolume*& current_closest, float& closest_distance, int current_index);
+        // __device__
+        // RadianceVolume* find_closest_radiance_volume(float max_dist, vec4 position, vec4 normal);
+
+        // __device__
+        // void find_closest_radiance_volume_recursive(float max_dist, vec4 position, vec4 normal, RadianceVolume*& current_closest, float& closest_distance, int current_index);
 
 };
 

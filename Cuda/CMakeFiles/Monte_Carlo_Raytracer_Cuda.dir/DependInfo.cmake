@@ -9,6 +9,7 @@ set(CMAKE_DEPENDS_CHECK_CUDA
   "/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/lights/area_light.cu" "/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/lights/area_light.cu.o"
   "/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/main.cu" "/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/main.cu.o"
   "/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/objects/material.cu" "/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/objects/material.cu.o"
+  "/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/objects/object_importer.cu" "/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/objects/object_importer.cu.o"
   "/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/objects/shape.cu" "/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/objects/shape.cu.o"
   "/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/objects/surface.cu" "/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/objects/surface.cu.o"
   "/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/objects/triangle.cu" "/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/objects/triangle.cu.o"
@@ -23,6 +24,7 @@ set(CMAKE_DEPENDS_CHECK_CUDA
   "/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/scenes/cornell_box_scene.cu" "/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/scenes/cornell_box_scene.cu.o"
   "/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/scenes/scene.cu" "/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/scenes/scene.cu.o"
   "/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/utils/hemisphere_helpers.cu" "/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/utils/hemisphere_helpers.cu.o"
+  "/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/utils/stack.cu" "/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/utils/stack.cu.o"
   )
 set(CMAKE_CUDA_COMPILER_ID "NVIDIA")
 

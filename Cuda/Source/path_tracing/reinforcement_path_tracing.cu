@@ -65,14 +65,14 @@ vec3 path_trace_reinforcement_iterative(int pixel_x, int pixel_y, Camera* camera
         // Get the radiance volume for the first iteration
         else{
             if (ray.intersection.intersection_type == SURFACE)
-                current_radiance_volume = radiance_map->find_closest_radiance_volume(MAX_DIST, ray.intersection.position, ray.intersection.normal);
+                current_radiance_volume = radiance_map->find_closest_radiance_volume_iterative(MAX_DIST, ray.intersection.position, ray.intersection.normal);
         }
 
         // Check what they ray intersected with...
         switch(ray.intersection.intersection_type){
             // Interescted with nothing, so no radiance
             case NOTHING:
-                return vec3(0);
+                return throughput * vec3(ENVIRONMENT_LIGHT);
                 break;
             
             // Intersected with light plane, so return its diffuse_p

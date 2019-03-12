@@ -41,6 +41,7 @@ set(
     Source/objects/shape.cu
     Source/objects/triangle.cu
     Source/objects/surface.cu
+    Source/objects/object_importer.cu
     Source/radiance_volumes/radiance_volume.cu
     Source/radiance_volumes/radiance_volume_comparator.cu
     Source/radiance_volumes/radiance_tree.cu
@@ -49,6 +50,7 @@ set(
     Source/scenes/scene.cu
     Source/utils/printing.cpp
     Source/utils/hemisphere_helpers.cu
+    Source/utils/stack.cu
     Source/lights/area_light.cu
     Source/path_tracing/default_path_tracing.cu
     Source/path_tracing/reinforcement_path_tracing.cu

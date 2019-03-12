@@ -113,11 +113,11 @@ int main (int argc, char* argv[]) {
     memset(screen.buffer, 0, screen.height*screen.width*sizeof(uint32_t));
 
     // Create the camera
-    Camera camera = Camera(vec4(0, 0, -3, 1));
+    Camera camera = Camera(vec4(0, 0, -0.75f, 1));
 
     // Initialise the scene
     Scene scene = Scene();
-    scene.load_cornell_box_scene();
+    scene.load_custom_scene("../Models/simple_room_closed.obj");
 
     /* Setup defautl CUDA memory */
     vec3 * device_buffer;

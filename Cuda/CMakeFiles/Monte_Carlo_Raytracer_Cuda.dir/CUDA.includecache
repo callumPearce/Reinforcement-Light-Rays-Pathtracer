@@ -84,6 +84,26 @@ material.cuh
 glm/glm.hpp
 -
 
+/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/objects/object_importer.cu
+iostream
+-
+algorithm
+-
+object_importer.cuh
+/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/objects/object_importer.cuh
+cstring
+-
+
+/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/objects/object_importer.cuh
+glm/glm.hpp
+-
+vector
+-
+surface.cuh
+/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/objects/surface.cuh
+area_light.cuh
+/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/objects/area_light.cuh
+
 /home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/objects/shape.cu
 image_settings.h
 /home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/objects/image_settings.h
@@ -255,6 +275,8 @@ hemisphere_helpers.cuh
 /home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/radiance_volumes/hemisphere_helpers.cuh
 scene.cuh
 /home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/radiance_volumes/scene.cuh
+stack.cuh
+/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/radiance_volumes/stack.cuh
 curand.h
 -
 curand_kernel.h
@@ -363,6 +385,8 @@ cornell_box_scene.cuh
 /home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/scenes/cornell_box_scene.cuh
 ray.cuh
 /home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/scenes/ray.cuh
+object_importer.cuh
+/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/scenes/object_importer.cuh
 
 /home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/utils/hemisphere_helpers.cu
 hemisphere_helpers.cuh
@@ -381,6 +405,12 @@ curand.h
 -
 curand_kernel.h
 -
+
+/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/utils/stack.cu
+stack.cuh
+/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/utils/stack.cuh
+
+/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/utils/stack.cuh
 
 /usr/include/SDL2/SDL.h
 SDL_main.h
@@ -982,6 +1012,16 @@ Source/objects/material.cuh
 glm/glm.hpp
 -
 
+Source/objects/object_importer.cuh
+glm/glm.hpp
+-
+vector
+-
+surface.cuh
+Source/objects/surface.cuh
+area_light.cuh
+Source/objects/area_light.cuh
+
 Source/objects/shape.cuh
 glm/glm.hpp
 -
@@ -1097,6 +1137,8 @@ hemisphere_helpers.cuh
 Source/radiance_volumes/hemisphere_helpers.cuh
 scene.cuh
 Source/radiance_volumes/scene.cuh
+stack.cuh
+Source/radiance_volumes/stack.cuh
 curand.h
 -
 curand_kernel.h
@@ -1169,6 +1211,8 @@ cornell_box_scene.cuh
 Source/scenes/cornell_box_scene.cuh
 ray.cuh
 Source/scenes/ray.cuh
+object_importer.cuh
+Source/scenes/object_importer.cuh
 
 Source/sdl/sdl_screen.h
 SDL.h
@@ -1195,6 +1239,8 @@ iostream
 -
 glm/glm.hpp
 -
+
+Source/utils/stack.cuh
 
 glm/glm/./detail/setup.hpp
 cassert
