@@ -11,31 +11,37 @@ void update_radiance_volume_distributions(RadianceMap* radiance_map){
 }
 
 __global__
-void draw_reinforcement_path_tracing(vec3* device_buffer, curandState* d_rand_state, RadianceMap* radiance_map, Camera* camera, Scene* scene){
+void draw_reinforcement_path_tracing(vec3* device_buffer, curandState* d_rand_state, RadianceMap* radiance_map, Camera* camera, Scene* scene, int* device_path_lengths){
     
     // Populate the shared GPU/CPU screen buffer
     int x = blockIdx.x * blockDim.x + threadIdx.x;
     int y = blockIdx.y * blockDim.y + threadIdx.y;
 
     // Path trace the ray to find the colour to paint the pixel
-    device_buffer[x*(int)SCREEN_HEIGHT + y] = path_trace_reinforcement(d_rand_state, radiance_map, camera, x, y, scene);
+    device_buffer[x*(int)SCREEN_HEIGHT + y] = path_trace_reinforcement(d_rand_state, radiance_map, camera, x, y, scene, device_path_lengths);
 
 }
 
 __device__
-vec3 path_trace_reinforcement(curandState* d_rand_state, RadianceMap* radiance_map, Camera* camera, int pixel_x, int pixel_y, Scene* scene){
+vec3 path_trace_reinforcement(curandState* d_rand_state, RadianceMap* radiance_map, Camera* camera, int pixel_x, int pixel_y, Scene* scene, int* device_path_lengths){
     vec3 irradiance = vec3(0.f);
+    int total_path_lengths = 0;
     for (int i = 0; i < SAMPLES_PER_PIXEL; i++){
 
         // Trace the path of the ray
-        irradiance += path_trace_reinforcement_iterative(pixel_x, pixel_y, camera, d_rand_state, radiance_map, scene);
+        int path_length;
+        irradiance += path_trace_reinforcement_iterative(pixel_x, pixel_y, camera, d_rand_state, radiance_map, scene, path_length);
+        total_path_lengths += path_length;
     }
+    int avg_path_length = int(total_path_lengths/SAMPLES_PER_PIXEL);
+    // printf("Path Length %d\n",avg_path_length);
+    device_path_lengths[pixel_x*SCREEN_HEIGHT + pixel_y] = avg_path_length;
     irradiance /= (float)SAMPLES_PER_PIXEL;
     return irradiance;
 }
 
 __device__
-vec3 path_trace_reinforcement_iterative(int pixel_x, int pixel_y, Camera* camera, curandState* d_rand_state, RadianceMap* radiance_map, Scene* scene){
+vec3 path_trace_reinforcement_iterative(int pixel_x, int pixel_y, Camera* camera, curandState* d_rand_state, RadianceMap* radiance_map, Scene* scene, int& path_length){
 
     Ray ray = Ray::sample_ray_through_pixel(d_rand_state, *camera, pixel_x, pixel_y);
 
@@ -72,11 +78,13 @@ vec3 path_trace_reinforcement_iterative(int pixel_x, int pixel_y, Camera* camera
         switch(ray.intersection.intersection_type){
             // Interescted with nothing, so no radiance
             case NOTHING:
+                path_length = i+1;
                 return throughput * vec3(ENVIRONMENT_LIGHT);
                 break;
             
             // Intersected with light plane, so return its diffuse_p
             case AREA_LIGHT:
+                path_length= i+1;
                 return throughput * scene->area_lights[ray.intersection.index].diffuse_p;
                 break;
 
@@ -98,5 +106,6 @@ vec3 path_trace_reinforcement_iterative(int pixel_x, int pixel_y, Camera* camera
                 break;
             }
     }
+    path_length = MAX_RAY_BOUNCES;
     return vec3(0);
 }

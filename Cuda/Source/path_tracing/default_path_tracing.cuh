@@ -28,12 +28,12 @@ using glm::mat4;
 */
 
 __global__
-void draw_default_path_tracing(vec3* device_buffer, curandState* d_rand_state, Camera* camera, Scene* scene);
+void draw_default_path_tracing(vec3* device_buffer, curandState* d_rand_state, Camera* camera, Scene* scene, int* device_path_lengths);
 
 __device__
-vec3 path_trace(curandState* d_rand_state, Camera* camera, int pixel_x, int pixel_y, Scene* scene);
+vec3 path_trace(curandState* d_rand_state, Camera* camera, int pixel_x, int pixel_y, Scene* scene, int* device_path_lengths);
 
 __device__
-vec3 path_trace_iterative(curandState* d_rand_state, Ray ray, Scene* scene);
+vec3 path_trace_iterative(curandState* d_rand_state, Ray ray, Scene* scene, int& path_length);
 
 #endif

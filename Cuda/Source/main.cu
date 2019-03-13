@@ -163,6 +163,12 @@ int main (int argc, char* argv[]) {
 
         init_rand_state<<<num_blocks, block_size>>>(d_rand_state, SCREEN_WIDTH, SCREEN_HEIGHT);
 
+        // Create the buffer to store the path lengths for each pixel
+        int* host_path_lengths = new int[ SCREEN_HEIGHT*SCREEN_WIDTH ];
+        int* device_path_lengths;
+        checkCudaErrors(cudaMalloc(&device_path_lengths, sizeof(int)*SCREEN_HEIGHT*SCREEN_WIDTH ));
+        checkCudaErrors(cudaMemset(device_path_lengths, 0, sizeof(int)*SCREEN_HEIGHT*SCREEN_WIDTH ));
+
         // RENDER LOOP
         while (Update(camera)){
 
@@ -173,10 +179,20 @@ int main (int argc, char* argv[]) {
                 device_buffer, 
                 d_rand_state, 
                 device_camera, 
-                device_scene
+                device_scene,
+                device_path_lengths
             );
 
             cudaDeviceSynchronize();
+
+            // Copy the path length values and calculate the average path length
+            checkCudaErrors(cudaMemcpy(host_path_lengths, device_path_lengths, sizeof(int) * SCREEN_HEIGHT * SCREEN_WIDTH, cudaMemcpyDeviceToHost));
+            int total = 0;
+            for (int i = 0; i < (SCREEN_HEIGHT * SCREEN_WIDTH); i++){
+                total += host_path_lengths[i];
+            }
+            float avg = total / (SCREEN_HEIGHT * SCREEN_WIDTH);
+            printf("Average Path Length: %.3f\n", avg);
 
             // Copy the render back to the host
             checkCudaErrors(cudaMemcpy(host_buffer, device_buffer, SCREEN_HEIGHT * SCREEN_WIDTH * sizeof(vec3), cudaMemcpyDeviceToHost));
@@ -203,6 +219,12 @@ int main (int argc, char* argv[]) {
         dim3 render_num_blocks(blocks_x, blocks_y);
 
         init_rand_state<<<render_num_blocks, render_block_size>>>(d_rand_state, SCREEN_WIDTH, SCREEN_HEIGHT);
+
+        // Create the buffer to store the path lengths for each pixel
+        int* host_path_lengths = new int[ SCREEN_HEIGHT*SCREEN_WIDTH ];
+        int* device_path_lengths;
+        checkCudaErrors(cudaMalloc(&device_path_lengths, sizeof(int)*SCREEN_HEIGHT*SCREEN_WIDTH ));
+        checkCudaErrors(cudaMemset(device_path_lengths, 0, sizeof(int)*SCREEN_HEIGHT*SCREEN_WIDTH ));
 
         // Setup the radiance map
         std::vector<RadianceVolume> host_rvs;
@@ -247,10 +269,20 @@ int main (int argc, char* argv[]) {
                 d_rand_state,
                 device_radiance_map,
                 device_camera,
-                device_scene
+                device_scene,
+                device_path_lengths
             );
 
             cudaDeviceSynchronize();
+
+            // Copy the path length values and calculate the average path length
+            checkCudaErrors(cudaMemcpy(host_path_lengths, device_path_lengths, sizeof(int) * SCREEN_HEIGHT * SCREEN_WIDTH, cudaMemcpyDeviceToHost));
+            int total = 0;
+            for (int i = 0; i < (SCREEN_HEIGHT * SCREEN_WIDTH); i++){
+                total += host_path_lengths[i];
+            }
+            float avg = total / (SCREEN_HEIGHT * SCREEN_WIDTH);
+            printf("Average Path Length: %.3f\n", avg);
 
             update_radiance_volume_distributions<<<radaince_volume_num_blocks, radiance_volume_block_size>>>(
                 device_radiance_map

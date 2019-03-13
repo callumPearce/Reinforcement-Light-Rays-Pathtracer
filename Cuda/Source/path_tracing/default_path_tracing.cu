@@ -5,31 +5,36 @@
 
 // global means running on GPU, callable from CPU -> global functions are kernels
 __global__
-void draw_default_path_tracing(vec3* device_buffer, curandState* d_rand_state, Camera* camera, Scene* scene){
+void draw_default_path_tracing(vec3* device_buffer, curandState* d_rand_state, Camera* camera, Scene* scene, int* device_path_lengths){
 
     // Populate the shared GPU/CPU screen buffer
     int x = blockIdx.x * blockDim.x + threadIdx.x;
     int y = blockIdx.y * blockDim.y + threadIdx.y;
-    device_buffer[x*(int)SCREEN_HEIGHT + y] = path_trace(d_rand_state, camera, x, y, scene);
+    device_buffer[x*(int)SCREEN_HEIGHT + y] = path_trace(d_rand_state, camera, x, y, scene, device_path_lengths);
 }
 
 __device__
-vec3 path_trace(curandState* d_rand_state, Camera* camera, int pixel_x, int pixel_y, Scene* scene){
+vec3 path_trace(curandState* d_rand_state, Camera* camera, int pixel_x, int pixel_y, Scene* scene, int* device_path_lengths){
 
     vec3 irradiance = vec3(0.f);
+    int total_path_lengths = 0;
     for (int i = 0; i < SAMPLES_PER_PIXEL; i++){
         
         Ray ray = Ray::sample_ray_through_pixel(d_rand_state, *camera, pixel_x, pixel_y);
 
         // Trace the path of the ray
-        irradiance += path_trace_iterative(d_rand_state, ray, scene);
+        int path_length;
+        irradiance += path_trace_iterative(d_rand_state, ray, scene, path_length);
+        total_path_lengths += path_length;
     }
+    int avg_path_length = int(total_path_lengths/SAMPLES_PER_PIXEL);
+    device_path_lengths[pixel_x * SCREEN_HEIGHT + pixel_y] = avg_path_length;
     irradiance /= (float)SAMPLES_PER_PIXEL;
     return irradiance;
 }
 
 __device__
-vec3 path_trace_iterative(curandState* d_rand_state, Ray ray, Scene* scene){
+vec3 path_trace_iterative(curandState* d_rand_state, Ray ray, Scene* scene, int& path_length){
 
     // Factor to multiply to output upon light intersection
     vec3 throughput = vec3(1.f);
@@ -45,11 +50,13 @@ vec3 path_trace_iterative(curandState* d_rand_state, Ray ray, Scene* scene){
 
             // Interescted with nothing, so no radiance
             case NOTHING:
+                path_length = i+1;
                 return throughput * vec3(ENVIRONMENT_LIGHT);
                 break;
             
             // Intersected with light plane, so return its diffuse_p
             case AREA_LIGHT:
+                path_length = i+1;
                 return throughput * scene->area_lights[ray.intersection.index].diffuse_p;
                 break;
 
@@ -75,5 +82,6 @@ vec3 path_trace_iterative(curandState* d_rand_state, Ray ray, Scene* scene){
                 break;
         }
     }
+    path_length = MAX_RAY_BOUNCES;
     return vec3(0.f);
 }
