@@ -118,24 +118,23 @@ void RadianceMap::importance_sample_ray_direction(curandState* d_rand_state, con
 
 // Performs the temporal difference update for the radiance volume passed in given the sampled ray direction lead to the intersection
 __device__
-RadianceVolume* RadianceMap::temporal_difference_update_radiance_volume_sector(RadianceVolume* current_radiance_volume, int current_sector_x, int current_sector_y, Intersection& intersection, Scene* scene){
+RadianceVolume* RadianceMap::temporal_difference_update_radiance_volume_sector(float current_BSDF, RadianceVolume* current_radiance_volume, int current_sector_x, int current_sector_y, Intersection& intersection, Scene* scene){
 
     switch (intersection.intersection_type){
 
         case NOTHING:
-            current_radiance_volume->temporal_difference_update(ENVIRONMENT_LIGHT, current_sector_x, current_sector_y);
+            current_radiance_volume->temporal_difference_update(current_BSDF * ENVIRONMENT_LIGHT, current_sector_x, current_sector_y);
             return NULL;
             break;
         
         case AREA_LIGHT:
             vec3 diffuse_light_power = scene->area_lights[intersection.index].diffuse_p; 
-            current_radiance_volume->temporal_difference_update((diffuse_light_power.x + diffuse_light_power.y + diffuse_light_power.z)/3.f, current_sector_x, current_sector_y);
+            current_radiance_volume->temporal_difference_update(current_BSDF * ((diffuse_light_power.x + diffuse_light_power.y + diffuse_light_power.z)/3.f), current_sector_x, current_sector_y);
             return NULL;
             break;
         
         case SURFACE:
             // Get the radiance volume closest to the intersection point
-            // RadianceVolume* closest_volume = this->radiance_tree->find_closest_radiance_volume(MAX_DIST, intersection.position, intersection.normal);
             RadianceVolume* closest_volume = this->find_closest_radiance_volume_iterative(MAX_DIST, intersection.position, intersection.normal);
 
             if (closest_volume == NULL){
@@ -143,7 +142,8 @@ RadianceVolume* RadianceMap::temporal_difference_update_radiance_volume_sector(R
             }
             else{
                 // Get the radiance incident from all directions for the next position and perform temporal diff update
-                float next_pos_irradiance = closest_volume->expected_sarsa_irradiance(intersection, scene->surfaces);
+                float next_pos_irradiance = closest_volume->expected_sarsa_irradiance(intersection, scene->surfaces); // TODO: Any read from global array is too expensive
+                next_pos_irradiance *= current_BSDF;
                 current_radiance_volume->temporal_difference_update(next_pos_irradiance, current_sector_x, current_sector_y);
                 return closest_volume;
             }

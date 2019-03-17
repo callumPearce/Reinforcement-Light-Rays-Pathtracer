@@ -5,7 +5,7 @@ project(Monte_Carlo_Raytracer_Cuda LANGUAGES CXX CUDA)
 set(CMAKE_CXX_COMPILER "nvcc")
 
 # Compiler Flags
-set(CUDA_NVCC_FLAGS "${CUDA_NVCC_FLAGS} -std=c++11 -g -Xptxas -use_fast_math")
+set(CUDA_NVCC_FLAGS "${CUDA_NVCC_FLAGS} -std=c++11 -g -Xptxas –ptxas-options=-v -use_fast_math")
 
 # Set output directory for executables
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_HOME_DIRECTORY}/Build)

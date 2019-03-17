@@ -49,6 +49,7 @@ vec3 path_trace_reinforcement_iterative(int pixel_x, int pixel_y, Camera* camera
     RadianceVolume* current_radiance_volume;
     int current_sector_x = -1;
     int current_sector_y = -1;
+    float current_BSDF = 0.f;
 
     for (int i = 0; i < MAX_RAY_BOUNCES; i++){
 
@@ -62,7 +63,7 @@ vec3 path_trace_reinforcement_iterative(int pixel_x, int pixel_y, Camera* camera
             // where x = ray.start, y = intersection.position
             // Check that a radiance volume has been found to update its sector
             if (current_radiance_volume && current_sector_x != -1 && current_sector_y != -1){
-                current_radiance_volume = radiance_map->temporal_difference_update_radiance_volume_sector(current_radiance_volume, current_sector_x, current_sector_y, ray.intersection, scene);
+                current_radiance_volume = radiance_map->temporal_difference_update_radiance_volume_sector(current_BSDF, current_radiance_volume, current_sector_x, current_sector_y, ray.intersection, scene);
                 current_sector_x = -1;
                 current_sector_y = -1;
             } 
@@ -96,6 +97,7 @@ vec3 path_trace_reinforcement_iterative(int pixel_x, int pixel_y, Camera* camera
                 vec3 BRDF = scene->surfaces[ray.intersection.index].material.diffuse_c / (float)M_PI;
                 float cos_theta = dot(vec3(scene->surfaces[ray.intersection.index].normal), vec3(sampled_direction));
 
+                current_BSDF = (((BRDF.x + BRDF.y + BRDF.z)/3.f) * cos_theta) / RHO;
                 throughput *= (BRDF * cos_theta) / RHO;
                 
                 vec4 start = ray.intersection.position + sampled_direction * 0.00001f;

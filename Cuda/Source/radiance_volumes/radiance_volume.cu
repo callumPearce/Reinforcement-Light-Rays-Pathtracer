@@ -88,6 +88,7 @@ vec4* RadianceVolume::get_vertices(){
 
 // Gets the irradiance for an intersection point by solving the rendering equations (summing up 
 // radiance from all directions whilst multiplying by BRDF and cos(theta)) (Following expected SARSA)
+// TODO: Compute in a different kernel, we can store this as a single value
 __device__
 float RadianceVolume::expected_sarsa_irradiance(const Intersection& intersection, Surface* surfaces){
     float irradiance = 0.f;
@@ -146,7 +147,7 @@ void RadianceVolume::update_radiance_distribution(){
     float total = 0.0000000001f;
     for (int x = 0; x < GRID_RESOLUTION; x++){
         for (int y = 0; y < GRID_RESOLUTION; y++){
-            total += this->radiance_grid[ x*GRID_RESOLUTION + y ];
+            total += this->radiance_grid[ x*GRID_RESOLUTION + y ]; 
         }
     }
     // Use this total to convert all radiance_grid values into probabilities
@@ -230,45 +231,10 @@ vec4 RadianceVolume::sample_direction_from_radiance_distribution(curandState* d_
     return vec4(0.f,0.f,0.f,1.f);
 }
 
-// Samples a direction from the radiance volume
-// volume
-// __device__
-// vec4 RadianceVolume::sample_direction_from_radiance_distribution(curandState* d_rand_state, int pixel_x, int pixel_y, int& sector_x, int& sector_y){
-    
-//     // Generate a random float uniformly 
-//     float r = curand_uniform(&d_rand_state[pixel_x*SCREEN_HEIGHT + pixel_y]);
-
-//     // Sample from the inverse cumulative distribution
-//     float cumulative_sum = 0.f;
-//     for (int x = 0; x < GRID_RESOLUTION; x++){
-//         for (int y = 0; y < GRID_RESOLUTION; y++){
-//             cumulative_sum = this->radiance_distribution[ x*GRID_RESOLUTION + y ];
-//             // We have found where in the inverse cumulative distribution our
-//             // sample is. There for return an anlge at this location
-//             if ( r <= cumulative_sum ){
-//                 sector_x = x;
-//                 sector_y = y;
-//                 // Get the coordinates on the unit hemisphere
-//                 float x_h, y_h, z_h;
-//                 // Randomly sample within the sector
-//                 float rx = curand_uniform(&d_rand_state[pixel_x*SCREEN_HEIGHT + pixel_y]);
-//                 float ry = curand_uniform(&d_rand_state[pixel_x*SCREEN_HEIGHT + pixel_y]);
-//                 map((x+0.5f)/(float)GRID_RESOLUTION, (y+0.5f)/(float)GRID_RESOLUTION, x_h, y_h, z_h);
-//                 // Convert to world space
-//                 vec4 world_position = this->transformation_matrix * vec4(x_h, y_h, z_h, 1.f);
-//                 vec3 world_position3 = vec3(world_position.x, world_position.y, world_position.z);
-//                 // Get the direction
-//                 return vec4(normalize(world_position3 - vec3(this->position)),1.f);
-//             }
-//         }
-//     }
-//     return vec4(0.f);
-// }
-
 // Performs a temporal difference update for the current radiance volume for the incident
 // radiance in the sector specified with the intersection surfaces irradiance value
 __device__
-void RadianceVolume::temporal_difference_update(float next_irradiance, int sector_x, int sector_y){
+void RadianceVolume::temporal_difference_update(float sector_irradiance, int sector_x, int sector_y){
 
     int sector_location = sector_x*GRID_RESOLUTION + sector_y;
 
@@ -280,7 +246,7 @@ void RadianceVolume::temporal_difference_update(float next_irradiance, int secto
 
     // Calculate the new update value
     float radiance = this->radiance_grid[ sector_location ];
-    float update = ((1.f - (alpha)) * radiance) + (alpha * next_irradiance);
+    float update = ((1.f - (alpha)) * radiance) + (alpha * sector_irradiance);
     update = update > (float)RADIANCE_THRESHOLD ? update : (float)RADIANCE_THRESHOLD;
 
     // assert(update.x < 1.f);

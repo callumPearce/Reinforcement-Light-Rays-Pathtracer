@@ -703,3 +703,22 @@ Caused by: org.eclipse.swt.SWTException: Widget is disposed
 
 !ENTRY org.eclipse.ui 2 2 2019-03-17 17:51:13.563
 !MESSAGE Invalid property category path: org.eclipse.cdt.managedbuilder.ui.properties.Page_head_build (bundle: org.eclipse.cdt.ui, propertyPage: org.eclipse.cdt.managedbuilder.ui.properties.BuildLogPreferencePage)
+!SESSION 2019-03-17 21:17:37.510 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.8.0_191
+java.vendor=Oracle Corporation
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=en_GB
+Command-line arguments:  -os linux -ws gtk -arch x86_64 -data @noDefault
+
+!ENTRY org.eclipse.core.resources 2 10035 2019-03-17 21:17:41.907
+!MESSAGE The workspace exited with unsaved changes in the previous session; refreshing workspace to recover changes.
+
+!ENTRY com.nvidia.viper 4 0 2019-03-17 21:18:41.409
+!MESSAGE Unable to profile application.
+!STACK 0
+"The application being profiled received a signal."
+	at com.nvidia.viper.fs.FileSystem.checkNvprofErrorCode(FileSystem.java:200)
+	at com.nvidia.viper.fs.LocalFileSystem.runNvprof(LocalFileSystem.java:585)
+	at com.nvidia.viper.run.TimelineRunner.runWithMonitor(TimelineRunner.java:148)
+	at com.nvidia.viper.run.TimelineRunner$TimelineJob.run(TimelineRunner.java:348)
+	at com.nvidia.viper.ViperJob$1.run(ViperJob.java:106)

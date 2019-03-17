@@ -56,7 +56,7 @@ class RadianceMap{
 
         // Performs the temporal difference update for the radiance volume passed in given the sampled ray direction lead to the intersection
         __device__
-        RadianceVolume* temporal_difference_update_radiance_volume_sector(RadianceVolume* current_radiance_volume, int current_sector_x, int current_sector_y, Intersection& intersection, Scene* scene);
+        RadianceVolume* temporal_difference_update_radiance_volume_sector(float current_BSDF, RadianceVolume* current_radiance_volume, int current_sector_x, int current_sector_y, Intersection& intersection, Scene* scene);
 
         // Set the voronoi colours of all radiance volumes in the scene in the first entry of the radiance_grid[0][0]
         __host__

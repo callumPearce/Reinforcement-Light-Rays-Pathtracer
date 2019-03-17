@@ -94,7 +94,7 @@ class RadianceVolume{
         // Performs a temporal difference update for the current radiance volume for the incident
         // radiance in the sector specified with the intersection surfaces irradiance value
         __device__
-        void temporal_difference_update(float next_irradiance, int sector_x, int sector_y);
+        void temporal_difference_update(float sector_irradiance, int sector_x, int sector_y);
 
         // Sets a voronoi colour for the radiance volume (random colour) in the first entry of its radiance grid
         __host__
