@@ -113,11 +113,11 @@ int main (int argc, char* argv[]) {
     memset(screen.buffer, 0, screen.height*screen.width*sizeof(uint32_t));
 
     // Create the camera
-    Camera camera = Camera(vec4(0, 0, -0.75f, 1));
+    Camera camera = Camera(vec4(0.f, 0.5f, -0.9f, 1.f));
 
     // Initialise the scene
     Scene scene = Scene();
-    scene.load_custom_scene("../Models/simple_room_closed.obj");
+    scene.load_custom_scene("/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Models/simple_room_closed.obj");
 
     /* Setup defautl CUDA memory */
     vec3 * device_buffer;
@@ -259,7 +259,8 @@ int main (int argc, char* argv[]) {
         int radaince_volume_num_blocks = (volumes + radiance_volume_block_size - 1) / radiance_volume_block_size;
         
         // RENDER LOOP
-        while (Update(camera)){
+        int frames = 0;
+        while (Update(camera) && frames < 2){
 
             // Copy the camera to the device
             checkCudaErrors(cudaMemcpy(device_camera, &camera, sizeof(Camera), cudaMemcpyHostToDevice));
@@ -304,6 +305,7 @@ int main (int argc, char* argv[]) {
             cudaMemset(device_buffer, 0.f, sizeof(vec3)* SCREEN_HEIGHT * SCREEN_WIDTH);
 
             screen.SDL_Renderframe();
+            frames++;
         }
         
         // Delete radiance map variables

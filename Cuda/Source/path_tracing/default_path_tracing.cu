@@ -52,6 +52,7 @@ vec3 path_trace_iterative(curandState* d_rand_state, Ray ray, Scene* scene, int&
             case NOTHING:
                 path_length = i+1;
                 return throughput * vec3(ENVIRONMENT_LIGHT);
+                // return throughput* vec3(0.f, 0.f, 1.f);
                 break;
             
             // Intersected with light plane, so return its diffuse_p

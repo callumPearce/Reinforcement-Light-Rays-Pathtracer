@@ -6,13 +6,13 @@
 #define RADIANCE_VOLUMES_SETTINGS_H
 
 // Building
-#define GRID_RESOLUTION 40
+#define GRID_RESOLUTION 30
 #define DIAMETER 0.1f
-#define AREA_PER_SAMPLE 0.001f
+#define AREA_PER_SAMPLE 0.01f
 
 // Querying
 #define CLOSEST_QUERY_COUNT 1
-#define MAX_DIST 0.001f
-#define RADIANCE_THRESHOLD (1.f/((float)GRID_RESOLUTION * (float)GRID_RESOLUTION))*400.f// /6.f
+#define MAX_DIST 0.01f
+#define RADIANCE_THRESHOLD (1.f/((float)GRID_RESOLUTION * (float)GRID_RESOLUTION))*800.f// /6.f
 
 #endif

@@ -10,7 +10,7 @@ bool load_scene(const char* path, std::vector<Surface>& surfaces, std::vector<Ar
     // Attempt to open the object file in the supplied path
     FILE* file = fopen(path, "r");
     if (file == NULL){
-        printf("File could not be opened!\n");
+        printf("File %s could not be opened!\n", path);
         return false;
     }
 
@@ -144,9 +144,9 @@ void build_surfaces(std::vector<Surface>& surfaces, std::vector<vec3>& vertex_in
         // White
         Material mat = Material(vec3(0.75f));
         // Red
-        if( i > 5 && i < 8){
+        // if( i > 5 && i < 8){
             mat = Material(vec3(0.75f, 0.15f, 0.15f));
-        }  
+        // }  
         // Blue
         // if( i % 5 == 0){
         //     mat = Material(vec3(0.15f, 0.15f, 0.75f));
@@ -188,12 +188,12 @@ void build_area_lights(std::vector<AreaLight>& area_lights){
 
     // Define the area light vectors
     float l = 2.f;
-    vec4 I((7*l)/8, (7*l)/8, 2.f*l, 1);
-    vec4 J((7*l)/8, l/8, 2.f*l, 1);
-    vec4 K((4*l)/8, (7*l)/8, 2.f*l, 1);
-    vec4 L((4*l)/8, l/8, 2.f*l, 1);
+    vec4 I(l, l, 1.5f*l, 1);
+    vec4 J(l, 0, 1.5f*l, 1);
+    vec4 K((l)/2, l, 1.5f*l, 1);
+    vec4 L((l)/2, 0, 1.5f*l, 1);
 
-    vec3 diffuse_p = 2.f * vec3(0.9, 0.9, 0.9);
+    vec3 diffuse_p = 3.f * vec3(0.9, 0.9, 0.9);
     AreaLight a1 = AreaLight(K, I, J, diffuse_p);
     area_lights.push_back(a1);
 

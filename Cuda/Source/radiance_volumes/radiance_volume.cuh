@@ -76,7 +76,10 @@ class RadianceVolume{
         vec4* get_vertices();
 
         __device__
-        float get_irradiance(const Intersection& intersection, Surface* surfaces);
+        float expected_sarsa_irradiance(const Intersection& intersection, Surface* surfaces);
+
+        __device__
+        float q_learning_irradiance(const Intersection& intersection, Surface* surfaces);
 
         // Normalizes this RadianceVolume so that all radiance values 
         // i.e. their grid values all sum to 1 (taking the length of each vec3)

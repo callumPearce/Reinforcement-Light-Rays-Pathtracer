@@ -1,7 +1,6 @@
 #include "radiance_volume.cuh"
 #include <iostream>
 
-
 __device__ __host__
 RadianceVolume::RadianceVolume(){
     this->position = vec4(0.f);
@@ -47,7 +46,7 @@ void RadianceVolume::initialise_radiance_distribution(){
     // this->radiance_distribution = new float[ GRID_RESOLUTION * GRID_RESOLUTION ];
     for (int x = 0; x < GRID_RESOLUTION; x++){
         for (int y = 0; y < GRID_RESOLUTION; y++){
-            this->radiance_distribution[ x*GRID_RESOLUTION + y ] = 1.f/((float)GRID_RESOLUTION * (float)GRID_RESOLUTION);        
+            this->radiance_distribution[ x*GRID_RESOLUTION + y ] = (x*GRID_RESOLUTION + y) * (1.f/((float)GRID_RESOLUTION * (float)GRID_RESOLUTION));        
         }
     }
 }
@@ -88,9 +87,9 @@ vec4* RadianceVolume::get_vertices(){
 }
 
 // Gets the irradiance for an intersection point by solving the rendering equations (summing up 
-// radiance from all directions whilst multiplying by BRDF and cos(theta))
+// radiance from all directions whilst multiplying by BRDF and cos(theta)) (Following expected SARSA)
 __device__
-float RadianceVolume::get_irradiance(const Intersection& intersection, Surface* surfaces){
+float RadianceVolume::expected_sarsa_irradiance(const Intersection& intersection, Surface* surfaces){
     float irradiance = 0.f;
     for (int x = 0; x < GRID_RESOLUTION; x++){
         for (int y = 0; y < GRID_RESOLUTION; y++){
@@ -107,9 +106,35 @@ float RadianceVolume::get_irradiance(const Intersection& intersection, Surface* 
             irradiance += cos_theta * this->radiance_grid[ x*GRID_RESOLUTION + y ];
         }
     }
-    irradiance /= ((float)(GRID_RESOLUTION * GRID_RESOLUTION)) * (1.f / (2.f * (float)M_PI));
-    irradiance *= length((surfaces[intersection.index].material.diffuse_c) / (float)M_PI);
+    vec3 BRDF_3 = surfaces[intersection.index].material.diffuse_c;
+    irradiance *= ((BRDF_3.x + BRDF_3.y + BRDF_3.z)/3.f) / (float)M_PI;
+    irradiance *= (2.f * (float)M_PI) / ((float)(GRID_RESOLUTION * GRID_RESOLUTION));
     return irradiance;
+}
+
+// Gets the irradiance for an intersection point by getting the max directional sector values
+// multiplied by the BRDF and cos_theta
+__device__
+float RadianceVolume::q_learning_irradiance(const Intersection& intersection, Surface* surfaces){
+    float max_irradiance = 0.f;
+    for (int x = 0; x < GRID_RESOLUTION; x++){
+        for (int y = 0; y < GRID_RESOLUTION; y++){
+            // Get the coordinates on the unit hemisphere
+            float x_h, y_h, z_h;
+            map(x/(float)GRID_RESOLUTION, y/(float)GRID_RESOLUTION, x_h, y_h, z_h);
+            // Convert to world space
+            vec4 world_position = this->transformation_matrix * vec4(x_h, y_h, z_h, 1.f);
+            vec3 world_position3 = vec3(world_position.x, world_position.y, world_position.z);
+            // Get the direction
+            vec3 dir = normalize(world_position3 - vec3(this->position));
+            // Get the angle between the dir std::vector and the normal
+            float cos_theta = dot(dir, this->normal); // No need to divide by lengths as they have been normalized
+            max_irradiance = max(cos_theta * this->radiance_grid[ x*GRID_RESOLUTION + y ], max_irradiance);
+        }
+    }
+    vec3 BRDF_3 = surfaces[intersection.index].material.diffuse_c;
+    max_irradiance *= ((BRDF_3.x + BRDF_3.y + BRDF_3.z)/3.f) / (float)M_PI;
+    return max_irradiance;
 }
 
 // Normalizes this RadianceVolume so that all radiance values 
@@ -118,7 +143,7 @@ __device__
 void RadianceVolume::update_radiance_distribution(){
 
     // Get the total radiance from all directions (as a float)
-    float total = 0.00000001f;
+    float total = 0.0000000001f;
     for (int x = 0; x < GRID_RESOLUTION; x++){
         for (int y = 0; y < GRID_RESOLUTION; y++){
             total += this->radiance_grid[ x*GRID_RESOLUTION + y ];
@@ -126,47 +151,119 @@ void RadianceVolume::update_radiance_distribution(){
     }
     // Use this total to convert all radiance_grid values into probabilities
     // and store in the radiance_distribution
+    float prev_radiance = 0.f;
     for (int x = 0; x < GRID_RESOLUTION; x++){
         for (int y = 0; y < GRID_RESOLUTION; y++){
-            float radiance = this->radiance_grid[ x*GRID_RESOLUTION + y ];
-            this->radiance_distribution[ x*GRID_RESOLUTION + y ] = radiance/total;
+            float radiance = this->radiance_grid[ x*GRID_RESOLUTION + y ]/total + prev_radiance;
+            this->radiance_distribution[ x*GRID_RESOLUTION + y ] = radiance;
+            prev_radiance = radiance;
             // float new_val = this->radiance_grid[ x*GRID_RESOLUTION + y ]/total;
             // atomicExch(&(this->radiance_distribution[ x*GRID_RESOLUTION + y ]), new_val);
         }
     }
 }
 
-// Samples a direction from the radiance volume
-// volume
+// Samples a direction from the radiance volume using binary search for the sector
 __device__
 vec4 RadianceVolume::sample_direction_from_radiance_distribution(curandState* d_rand_state, int pixel_x, int pixel_y, int& sector_x, int& sector_y){
     
     // Generate a random float uniformly 
     float r = curand_uniform(&d_rand_state[pixel_x*SCREEN_HEIGHT + pixel_y]);
 
-    // Sample from the inverse cumulative distribution
-    float cumulative_sum = 0.f;
-    for (int x = 0; x < GRID_RESOLUTION; x++){
-        for (int y = 0; y < GRID_RESOLUTION; y++){
-            cumulative_sum += this->radiance_distribution[ x*GRID_RESOLUTION + y ];
-            // We have found where in the inverse cumulative distribution our
-            // sample is. There for return an anlge at this location
-            if ( r <= cumulative_sum ){
-                sector_x = x;
-                sector_y = y;
-                // Get the coordinates on the unit hemisphere
-                float x_h, y_h, z_h;
-                map(x/(float)GRID_RESOLUTION, y/(float)GRID_RESOLUTION, x_h, y_h, z_h);
-                // Convert to world space
-                vec4 world_position = this->transformation_matrix * vec4(x_h, y_h, z_h, 1.f);
-                vec3 world_position3 = vec3(world_position.x, world_position.y, world_position.z);
-                // Get the direction
-                return vec4(normalize(world_position3 - vec3(this->position)),1.f);
-            }
+    // Check if in first sector location
+    if (r <= this->radiance_distribution[ 0 ]){
+        // Get sector 0
+        sector_x = 0;
+        sector_y = 0;
+        // Get the coordinates on the unit hemisphere
+        float x_h, y_h, z_h;
+        // Randomly sample within the sector
+        float rx = curand_uniform(&d_rand_state[pixel_x*SCREEN_HEIGHT + pixel_y]);
+        float ry = curand_uniform(&d_rand_state[pixel_x*SCREEN_HEIGHT + pixel_y]);
+        map((sector_x+0.5f)/(float)GRID_RESOLUTION, (sector_y+0.5f)/(float)GRID_RESOLUTION, x_h, y_h, z_h);
+        // Convert to world space
+        vec4 world_position = this->transformation_matrix * vec4(x_h, y_h, z_h, 1.f);
+        vec3 world_position3 = vec3(world_position.x, world_position.y, world_position.z);
+        // Get the direction
+        return vec4(normalize(world_position3 - vec3(this->position)),1.f);
+    }
+
+    // Binary Search for the sector to uniformly sample from
+    int start = 0;
+    int end = GRID_RESOLUTION*GRID_RESOLUTION - 1;
+
+    while(start <= end){
+
+        // Compute the mid index
+        int mid = ((end + start)/2);
+
+        // Check if found
+        float mid_val = this->radiance_distribution[ mid ];
+        float prev_mid_val = this->radiance_distribution[ mid - 1 ];
+        if (r < mid_val && prev_mid_val <= r){
+            // Found the sector at location mid
+            sector_x = (int)mid/GRID_RESOLUTION;
+            sector_y = mid - (sector_x*GRID_RESOLUTION);
+            // Get the coordinates on the unit hemisphere
+            float x_h, y_h, z_h;
+            // Randomly sample within the sector
+            float rx = curand_uniform(&d_rand_state[pixel_x*SCREEN_HEIGHT + pixel_y]);
+            float ry = curand_uniform(&d_rand_state[pixel_x*SCREEN_HEIGHT + pixel_y]);
+            map((sector_x+0.5f)/(float)GRID_RESOLUTION, (sector_y+0.5f)/(float)GRID_RESOLUTION, x_h, y_h, z_h);
+            // Convert to world space
+            vec4 world_position = this->transformation_matrix * vec4(x_h, y_h, z_h, 1.f);
+            vec3 world_position3 = vec3(world_position.x, world_position.y, world_position.z);
+            // Get the direction
+            return vec4(normalize(world_position3 - vec3(this->position)),1.f);
+        }
+
+        // Check if look right
+        else if (mid_val < r){
+            start = mid + 1;
+        }
+
+        // Look left
+        else{
+            end = mid - 1;
         }
     }
-    return vec4(0.f);
+    return vec4(0.f,0.f,0.f,1.f);
 }
+
+// Samples a direction from the radiance volume
+// volume
+// __device__
+// vec4 RadianceVolume::sample_direction_from_radiance_distribution(curandState* d_rand_state, int pixel_x, int pixel_y, int& sector_x, int& sector_y){
+    
+//     // Generate a random float uniformly 
+//     float r = curand_uniform(&d_rand_state[pixel_x*SCREEN_HEIGHT + pixel_y]);
+
+//     // Sample from the inverse cumulative distribution
+//     float cumulative_sum = 0.f;
+//     for (int x = 0; x < GRID_RESOLUTION; x++){
+//         for (int y = 0; y < GRID_RESOLUTION; y++){
+//             cumulative_sum = this->radiance_distribution[ x*GRID_RESOLUTION + y ];
+//             // We have found where in the inverse cumulative distribution our
+//             // sample is. There for return an anlge at this location
+//             if ( r <= cumulative_sum ){
+//                 sector_x = x;
+//                 sector_y = y;
+//                 // Get the coordinates on the unit hemisphere
+//                 float x_h, y_h, z_h;
+//                 // Randomly sample within the sector
+//                 float rx = curand_uniform(&d_rand_state[pixel_x*SCREEN_HEIGHT + pixel_y]);
+//                 float ry = curand_uniform(&d_rand_state[pixel_x*SCREEN_HEIGHT + pixel_y]);
+//                 map((x+0.5f)/(float)GRID_RESOLUTION, (y+0.5f)/(float)GRID_RESOLUTION, x_h, y_h, z_h);
+//                 // Convert to world space
+//                 vec4 world_position = this->transformation_matrix * vec4(x_h, y_h, z_h, 1.f);
+//                 vec3 world_position3 = vec3(world_position.x, world_position.y, world_position.z);
+//                 // Get the direction
+//                 return vec4(normalize(world_position3 - vec3(this->position)),1.f);
+//             }
+//         }
+//     }
+//     return vec4(0.f);
+// }
 
 // Performs a temporal difference update for the current radiance volume for the incident
 // radiance in the sector specified with the intersection surfaces irradiance value
@@ -192,7 +289,7 @@ void RadianceVolume::temporal_difference_update(float next_irradiance, int secto
 
     // Update the radiance grid and the alpha value
     atomicInc(&(this->visits[ sector_location ]), vs+1);
-    atomicExch(&(this->radiance_grid[ sector_location     ]), update);
+    atomicExch(&(this->radiance_grid[ sector_location ]), update);
 }
 
 // Sets a voronoi colour for the radiance volume (random colour) in the first entry of its radiance grid

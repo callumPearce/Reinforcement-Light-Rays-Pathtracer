@@ -34,7 +34,6 @@ vec3 path_trace_reinforcement(curandState* d_rand_state, RadianceMap* radiance_m
         total_path_lengths += path_length;
     }
     int avg_path_length = int(total_path_lengths/SAMPLES_PER_PIXEL);
-    // printf("Path Length %d\n",avg_path_length);
     device_path_lengths[pixel_x*SCREEN_HEIGHT + pixel_y] = avg_path_length;
     irradiance /= (float)SAMPLES_PER_PIXEL;
     return irradiance;
@@ -96,9 +95,8 @@ vec3 path_trace_reinforcement_iterative(int pixel_x, int pixel_y, Camera* camera
 
                 vec3 BRDF = scene->surfaces[ray.intersection.index].material.diffuse_c / (float)M_PI;
                 float cos_theta = dot(vec3(scene->surfaces[ray.intersection.index].normal), vec3(sampled_direction));
-                float rho = (1.f / (2.f * (float)M_PI));
 
-                throughput *= (BRDF * cos_theta) / rho;
+                throughput *= (BRDF * cos_theta) / RHO;
                 
                 vec4 start = ray.intersection.position + sampled_direction * 0.00001f;
                 start.w = 1.f;

@@ -61,7 +61,7 @@ bool Ray::intersects(int index, Surface* surfaces) {
     bool crmr = cramer(A, b, solution);
 
     if (crmr && solution.x >= 0.0f && solution.y >= 0.0f && solution.z >= 0.0f && solution.y + solution.z <= 1.0f) {
-        if (solution.x < this->intersection.distance + EPS && solution.x > EPS) {
+        if (solution.x < this->intersection.distance ) {
             this->intersection.position = start + solution.x * dir;
             this->intersection.position[3] = 1;
             this->intersection.distance = solution.x;
@@ -99,7 +99,7 @@ bool Ray::intersects(int index, AreaLight* area_lights) {
     bool crmr = cramer(A, b, solution);
 
     if (crmr && solution.x >= 0.0f && solution.y >= 0.0f && solution.z >= 0.0f && solution.y + solution.z <= 1.0f) {
-        if (solution.x < this->intersection.distance + EPS && solution.x > EPS) {
+        if (solution.x < this->intersection.distance ) {
             this->intersection.position = start + solution.x * dir;
             this->intersection.position[3] = 1;
             this->intersection.distance = solution.x;
