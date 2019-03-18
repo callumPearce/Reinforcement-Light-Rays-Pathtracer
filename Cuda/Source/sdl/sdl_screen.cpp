@@ -17,7 +17,7 @@ SDLScreen::SDLScreen(int width, int height, bool fullscreen) {
     {
       flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
     }
-  this->window = SDL_CreateWindow("COMS30115",
+  this->window = SDL_CreateWindow("Reinforcement Raytracer",
 				      SDL_WINDOWPOS_UNDEFINED,
 				      SDL_WINDOWPOS_UNDEFINED,
 				      width, height,flags);

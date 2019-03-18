@@ -147,6 +147,8 @@ RadianceVolume* RadianceMap::find_closest_radiance_volume_iterative(float max_di
     vec3 position = vec3(pos);
     vec3 normal = vec3(norm);
 
+    // return &(this->radiance_volumes[10]);
+
     // Intiliase the stack to keep track of tree search
     Stack stack = Stack(this->radiance_array_size);
 

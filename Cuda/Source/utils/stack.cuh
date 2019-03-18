@@ -6,7 +6,7 @@ class Stack{
     private:
         int top;
         int size;
-        int stack_data[500];
+        int stack_data[30];
     
     public:
         // Initialise the stack

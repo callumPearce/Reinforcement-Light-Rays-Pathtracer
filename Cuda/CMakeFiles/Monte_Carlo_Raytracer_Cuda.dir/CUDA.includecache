@@ -409,6 +409,8 @@ curand_kernel.h
 /home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/utils/stack.cu
 stack.cuh
 /home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/utils/stack.cuh
+stdio.h
+-
 
 /home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/utils/stack.cuh
 

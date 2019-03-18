@@ -1,4 +1,5 @@
 #include "stack.cuh"
+#include <stdio.h>
 
 __device__
 Stack::Stack(int max_size){
