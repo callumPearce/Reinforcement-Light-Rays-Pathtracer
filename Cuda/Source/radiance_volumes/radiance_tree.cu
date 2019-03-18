@@ -136,7 +136,7 @@ void RadianceTree::convert_to_array(int& radiance_array_size, std::vector<Radian
 
     // Preform a traversal of the tree to and adds to the radiance_array_v
     // Add the first element to the tree
-    RadianceTreeElement rte = {this->dimension, false, -1, -1, this->median};
+    RadianceTreeElement rte = {this->dimension, false, 0, 0, this->median};
     radiance_array_v.push_back(rte);
     this->traverse_and_insert(radiance_array_v, 0);
     radiance_array_size = radiance_array_v.size();
@@ -155,9 +155,11 @@ void RadianceTree::traverse_and_insert(std::vector<RadianceTreeElement>& radianc
 
         rtc.dimension = this->dimension;
         rtc.leaf = true;
-        rtc.left_idx = -1;
-        rtc.right_idx = -1;
+        rtc.left_idx = 0;
+        rtc.right_idx = 0;
         rtc.data = this->radiance_volume->index;
+        rtc.position = vec3(this->radiance_volume->position);
+        rtc.normal = this->radiance_volume->normal;
 
         radiance_array_v[ parent_idx ] = rtc;
     
@@ -171,16 +173,20 @@ void RadianceTree::traverse_and_insert(std::vector<RadianceTreeElement>& radianc
         RadianceTreeElement rtc_l;
         rtc_l.dimension = dim;
         rtc_l.leaf = false;
-        rtc_l.left_idx = -1;
-        rtc_l.right_idx = -1;
+        rtc_l.left_idx = 0;
+        rtc_l.right_idx = 0;
         rtc_l.data = this->left_tree->median;
+        rtc_l.position = vec3(0.f);
+        rtc_l.normal = vec3(0.f);
 
         RadianceTreeElement rtc_r;
         rtc_r.dimension = dim;
         rtc_r.leaf = false;
-        rtc_r.left_idx = -1;
-        rtc_r.right_idx = -1;
+        rtc_r.left_idx = 0;
+        rtc_r.right_idx = 0;
         rtc_r.data = this->right_tree->median;
+        rtc_r.position = vec3(0.f);
+        rtc_r.normal = vec3(0.f);
 
         radiance_array_v.push_back(rtc_l);
         radiance_array_v.push_back(rtc_r);
@@ -209,7 +215,6 @@ void RadianceTree::traverse_and_insert(std::vector<RadianceTreeElement>& radianc
 __host__
 int RadianceTree::count_tree_elements(int count){
     if (this->radiance_volume){
-        // printf("%d\n",this->radiance_volume->index);
         return count + 1;
     }
     else{
@@ -231,19 +236,12 @@ __host__
 int RadianceTree::test_array_traversal(std::vector<RadianceTreeElement>& radiance_array_v, int index){
 
     if (radiance_array_v[index].leaf){
-        // printf("%d\n", int(radiance_array_v[index].data));
         return 1;
     }
     else{
         int count = 0;
-        // if (radiance_array_v[index].left_idx > -1){
-            count +=  test_array_traversal(radiance_array_v, radiance_array_v[index].left_idx);
-        // }
-        // if (radiance_array_v[index].right_idx > -1){
-            count +=  test_array_traversal(radiance_array_v, radiance_array_v[index].right_idx);
-
-            // printf("%d\n", count);
-        // }
+        count +=  test_array_traversal(radiance_array_v, radiance_array_v[index].left_idx);
+        count +=  test_array_traversal(radiance_array_v, radiance_array_v[index].right_idx);
         return count;
     }
 }

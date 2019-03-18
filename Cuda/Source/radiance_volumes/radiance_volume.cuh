@@ -33,12 +33,12 @@ class RadianceVolume{
         * for any purpose, commercial or non-commercial,
         * as long as attribution is maintained.
         */
-       __device__
+        __host__ __device__
         static void map(float x, float y, float& x_ret, float& y_ret, float& z_ret);
 
         // Initialises square grid as a 2D std::vector of vec3s (radiance stores for each angle)
         __host__
-        void initialise_radiance_grid();
+        void initialise_radiance_grid(Surface* surfaces);
 
         // Initialises square grid as a 2D vector of floats representing the radiance distribution
         // for the radiance volume
@@ -55,6 +55,8 @@ class RadianceVolume{
         float radiance_distribution [GRID_RESOLUTION * GRID_RESOLUTION];
         unsigned int visits [GRID_RESOLUTION * GRID_RESOLUTION];
         // For coordinate system
+        float irradiance_accum;
+        unsigned int surface_index;
         vec3 normal;
         mat4 transformation_matrix;
         int index = -1;
@@ -65,7 +67,7 @@ class RadianceVolume{
         
         // Constructor
         __host__
-        RadianceVolume(vec4 position, vec4 normal, int idx);
+        RadianceVolume(Surface* surfaces, vec4 position, vec4 normal, unsigned int surface_index, int idx);
 
         // Update the transformation matrix with the current normal and position values
         __host__
@@ -76,10 +78,14 @@ class RadianceVolume{
         vec4* get_vertices();
 
         __device__
-        float expected_sarsa_irradiance(const Intersection& intersection, Surface* surfaces);
+        void expected_sarsa_irradiance(Surface* surfaces, const float update, const int sector_x, const int sector_y);
 
+        // __device__
+        // float q_learning_irradiance(Surface* surfaces);
+
+        // Updates the current irradiance estimate
         __device__
-        float q_learning_irradiance(const Intersection& intersection, Surface* surfaces);
+        void update_irradiance(Surface* surfaces, const float update, const int sector_x, const int sector_y);
 
         // Normalizes this RadianceVolume so that all radiance values 
         // i.e. their grid values all sum to 1 (taking the length of each vec3)
@@ -94,7 +100,11 @@ class RadianceVolume{
         // Performs a temporal difference update for the current radiance volume for the incident
         // radiance in the sector specified with the intersection surfaces irradiance value
         __device__
-        void temporal_difference_update(float sector_irradiance, int sector_x, int sector_y);
+        void temporal_difference_update(float sector_irradiance, int sector_x, int sector_y, Surface* surface);
+
+        // Gets the current irradiance estimate for the radiance volume
+        __device__
+        float get_irradiance_estimate();
 
         // Sets a voronoi colour for the radiance volume (random colour) in the first entry of its radiance grid
         __host__

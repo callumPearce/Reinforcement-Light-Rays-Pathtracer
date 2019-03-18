@@ -19,9 +19,11 @@ enum Dimension{
 struct RadianceTreeElement{
     Dimension dimension;
     bool leaf;
-    int left_idx;
-    int right_idx;
+    unsigned int left_idx;
+    unsigned int right_idx;
     float data;
+    vec3 position;
+    vec3 normal;
 };
 
 class RadianceTree{

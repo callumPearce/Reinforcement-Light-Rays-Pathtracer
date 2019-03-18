@@ -45,10 +45,6 @@ class RadianceMap{
         __host__
         RadianceMap(Surface* surfaces, int surfaces_count, std::vector<RadianceVolume>& temp_rvs, std::vector<RadianceTreeElement>& radaince_array_v);
 
-        // Calculate the Gaussian filter for radiance contribution
-        __device__
-        float calculate_gaussian_filter(float volume_distance, float furthest_volume_distance);
-
         // Given an intersection point, importance sample a ray direction according to the
         // cumulative distribution formed by the closest RadianceVolume's radiance_map
         __device__
@@ -66,18 +62,9 @@ class RadianceMap{
         __device__
         vec3 get_voronoi_colour(const Intersection& intersection);
 
-        // Find the closest radiance volume in linear time by traversing the list of radiance volumes
-        __device__
-        RadianceVolume* get_closest_radiance_volume_linear(float max_dist, vec4 position, vec4 normal);
 
         __device__
-        RadianceVolume* find_closest_radiance_volume_iterative(float max_dist, vec4 position, vec4 normal);
-
-        // __device__
-        // RadianceVolume* find_closest_radiance_volume(float max_dist, vec4 position, vec4 normal);
-
-        // __device__
-        // void find_closest_radiance_volume_recursive(float max_dist, vec4 position, vec4 normal, RadianceVolume*& current_closest, float& closest_distance, int current_index);
+        RadianceVolume* find_closest_radiance_volume_iterative(float max_dist, vec4 pos, vec4 norm);
 
 };
 

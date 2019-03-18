@@ -260,7 +260,7 @@ int main (int argc, char* argv[]) {
         
         // RENDER LOOP
         int frames = 0;
-        while (Update(camera) && frames < 2){
+        while (Update(camera) && frames < 20){
 
             // Copy the camera to the device
             checkCudaErrors(cudaMemcpy(device_camera, &camera, sizeof(Camera), cudaMemcpyHostToDevice));

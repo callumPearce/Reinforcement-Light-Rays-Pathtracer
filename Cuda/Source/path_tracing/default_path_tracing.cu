@@ -73,7 +73,7 @@ vec3 path_trace_iterative(curandState* d_rand_state, Ray ray, Scene* scene, int&
                 vec3 BRDF = scene->surfaces[ray.intersection.index].material.diffuse_c / (float)M_PI;
                 
                 // Approximate the rendering equation
-                throughput = (throughput * BRDF * cos_theta) / rho;
+                throughput = (throughput * BRDF * cos_theta) / RHO;
 
                 // Update rays direction
                 vec4 start = ray.intersection.position + (0.00001f * sampled_direction);

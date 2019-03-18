@@ -9,8 +9,9 @@ RadianceVolume::RadianceVolume(){
 }
 
 __host__
-RadianceVolume::RadianceVolume(vec4 position, vec4 normal, int idx){
-    initialise_radiance_grid();
+RadianceVolume::RadianceVolume(Surface* surfaces, vec4 position, vec4 normal, unsigned int surface_index, int idx){
+    this->surface_index = surface_index;
+    initialise_radiance_grid(surfaces);
     initialise_radiance_distribution();
     initialise_visits();
 
@@ -28,22 +29,41 @@ void RadianceVolume::update_transformation_matrix(){
     this->transformation_matrix = create_transformation_matrix(normal, position);
 } 
 
-// Intialises a 2D grid to store radiance values at each grid point
+// Intialises a 2D grid to store radiance values at each grid point and
+// sets the irradiance estimate
 __host__
-void RadianceVolume::initialise_radiance_grid(){
-    // this->radiance_grid = vec3[ GRID_RESOLUTION * GRID_RESOLUTION ];
-    float initial = 1.f/((float)GRID_RESOLUTION * (float)GRID_RESOLUTION);
+void RadianceVolume::initialise_radiance_grid(Surface* surfaces){
+    // Set values in the radiance grid
     for (int x = 0; x < GRID_RESOLUTION; x++){
         for (int y = 0; y < GRID_RESOLUTION; y++){
-            this->radiance_grid[ x*GRID_RESOLUTION + y ] = initial;
+            this->radiance_grid[ x*GRID_RESOLUTION + y ] = INITIAL_RADIANCE;
         }
     }
+    // Compute the current irradiance estimate
+    float temp_irradiance = 0.f;
+    for (int x = 0; x < GRID_RESOLUTION; x++){
+        for (int y = 0; y < GRID_RESOLUTION; y++){
+            // Get the coordinates on the unit hemisphere
+            float x_h, y_h, z_h;
+            map(x/(float)GRID_RESOLUTION, y/(float)GRID_RESOLUTION, x_h, y_h, z_h);
+            // Convert to world space
+            vec4 world_position = this->transformation_matrix * vec4(x_h, y_h, z_h, 1.f);
+            vec3 world_position3 = vec3(world_position.x, world_position.y, world_position.z);
+            // Get the direction
+            vec3 dir = normalize(world_position3 - vec3(this->position));
+            // Get the angle between the dir std::vector and the normal
+            float cos_theta = dot(dir, this->normal); // No need to divide by lengths as they have been normalized
+            temp_irradiance += cos_theta * this->radiance_grid[ x*GRID_RESOLUTION + y ];
+        }
+    }
+    vec3 BRDF_3 = surfaces[this->surface_index].material.diffuse_c;
+    temp_irradiance *= ((BRDF_3.x + BRDF_3.y + BRDF_3.z)/3.f) / (float)M_PI;
+    this->irradiance_accum = temp_irradiance;
 }
 
 // Initialise radiance distribution to be equal in all angles initially
 __host__
 void RadianceVolume::initialise_radiance_distribution(){
-    // this->radiance_distribution = new float[ GRID_RESOLUTION * GRID_RESOLUTION ];
     for (int x = 0; x < GRID_RESOLUTION; x++){
         for (int y = 0; y < GRID_RESOLUTION; y++){
             this->radiance_distribution[ x*GRID_RESOLUTION + y ] = (x*GRID_RESOLUTION + y) * (1.f/((float)GRID_RESOLUTION * (float)GRID_RESOLUTION));        
@@ -54,7 +74,6 @@ void RadianceVolume::initialise_radiance_distribution(){
 // Initialises the alpha values (weighting of state-action pairs) to be 1
 __host__
 void RadianceVolume::initialise_visits(){
-    // this->visits = new float[ GRID_RESOLUTION * GRID_RESOLUTION ];
     for (int x = 0; x < GRID_RESOLUTION; x++){
         for (int y = 0; y < GRID_RESOLUTION; y++){
             this->visits[ x*GRID_RESOLUTION + y ] = 0;
@@ -88,54 +107,63 @@ vec4* RadianceVolume::get_vertices(){
 
 // Gets the irradiance for an intersection point by solving the rendering equations (summing up 
 // radiance from all directions whilst multiplying by BRDF and cos(theta)) (Following expected SARSA)
-// TODO: Compute in a different kernel, we can store this as a single value
 __device__
-float RadianceVolume::expected_sarsa_irradiance(const Intersection& intersection, Surface* surfaces){
-    float irradiance = 0.f;
-    for (int x = 0; x < GRID_RESOLUTION; x++){
-        for (int y = 0; y < GRID_RESOLUTION; y++){
-            // Get the coordinates on the unit hemisphere
-            float x_h, y_h, z_h;
-            map(x/(float)GRID_RESOLUTION, y/(float)GRID_RESOLUTION, x_h, y_h, z_h);
-            // Convert to world space
-            vec4 world_position = this->transformation_matrix * vec4(x_h, y_h, z_h, 1.f);
-            vec3 world_position3 = vec3(world_position.x, world_position.y, world_position.z);
-            // Get the direction
-            vec3 dir = normalize(world_position3 - vec3(this->position));
-            // Get the angle between the dir std::vector and the normal
-            float cos_theta = dot(dir, this->normal); // No need to divide by lengths as they have been normalized
-            irradiance += cos_theta * this->radiance_grid[ x*GRID_RESOLUTION + y ];
-        }
-    }
-    vec3 BRDF_3 = surfaces[intersection.index].material.diffuse_c;
-    irradiance *= ((BRDF_3.x + BRDF_3.y + BRDF_3.z)/3.f) / (float)M_PI;
-    irradiance *= (2.f * (float)M_PI) / ((float)(GRID_RESOLUTION * GRID_RESOLUTION));
-    return irradiance;
+void RadianceVolume::expected_sarsa_irradiance(Surface* surfaces, const float update, const int sector_x, const int sector_y){
+
+    // Get cos theta
+    float x_h, y_h, z_h;
+    map(sector_x/(float)GRID_RESOLUTION, sector_y/(float)GRID_RESOLUTION, x_h, y_h, z_h);
+    // Convert to world space
+    vec4 world_position = this->transformation_matrix * vec4(x_h, y_h, z_h, 1.f);
+    vec3 world_position3 = vec3(world_position.x, world_position.y, world_position.z);
+    // Get the direction
+    vec3 dir = normalize(world_position3 - vec3(this->position));
+    // Get the angle between the dir std::vector and the normal
+    float cos_theta = dot(dir, this->normal); // No need to divide by lengths as they have been normalized
+
+    // Get the BRDF
+    vec3 BRDF_3 = surfaces[this->surface_index].material.diffuse_c;
+    float BRDF = ((BRDF_3.x + BRDF_3.y + BRDF_3.z)/3.f) / (float)M_PI;
+    
+    // Update the irradiance and the radiance_grid value
+    int sector_location = sector_x*GRID_RESOLUTION + sector_y;
+    float old_sector = this->radiance_grid[ sector_location ];
+    float new_irradiance = (this->irradiance_accum - (old_sector*cos_theta*BRDF)) + (update*cos_theta*BRDF);
+
+    atomicExch(&(this->radiance_grid[ sector_location ]), update);
+    atomicExch(&(this->irradiance_accum), new_irradiance);
 }
 
-// Gets the irradiance for an intersection point by getting the max directional sector values
-// multiplied by the BRDF and cos_theta
+
+// // Gets the irradiance for an intersection point by getting the max directional sector values
+// // multiplied by the BRDF and cos_theta
+// __device__
+// float RadianceVolume::q_learning_irradiance(Surface* surfaces){
+//     float max_irradiance = 0.f;
+//     for (int x = 0; x < GRID_RESOLUTION; x++){
+//         for (int y = 0; y < GRID_RESOLUTION; y++){
+//             // Get the coordinates on the unit hemisphere
+//             float x_h, y_h, z_h;
+//             map(x/(float)GRID_RESOLUTION, y/(float)GRID_RESOLUTION, x_h, y_h, z_h);
+//             // Convert to world space
+//             vec4 world_position = this->transformation_matrix * vec4(x_h, y_h, z_h, 1.f);
+//             vec3 world_position3 = vec3(world_position.x, world_position.y, world_position.z);
+//             // Get the direction
+//             vec3 dir = normalize(world_position3 - vec3(this->position));
+//             // Get the angle between the dir std::vector and the normal
+//             float cos_theta = dot(dir, this->normal); // No need to divide by lengths as they have been normalized
+//             max_irradiance = max(cos_theta * this->radiance_grid[ x*GRID_RESOLUTION + y ], max_irradiance);
+//         }
+//     }
+//     vec3 BRDF_3 = surfaces[this->surface_index].material.diffuse_c;
+//     max_irradiance *= ((BRDF_3.x + BRDF_3.y + BRDF_3.z)/3.f) / (float)M_PI;
+//     return max_irradiance;
+// }
+
+// Updates the current irradiance estimate
 __device__
-float RadianceVolume::q_learning_irradiance(const Intersection& intersection, Surface* surfaces){
-    float max_irradiance = 0.f;
-    for (int x = 0; x < GRID_RESOLUTION; x++){
-        for (int y = 0; y < GRID_RESOLUTION; y++){
-            // Get the coordinates on the unit hemisphere
-            float x_h, y_h, z_h;
-            map(x/(float)GRID_RESOLUTION, y/(float)GRID_RESOLUTION, x_h, y_h, z_h);
-            // Convert to world space
-            vec4 world_position = this->transformation_matrix * vec4(x_h, y_h, z_h, 1.f);
-            vec3 world_position3 = vec3(world_position.x, world_position.y, world_position.z);
-            // Get the direction
-            vec3 dir = normalize(world_position3 - vec3(this->position));
-            // Get the angle between the dir std::vector and the normal
-            float cos_theta = dot(dir, this->normal); // No need to divide by lengths as they have been normalized
-            max_irradiance = max(cos_theta * this->radiance_grid[ x*GRID_RESOLUTION + y ], max_irradiance);
-        }
-    }
-    vec3 BRDF_3 = surfaces[intersection.index].material.diffuse_c;
-    max_irradiance *= ((BRDF_3.x + BRDF_3.y + BRDF_3.z)/3.f) / (float)M_PI;
-    return max_irradiance;
+void RadianceVolume::update_irradiance(Surface* surfaces, const float update, const int sector_x, const int sector_y){
+    this->expected_sarsa_irradiance(surfaces, update, sector_x, sector_y);
 }
 
 // Normalizes this RadianceVolume so that all radiance values 
@@ -158,8 +186,6 @@ void RadianceVolume::update_radiance_distribution(){
             float radiance = this->radiance_grid[ x*GRID_RESOLUTION + y ]/total + prev_radiance;
             this->radiance_distribution[ x*GRID_RESOLUTION + y ] = radiance;
             prev_radiance = radiance;
-            // float new_val = this->radiance_grid[ x*GRID_RESOLUTION + y ]/total;
-            // atomicExch(&(this->radiance_distribution[ x*GRID_RESOLUTION + y ]), new_val);
         }
     }
 }
@@ -234,7 +260,7 @@ vec4 RadianceVolume::sample_direction_from_radiance_distribution(curandState* d_
 // Performs a temporal difference update for the current radiance volume for the incident
 // radiance in the sector specified with the intersection surfaces irradiance value
 __device__
-void RadianceVolume::temporal_difference_update(float sector_irradiance, int sector_x, int sector_y){
+void RadianceVolume::temporal_difference_update(float sector_irradiance, int sector_x, int sector_y, Surface* surfaces){
 
     int sector_location = sector_x*GRID_RESOLUTION + sector_y;
 
@@ -242,20 +268,22 @@ void RadianceVolume::temporal_difference_update(float sector_irradiance, int sec
     unsigned int vs = this->visits[ sector_location ];
     float alpha = 1.f / (1.f + (float)vs);
 
-    // assert(alpha <= 1.00000f);
-
     // Calculate the new update value
     float radiance = this->radiance_grid[ sector_location ];
     float update = ((1.f - (alpha)) * radiance) + (alpha * sector_irradiance);
     update = update > (float)RADIANCE_THRESHOLD ? update : (float)RADIANCE_THRESHOLD;
 
-    // assert(update.x < 1.f);
-    // assert(update.y < 1.f);
-    // assert(update.z < 1.f);
-
-    // Update the radiance grid and the alpha value
+    // Update the radiance grid value and the alpha value
     atomicInc(&(this->visits[ sector_location ]), vs+1);
-    atomicExch(&(this->radiance_grid[ sector_location ]), update);
+
+    // Update the irradiance estimate
+    update_irradiance(surfaces, update, sector_x, sector_y);
+}
+
+// Gets the current irradiance estimate for the radiance volume
+__device__
+float RadianceVolume::get_irradiance_estimate(){
+    return this->irradiance_accum * (2.f * (float)M_PI) / ((float)(GRID_RESOLUTION * GRID_RESOLUTION));
 }
 
 // Sets a voronoi colour for the radiance volume (random colour) in the first entry of its radiance grid
@@ -289,7 +317,7 @@ vec3 RadianceVolume::get_voronoi_colour(){
 * for any purpose, commercial or non-commercial,
 * as long as attribution is maintained.
 */
-__device__ 
+__host__ __device__
 void RadianceVolume::map(float x, float y, float& x_ret, float& y_ret, float& z_ret) {
     float xx, yy, offset, theta, phi;
     x = 2*x - 1;

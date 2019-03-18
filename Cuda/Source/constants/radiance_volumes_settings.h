@@ -11,8 +11,8 @@
 #define AREA_PER_SAMPLE 0.01f
 
 // Querying
-#define CLOSEST_QUERY_COUNT 1
 #define MAX_DIST 0.01f
-#define RADIANCE_THRESHOLD (1.f/((float)GRID_RESOLUTION * (float)GRID_RESOLUTION))*500.f// /6.f
+#define INITIAL_RADIANCE (1.f/((float)GRID_RESOLUTION * (float)GRID_RESOLUTION))*700.f
+#define RADIANCE_THRESHOLD (1.f/((float)GRID_RESOLUTION * (float)GRID_RESOLUTION))*400.f
 
 #endif
