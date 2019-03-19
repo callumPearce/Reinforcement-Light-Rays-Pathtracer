@@ -24,6 +24,7 @@ class AreaLight : public Triangle{
 
     public:
         vec3 diffuse_p;
+        float luminance;
         
         // Default Constructor
         __host__

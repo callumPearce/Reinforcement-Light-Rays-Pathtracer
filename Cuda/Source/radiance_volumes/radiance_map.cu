@@ -117,8 +117,8 @@ RadianceVolume* RadianceMap::temporal_difference_update_radiance_volume_sector(f
             break;
         
         case AREA_LIGHT:
-            vec3 diffuse_light_power = scene->area_lights[intersection.index].diffuse_p; 
-            current_radiance_volume->temporal_difference_update(current_BRDF*((diffuse_light_power.x + diffuse_light_power.y + diffuse_light_power.z)/3.f), current_sector_x, current_sector_y, scene->surfaces);
+            float diffuse_light_power = scene->area_lights[intersection.index].luminance; 
+            current_radiance_volume->temporal_difference_update(current_BRDF*diffuse_light_power, current_sector_x, current_sector_y, scene->surfaces);
             return NULL;
             break;
         

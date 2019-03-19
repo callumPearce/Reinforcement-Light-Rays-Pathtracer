@@ -96,7 +96,7 @@ vec3 path_trace_reinforcement_iterative(int pixel_x, int pixel_y, Camera* camera
                 vec3 BRDF = scene->surfaces[ray.intersection.index].material.diffuse_c / (float)M_PI;
                 float cos_theta = dot(vec3(scene->surfaces[ray.intersection.index].normal), vec3(sampled_direction));
 
-                current_BRDF = ((BRDF.x + BRDF.y + BRDF.z)/3.f) / RHO;
+                current_BRDF = (scene->surfaces[ray.intersection.index].material.luminance) / (float)M_PI;
                 throughput *= (BRDF * cos_theta) / RHO;
                 
                 vec4 start = ray.intersection.position + sampled_direction * 0.00001f;

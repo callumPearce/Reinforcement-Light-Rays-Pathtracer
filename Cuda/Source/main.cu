@@ -106,6 +106,11 @@ __global__ void init_rand_state(curandState* d_rand_state, int width, int height
 
 int main (int argc, char* argv[]) {
 
+    vec3 a = vec3(2.f);
+    vec3 b = vec3(3.f);
+    vec3 c = a * b;
+    std::cout << c.x << "," << c.y << "," << c.z << std::endl;
+
     // Initialise SDL screen
     SDLScreen screen = SDLScreen(SCREEN_WIDTH, SCREEN_HEIGHT, FULLSCREEN_MODE);
     
@@ -117,7 +122,7 @@ int main (int argc, char* argv[]) {
 
     // Initialise the scene
     Scene scene = Scene();
-    scene.load_custom_scene("/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Models/simple_room_closed.obj");
+    scene.load_custom_scene("/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Models/door_room.obj");
 
     /* Setup defautl CUDA memory */
     vec3 * device_buffer;
@@ -260,7 +265,7 @@ int main (int argc, char* argv[]) {
         
         // RENDER LOOP
         int frames = 0;
-        while (Update(camera) && frames < 2){
+        while (Update(camera)){
 
             // Copy the camera to the device
             checkCudaErrors(cudaMemcpy(device_camera, &camera, sizeof(Camera), cudaMemcpyHostToDevice));
@@ -305,6 +310,7 @@ int main (int argc, char* argv[]) {
             cudaMemset(device_buffer, 0.f, sizeof(vec3)* SCREEN_HEIGHT * SCREEN_WIDTH);
 
             screen.SDL_Renderframe();
+            screen.SDL_SaveImage("../Images/reinforcement_render/render.bmp");
             frames++;
         }
         

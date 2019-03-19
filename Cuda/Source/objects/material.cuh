@@ -20,6 +20,7 @@ class Material{
     
     public:
         vec3 diffuse_c;
+        float luminance;
 
         //Constructor
         __host__

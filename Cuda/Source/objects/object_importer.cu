@@ -144,13 +144,13 @@ void build_surfaces(std::vector<Surface>& surfaces, std::vector<vec3>& vertex_in
         // White
         Material mat = Material(vec3(0.75f));
         // Red
-        // if( i > 5 && i < 8){
+        if( i > 23 && i < 36){
             mat = Material(vec3(0.75f, 0.15f, 0.15f));
-        // }  
+        }  
         // Blue
-        // if( i % 5 == 0){
-        //     mat = Material(vec3(0.15f, 0.15f, 0.75f));
-        // }
+        if( 11 < i && i < 24){
+            mat = Material(vec3(0.15f, 0.15f, 0.75f));
+        }
         Surface surface = Surface(v1, v3, v2, mat);
 
         // Compute and set the normal
@@ -188,12 +188,12 @@ void build_area_lights(std::vector<AreaLight>& area_lights){
 
     // Define the area light vectors
     float l = 2.f;
-    vec4 I(l, l, 1.5f*l, 1);
-    vec4 J(l, 0, 1.5f*l, 1);
-    vec4 K((l)/2, l, 1.5f*l, 1);
-    vec4 L((l)/2, 0, 1.5f*l, 1);
+    vec4 I((6.3f*l)/8, (l*6.f)/8, 1.499f*l, 1);
+    vec4 J((6.3f*l)/8, 0, 1.499f*l, 1);
+    vec4 K((2.58f*l)/8, (l*6.f)/8, 1.499f*l, 1);
+    vec4 L((2.58f*l)/8, 0, 1.499f*l, 1);
 
-    vec3 diffuse_p = 3.f * vec3(0.9, 0.9, 0.9);
+    vec3 diffuse_p = 1.f * vec3(1.f, 1.f, 1.f);
     AreaLight a1 = AreaLight(K, I, J, diffuse_p);
     area_lights.push_back(a1);
 

@@ -56,8 +56,8 @@ void RadianceVolume::initialise_radiance_grid(Surface* surfaces){
             temp_irradiance += cos_theta * this->radiance_grid[ x*GRID_RESOLUTION + y ];
         }
     }
-    vec3 BRDF_3 = surfaces[this->surface_index].material.diffuse_c;
-    temp_irradiance *= ((BRDF_3.x + BRDF_3.y + BRDF_3.z)/3.f) / (float)M_PI;
+    float luminance = surfaces[this->surface_index].material.luminance;
+    temp_irradiance *= luminance / (float)M_PI;
     this->irradiance_accum = temp_irradiance;
 }
 
@@ -122,8 +122,8 @@ void RadianceVolume::expected_sarsa_irradiance(Surface* surfaces, const float up
     float cos_theta = dot(dir, this->normal); // No need to divide by lengths as they have been normalized
 
     // Get the BRDF
-    vec3 BRDF_3 = surfaces[this->surface_index].material.diffuse_c;
-    float BRDF = ((BRDF_3.x + BRDF_3.y + BRDF_3.z)/3.f) / (float)M_PI;
+    float luminance = surfaces[this->surface_index].material.luminance;
+    float BRDF = luminance / (float)M_PI;
     
     // Update the irradiance and the radiance_grid value
     int sector_location = sector_x*GRID_RESOLUTION + sector_y;
@@ -207,7 +207,7 @@ vec4 RadianceVolume::sample_direction_from_radiance_distribution(curandState* d_
         // Randomly sample within the sector
         float rx = curand_uniform(&d_rand_state[pixel_x*SCREEN_HEIGHT + pixel_y]);
         float ry = curand_uniform(&d_rand_state[pixel_x*SCREEN_HEIGHT + pixel_y]);
-        map((sector_x+0.5f)/(float)GRID_RESOLUTION, (sector_y+0.5f)/(float)GRID_RESOLUTION, x_h, y_h, z_h);
+        map((sector_x+rx)/(float)GRID_RESOLUTION, (sector_y+ry)/(float)GRID_RESOLUTION, x_h, y_h, z_h);
         // Convert to world space
         vec4 world_position = this->transformation_matrix * vec4(x_h, y_h, z_h, 1.f);
         vec3 world_position3 = vec3(world_position.x, world_position.y, world_position.z);
@@ -236,7 +236,7 @@ vec4 RadianceVolume::sample_direction_from_radiance_distribution(curandState* d_
             // Randomly sample within the sector
             float rx = curand_uniform(&d_rand_state[pixel_x*SCREEN_HEIGHT + pixel_y]);
             float ry = curand_uniform(&d_rand_state[pixel_x*SCREEN_HEIGHT + pixel_y]);
-            map((sector_x+0.5f)/(float)GRID_RESOLUTION, (sector_y+0.5f)/(float)GRID_RESOLUTION, x_h, y_h, z_h);
+            map((sector_x+rx)/(float)GRID_RESOLUTION, (sector_y+ry)/(float)GRID_RESOLUTION, x_h, y_h, z_h);
             // Convert to world space
             vec4 world_position = this->transformation_matrix * vec4(x_h, y_h, z_h, 1.f);
             vec3 world_position3 = vec3(world_position.x, world_position.y, world_position.z);
