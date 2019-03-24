@@ -6,6 +6,8 @@ set(CMAKE_DEPENDS_LANGUAGES
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CUDA
   "/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/camera.cu" "/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/camera.cu.o"
+  "/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/deep_learning/dq_network.cu" "/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/deep_learning/dq_network.cu.o"
+  "/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/deep_learning/fc_layer.cu" "/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/deep_learning/fc_layer.cu.o"
   "/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/lights/area_light.cu" "/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/lights/area_light.cu.o"
   "/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/main.cu" "/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/main.cu.o"
   "/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/objects/material.cu" "/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/objects/material.cu.o"
@@ -30,7 +32,6 @@ set(CMAKE_CUDA_COMPILER_ID "NVIDIA")
 
 # The include file search paths:
 set(CMAKE_CUDA_TARGET_INCLUDE_PATH
-  "/usr/include/SDL2"
   "glm"
   "Source"
   "Source/constants"
@@ -42,6 +43,9 @@ set(CMAKE_CUDA_TARGET_INCLUDE_PATH
   "Source/rays"
   "Source/path_tracing"
   "Source/radiance_volumes"
+  "Source/deep_learning"
+  "/usr/include/SDL2"
+  "-I/usr/local/include/dynet"
   )
 set(CMAKE_DEPENDS_CHECK_CXX
   "/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/sdl/sdl_screen.cpp" "/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/sdl/sdl_screen.cpp.o"
@@ -51,7 +55,6 @@ set(CMAKE_CXX_COMPILER_ID "GNU")
 
 # The include file search paths:
 set(CMAKE_CXX_TARGET_INCLUDE_PATH
-  "/usr/include/SDL2"
   "glm"
   "Source"
   "Source/constants"
@@ -63,6 +66,9 @@ set(CMAKE_CXX_TARGET_INCLUDE_PATH
   "Source/rays"
   "Source/path_tracing"
   "Source/radiance_volumes"
+  "Source/deep_learning"
+  "/usr/include/SDL2"
+  "-I/usr/local/include/dynet"
   )
 
 # Targets to which this target links.
