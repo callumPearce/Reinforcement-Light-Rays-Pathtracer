@@ -36,14 +36,15 @@ class FCLayer{
         FCLayer(Activation a, unsigned int input_dim, unsigned int output_dim, float dropout);
 
         // Applies the activation function for this layer to the expression 
-        dynet::Expression activate(dynet::Expression& infer_in);
+        dynet::Expression activate(dynet::Expression infer_in);
 
         // Append parameters to the ParameterCollection passed in
         void add_params(dynet::ParameterCollection& model, std::vector<std::vector<dynet::Parameter>>& params);
 
         // Performs inference upon the current layer (evaluate layer on inputs)
         // and returns the resulting expression
-        dynet::Expression run_inference(dynet::ComputationGraph& graph, std::vector<dynet::Parameter>& params, dynet::Expression& h_infer, bool training);      
+        // params: Contains weights and biases just for the current layer
+        dynet::Expression run_inference(dynet::ComputationGraph& graph, std::vector<dynet::Parameter>& params, dynet::Expression h_infer, bool training);      
 };
 
 #endif

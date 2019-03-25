@@ -44,7 +44,7 @@ void create_normal_coordinate_system(vec3& normal, vec3& normal_T, vec3& normal_
 }
 
 // // Create the transformation matrix for a unit hemisphere
-__host__
+__host__ __device__
 mat4 create_transformation_matrix(vec3 normal, vec4 position){
     // Create coordinate system (i.e. 3 basis vectors to define rotation)
     vec3 normal_T;
@@ -90,4 +90,121 @@ vec4 sample_random_direction_around_intersection(curandState* d_rand_state, cons
     );
 
     return vec4(sampled_direction, 1.f);
+}
+
+__host__ __device__
+vec3 convert_grid_pos_to_direction(float x, float y, vec3 position, mat4& transformation_matrix){
+    // Get the coordinates on the unit hemisphere
+    float x_h, y_h, z_h;
+    map((float)x/(float)GRID_RESOLUTION, (float)y/(float)GRID_RESOLUTION, x_h, y_h, z_h);
+    // Convert to world space
+    vec4 world_position = transformation_matrix * vec4(x_h, y_h, z_h, 1.f);
+    vec3 world_position3 = vec3(world_position.x, world_position.y, world_position.z);
+    // Return the direction
+    return normalize(world_position3 - position);
+}
+
+/*
+* This function takes a point in the unit square,
+* and maps it to a point on the unit hemisphere.
+*
+* Copyright 1994 Kenneth Chiu
+*
+* This code may be freely distributed and used
+* for any purpose, commercial or non-commercial,
+* as long as attribution is maintained.
+*/
+__host__ __device__
+void map(float x, float y, float& x_ret, float& y_ret, float& z_ret) {
+    float xx, yy, offset, theta, phi;
+    x = 2*x - 1;
+    y = 2*y - 1;
+    if (y > -x) { // Above y = -x
+        if (y < x) { // Below y = x
+            xx = x;
+            if (y > 0) { // Above x-axis
+                /*
+                * Octant 1
+                */
+                offset = 0;
+                yy = y;
+            } 
+            else { // Below and including x-axis
+                /*
+                * Octant 8
+                */
+                offset = (7*M_PI)/4;
+                yy = x + y;
+            }
+        } 
+        else { // Above and including y = x
+            xx = y;
+            if (x > 0) { // Right of y-axis
+                /*
+                * Octant 2
+                */
+                offset = M_PI/4;
+                yy = (y - x);
+            } 
+            else { // Left of and including y-axis
+                /*
+                * Octant 3
+                */
+                offset = (2*M_PI)/4;
+                yy = -x;
+            }
+        }
+    } 
+    else { // Below and including y = -x
+        if (y > x) { // Above y = x
+            xx = -x;
+            if (y > 0) { // Above x-axis
+                /*
+                * Octant 4
+                */
+                offset = (3*M_PI)/4;
+                yy = -x - y;
+            } 
+            else { // Below and including x-axis
+                /*
+                * Octant 5
+                */
+                offset = (4*M_PI)/4;
+                yy = -y;
+            }
+        } 
+        else { // Below and including y = x
+            xx = -y;
+            if (x > 0) { // Right of y-axis
+                /*
+                * Octant 7
+                */
+                offset = (6*M_PI)/4;
+                yy = x;
+            } 
+            else { // Left of and including y-axis
+                if (y != 0) {
+                    /*
+                    * Octant 6
+                    */
+                    offset = (5*M_PI)/4;
+                    yy = x - y;
+                } 
+                else {
+                    /*
+                    * Origincreate_normal_coordinate_system
+                    */
+                    x_ret = 0.f;
+                    y_ret = 1.f;
+                    z_ret = 0.f;
+                    return;
+                }
+            }
+        }
+    }
+    theta = acos(1 - xx*xx);
+    phi = offset + (M_PI/4)*(yy/xx);
+    x_ret = sin(theta)*cos(phi);
+    y_ret = cos(theta);
+    z_ret = sin(theta)*sin(phi);
 }

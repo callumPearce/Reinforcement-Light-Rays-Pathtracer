@@ -9,23 +9,18 @@ FCLayer::FCLayer(Activation a, unsigned int input_dim, unsigned int output_dim, 
 }
 
 // Applies the activation function for this layer to the expression
-dynet::Expression FCLayer::activate(dynet::Expression& infer_in){
+dynet::Expression FCLayer::activate(dynet::Expression infer_in){
     switch (this->activation) {
         case LINEAR:
           return infer_in;
-          break;
         case RELU:
           return rectify(infer_in);
-          break;
         case SIGMOID:
           return logistic(infer_in);
-          break;
         case TANH:
           return tanh(infer_in);
-          break;
         case SOFTMAX:
           return softmax(infer_in);
-          break;
     }
     return infer_in;
 }
@@ -41,7 +36,8 @@ void FCLayer::add_params(dynet::ParameterCollection& model, std::vector<std::vec
 
 // Performs inference upon the current layer (evaluate layer on inputs)
 // and returns the resulting expression
-dynet::Expression FCLayer::run_inference(dynet::ComputationGraph& graph, std::vector<dynet::Parameter>& params, dynet::Expression& h_infer, bool training){
+// params: Contains weights and biases just for the current layer
+dynet::Expression FCLayer::run_inference(dynet::ComputationGraph& graph, std::vector<dynet::Parameter>& params, dynet::Expression h_infer, bool training){
     
     // Load the parameters into the computation graph
     dynet::Expression W = dynet::parameter(graph, params[0]);

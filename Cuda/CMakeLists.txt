@@ -57,6 +57,7 @@ set(
     Source/path_tracing/voronoi_trace.cu
     Source/deep_learning/dq_network.cu
     Source/deep_learning/fc_layer.cu
+    Source/deep_learning/neural_q_pathtracer.cu
 )
 
 

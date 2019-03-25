@@ -43,14 +43,7 @@ void RadianceVolume::initialise_radiance_grid(Surface* surfaces){
     float temp_irradiance = 0.f;
     for (int x = 0; x < GRID_RESOLUTION; x++){
         for (int y = 0; y < GRID_RESOLUTION; y++){
-            // Get the coordinates on the unit hemisphere
-            float x_h, y_h, z_h;
-            map(x/(float)GRID_RESOLUTION, y/(float)GRID_RESOLUTION, x_h, y_h, z_h);
-            // Convert to world space
-            vec4 world_position = this->transformation_matrix * vec4(x_h, y_h, z_h, 1.f);
-            vec3 world_position3 = vec3(world_position.x, world_position.y, world_position.z);
-            // Get the direction
-            vec3 dir = normalize(world_position3 - vec3(this->position));
+            vec3 dir = convert_grid_pos_to_direction((float)x,(float)y, vec3(this->position), this->transformation_matrix);
             // Get the angle between the dir std::vector and the normal
             float cos_theta = dot(dir, this->normal); // No need to divide by lengths as they have been normalized
             temp_irradiance += cos_theta * this->radiance_grid[ x*GRID_RESOLUTION + y ];
@@ -110,14 +103,8 @@ vec4* RadianceVolume::get_vertices(){
 __device__
 void RadianceVolume::expected_sarsa_irradiance(Surface* surfaces, const float update, const int sector_x, const int sector_y){
 
-    // Get cos theta
-    float x_h, y_h, z_h;
-    map(sector_x/(float)GRID_RESOLUTION, sector_y/(float)GRID_RESOLUTION, x_h, y_h, z_h);
-    // Convert to world space
-    vec4 world_position = this->transformation_matrix * vec4(x_h, y_h, z_h, 1.f);
-    vec3 world_position3 = vec3(world_position.x, world_position.y, world_position.z);
     // Get the direction
-    vec3 dir = normalize(world_position3 - vec3(this->position));
+    vec3 dir = convert_grid_pos_to_direction((float)sector_x, (float)sector_y, vec3(this->position), this->transformation_matrix);
     // Get the angle between the dir std::vector and the normal
     float cos_theta = dot(dir, this->normal); // No need to divide by lengths as they have been normalized
 
@@ -202,17 +189,10 @@ vec4 RadianceVolume::sample_direction_from_radiance_distribution(curandState* d_
         // Get sector 0
         sector_x = 0;
         sector_y = 0;
-        // Get the coordinates on the unit hemisphere
-        float x_h, y_h, z_h;
         // Randomly sample within the sector
         float rx = curand_uniform(&d_rand_state[pixel_x*SCREEN_HEIGHT + pixel_y]);
         float ry = curand_uniform(&d_rand_state[pixel_x*SCREEN_HEIGHT + pixel_y]);
-        map((sector_x+rx)/(float)GRID_RESOLUTION, (sector_y+ry)/(float)GRID_RESOLUTION, x_h, y_h, z_h);
-        // Convert to world space
-        vec4 world_position = this->transformation_matrix * vec4(x_h, y_h, z_h, 1.f);
-        vec3 world_position3 = vec3(world_position.x, world_position.y, world_position.z);
-        // Get the direction
-        return vec4(normalize(world_position3 - vec3(this->position)),1.f);
+        return vec4(convert_grid_pos_to_direction(sector_x+rx, sector_y+ry, vec3(this->position), this->transformation_matrix), 1.f);
     }
 
     // Binary Search for the sector to uniformly sample from
@@ -231,17 +211,10 @@ vec4 RadianceVolume::sample_direction_from_radiance_distribution(curandState* d_
             // Found the sector at location mid
             sector_x = (int)mid/GRID_RESOLUTION;
             sector_y = mid - (sector_x*GRID_RESOLUTION);
-            // Get the coordinates on the unit hemisphere
-            float x_h, y_h, z_h;
             // Randomly sample within the sector
             float rx = curand_uniform(&d_rand_state[pixel_x*SCREEN_HEIGHT + pixel_y]);
             float ry = curand_uniform(&d_rand_state[pixel_x*SCREEN_HEIGHT + pixel_y]);
-            map((sector_x+rx)/(float)GRID_RESOLUTION, (sector_y+ry)/(float)GRID_RESOLUTION, x_h, y_h, z_h);
-            // Convert to world space
-            vec4 world_position = this->transformation_matrix * vec4(x_h, y_h, z_h, 1.f);
-            vec3 world_position3 = vec3(world_position.x, world_position.y, world_position.z);
-            // Get the direction
-            return vec4(normalize(world_position3 - vec3(this->position)),1.f);
+            return vec4(convert_grid_pos_to_direction(sector_x+rx, sector_y+ry, vec3(this->position), this->transformation_matrix), 1.f);
         }
 
         // Check if look right
@@ -305,109 +278,4 @@ vec3 RadianceVolume::get_voronoi_colour(){
     colour.y = this->radiance_grid[1];
     colour.z = this->radiance_grid[2];
     return colour;
-}
-
-/*
-* This function takes a point in the unit square,
-* and maps it to a point on the unit hemisphere.
-*
-* Copyright 1994 Kenneth Chiu
-*
-* This code may be freely distributed and used
-* for any purpose, commercial or non-commercial,
-* as long as attribution is maintained.
-*/
-__host__ __device__
-void RadianceVolume::map(float x, float y, float& x_ret, float& y_ret, float& z_ret) {
-    float xx, yy, offset, theta, phi;
-    x = 2*x - 1;
-    y = 2*y - 1;
-    if (y > -x) { // Above y = -x
-        if (y < x) { // Below y = x
-            xx = x;
-            if (y > 0) { // Above x-axis
-                /*
-                * Octant 1
-                */
-                offset = 0;
-                yy = y;
-            } 
-            else { // Below and including x-axis
-                /*
-                * Octant 8
-                */
-                offset = (7*M_PI)/4;
-                yy = x + y;
-            }
-        } 
-        else { // Above and including y = x
-            xx = y;
-            if (x > 0) { // Right of y-axis
-                /*
-                * Octant 2
-                */
-                offset = M_PI/4;
-                yy = (y - x);
-            } 
-            else { // Left of and including y-axis
-                /*
-                * Octant 3
-                */
-                offset = (2*M_PI)/4;
-                yy = -x;
-            }
-        }
-    } 
-    else { // Below and including y = -x
-        if (y > x) { // Above y = x
-            xx = -x;
-            if (y > 0) { // Above x-axis
-                /*
-                * Octant 4
-                */
-                offset = (3*M_PI)/4;
-                yy = -x - y;
-            } 
-            else { // Below and including x-axis
-                /*
-                * Octant 5
-                */
-                offset = (4*M_PI)/4;
-                yy = -y;
-            }
-        } 
-        else { // Below and including y = x
-            xx = -y;
-            if (x > 0) { // Right of y-axis
-                /*
-                * Octant 7
-                */
-                offset = (6*M_PI)/4;
-                yy = x;
-            } 
-            else { // Left of and including y-axis
-                if (y != 0) {
-                    /*
-                    * Octant 6
-                    */
-                    offset = (5*M_PI)/4;
-                    yy = x - y;
-                } 
-                else {
-                    /*
-                    * Origincreate_normal_coordinate_system
-                    */
-                    x_ret = 0.f;
-                    y_ret = 1.f;
-                    z_ret = 0.f;
-                    return;
-                }
-            }
-        }
-    }
-    theta = acos(1 - xx*xx);
-    phi = offset + (M_PI/4)*(yy/xx);
-    x_ret = sin(theta)*cos(phi);
-    y_ret = cos(theta);
-    z_ret = sin(theta)*sin(phi);
 }

@@ -23,6 +23,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/path_tracing/voronoi_trace.cu.o"
   "CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/deep_learning/dq_network.cu.o"
   "CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/deep_learning/fc_layer.cu.o"
+  "CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/deep_learning/neural_q_pathtracer.cu.o"
   "CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/cmake_device_link.o"
   "Build/Monte_Carlo_Raytracer_Cuda.pdb"
   "Build/Monte_Carlo_Raytracer_Cuda"
