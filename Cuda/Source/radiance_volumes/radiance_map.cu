@@ -93,7 +93,7 @@ void RadianceMap::importance_sample_ray_direction(curandState* d_rand_state, con
     // If a radiance volume is not found, just sample randomly 
     if (closest_volume == NULL){
         float cos_theta;
-        sampled_direction = sample_random_direction_around_intersection(d_rand_state, intersection, cos_theta); 
+        sampled_direction = sample_random_direction_around_intersection(d_rand_state, intersection.normal, cos_theta); 
     }
     else{
         // 2) Generate a random float uniformly between [0,1] and find which 

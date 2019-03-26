@@ -51,6 +51,7 @@ set(
     Source/utils/printing.cpp
     Source/utils/hemisphere_helpers.cu
     Source/utils/stack.cu
+    Source/utils/cuda_helpers.cu
     Source/lights/area_light.cu
     Source/path_tracing/default_path_tracing.cu
     Source/path_tracing/reinforcement_path_tracing.cu

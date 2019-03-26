@@ -64,10 +64,10 @@ mat4 create_transformation_matrix(vec3 normal, vec4 position){
 
 // Sample a random direction in a unit hemisphere around an intersection point
 __device__
-vec4 sample_random_direction_around_intersection(curandState* d_rand_state, const Intersection& intersection, float& cos_theta){
+vec4 sample_random_direction_around_intersection(curandState* d_rand_state, const vec3& norm, float& cos_theta){
 
     // Create new coordinate system (tranformation matrix)
-    vec3 normal = vec3(intersection.normal.x, intersection.normal.y, intersection.normal.z);
+    vec3 normal = vec3(norm.x, norm.y, norm.z);
     vec3 normal_T = vec3(0);
     vec3 normal_B = vec3(0);
     create_normal_coordinate_system(normal, normal_T, normal_B);

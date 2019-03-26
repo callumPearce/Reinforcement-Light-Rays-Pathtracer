@@ -17,6 +17,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/utils/printing.cpp.o"
   "CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/utils/hemisphere_helpers.cu.o"
   "CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/utils/stack.cu.o"
+  "CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/utils/cuda_helpers.cu.o"
   "CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/lights/area_light.cu.o"
   "CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/path_tracing/default_path_tracing.cu.o"
   "CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/path_tracing/reinforcement_path_tracing.cu.o"

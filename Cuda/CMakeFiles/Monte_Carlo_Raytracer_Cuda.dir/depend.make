@@ -229,6 +229,7 @@ CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/deep_learning/neural_q_pathtrac
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/deep_learning/neural_q_pathtracer.cu.o: Source/scenes/cornell_box_scene.cuh
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/deep_learning/neural_q_pathtracer.cu.o: Source/scenes/scene.cuh
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/deep_learning/neural_q_pathtracer.cu.o: Source/sdl/sdl_screen.h
+CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/deep_learning/neural_q_pathtracer.cu.o: Source/utils/cuda_helpers.cuh
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/deep_learning/neural_q_pathtracer.cu.o: Source/utils/hemisphere_helpers.cuh
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/deep_learning/neural_q_pathtracer.cu.o: glm/glm/./detail/setup.hpp
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/deep_learning/neural_q_pathtracer.cu.o: glm/glm/./detail/type_mat2x2.hpp
@@ -600,6 +601,9 @@ CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/main.cu.o: /usr/include/SDL2/cl
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/main.cu.o: Source/constants/image_settings.h
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/main.cu.o: Source/constants/monte_carlo_settings.h
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/main.cu.o: Source/constants/radiance_volumes_settings.h
+CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/main.cu.o: Source/deep_learning/dq_network.cuh
+CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/main.cu.o: Source/deep_learning/fc_layer.cuh
+CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/main.cu.o: Source/deep_learning/neural_q_pathtracer.cuh
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/main.cu.o: Source/lights/area_light.cuh
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/main.cu.o: Source/objects/material.cuh
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/main.cu.o: Source/objects/object_importer.cuh
@@ -617,6 +621,7 @@ CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/main.cu.o: Source/rays/ray.cuh
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/main.cu.o: Source/scenes/cornell_box_scene.cuh
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/main.cu.o: Source/scenes/scene.cuh
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/main.cu.o: Source/sdl/sdl_screen.h
+CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/main.cu.o: Source/utils/cuda_helpers.cuh
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/main.cu.o: Source/utils/hemisphere_helpers.cuh
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/main.cu.o: Source/utils/printing.h
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/main.cu.o: Source/utils/stack.cuh
@@ -3414,6 +3419,9 @@ CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/scenes/scene.cu.o: glm/glm/vec2
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/scenes/scene.cu.o: glm/glm/vec3.hpp
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/scenes/scene.cu.o: glm/glm/vec4.hpp
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/scenes/scene.cu.o: glm/glm/vector_relational.hpp
+
+CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/utils/cuda_helpers.cu.o: Source/utils/cuda_helpers.cu
+CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/utils/cuda_helpers.cu.o: Source/utils/cuda_helpers.cuh
 
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/utils/hemisphere_helpers.cu.o: Source/utils/hemisphere_helpers.cu
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/utils/hemisphere_helpers.cu.o: Source/utils/hemisphere_helpers.cuh

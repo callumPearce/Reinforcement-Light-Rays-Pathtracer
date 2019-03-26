@@ -230,6 +230,7 @@ CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/deep_learning/neural_q_pathtrac
  Source/scenes/cornell_box_scene.cuh
  Source/scenes/scene.cuh
  Source/sdl/sdl_screen.h
+ Source/utils/cuda_helpers.cuh
  Source/utils/hemisphere_helpers.cuh
  glm/glm/./detail/setup.hpp
  glm/glm/./detail/type_mat2x2.hpp
@@ -601,6 +602,9 @@ CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/main.cu.o
  Source/constants/image_settings.h
  Source/constants/monte_carlo_settings.h
  Source/constants/radiance_volumes_settings.h
+ Source/deep_learning/dq_network.cuh
+ Source/deep_learning/fc_layer.cuh
+ Source/deep_learning/neural_q_pathtracer.cuh
  Source/lights/area_light.cuh
  Source/objects/material.cuh
  Source/objects/object_importer.cuh
@@ -618,6 +622,7 @@ CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/main.cu.o
  Source/scenes/cornell_box_scene.cuh
  Source/scenes/scene.cuh
  Source/sdl/sdl_screen.h
+ Source/utils/cuda_helpers.cuh
  Source/utils/hemisphere_helpers.cuh
  Source/utils/printing.h
  Source/utils/stack.cuh
@@ -3415,6 +3420,9 @@ CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/scenes/scene.cu.o
  glm/glm/vec3.hpp
  glm/glm/vec4.hpp
  glm/glm/vector_relational.hpp
+CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/utils/cuda_helpers.cu.o
+ /home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/utils/cuda_helpers.cu
+ /home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/utils/cuda_helpers.cuh
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/utils/hemisphere_helpers.cu.o
  /home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/utils/hemisphere_helpers.cu
  /home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/utils/hemisphere_helpers.cuh

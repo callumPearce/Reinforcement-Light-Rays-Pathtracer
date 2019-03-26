@@ -66,7 +66,7 @@ vec3 path_trace_iterative(curandState* d_rand_state, Ray ray, Scene* scene, int&
 
                 // Sample a direction to bounce the ray in
                 float cos_theta;
-                vec4 sampled_direction = sample_random_direction_around_intersection(d_rand_state, ray.intersection, cos_theta);
+                vec4 sampled_direction = sample_random_direction_around_intersection(d_rand_state, ray.intersection.normal, cos_theta);
             
                 // BRDF = reflectance / M_PI (equal from all angles for diffuse)
                 // rho = 1/(2*M_PI) (probabiltiy of sampling a ray in the given direction)

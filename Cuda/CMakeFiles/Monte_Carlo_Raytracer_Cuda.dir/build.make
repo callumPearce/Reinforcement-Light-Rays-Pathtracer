@@ -291,9 +291,22 @@ CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/utils/stack.cu.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CUDA source to assembly CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/utils/stack.cu.s"
 	$(CMAKE_COMMAND) -E cmake_unimplemented_variable CMAKE_CUDA_CREATE_ASSEMBLY_SOURCE
 
+CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/utils/cuda_helpers.cu.o: CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/flags.make
+CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/utils/cuda_helpers.cu.o: Source/utils/cuda_helpers.cu
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/CMakeFiles --progress-num=$(CMAKE_PROGRESS_19) "Building CUDA object CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/utils/cuda_helpers.cu.o"
+	/usr/local/cuda-10.1/bin/nvcc  $(CUDA_DEFINES) $(CUDA_INCLUDES) $(CUDA_FLAGS) -x cu -dc /home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/utils/cuda_helpers.cu -o CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/utils/cuda_helpers.cu.o
+
+CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/utils/cuda_helpers.cu.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CUDA source to CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/utils/cuda_helpers.cu.i"
+	$(CMAKE_COMMAND) -E cmake_unimplemented_variable CMAKE_CUDA_CREATE_PREPROCESSED_SOURCE
+
+CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/utils/cuda_helpers.cu.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CUDA source to assembly CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/utils/cuda_helpers.cu.s"
+	$(CMAKE_COMMAND) -E cmake_unimplemented_variable CMAKE_CUDA_CREATE_ASSEMBLY_SOURCE
+
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/lights/area_light.cu.o: CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/flags.make
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/lights/area_light.cu.o: Source/lights/area_light.cu
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/CMakeFiles --progress-num=$(CMAKE_PROGRESS_19) "Building CUDA object CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/lights/area_light.cu.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/CMakeFiles --progress-num=$(CMAKE_PROGRESS_20) "Building CUDA object CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/lights/area_light.cu.o"
 	/usr/local/cuda-10.1/bin/nvcc  $(CUDA_DEFINES) $(CUDA_INCLUDES) $(CUDA_FLAGS) -x cu -dc /home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/lights/area_light.cu -o CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/lights/area_light.cu.o
 
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/lights/area_light.cu.i: cmake_force
@@ -306,7 +319,7 @@ CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/lights/area_light.cu.s: cmake_f
 
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/path_tracing/default_path_tracing.cu.o: CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/flags.make
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/path_tracing/default_path_tracing.cu.o: Source/path_tracing/default_path_tracing.cu
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/CMakeFiles --progress-num=$(CMAKE_PROGRESS_20) "Building CUDA object CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/path_tracing/default_path_tracing.cu.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/CMakeFiles --progress-num=$(CMAKE_PROGRESS_21) "Building CUDA object CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/path_tracing/default_path_tracing.cu.o"
 	/usr/local/cuda-10.1/bin/nvcc  $(CUDA_DEFINES) $(CUDA_INCLUDES) $(CUDA_FLAGS) -x cu -dc /home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/path_tracing/default_path_tracing.cu -o CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/path_tracing/default_path_tracing.cu.o
 
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/path_tracing/default_path_tracing.cu.i: cmake_force
@@ -319,7 +332,7 @@ CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/path_tracing/default_path_traci
 
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/path_tracing/reinforcement_path_tracing.cu.o: CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/flags.make
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/path_tracing/reinforcement_path_tracing.cu.o: Source/path_tracing/reinforcement_path_tracing.cu
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/CMakeFiles --progress-num=$(CMAKE_PROGRESS_21) "Building CUDA object CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/path_tracing/reinforcement_path_tracing.cu.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/CMakeFiles --progress-num=$(CMAKE_PROGRESS_22) "Building CUDA object CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/path_tracing/reinforcement_path_tracing.cu.o"
 	/usr/local/cuda-10.1/bin/nvcc  $(CUDA_DEFINES) $(CUDA_INCLUDES) $(CUDA_FLAGS) -x cu -dc /home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/path_tracing/reinforcement_path_tracing.cu -o CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/path_tracing/reinforcement_path_tracing.cu.o
 
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/path_tracing/reinforcement_path_tracing.cu.i: cmake_force
@@ -332,7 +345,7 @@ CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/path_tracing/reinforcement_path
 
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/path_tracing/voronoi_trace.cu.o: CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/flags.make
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/path_tracing/voronoi_trace.cu.o: Source/path_tracing/voronoi_trace.cu
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/CMakeFiles --progress-num=$(CMAKE_PROGRESS_22) "Building CUDA object CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/path_tracing/voronoi_trace.cu.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/CMakeFiles --progress-num=$(CMAKE_PROGRESS_23) "Building CUDA object CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/path_tracing/voronoi_trace.cu.o"
 	/usr/local/cuda-10.1/bin/nvcc  $(CUDA_DEFINES) $(CUDA_INCLUDES) $(CUDA_FLAGS) -x cu -dc /home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/path_tracing/voronoi_trace.cu -o CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/path_tracing/voronoi_trace.cu.o
 
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/path_tracing/voronoi_trace.cu.i: cmake_force
@@ -345,7 +358,7 @@ CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/path_tracing/voronoi_trace.cu.s
 
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/deep_learning/dq_network.cu.o: CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/flags.make
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/deep_learning/dq_network.cu.o: Source/deep_learning/dq_network.cu
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/CMakeFiles --progress-num=$(CMAKE_PROGRESS_23) "Building CUDA object CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/deep_learning/dq_network.cu.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/CMakeFiles --progress-num=$(CMAKE_PROGRESS_24) "Building CUDA object CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/deep_learning/dq_network.cu.o"
 	/usr/local/cuda-10.1/bin/nvcc  $(CUDA_DEFINES) $(CUDA_INCLUDES) $(CUDA_FLAGS) -x cu -dc /home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/deep_learning/dq_network.cu -o CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/deep_learning/dq_network.cu.o
 
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/deep_learning/dq_network.cu.i: cmake_force
@@ -358,7 +371,7 @@ CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/deep_learning/dq_network.cu.s: 
 
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/deep_learning/fc_layer.cu.o: CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/flags.make
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/deep_learning/fc_layer.cu.o: Source/deep_learning/fc_layer.cu
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/CMakeFiles --progress-num=$(CMAKE_PROGRESS_24) "Building CUDA object CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/deep_learning/fc_layer.cu.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/CMakeFiles --progress-num=$(CMAKE_PROGRESS_25) "Building CUDA object CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/deep_learning/fc_layer.cu.o"
 	/usr/local/cuda-10.1/bin/nvcc  $(CUDA_DEFINES) $(CUDA_INCLUDES) $(CUDA_FLAGS) -x cu -dc /home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/deep_learning/fc_layer.cu -o CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/deep_learning/fc_layer.cu.o
 
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/deep_learning/fc_layer.cu.i: cmake_force
@@ -371,7 +384,7 @@ CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/deep_learning/fc_layer.cu.s: cm
 
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/deep_learning/neural_q_pathtracer.cu.o: CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/flags.make
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/deep_learning/neural_q_pathtracer.cu.o: Source/deep_learning/neural_q_pathtracer.cu
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/CMakeFiles --progress-num=$(CMAKE_PROGRESS_25) "Building CUDA object CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/deep_learning/neural_q_pathtracer.cu.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/CMakeFiles --progress-num=$(CMAKE_PROGRESS_26) "Building CUDA object CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/deep_learning/neural_q_pathtracer.cu.o"
 	/usr/local/cuda-10.1/bin/nvcc  $(CUDA_DEFINES) $(CUDA_INCLUDES) $(CUDA_FLAGS) -x cu -dc /home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/deep_learning/neural_q_pathtracer.cu -o CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/deep_learning/neural_q_pathtracer.cu.o
 
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/deep_learning/neural_q_pathtracer.cu.i: cmake_force
@@ -402,6 +415,7 @@ Monte_Carlo_Raytracer_Cuda_OBJECTS = \
 "CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/utils/printing.cpp.o" \
 "CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/utils/hemisphere_helpers.cu.o" \
 "CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/utils/stack.cu.o" \
+"CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/utils/cuda_helpers.cu.o" \
 "CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/lights/area_light.cu.o" \
 "CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/path_tracing/default_path_tracing.cu.o" \
 "CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/path_tracing/reinforcement_path_tracing.cu.o" \
@@ -431,6 +445,7 @@ CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/cmake_device_link.o: CMakeFiles/Monte_
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/cmake_device_link.o: CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/utils/printing.cpp.o
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/cmake_device_link.o: CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/utils/hemisphere_helpers.cu.o
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/cmake_device_link.o: CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/utils/stack.cu.o
+CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/cmake_device_link.o: CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/utils/cuda_helpers.cu.o
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/cmake_device_link.o: CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/lights/area_light.cu.o
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/cmake_device_link.o: CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/path_tracing/default_path_tracing.cu.o
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/cmake_device_link.o: CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/path_tracing/reinforcement_path_tracing.cu.o
@@ -440,7 +455,7 @@ CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/cmake_device_link.o: CMakeFiles/Monte_
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/cmake_device_link.o: CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/deep_learning/neural_q_pathtracer.cu.o
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/cmake_device_link.o: CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/build.make
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/cmake_device_link.o: CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/dlink.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/CMakeFiles --progress-num=$(CMAKE_PROGRESS_26) "Linking CUDA device code CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/cmake_device_link.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/CMakeFiles --progress-num=$(CMAKE_PROGRESS_27) "Linking CUDA device code CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/cmake_device_link.o"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/dlink.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -468,6 +483,7 @@ Monte_Carlo_Raytracer_Cuda_OBJECTS = \
 "CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/utils/printing.cpp.o" \
 "CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/utils/hemisphere_helpers.cu.o" \
 "CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/utils/stack.cu.o" \
+"CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/utils/cuda_helpers.cu.o" \
 "CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/lights/area_light.cu.o" \
 "CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/path_tracing/default_path_tracing.cu.o" \
 "CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/path_tracing/reinforcement_path_tracing.cu.o" \
@@ -497,6 +513,7 @@ Build/Monte_Carlo_Raytracer_Cuda: CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Sour
 Build/Monte_Carlo_Raytracer_Cuda: CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/utils/printing.cpp.o
 Build/Monte_Carlo_Raytracer_Cuda: CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/utils/hemisphere_helpers.cu.o
 Build/Monte_Carlo_Raytracer_Cuda: CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/utils/stack.cu.o
+Build/Monte_Carlo_Raytracer_Cuda: CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/utils/cuda_helpers.cu.o
 Build/Monte_Carlo_Raytracer_Cuda: CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/lights/area_light.cu.o
 Build/Monte_Carlo_Raytracer_Cuda: CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/path_tracing/default_path_tracing.cu.o
 Build/Monte_Carlo_Raytracer_Cuda: CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/path_tracing/reinforcement_path_tracing.cu.o
@@ -507,7 +524,7 @@ Build/Monte_Carlo_Raytracer_Cuda: CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Sour
 Build/Monte_Carlo_Raytracer_Cuda: CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/build.make
 Build/Monte_Carlo_Raytracer_Cuda: CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/cmake_device_link.o
 Build/Monte_Carlo_Raytracer_Cuda: CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/CMakeFiles --progress-num=$(CMAKE_PROGRESS_27) "Linking CXX executable Build/Monte_Carlo_Raytracer_Cuda"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/CMakeFiles --progress-num=$(CMAKE_PROGRESS_28) "Linking CXX executable Build/Monte_Carlo_Raytracer_Cuda"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
