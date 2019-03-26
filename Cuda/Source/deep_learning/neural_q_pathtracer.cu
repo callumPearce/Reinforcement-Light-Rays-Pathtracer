@@ -193,6 +193,7 @@ void NeuralQPathtracer::render_frame(
     checkCudaErrors(cudaMalloc(&total_throughputs, sizeof(vec3) * SCREEN_HEIGHT * SCREEN_WIDTH));
     checkCudaErrors(cudaMemset(total_throughputs, 0.f, sizeof(vec3) * SCREEN_HEIGHT * SCREEN_WIDTH));
     
+    // Sample through each pixel SAMPLES_PER_PIXEL times
     for (int i = 0; i < SAMPLES_PER_PIXEL; i++){
         // Initialise mini-batch ray variables
         initialise_ray<<<this->num_blocks, this->block_size>>>(
