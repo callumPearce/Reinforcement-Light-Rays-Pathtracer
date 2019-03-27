@@ -57,7 +57,6 @@ NeuralQPathtracer::NeuralQPathtracer(
     dynet::AdamTrainer trainer(model);
     this->dqn = DQNetwork();
     this->dqn.initialize(model);
-    dynet::ComputationGraph graph;
 
     //////////////////////////////////////////////////////////////
     /*          Intialise Pixel value buffers                   */
@@ -76,6 +75,7 @@ NeuralQPathtracer::NeuralQPathtracer(
     float* ray_rewards;    /* Reward recieved from Q(s,a) */
     float* ray_discounts;  /* Discount factor for current rays path */
     vec3* ray_throughputs; /* Throughput for calc pixel value */
+    float* ray_q_values;   /* Current taken (Q(s,a)) Q-Values for the ray */
 
     checkCudaErrors(cudaMalloc(&ray_locations, sizeof(vec3) * SCREEN_HEIGHT * SCREEN_WIDTH));
     checkCudaErrors(cudaMalloc(&ray_normals, sizeof(vec3) * SCREEN_HEIGHT * SCREEN_WIDTH));
@@ -84,6 +84,7 @@ NeuralQPathtracer::NeuralQPathtracer(
     checkCudaErrors(cudaMalloc(&ray_rewards, sizeof(float) * SCREEN_HEIGHT * SCREEN_WIDTH));
     checkCudaErrors(cudaMalloc(&ray_discounts, sizeof(float) * SCREEN_HEIGHT * SCREEN_WIDTH));
     checkCudaErrors(cudaMalloc(&ray_throughputs, sizeof(vec3) * SCREEN_HEIGHT * SCREEN_WIDTH));
+    checkCudaErrors(cudaMalloc(&ray_q_values, sizeof(float) * SCREEN_HEIGHT * SCREEN_WIDTH));
     
     Camera* device_camera; /* Camera on the CUDA device */
     Surface* device_surfaces;
@@ -131,7 +132,7 @@ NeuralQPathtracer::NeuralQPathtracer(
         
         // Fill the pixel buffer each frame using Deep Q-Learning strategy
         this->render_frame(
-            // graph, 
+            trainer, 
             d_rand_state,
             device_camera,
             device_scene,
@@ -142,7 +143,8 @@ NeuralQPathtracer::NeuralQPathtracer(
             ray_terminated,  
             ray_rewards,   
             ray_discounts, 
-            ray_throughputs
+            ray_throughputs,
+            ray_q_values
         );
 
         // Copy the device buffer values to the host buffer
@@ -175,6 +177,7 @@ NeuralQPathtracer::NeuralQPathtracer(
     cudaFree(ray_terminated);
     cudaFree(ray_rewards);
     cudaFree(ray_throughputs);
+    cudaFree(ray_q_values);
     cudaFree(device_camera);
     cudaFree(device_surfaces);
     cudaFree(device_light_planes);
@@ -183,7 +186,7 @@ NeuralQPathtracer::NeuralQPathtracer(
 
 __host__
 void NeuralQPathtracer::render_frame(
-        // dynet::ComputationGraph& graph,
+        dynet::AdamTrainer trainer,
         curandState* d_rand_state,
         Camera* device_camera,
         Scene* device_scene,
@@ -194,8 +197,12 @@ void NeuralQPathtracer::render_frame(
         bool* ray_terminated,  /* Has the ray intersected with a light/nothing */
         float* ray_rewards,    /* Reward recieved from Q(s,a) */
         float* ray_discounts,  /* Discount factor for current rays path */
-        vec3* ray_throughputs  /* Throughput for calc pixel value */
+        vec3* ray_throughputs, /* Throughput for calc pixel value */
+        float* ray_q_values    /* Current taken (Q(s,a)) Q-Values for the ray */
     ){
+
+    // Initialise the computation graph
+    dynet::ComputationGraph graph;
     
     // Initialise buffer to hold total throughput
     vec3* total_throughputs;
@@ -213,7 +220,8 @@ void NeuralQPathtracer::render_frame(
             ray_terminated, 
             ray_rewards, 
             ray_discounts,
-            ray_throughputs
+            ray_throughputs,
+            ray_q_values
         );
         checkCudaErrors(cudaDeviceSynchronize());
 
@@ -257,7 +265,15 @@ void NeuralQPathtracer::render_frame(
 
             // Does not apply to shooting from camera
             if(bounces > 0){
-                // Run learning rule on the network with the results received
+                // Run learning rule on the network with the results received and sample new direction
+
+                // 1) Compute action values for the next state
+
+                // 2) Compute TD-Target
+
+                // 3) Compute the loss using the current Q(s,a) value
+
+                // 4) Train the network
             }
 
             // Copy over value to check if all rays have intersected with a light
@@ -295,7 +311,8 @@ void initialise_ray(
         bool* ray_terminated, 
         float* ray_rewards, 
         float* ray_discounts,
-        vec3* ray_throughputs
+        vec3* ray_throughputs,
+        float* ray_q_values
     ){
 
     // Ray index
@@ -313,6 +330,7 @@ void initialise_ray(
     ray_terminated[i] = false;
     ray_throughputs[i] = vec3(1.f);
     ray_discounts[i] = 1.f;
+    ray_q_values[i] = 0.f;
 }
 
 // Trace a ray for all ray locations given in the angles specified within the scene

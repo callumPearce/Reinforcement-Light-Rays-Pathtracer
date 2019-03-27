@@ -54,7 +54,8 @@ static void initialise_ray(
         bool* ray_terminated, 
         float* ray_rewards, 
         float* ray_discounts,
-        vec3* ray_throughputs
+        vec3* ray_throughputs,
+        float* ray_q_values
     );
 
 // Sample random directions to further trace the rays in
@@ -107,7 +108,7 @@ class NeuralQPathtracer{
         // Render a frame to output
         __host__
         void render_frame(
-            // dynet::ComputationGraph& graph,
+            dynet::AdamTrainer trainer,
             curandState* d_rand_state,
             Camera* device_camera,
             Scene* device_scene,
@@ -118,7 +119,8 @@ class NeuralQPathtracer{
             bool* ray_terminated,  /* Has the ray intersected with a light/nothing*/
             float* ray_rewards,    /* Reward recieved from Q(s,a) */
             float* ray_discounts,  /* Discount factor for current rays path */
-            vec3* ray_throughputs  /* Throughput for calc pixel value*/
+            vec3* ray_throughputs, /* Throughput for calc pixel value*/
+            float* ray_q_values   /* Current taken (Q(s,a)) Q-Values for the ray */
         );
 };
 
