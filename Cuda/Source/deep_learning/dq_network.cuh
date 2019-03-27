@@ -16,8 +16,6 @@ class DQNetwork{
         std::vector<FCLayer> layers;
         // Parameters for the network (saved here to make saving them much easier)
         std::vector<std::vector<dynet::Parameter>> params;
-        // Parameter collection for the network
-        dynet::ParameterCollection model;
         // Layer count
         unsigned int depth;
 
@@ -25,6 +23,9 @@ class DQNetwork{
 
         // Constructor
         DQNetwork();
+
+        // Initialize the network with its parameters
+        void initialize(dynet::ParameterCollection& model);
 
         // Performs and inference iteration upon the network with the given input
         dynet::Expression network_inference(dynet::ComputationGraph& graph, dynet::Expression input, bool training);

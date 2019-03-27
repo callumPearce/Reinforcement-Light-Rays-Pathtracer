@@ -27,7 +27,9 @@ NeuralQPathtracer::NeuralQPathtracer(
         unsigned int batch_size,
         SDLScreen& screen,
         Scene& scene,
-        Camera& camera
+        Camera& camera,
+        int argc,
+        char** argv
     ){
 
     //////////////////////////////////////////////////////////////
@@ -43,7 +45,19 @@ NeuralQPathtracer::NeuralQPathtracer(
     dim3 n_bs(blocks_x, blocks_y);
     this->num_blocks = n_bs;/* How many blocks to process all pixels on the screen */
 
-    // this->dqn = DQNetwork();
+    //////////////////////////////////////////////////////////////
+    /*                Initialise the DQN                        */
+    //////////////////////////////////////////////////////////////
+    //TODO: Might have to specify the amount of memory the GPU can use
+    // beforehand, otherwise it seems to assign over memory allocated later
+    // on. It may continue to do this when calculating back&forwad prop
+    auto dyparams = dynet::extract_dynet_params(argc, argv);
+    dynet::initialize(dyparams);
+    dynet::ParameterCollection model;
+    dynet::AdamTrainer trainer(model);
+    this->dqn = DQNetwork();
+    this->dqn.initialize(model);
+    dynet::ComputationGraph graph;
 
     //////////////////////////////////////////////////////////////
     /*          Intialise Pixel value buffers                   */
@@ -100,11 +114,6 @@ NeuralQPathtracer::NeuralQPathtracer(
     curandState * d_rand_state;
     checkCudaErrors(cudaMalloc(&d_rand_state, (float)SCREEN_HEIGHT * (float)SCREEN_WIDTH * sizeof(curandState)));
     init_rand_state<<<this->num_blocks, this->block_size>>>(d_rand_state, SCREEN_WIDTH, SCREEN_HEIGHT);
-
-    //////////////////////////////////////////////////////////////
-    /*           Initialise the computation graph               */
-    //////////////////////////////////////////////////////////////
-    // dynet::ComputationGraph graph;
 
     //////////////////////////////////////////////////////////////
     /*                  Render the frames                       */
@@ -218,7 +227,7 @@ void NeuralQPathtracer::render_frame(
         unsigned int bounces = 0;
         while(rays_finished == 0 && bounces < MAX_RAY_BOUNCES){
 
-            // We have already chosen the initial rays direction through the pixels
+            // Does not apply to shooting from camera
             if (bounces > 0){
                 // Get the direction to trace each ray in   
                 // Sample random directions to further trace the rays in
@@ -245,6 +254,11 @@ void NeuralQPathtracer::render_frame(
                 ray_throughputs
             );  
             cudaDeviceSynchronize();
+
+            // Does not apply to shooting from camera
+            if(bounces > 0){
+                // Run learning rule on the network with the results received
+            }
 
             // Copy over value to check if all rays have intersected with a light
             checkCudaErrors(cudaMemcpy(&rays_finished, device_rays_finished, sizeof(int), cudaMemcpyDeviceToHost));

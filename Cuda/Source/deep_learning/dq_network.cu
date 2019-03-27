@@ -2,7 +2,10 @@
 
 // Constructor
 DQNetwork::DQNetwork(){
+}
 
+// Initialize the networks 
+void DQNetwork::initialize(dynet::ParameterCollection& model){
     // Create the networks layers
     // Input: 3x1
     // FC1: 30x1
@@ -13,9 +16,9 @@ DQNetwork::DQNetwork(){
     FCLayer OUT_FC = FCLayer(/*Activation*/ LINEAR, /*Input dim (rows)*/ 100, /*Output dim (rows)*/ 900, /*Dropout*/ 0.f);
 
     // Add the parameters of each layer to the vector of maintained params
-    FC1.add_params(this->model, this->params);
-    FC2.add_params(this->model, this->params);
-    OUT_FC.add_params(this->model, this->params);
+    FC1.add_params(model, this->params);
+    FC2.add_params(model, this->params);
+    OUT_FC.add_params(model, this->params);
 
     // Add layers to the networks vector of layers
     this->layers.push_back(FC1);

@@ -83,7 +83,7 @@ bool Update(Camera& camera){
     return true;
 }
 
-int main (int argc, char* argv[]) {
+int main (int argc, char** argv) {
 
     // Initialise SDL screen
     SDLScreen screen = SDLScreen(SCREEN_WIDTH, SCREEN_HEIGHT, FULLSCREEN_MODE);
@@ -105,7 +105,9 @@ int main (int argc, char* argv[]) {
             512, 
             screen, 
             scene,
-            camera
+            camera,
+            argc,
+            argv
         );
     }
     else{

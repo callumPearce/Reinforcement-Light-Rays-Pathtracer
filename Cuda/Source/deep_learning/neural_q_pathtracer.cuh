@@ -90,7 +90,7 @@ class NeuralQPathtracer{
         unsigned int num_batches;
         dim3 num_blocks;
         dim3 block_size;
-        // DQNetwork dqn;
+        DQNetwork dqn;
 
         // Constructor
         __host__
@@ -99,7 +99,9 @@ class NeuralQPathtracer{
             unsigned int batch_size, 
             SDLScreen& screen, 
             Scene& scene,
-            Camera& camera
+            Camera& camera,
+            int argc,
+            char** argv
         );
         
         // Render a frame to output
