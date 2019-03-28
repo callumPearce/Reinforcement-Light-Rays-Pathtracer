@@ -30,6 +30,7 @@ using glm::mat3;
 using glm::vec4;
 using glm::mat4;
 
+
 // Trace a ray for all ray locations given in the angles specified within the scene
 __global__
 static void trace_ray(

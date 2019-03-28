@@ -1,14 +1,16 @@
 #include "neural_q_pathtracer.cuh"
 
-// 1) Get Q_values for current state for every ray in the batch
-// dynet::Dim input_dim({3}, this->ray_batch_size);
+// 1) Create the input expression to the neural network for S_t+1
 // std::vector<dynet::real> input_states; 
-// for (int i = 0; i < this->ray_batch_size; i++){
-//     vec3 ray_location = ray_locations[i];
+// int j = this->ray_batch_size * b;
+// while (j < this->ray_batch_size * (b+1) && j < SCREEN_HEIGHT * SCREEN_WIDTH){
+//     vec3 ray_location = ray_locations_host[ b*this->ray_batch_size + j ];
 //     input_states.push_back(ray_location.x);
 //     input_states.push_back(ray_location.y);
 //     input_states.push_back(ray_location.z);
+//     j++;
 // }
+// dynet::Dim input_dim({3}, int(input_states.size()/3));
 // dynet::Expression input_expr = dynet::input(graph, input_dim, &input_states);
 
 // 2) Choose action via importance sampling over Q-Values and take the action(CUDA Kernel)
@@ -36,7 +38,9 @@ NeuralQPathtracer::NeuralQPathtracer(
     /*                  Assign attributes                       */
     //////////////////////////////////////////////////////////////
     this->ray_batch_size = batch_size; /* How many rays to be processed at once */
-    this->num_batches = int((SCREEN_HEIGHT * SCREEN_WIDTH)/batch_size) - 1; /* How many batches in total */
+    this->num_batches = int((SCREEN_HEIGHT * SCREEN_WIDTH)/batch_size) + 1; /* How many batches in total */
+    printf("Batch Size: %d\n", batch_size);
+    printf("Number of Batches: %d\n", num_batches);
 
     dim3 b_size(8,8);
     this->block_size = b_size; /* How many threads in a single block to process the screen*/
@@ -265,15 +269,34 @@ void NeuralQPathtracer::render_frame(
 
             // Does not apply to shooting from camera
             if(bounces > 0){
-                // Run learning rule on the network with the results received and sample new direction
 
-                // 1) Compute action values for the next state
+                // Copy data from Cuda device to host for usage
+                vec3* ray_locations_host = new vec3[ SCREEN_HEIGHT * SCREEN_WIDTH ];
+                checkCudaErrors(cudaMemcpy(ray_locations_host, ray_locations, sizeof(vec3) * SCREEN_HEIGHT * SCREEN_WIDTH, cudaMemcpyDeviceToHost));
 
-                // 2) Compute TD-Target
+                // Run learning rule on the network with the results received and sample new direction for each ray
+                for(int n = 0; n < 1; n++){
 
-                // 3) Compute the loss using the current Q(s,a) value
+                    // 1) Create the input expression to the neural network for S_t+1
+                    vec3 location = ray_locations_host[n];
+                    std::vector<dynet::real> input_states = {location.x, location.y, location.z}; 
+                    dynet::Dim input_dim({3});
+                    dynet::Expression input_expr = dynet::input(graph, input_dim, &input_states);
+                    
+                    // 2) Compute action values for S_t+1
+                    dynet::Expression q_st1 = this->dqn.network_inference(graph, input_expr, true);
+                    std::vector<float> probs = dynet::as_vector(graph.forward(q_st1));
+                    // std::cout << probs[0] << " " << probs[1] << std::endl;
 
-                // 4) Train the network
+                    // 3) Compute TD-Target
+
+                    // 4) Compute the loss using the current Q(s,a) value
+
+                    // 5) Train the network
+                }
+
+                // Dete the host arrays
+                delete [] ray_locations_host;
             }
 
             // Copy over value to check if all rays have intersected with a light
@@ -292,6 +315,7 @@ void NeuralQPathtracer::render_frame(
         cudaDeviceSynchronize();
         cudaFree(device_rays_finished);
     }
+    printf("here\n");
     // Update the device_buffer with the throughput
     update_device_buffer<<<this->num_blocks, this->block_size>>>(
         device_buffer,
