@@ -12,8 +12,8 @@ void DQNetwork::initialize(dynet::ParameterCollection& model){
     // FC2: 100x1
     // Output: 900x1 (30x30 angle values)
     FCLayer FC1 = FCLayer(/*Activation*/ RELU, /*Input dim (rows)*/ 3, /*Output dim (rows)*/ 30, /*Dropout*/ 0.f);
-    FCLayer FC2 = FCLayer(/*Activation*/ RELU, /*Input dim (rows)*/ 30, /*Output dim (rows)*/ 100, /*Dropout*/ 0.f);
-    FCLayer OUT_FC = FCLayer(/*Activation*/ LINEAR, /*Input dim (rows)*/ 100, /*Output dim (rows)*/ 900, /*Dropout*/ 0.f);
+    FCLayer FC2 = FCLayer(/*Activation*/ RELU, /*Input dim (rows)*/ 30, /*Output dim (rows)*/ 90, /*Dropout*/ 0.f);
+    FCLayer OUT_FC = FCLayer(/*Activation*/ LINEAR, /*Input dim (rows)*/ 90, /*Output dim (rows)*/ GRID_RESOLUTION*GRID_RESOLUTION, /*Dropout*/ 0.f);
 
     // Add the parameters of each layer to the vector of maintained params
     FC1.add_params(model, this->params);

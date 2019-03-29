@@ -34,6 +34,11 @@ vec4 sample_random_direction_around_intersection(curandState* d_rand_state, cons
 __host__ __device__
 vec3 convert_grid_pos_to_direction(float x, float y, vec3 position, mat4& transformation_matrix);
 
+// Convert the x and y coordinates (not normalised) to a direction of ray randomly sampled within the grid region
+__device__
+vec3 convert_grid_pos_to_direction_random(curandState* d_rand_state, float x, float y, int curand_index, vec3 position, mat4& transformation_matrix);
+
+
 /*
 * This function takes a point in the unit square,
 * and maps it to a point on the unit hemisphere.

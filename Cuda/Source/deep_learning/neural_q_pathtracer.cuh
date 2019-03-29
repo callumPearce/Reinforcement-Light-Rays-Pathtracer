@@ -55,8 +55,7 @@ static void initialise_ray(
         bool* ray_terminated, 
         float* ray_rewards, 
         float* ray_discounts,
-        vec3* ray_throughputs,
-        float* ray_q_values
+        vec3* ray_throughputs
     );
 
 // Sample random directions to further trace the rays in
@@ -65,6 +64,18 @@ void sample_next_ray_directions_randomly(
         curandState* d_rand_state,
         vec3* ray_normals, 
         vec3* ray_directions,
+        vec3* ray_throughputs,
+        bool* ray_terminated
+    );
+
+// Sample ray directions according the neural network q vals
+__global__
+void sample_next_ray_directions_q_val(
+        curandState* d_rand_state,
+        vec3* ray_normals,
+        vec3* ray_locations,
+        vec3* ray_directions,
+        int* ray_direction_indices,
         vec3* ray_throughputs,
         bool* ray_terminated
     );
@@ -114,14 +125,15 @@ class NeuralQPathtracer{
             Camera* device_camera,
             Scene* device_scene,
             vec3* device_buffer,
+            vec3* prev_location_host,   
+            int* directions_host,
             vec3* ray_locations,   /* Ray intersection location (State)*/
             vec3* ray_normals,     /* Intersection normal */
             vec3* ray_directions,  /* Direction to next shoot the ray*/
             bool* ray_terminated,  /* Has the ray intersected with a light/nothing*/
             float* ray_rewards,    /* Reward recieved from Q(s,a) */
             float* ray_discounts,  /* Discount factor for current rays path */
-            vec3* ray_throughputs, /* Throughput for calc pixel value*/
-            float* ray_q_values   /* Current taken (Q(s,a)) Q-Values for the ray */
+            vec3* ray_throughputs  /* Throughput for calc pixel value*/
         );
 };
 

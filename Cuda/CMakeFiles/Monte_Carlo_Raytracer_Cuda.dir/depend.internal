@@ -164,6 +164,7 @@ CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/deep_learning/dq_network.cu.o
  /home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/deep_learning/dq_network.cu
  /home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/deep_learning/dq_network.cuh
  /home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/deep_learning/fc_layer.cuh
+ Source/constants/radiance_volumes_settings.h
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/deep_learning/fc_layer.cu.o
  /home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/deep_learning/fc_layer.cu
  /home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Source/deep_learning/fc_layer.cuh

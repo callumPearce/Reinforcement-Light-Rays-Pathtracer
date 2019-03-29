@@ -104,6 +104,22 @@ vec3 convert_grid_pos_to_direction(float x, float y, vec3 position, mat4& transf
     return normalize(world_position3 - position);
 }
 
+__device__
+vec3 convert_grid_pos_to_direction_random(curandState* d_rand_state, float x, float y, int curand_index, vec3 position, mat4& transformation_matrix){
+    
+    float r1 = curand_uniform(&d_rand_state[curand_index]);
+    float r2 = curand_uniform(&d_rand_state[curand_index]);
+    
+    // Get the coordinates on the unit hemisphere
+    float x_h, y_h, z_h;
+    map((x + r1)/(float)GRID_RESOLUTION, (y + r2)/(float)GRID_RESOLUTION, x_h, y_h, z_h);
+    // Convert to world space
+    vec4 world_position = transformation_matrix * vec4(x_h, y_h, z_h, 1.f);
+    vec3 world_position3 = vec3(world_position.x, world_position.y, world_position.z);
+    // Return the direction
+    return normalize(world_position3 - position);
+}
+
 /*
 * This function takes a point in the unit square,
 * and maps it to a point on the unit hemisphere.

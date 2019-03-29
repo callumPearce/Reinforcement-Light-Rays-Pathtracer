@@ -163,6 +163,7 @@ CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/camera.cu.o: glm/glm/vector_rel
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/deep_learning/dq_network.cu.o: Source/deep_learning/dq_network.cu
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/deep_learning/dq_network.cu.o: Source/deep_learning/dq_network.cuh
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/deep_learning/dq_network.cu.o: Source/deep_learning/fc_layer.cuh
+CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/deep_learning/dq_network.cu.o: Source/constants/radiance_volumes_settings.h
 
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/deep_learning/fc_layer.cu.o: Source/deep_learning/fc_layer.cu
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/deep_learning/fc_layer.cu.o: Source/deep_learning/fc_layer.cuh

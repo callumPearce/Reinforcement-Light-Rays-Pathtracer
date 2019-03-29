@@ -6,8 +6,8 @@
 #define IMAGE_SETTINGS_H
 
 #define FULLSCREEN_MODE false
-#define SCREEN_WIDTH 512
-#define SCREEN_HEIGHT 512
+#define SCREEN_WIDTH 128
+#define SCREEN_HEIGHT 128
 #define FOCAL_LENGTH SCREEN_HEIGHT
 #define EPS 0.00001f
 #define RHO (1.f / (2.f * 3.1415926535f))

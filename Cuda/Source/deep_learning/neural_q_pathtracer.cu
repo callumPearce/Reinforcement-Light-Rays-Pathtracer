@@ -68,6 +68,12 @@ NeuralQPathtracer::NeuralQPathtracer(
     vec3* host_buffer = new vec3[ SCREEN_HEIGHT * SCREEN_WIDTH ];
     vec3* device_buffer;
     checkCudaErrors(cudaMalloc(&device_buffer, SCREEN_HEIGHT * SCREEN_WIDTH * sizeof(vec3)));
+
+    //////////////////////////////////////////////////////////////
+    /*          Initialise Prev Host buffers                    */
+    //////////////////////////////////////////////////////////////
+    vec3* prev_location_host = new vec3[ SCREEN_HEIGHT * SCREEN_WIDTH ];
+    int* directions_host = new int[ SCREEN_HEIGHT * SCREEN_WIDTH ];
     
     //////////////////////////////////////////////////////////////
     /*          Initialise ray arrays on CUDA device            */
@@ -79,7 +85,6 @@ NeuralQPathtracer::NeuralQPathtracer(
     float* ray_rewards;    /* Reward recieved from Q(s,a) */
     float* ray_discounts;  /* Discount factor for current rays path */
     vec3* ray_throughputs; /* Throughput for calc pixel value */
-    float* ray_q_values;   /* Current taken (Q(s,a)) Q-Values for the ray */
 
     checkCudaErrors(cudaMalloc(&ray_locations, sizeof(vec3) * SCREEN_HEIGHT * SCREEN_WIDTH));
     checkCudaErrors(cudaMalloc(&ray_normals, sizeof(vec3) * SCREEN_HEIGHT * SCREEN_WIDTH));
@@ -88,7 +93,6 @@ NeuralQPathtracer::NeuralQPathtracer(
     checkCudaErrors(cudaMalloc(&ray_rewards, sizeof(float) * SCREEN_HEIGHT * SCREEN_WIDTH));
     checkCudaErrors(cudaMalloc(&ray_discounts, sizeof(float) * SCREEN_HEIGHT * SCREEN_WIDTH));
     checkCudaErrors(cudaMalloc(&ray_throughputs, sizeof(vec3) * SCREEN_HEIGHT * SCREEN_WIDTH));
-    checkCudaErrors(cudaMalloc(&ray_q_values, sizeof(float) * SCREEN_HEIGHT * SCREEN_WIDTH));
     
     Camera* device_camera; /* Camera on the CUDA device */
     Surface* device_surfaces;
@@ -141,14 +145,15 @@ NeuralQPathtracer::NeuralQPathtracer(
             device_camera,
             device_scene,
             device_buffer,
+            prev_location_host,
+            directions_host,
             ray_locations,
             ray_normals,   
             ray_directions,  
             ray_terminated,  
             ray_rewards,   
             ray_discounts, 
-            ray_throughputs,
-            ray_q_values
+            ray_throughputs
         );
 
         // Copy the device buffer values to the host buffer
@@ -173,6 +178,8 @@ NeuralQPathtracer::NeuralQPathtracer(
     /*                      Free memory used                    */
     //////////////////////////////////////////////////////////////
     delete [] host_buffer;
+    delete [] prev_location_host;
+    delete [] directions_host;
     cudaFree(device_buffer);
     cudaFree(d_rand_state);
     cudaFree(ray_locations);
@@ -181,7 +188,6 @@ NeuralQPathtracer::NeuralQPathtracer(
     cudaFree(ray_terminated);
     cudaFree(ray_rewards);
     cudaFree(ray_throughputs);
-    cudaFree(ray_q_values);
     cudaFree(device_camera);
     cudaFree(device_surfaces);
     cudaFree(device_light_planes);
@@ -195,19 +201,20 @@ void NeuralQPathtracer::render_frame(
         Camera* device_camera,
         Scene* device_scene,
         vec3* device_buffer,
+        vec3* prev_location_host,
+        int* directions_host,
         vec3* ray_locations,   /* Ray intersection location (State) */
         vec3* ray_normals,     /* Intersection normal */
         vec3* ray_directions,  /* Direction to next shoot the ray */
         bool* ray_terminated,  /* Has the ray intersected with a light/nothing */
         float* ray_rewards,    /* Reward recieved from Q(s,a) */
         float* ray_discounts,  /* Discount factor for current rays path */
-        vec3* ray_throughputs, /* Throughput for calc pixel value */
-        float* ray_q_values    /* Current taken (Q(s,a)) Q-Values for the ray */
+        vec3* ray_throughputs  /* Throughput for calc pixel value */
     ){
 
     // Initialise the computation graph
     dynet::ComputationGraph graph;
-    
+
     // Initialise buffer to hold total throughput
     vec3* total_throughputs;
     checkCudaErrors(cudaMalloc(&total_throughputs, sizeof(vec3) * SCREEN_HEIGHT * SCREEN_WIDTH));
@@ -224,8 +231,7 @@ void NeuralQPathtracer::render_frame(
             ray_terminated, 
             ray_rewards, 
             ray_discounts,
-            ray_throughputs,
-            ray_q_values
+            ray_throughputs
         );
         checkCudaErrors(cudaDeviceSynchronize());
 
@@ -237,19 +243,45 @@ void NeuralQPathtracer::render_frame(
 
         // Trace batch rays path until all have intersected with a light
         unsigned int bounces = 0;
+        float loss = 0.f;
         while(rays_finished == 0 && bounces < MAX_RAY_BOUNCES){
+
+            // Maintain previous locations for reinforcment Q(s,a) update
+            checkCudaErrors(cudaMemcpy(prev_location_host, ray_locations, sizeof(vec3) * SCREEN_HEIGHT * SCREEN_WIDTH, cudaMemcpyDeviceToHost));
 
             // Does not apply to shooting from camera
             if (bounces > 0){
-                // Get the direction to trace each ray in   
-                // Sample random directions to further trace the rays in
-                sample_next_ray_directions_randomly<<<this->num_blocks, this->block_size>>>(
-                    d_rand_state,
-                    ray_normals, 
-                    ray_directions,
-                    ray_throughputs,
-                    ray_terminated
-                );
+                // No Q values sampled yet
+                if( bounces == 1){
+                    // Sample random directions to further trace the rays in
+                    sample_next_ray_directions_randomly<<<this->num_blocks, this->block_size>>>(
+                        d_rand_state,
+                        ray_normals, 
+                        ray_directions,
+                        ray_throughputs,
+                        ray_terminated
+                    );
+                }
+                // Use Q value to sample new direction
+                else{
+                    // Copy over the direction sampled from the network
+                    int* ray_direction_indices;
+                    checkCudaErrors(cudaMalloc(&ray_direction_indices, sizeof(int) * SCREEN_HEIGHT * SCREEN_WIDTH));
+                    checkCudaErrors(cudaMemcpy(ray_direction_indices, directions_host, sizeof(int) * SCREEN_HEIGHT * SCREEN_WIDTH, cudaMemcpyHostToDevice));
+
+                    // Sample the next directions
+                    sample_next_ray_directions_q_val<<<this->num_blocks, this->block_size>>>(
+                        d_rand_state,
+                        ray_normals,
+                        ray_locations,
+                        ray_directions,
+                        ray_direction_indices,
+                        ray_throughputs,
+                        ray_terminated
+                    );
+
+                    cudaFree(ray_direction_indices);
+                }
                 cudaDeviceSynchronize();
             }
 
@@ -272,31 +304,64 @@ void NeuralQPathtracer::render_frame(
 
                 // Copy data from Cuda device to host for usage
                 vec3* ray_locations_host = new vec3[ SCREEN_HEIGHT * SCREEN_WIDTH ];
+                float* ray_discounts_host = new float[ SCREEN_HEIGHT * SCREEN_WIDTH ];
+                float* ray_rewards_host = new float[ SCREEN_HEIGHT * SCREEN_WIDTH ];
                 checkCudaErrors(cudaMemcpy(ray_locations_host, ray_locations, sizeof(vec3) * SCREEN_HEIGHT * SCREEN_WIDTH, cudaMemcpyDeviceToHost));
+                checkCudaErrors(cudaMemcpy(ray_discounts_host, ray_discounts, sizeof(float) * SCREEN_HEIGHT * SCREEN_WIDTH, cudaMemcpyDeviceToHost));
+                checkCudaErrors(cudaMemcpy(ray_rewards_host, ray_rewards, sizeof(float) * SCREEN_HEIGHT * SCREEN_WIDTH, cudaMemcpyDeviceToHost));
 
                 // Run learning rule on the network with the results received and sample new direction for each ray
-                for(int n = 0; n < 1; n++){
+                for(int n = 0; n < SCREEN_HEIGHT * SCREEN_WIDTH; n++){
 
+                    graph.clear();
                     // 1) Create the input expression to the neural network for S_t+1
                     vec3 location = ray_locations_host[n];
                     std::vector<dynet::real> input_states = {location.x, location.y, location.z}; 
                     dynet::Dim input_dim({3});
                     dynet::Expression input_expr = dynet::input(graph, input_dim, &input_states);
                     
-                    // 2) Compute action values for S_t+1
-                    dynet::Expression q_st1 = this->dqn.network_inference(graph, input_expr, true);
-                    std::vector<float> probs = dynet::as_vector(graph.forward(q_st1));
-                    // std::cout << probs[0] << " " << probs[1] << std::endl;
+                    // 2) Sample new direction based on: max_a Q(S_{t+1}, a)
+                    dynet::Expression next_qs = this->dqn.network_inference(graph, input_expr, false);
+                    std::vector<dynet::real> next_qs_vals = dynet::as_vector(graph.forward(next_qs));
+
+                    // Get the max q val for the next state, this is the action we will take
+                    int max_qs_index = 0;
+                    int max_qs_value = next_qs_vals[0];
+                    for (int k = 1; k < GRID_RESOLUTION*GRID_RESOLUTION; k++){
+                        if (next_qs_vals[k] > max_qs_value){
+                            max_qs_index = k;
+                            max_qs_value = next_qs_vals[k];
+                        }
+                    }
+                    directions_host[n] = max_qs_index;
 
                     // 3) Compute TD-Target
+                    max_qs_value = ray_rewards_host[n] + max_qs_value*ray_discounts_host[n];
 
-                    // 4) Compute the loss using the current Q(s,a) value
+                    // 4) Reset computational graph and use target_value as a constant
+                    graph.clear();
+                    dynet::Expression td_target = dynet::constant(graph, {1}, max_qs_value);
 
-                    // 5) Train the network
+                    // 5) Get current Q(s,a) value
+                    location = prev_location_host[n];
+                    input_states = {location.x, location.y, location.z}; ;
+                    dynet::Expression input = dynet::input(graph, input_dim, &input_states);
+                    dynet::Expression current_qs = dynet::max_dim(this->dqn.network_inference(graph, input, true)); // May need to softmax both
+                    
+                    // 6) Calculate the loss
+                    dynet::Expression loss_expr = dynet::squared_distance(td_target, current_qs);
+                    loss += dynet::as_scalar(graph.forward(loss_expr));
+
+                    // 7) Train the network
+                    graph.backward(loss_expr);
+                    trainer.update();
+
                 }
 
                 // Dete the host arrays
                 delete [] ray_locations_host;
+                delete [] ray_discounts_host;
+                delete [] ray_rewards_host;
             }
 
             // Copy over value to check if all rays have intersected with a light
@@ -306,6 +371,7 @@ void NeuralQPathtracer::render_frame(
             // Increment the number of bounces
             bounces++;
         }
+        printf("loss: %.3f\n",loss);
 
         // Add computed throughput values to the running total
         update_total_throughput<<<this->num_blocks, this->block_size>>>(
@@ -315,7 +381,6 @@ void NeuralQPathtracer::render_frame(
         cudaDeviceSynchronize();
         cudaFree(device_rays_finished);
     }
-    printf("here\n");
     // Update the device_buffer with the throughput
     update_device_buffer<<<this->num_blocks, this->block_size>>>(
         device_buffer,
@@ -335,8 +400,7 @@ void initialise_ray(
         bool* ray_terminated, 
         float* ray_rewards, 
         float* ray_discounts,
-        vec3* ray_throughputs,
-        float* ray_q_values
+        vec3* ray_throughputs
     ){
 
     // Ray index
@@ -354,7 +418,6 @@ void initialise_ray(
     ray_terminated[i] = false;
     ray_throughputs[i] = vec3(1.f);
     ray_discounts[i] = 1.f;
-    ray_q_values[i] = 0.f;
 }
 
 // Trace a ray for all ray locations given in the angles specified within the scene
@@ -457,6 +520,44 @@ void sample_next_ray_directions_randomly(
     
     // Update throughput with new sampled angle
     ray_throughputs[i] = (ray_throughputs[i] * cos_theta)/RHO;
+}
+
+// Sample ray directions according the neural network q vals
+__global__
+void sample_next_ray_directions_q_val(
+        curandState* d_rand_state,
+        vec3* ray_normals,
+        vec3* ray_locations,
+        vec3* ray_directions,
+        int* ray_direction_indices,
+        vec3* ray_throughputs,
+        bool* ray_terminated
+    ){
+    
+    // Ray Index
+    int x =  blockIdx.x * blockDim.x + threadIdx.x;
+    int y =  blockIdx.y * blockDim.y + threadIdx.y;
+    int i = SCREEN_HEIGHT*x + y;
+
+    // Do nothing if we have already intersected with the light
+    if (ray_terminated[i] == true){
+        return;
+    }
+
+    // Convert the index to a grid position
+    int dir_grid = ray_direction_indices[i];
+    int dir_x = int(dir_grid/GRID_RESOLUTION);
+    int dir_y = dir_grid - (dir_x*GRID_RESOLUTION);
+
+    // Convert to 3D direction and update the direction
+    vec3 position = ray_locations[i];
+    vec3 normal  = ray_normals[i];
+    mat4 transformation_matrix = create_transformation_matrix(normal, vec4(position, 1.f));
+    vec3 dir = convert_grid_pos_to_direction_random(d_rand_state, (float) dir_x, (float) dir_y, i, position, transformation_matrix);
+    ray_directions[i] = dir;
+
+    // Update the throughput with the sampled angle
+    ray_throughputs[i] = (ray_throughputs[i] * dot(normal, dir)) / RHO;
 }
 
 // Update pixel values stored in the device_buffer

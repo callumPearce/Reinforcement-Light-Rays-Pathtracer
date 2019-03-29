@@ -7,6 +7,7 @@
 #include "dynet/model.h"
 
 #include "fc_layer.cuh"
+#include "radiance_volumes_settings.h"
 
 class DQNetwork{
 
