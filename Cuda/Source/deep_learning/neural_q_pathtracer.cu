@@ -72,27 +72,27 @@ NeuralQPathtracer::NeuralQPathtracer(
     //////////////////////////////////////////////////////////////
     /*          Initialise Prev Host buffers                    */
     //////////////////////////////////////////////////////////////
-    vec3* prev_location_host = new vec3[ SCREEN_HEIGHT * SCREEN_WIDTH ];
+    float* prev_location_host = new float[ SCREEN_HEIGHT * SCREEN_WIDTH * 3 ];
     int* directions_host = new int[ SCREEN_HEIGHT * SCREEN_WIDTH ];
     
     //////////////////////////////////////////////////////////////
     /*          Initialise ray arrays on CUDA device            */
     //////////////////////////////////////////////////////////////
-    vec3* ray_locations;   /* Ray intersection location (State) */
-    vec3* ray_normals;     /* Intersection normal */
-    vec3* ray_directions;  /* Direction to next shoot the ray */
+    float* ray_locations;   /* Ray intersection location (State) */
+    float* ray_normals;     /* Intersection normal */
+    float* ray_directions;  /* Direction to next shoot the ray */
     bool* ray_terminated;  /* Has the ray intersected with a light/nothing */
     float* ray_rewards;    /* Reward recieved from Q(s,a) */
     float* ray_discounts;  /* Discount factor for current rays path */
-    vec3* ray_throughputs; /* Throughput for calc pixel value */
+    float* ray_throughputs; /* Throughput for calc pixel value */
 
-    checkCudaErrors(cudaMalloc(&ray_locations, sizeof(vec3) * SCREEN_HEIGHT * SCREEN_WIDTH));
-    checkCudaErrors(cudaMalloc(&ray_normals, sizeof(vec3) * SCREEN_HEIGHT * SCREEN_WIDTH));
-    checkCudaErrors(cudaMalloc(&ray_directions, sizeof(vec3) * SCREEN_HEIGHT * SCREEN_WIDTH));
+    checkCudaErrors(cudaMalloc(&ray_locations, sizeof(float) * 3 * SCREEN_HEIGHT * SCREEN_WIDTH));
+    checkCudaErrors(cudaMalloc(&ray_normals, sizeof(float) * 3 * SCREEN_HEIGHT * SCREEN_WIDTH));
+    checkCudaErrors(cudaMalloc(&ray_directions, sizeof(float) * 3 * SCREEN_HEIGHT * SCREEN_WIDTH));
     checkCudaErrors(cudaMalloc(&ray_terminated, sizeof(bool) * SCREEN_HEIGHT * SCREEN_WIDTH));
     checkCudaErrors(cudaMalloc(&ray_rewards, sizeof(float) * SCREEN_HEIGHT * SCREEN_WIDTH));
     checkCudaErrors(cudaMalloc(&ray_discounts, sizeof(float) * SCREEN_HEIGHT * SCREEN_WIDTH));
-    checkCudaErrors(cudaMalloc(&ray_throughputs, sizeof(vec3) * SCREEN_HEIGHT * SCREEN_WIDTH));
+    checkCudaErrors(cudaMalloc(&ray_throughputs, sizeof(float) * 3 * SCREEN_HEIGHT * SCREEN_WIDTH));
     
     Camera* device_camera; /* Camera on the CUDA device */
     Surface* device_surfaces;
@@ -201,15 +201,15 @@ void NeuralQPathtracer::render_frame(
         Camera* device_camera,
         Scene* device_scene,
         vec3* device_buffer,
-        vec3* prev_location_host,
+        float* prev_location_host,
         int* directions_host,
-        vec3* ray_locations,   /* Ray intersection location (State) */
-        vec3* ray_normals,     /* Intersection normal */
-        vec3* ray_directions,  /* Direction to next shoot the ray */
+        float* ray_locations,   /* Ray intersection location (State) */
+        float* ray_normals,     /* Intersection normal */
+        float* ray_directions,  /* Direction to next shoot the ray */
         bool* ray_terminated,  /* Has the ray intersected with a light/nothing */
         float* ray_rewards,    /* Reward recieved from Q(s,a) */
         float* ray_discounts,  /* Discount factor for current rays path */
-        vec3* ray_throughputs  /* Throughput for calc pixel value */
+        float* ray_throughputs  /* Throughput for calc pixel value */
     ){
 
     // Initialise the computation graph
@@ -395,12 +395,12 @@ __global__
 void initialise_ray(
         curandState* d_rand_state,
         Camera* device_camera, 
-        vec3* ray_locations, 
-        vec3* ray_directions,
+        float* ray_locations, 
+        float* ray_directions,
         bool* ray_terminated, 
         float* ray_rewards, 
         float* ray_discounts,
-        vec3* ray_throughputs
+        float* ray_throughputs
     ){
 
     // Ray index
@@ -410,13 +410,19 @@ void initialise_ray(
 
     // Randomly sample a ray within the pixel
     Ray r = Ray::sample_ray_through_pixel(d_rand_state, *device_camera, x, y);
-    ray_locations[i] = r.start;
-    ray_directions[i] = r.direction;
+    ray_locations[(i*3)    ] = r.start.x;
+    ray_locations[(i*3) + 1] = r.start.y;
+    ray_locations[(i*3) + 2] = r.start.z;
+    ray_directions[(i*3)    ] = r.direction.x;
+    ray_directions[(i*3) + 1] = r.direction.y;
+    ray_directions[(i*3) + 2] = r.direction.z;
 
     // Initialise ray_variables
     ray_rewards[i] = 0.f;
     ray_terminated[i] = false;
-    ray_throughputs[i] = vec3(1.f);
+    ray_throughputs[(i*3)    ] = 1.f;
+    ray_throughputs[(i*3) + 1] = 1.f;
+    ray_throughputs[(i*3) + 2] = 1.f;
     ray_discounts[i] = 1.f;
 }
 
@@ -425,13 +431,13 @@ __global__
 void trace_ray(
         Scene* scene,
         int* rays_finished,
-        vec3* ray_locations, 
-        vec3* ray_normals, 
-        vec3* ray_directions,
+        float* ray_locations, 
+        float* ray_normals, 
+        float* ray_directions,
         bool* ray_terminated, 
         float* ray_rewards,
         float* ray_discounts, 
-        vec3* ray_throughputs
+        float* ray_throughputs
     ){
     
     // Ray index
@@ -445,8 +451,8 @@ void trace_ray(
     }
 
     // For the current ray, get its next state by shooting a ray in the direction stored in ray_directions
-    vec3 position = ray_locations[i];
-    vec3 dir = ray_directions[i];
+    vec3 position = vec3(ray_locations[(i*3)], ray_locations[(i*3)+1], ray_locations[(i*3)]+2);
+    vec3 dir = vec3(ray_directions[(i*3)], ray_directions[(i*3)+1], ray_directions[(i*3)+2]);
 
     // Create the ray and trace it
     Ray ray(vec4(position + (dir * 0.00001f), 1.f), vec4(dir, 1.f));
@@ -459,7 +465,9 @@ void trace_ray(
         case NOTHING:
             ray_terminated[i] = true;
             ray_rewards[i] = ENVIRONMENT_LIGHT;
-            ray_throughputs[i] = ray_throughputs[i] * vec3(ENVIRONMENT_LIGHT);
+            ray_throughputs[(i*3)] = ray_throughputs[(i*3)] * ENVIRONMENT_LIGHT;
+            ray_throughputs[(i*3)+1] = ray_throughputs[(i*3)+1] * ENVIRONMENT_LIGHT;
+            ray_throughputs[(i*3)+2] = ray_throughputs[(i*3)+2] * ENVIRONMENT_LIGHT;
             break;
         
         // TERMINAL STATE: R_(t+1) = Area light power
@@ -467,14 +475,27 @@ void trace_ray(
             ray_terminated[i] = true;
             float diffuse_light_power = scene->area_lights[ray.intersection.index].luminance; 
             ray_rewards[i] = diffuse_light_power;
-            ray_throughputs[i] = ray_throughputs[i] * scene->area_lights[ray.intersection.index].diffuse_p;
+            
+            vec3 diffuse_p = * scene->area_lights[ray.intersection.index].diffuse_p;
+            ray_throughputs[(i*3)] = ray_throughputs[(i*3)] * diffuse_p.x;
+            ray_throughputs[(i*3)+1] = ray_throughputs[(i*3)+1] * diffuse_p.y;
+            ray_throughputs[(i*3)+2] = ray_throughputs[(i*3)+2] * diffuse_p.x.z;
+
             break;
 
         // NON-TERMINAL STATE: R_(t+1) + \gamma * max_a Q(S_t+1, a) 
         // where  R_(t+1) = 0 for diffuse surfaces
         case SURFACE:
-            ray_locations[i] = vec3(ray.intersection.position);
-            ray_normals[i] = ray.intersection.normal;
+            vec3 new_loc = vec3(ray.intersection.position);
+            ray_locations[(i*3)  ] = new_loc.x;
+            ray_locations[(i*3)+1] = new_loc.y;
+            ray_locations[(i*3)+2] = new_loc.z;
+
+            vec3 new_norm = ray.intersection.normal;
+            ray_normals[(i*3)  ] = new_norm.x; 
+            ray_normals[(i*3)+1] = new_norm.y;
+            ray_normals[(i*3)+2] = new_norm.z;
+
             vec3 BRDF = scene->surfaces[ray.intersection.index].material.diffuse_c;
             
             // Get luminance of material
@@ -485,7 +506,10 @@ void trace_ray(
             float luminance = 0.5f * (max_rgb + min_rgb);
 
             // discount_factors holds cos_theta currently, update rgb throughput first
-            ray_throughputs[i] = ray_throughputs[i] * (BRDF / (float)M_PI); 
+            ray_throughputs[(i*3)] = ray_throughputs[(i*3)] * (BRDF.x / (float)M_PI);
+            ray_throughputs[(i*3)+1] = ray_throughputs[(i*3)+1] * (BRDF.y / (float)M_PI);
+            ray_throughputs[(i*3)+2] = ray_throughputs[(i*3)+2] * (BRDF.z / (float)M_PI);
+
             // Now update discount_factors with luminance
             ray_discounts[i] *= luminance;
             // Still a ray being to bounce, so not finished
@@ -498,9 +522,9 @@ void trace_ray(
 __global__
 void sample_next_ray_directions_randomly(
         curandState* d_rand_state,
-        vec3* ray_normals, 
-        vec3* ray_directions,
-        vec3* ray_throughputs,
+        float* ray_normals, 
+        float* ray_directions,
+        float* ray_throughputs,
         bool* ray_terminated
     ){
     
@@ -516,21 +540,26 @@ void sample_next_ray_directions_randomly(
 
     // Sample the new direction and record it along with cos_theta
     float cos_theta;
-    ray_directions[i] = vec3(sample_random_direction_around_intersection(d_rand_state, ray_normals[i], cos_theta));
-    
+    vec3 dir = vec3(sample_random_direction_around_intersection(d_rand_state, ray_normals[i], cos_theta));
+    ray_directions[(i*3)    ] = dir.x;
+    ray_directions[(i*3) + 1] = dir.y;
+    ray_directions[(i*3) + 2] = dir.z;
+
     // Update throughput with new sampled angle
-    ray_throughputs[i] = (ray_throughputs[i] * cos_theta)/RHO;
+    ray_throughputs[(i*3)    ] = (ray_throughputs[(i*3)    ] * cos_theta)/RHO;
+    ray_throughputs[(i*3) + 1] = (ray_throughputs[(i*3) + 1] * cos_theta)/RHO;
+    ray_throughputs[(i*3) + 2] = (ray_throughputs[(i*3) + 2] * cos_theta)/RHO;
 }
 
 // Sample ray directions according the neural network q vals
 __global__
 void sample_next_ray_directions_q_val(
         curandState* d_rand_state,
-        vec3* ray_normals,
-        vec3* ray_locations,
-        vec3* ray_directions,
+        float* ray_normals,
+        float* ray_locations,
+        float* ray_directions,
         int* ray_direction_indices,
-        vec3* ray_throughputs,
+        float* ray_throughputs,
         bool* ray_terminated
     ){
     
@@ -550,14 +579,19 @@ void sample_next_ray_directions_q_val(
     int dir_y = dir_grid - (dir_x*GRID_RESOLUTION);
 
     // Convert to 3D direction and update the direction
-    vec3 position = ray_locations[i];
-    vec3 normal  = ray_normals[i];
+    vec3 position = vec3(ray_locations[(i*3)], ray_locations[(i*3) + 1], ray_locations[(i*3) + 2]);
+    vec3 normal  = vec3(ray_normals[(i*3)], ray_normals[(i*3) + 1], ray_normals[(i*3) + 2]);
     mat4 transformation_matrix = create_transformation_matrix(normal, vec4(position, 1.f));
     vec3 dir = convert_grid_pos_to_direction_random(d_rand_state, (float) dir_x, (float) dir_y, i, position, transformation_matrix);
-    ray_directions[i] = dir;
+    ray_directions[(i*3)    ] = dir.x;
+    ray_directions[(i*3) + 1] = dir.y;
+    ray_directions[(i*3) + 2] = dir.z;
 
-    // Update the throughput with the sampled angle
-    ray_throughputs[i] = (ray_throughputs[i] * dot(normal, dir)) / RHO;
+    // Update throughput with new sampled angle
+    float cos_theta = dot(normal, dir);
+    ray_throughputs[(i*3)    ] = (ray_throughputs[(i*3)    ] * cos_theta)/RHO;
+    ray_throughputs[(i*3) + 1] = (ray_throughputs[(i*3) + 1] * cos_theta)/RHO;
+    ray_throughputs[(i*3) + 2] = (ray_throughputs[(i*3) + 2] * cos_theta)/RHO;
 }
 
 // Update pixel values stored in the device_buffer
