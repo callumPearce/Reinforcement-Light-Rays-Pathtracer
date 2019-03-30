@@ -80,10 +80,18 @@ void sample_next_ray_directions_q_val(
         bool* ray_terminated
     );
 
+// Compute the TD target from the passed in data for the current batch
+__global__
+void compute_td_targets(
+        float* td_targets_device,
+        float* ray_rewards,
+        float* ray_discounts
+    );
+
 // Update pixel values stored in the device_buffer
 __global__
 void update_total_throughput(
-        vec3* ray_throughputs,
+        float* ray_throughputs,
         vec3* total_throughputs
     );
 
@@ -124,7 +132,7 @@ class NeuralQPathtracer{
             curandState* d_rand_state,
             Camera* device_camera,
             Scene* device_scene,
-            float* device_buffer,
+            vec3* device_buffer,
             float* prev_location_host,   
             int* directions_host,
             float* ray_locations,   /* Ray intersection location (State)*/
