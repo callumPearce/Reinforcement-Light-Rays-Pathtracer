@@ -149,7 +149,7 @@ NeuralQPathtracer::NeuralQPathtracer(
             directions_host,
             ray_locations,
             ray_normals,   
-            ray_directions,  
+            ray_directions,
             ray_terminated,  
             ray_rewards,   
             ray_discounts, 
@@ -246,6 +246,8 @@ void NeuralQPathtracer::render_frame(
         float loss = 0.f;
         while(rays_finished == 0 && bounces < MAX_RAY_BOUNCES){
 
+            printf("%d\n", bounces);
+
             // Maintain previous locations for reinforcment Q(s,a) update
             checkCudaErrors(cudaMemcpy(prev_location_host, ray_locations, sizeof(vec3) * SCREEN_HEIGHT * SCREEN_WIDTH, cudaMemcpyDeviceToHost));
 
@@ -263,26 +265,53 @@ void NeuralQPathtracer::render_frame(
                     );
 
                 }
-                // Use Q value to sample new direction
+                // eta-greedy policy 
                 else{
 
-                    // Copy over the direction sampled from the network: Current policy -> choose max val, this is not good, instead sample over range
-                    int* ray_direction_indices;
-                    checkCudaErrors(cudaMalloc(&ray_direction_indices, sizeof(int) * SCREEN_HEIGHT * SCREEN_WIDTH));
-                    checkCudaErrors(cudaMemcpy(ray_direction_indices, directions_host, sizeof(int) * SCREEN_HEIGHT * SCREEN_WIDTH, cudaMemcpyHostToDevice));
+                    // Device index values
+                    int* directions_device;
+                    checkCudaErrors(cudaMalloc(&directions_device, sizeof(int) * SCREEN_HEIGHT*SCREEN_WIDTH));
 
-                    // Sample the next directions
-                    sample_next_ray_directions_q_val<<<this->num_blocks, this->block_size>>>(
-                        d_rand_state,
-                        ray_normals,
-                        ray_locations,
-                        ray_directions,
-                        ray_direction_indices,
-                        ray_throughputs,
-                        ray_terminated
-                    );
+                    // For each batch sample Q-values and apply eta-greedy policy
+                    for(int n = 0; n < this->num_batches; n++){
+                        
+                        // Compute Batch-Size
+                        unsigned int current_batch_size = std::min(SCREEN_HEIGHT*SCREEN_WIDTH - (n*this->ray_batch_size), this->ray_batch_size);
+                        if (current_batch_size < 1) break;
 
-                    cudaFree(ray_direction_indices);
+                        // Get Q-values
+                        graph.clear();
+                        dynet::Dim input_dim({3},current_batch_size);
+                        std::vector<float> input_states(3*current_batch_size);
+                        memcpy(&(input_states[0]), &prev_location_host[n*current_batch_size*3], sizeof(float) * 3 * current_batch_size);
+                        dynet::Expression states_batch = dynet::input(graph, input_dim, &input_states);
+                        dynet::Expression current_qs_expr = this->dqn.network_inference(graph, states_batch, true);
+                        std::vector<float> current_qs = dynet::as_vector(current_qs_expr.value());
+
+                        // Copy Q-vals to GPU for find the argmax
+                        float* current_qs_device;
+                        checkCudaErrors(cudaMalloc(&current_qs_device, sizeof(float) * current_qs.size()));
+                        checkCudaErrors(cudaMemcpy(current_qs_device, current_qs, sizeof(float) * current_qs.size() , cudaMemcpyHostToDevice));
+
+                        // Get direction indices
+                        sample_batch_ray_indices_eta_greedy<<<current_batch_size, this->num_batches>>>(
+                            ETA,
+                            d_rand_state,
+                            directions_device,
+                            current_qs_device
+                        );
+                        cudaDeviceSynchronize();
+
+                        // Free memory
+                        cudaFree(current_qs_device);
+                    }
+
+                    // Sample the ray direction from the calculated indices
+                    checkCudaErrors(cudaMemcpy(directions_host, directions_device, sizeof(int) * SCREEN_HEIGHT * SCREEN_WIDTH, cudaMemcpyDeviceToHost));
+                    //TODO
+
+                    // Free memory
+                    cudaFree(directions_device);
                 }
                 cudaDeviceSynchronize();
             }
@@ -308,28 +337,18 @@ void NeuralQPathtracer::render_frame(
                 float* ray_locations_host = new float[ SCREEN_HEIGHT * SCREEN_WIDTH * 3 ];
                 checkCudaErrors(cudaMemcpy(ray_locations_host, ray_locations, sizeof(float) * 3 * SCREEN_HEIGHT * SCREEN_WIDTH , cudaMemcpyDeviceToHost));
                 // Run learning rule on the network with the results received and sample new direction for each ray in batches
-                printf("%d\n", num_batches);
                 for(int n = 0; n < this->num_batches; n++){
-
+                    
                     graph.clear();
 
                     // 1) Create the input expression to the neural network for S_t+1
                     unsigned int current_batch_size = std::min(SCREEN_HEIGHT*SCREEN_WIDTH - (n*this->ray_batch_size), this->ray_batch_size);
                     if (current_batch_size < 1) break;
-                    std::vector<dynet::Expression> input_batch_vec(current_batch_size); 
-                    for (unsigned int b = 0; b < current_batch_size; b++){
-                        input_batch_vec[b] = dynet::input(
-                            graph, 
-                            {3}, 
-                            {
-                                ray_locations_host[(i*3)], 
-                                ray_locations_host[(i*3)+1],
-                                ray_locations_host[(i*3)+2]
-                            }
-                        );
-                    }
-                    // Reshape into single expression
-                    dynet::Expression input_batch = dynet::reshape(dynet::concatenate_cols(input_batch_vec), dynet::Dim({3}, current_batch_size));
+
+                    dynet::Dim input_dim({3},current_batch_size);
+                    std::vector<float> input_vals(3*current_batch_size);
+                    memcpy(&(input_vals[0]), &ray_locations_host[n*current_batch_size*3], sizeof(float) * 3 * current_batch_size);
+                    dynet::Expression input_batch = dynet::input(graph, input_dim, &input_vals);
 
                     // 2) Get max_a Q(S_{t+1}, a)
                     dynet::Expression next_qs = dynet::max_dim(this->dqn.network_inference(graph, input_batch, false),0);
@@ -354,25 +373,17 @@ void NeuralQPathtracer::render_frame(
                     dynet::Expression td_target = dynet::input(graph, {current_batch_size}, td_targets);
 
                     // // 5) Get current Q(s,a) value
-                    std::vector<dynet::Expression> states_batch_vec(current_batch_size); 
-                    for (unsigned int b = 0; b < current_batch_size; b++){
-                        states_batch_vec[b] = dynet::input(
-                            graph, 
-                            {3}, 
-                            {
-                                prev_location_host[(i*3)], 
-                                prev_location_host[(i*3)+1],
-                                prev_location_host[(i*3)+2]
-                            }
-                        );
-                    }
-                    // Reshape into single expression
-                    dynet::Expression states_batch = dynet::reshape(dynet::concatenate_cols(states_batch_vec), dynet::Dim({3}, current_batch_size));
-                    dynet::Expression current_qs = dynet::max_dim(this->dqn.network_inference(graph, states_batch, true),0);
+                    std::vector<float> input_states(3*current_batch_size);
+                    memcpy(&(input_states[0]), &prev_location_host[n*current_batch_size*3], sizeof(float) * 3 * current_batch_size);
+
+                    dynet::Expression states_batch = dynet::input(graph, input_dim, &input_states);
+                    dynet::Expression current_qs_col = dynet::max_dim(this->dqn.network_inference(graph, states_batch, true),0);
+                    dynet::Expression current_qs = dynet::reshape(current_qs_col, {current_batch_size});
                     
                     // // 6) Calculate the loss
-                    dynet::Expression loss_expr = (dynet::sum_batches(td_targets) - dynet::sum_batches(current_qs)); 
-                    printf("%d\n",loss_expr.dim());
+                    dynet::Expression loss_expr = dynet::pow((td_target - current_qs), dynet::input(graph, 2.f));  
+                    loss_expr = dynet::sum_batches(dynet::reshape(loss_expr, dynet::Dim({1},current_batch_size))); 
+                    // std::cout << loss_expr.dim() << std::endl;
                     loss += dynet::as_scalar(graph.forward(loss_expr));
 
                     // // 7) Train the network
@@ -573,45 +584,43 @@ void sample_next_ray_directions_randomly(
 
 // Sample ray directions according the neural network q vals
 __global__
-void sample_next_ray_directions_q_val(
+void sample_batch_ray_directions_eta_greedy(
+        float eta,
         curandState* d_rand_state,
-        float* ray_normals,
-        float* ray_locations,
-        float* ray_directions,
-        int* ray_direction_indices,
-        float* ray_throughputs,
-        bool* ray_terminated
+        int* directions_device,
+        float* current_qs_device
     ){
     
-    // Ray Index
-    int x =  blockIdx.x * blockDim.x + threadIdx.x;
-    int y =  blockIdx.y * blockDim.y + threadIdx.y;
-    int i = SCREEN_HEIGHT*x + y;
+        float rv = curand_uniform(&d_rand_state[curand_index]);
+    // // Ray Index
+    // int x =  blockIdx.x * blockDim.x + threadIdx.x;
+    // int y =  blockIdx.y * blockDim.y + threadIdx.y;
+    // int i = SCREEN_HEIGHT*x + y;
 
-    // Do nothing if we have already intersected with the light
-    if (ray_terminated[i] == true){
-        return;
-    }
+    // // Do nothing if we have already intersected with the light
+    // if (ray_terminated[i] == true){
+    //     return;
+    // }
 
-    // Convert the index to a grid position
-    int dir_grid = ray_direction_indices[i];
-    int dir_x = int(dir_grid/GRID_RESOLUTION);
-    int dir_y = dir_grid - (dir_x*GRID_RESOLUTION);
+    // // Convert the index to a grid position
+    // int dir_grid = 0; //TODO
+    // int dir_x = int(dir_grid/GRID_RESOLUTION);
+    // int dir_y = dir_grid - (dir_x*GRID_RESOLUTION);
 
-    // Convert to 3D direction and update the direction
-    vec3 position = vec3(ray_locations[(i*3)], ray_locations[(i*3) + 1], ray_locations[(i*3) + 2]);
-    vec3 normal  = vec3(ray_normals[(i*3)], ray_normals[(i*3) + 1], ray_normals[(i*3) + 2]);
-    mat4 transformation_matrix = create_transformation_matrix(normal, vec4(position, 1.f));
-    vec3 dir = convert_grid_pos_to_direction_random(d_rand_state, (float) dir_x, (float) dir_y, i, position, transformation_matrix);
-    ray_directions[(i*3)    ] = dir.x;
-    ray_directions[(i*3) + 1] = dir.y;
-    ray_directions[(i*3) + 2] = dir.z;
+    // // Convert to 3D direction and update the direction
+    // vec3 position = vec3(ray_locations[(i*3)], ray_locations[(i*3) + 1], ray_locations[(i*3) + 2]);
+    // vec3 normal  = vec3(ray_normals[(i*3)], ray_normals[(i*3) + 1], ray_normals[(i*3) + 2]);
+    // mat4 transformation_matrix = create_transformation_matrix(normal, vec4(position, 1.f));
+    // vec3 dir = convert_grid_pos_to_direction_random(d_rand_state, (float) dir_x, (float) dir_y, i, position, transformation_matrix);
+    // ray_directions[(i*3)    ] = dir.x;
+    // ray_directions[(i*3) + 1] = dir.y;
+    // ray_directions[(i*3) + 2] = dir.z;
 
-    // Update throughput with new sampled angle
-    float cos_theta = dot(normal, dir);
-    ray_throughputs[(i*3)    ] = (ray_throughputs[(i*3)    ] * cos_theta)/RHO;
-    ray_throughputs[(i*3) + 1] = (ray_throughputs[(i*3) + 1] * cos_theta)/RHO;
-    ray_throughputs[(i*3) + 2] = (ray_throughputs[(i*3) + 2] * cos_theta)/RHO;
+    // // Update throughput with new sampled angle
+    // float cos_theta = dot(normal, dir);
+    // ray_throughputs[(i*3)    ] = (ray_throughputs[(i*3)    ] * cos_theta)/RHO;
+    // ray_throughputs[(i*3) + 1] = (ray_throughputs[(i*3) + 1] * cos_theta)/RHO;
+    // ray_throughputs[(i*3) + 2] = (ray_throughputs[(i*3) + 2] * cos_theta)/RHO;
 }
 
 // Compute the TD targets for the current batch size

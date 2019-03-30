@@ -70,12 +70,13 @@ void sample_next_ray_directions_randomly(
 
 // Sample ray directions according the neural network q vals
 __global__
-void sample_next_ray_directions_q_val(
+void sample_batch_ray_directions_eta_greedy(
+        float eta,
         curandState* d_rand_state,
-        float* ray_normals,
-        float* ray_locations,
+        int* directions_device,
+        float* current_qs_device,
         float* ray_directions,
-        int* ray_direction_indices,
+        float* ray_normals,
         float* ray_throughputs,
         bool* ray_terminated
     );
