@@ -34,14 +34,6 @@ class DQNetwork{
         // Calculate the loss for the given input within the networks
         dynet::Expression calculate_loss(dynet::ComputationGraph& graph, dynet::Expression input, dynet::Expression next_state_max_q);
 
-        // Calculate the networks loss using Q-Learning update rule
-        dynet::Expression calculate_loss(
-            dynet::ComputationGraph& graph, /* Dynet graph */
-            dynet::Expression state_action_q, /* Q(s,a) where s is the current state, a is the action that has been taken */
-            dynet::Expression next_state_max_q, /* max_a Q(S_t+1, a) where S_t+1 is the next state, a is the highest next Q val */
-            float reward, /* R_t+1, reward for taking a in state s*/
-            float discount_factor /* \gamma = cos_theta * BRDF */
-        );
 };
 
 #endif

@@ -42,7 +42,9 @@ static void trace_ray(
         bool* ray_terminated, 
         float* ray_rewards, 
         float* ray_discounts,
-        float* ray_throughputs
+        float* ray_throughputs,
+        unsigned int* ray_bounces,
+        int bounces
     );
 
 // Gets the initial direction to shoot a ray in
@@ -55,7 +57,8 @@ static void initialise_ray(
         bool* ray_terminated, 
         float* ray_rewards, 
         float* ray_discounts,
-        float* ray_throughputs
+        float* ray_throughputs,
+        unsigned int* ray_bounces
     );
 
 // Sample random directions to further trace the rays in
@@ -70,16 +73,26 @@ void sample_next_ray_directions_randomly(
 
 // Sample ray directions according the neural network q vals
 __global__
-void sample_batch_ray_directions_eta_greedy(
+void sample_batch_ray_indices_eta_greedy(
         float eta,
         curandState* d_rand_state,
-        int* directions_device,
+        unsigned int* directions_device,
         float* current_qs_device,
-        float* ray_directions,
-        float* ray_normals,
-        float* ray_throughputs,
-        bool* ray_terminated
+        int batch_index,
+        int batch_size
     );
+
+// Randomly sample with the given grid index a 3D ray direction
+__global__
+void sample_ray_for_grid_index(
+    curandState* d_rand_state,
+    unsigned int* grid_indices,
+    float* ray_directions,
+    float* ray_locations,
+    float* ray_normals,
+    float* ray_throughputs,
+    bool* ray_terminated
+);
 
 // Compute the TD target from the passed in data for the current batch
 __global__
@@ -101,6 +114,13 @@ __global__
 void update_device_buffer(
     vec3* device_buffer,
     vec3* total_throughputs
+);
+
+// Sum up all path lengths
+__global__
+void sum_path_lengths(
+    int* total_path_lengths_device,
+    unsigned int* ray_bounces
 );
 
 class NeuralQPathtracer{
@@ -135,14 +155,15 @@ class NeuralQPathtracer{
             Scene* device_scene,
             vec3* device_buffer,
             float* prev_location_host,   
-            int* directions_host,
+            unsigned int* directions_host,
             float* ray_locations,   /* Ray intersection location (State)*/
             float* ray_normals,     /* Intersection normal */
             float* ray_directions,  /* Direction to next shoot the ray*/
             bool* ray_terminated,  /* Has the ray intersected with a light/nothing*/
             float* ray_rewards,    /* Reward recieved from Q(s,a) */
             float* ray_discounts,  /* Discount factor for current rays path */
-            float* ray_throughputs  /* Throughput for calc pixel value*/
+            float* ray_throughputs,  /* Throughput for calc pixel value*/
+            unsigned int* ray_bounces  /* Total number of bounces for each ray before intersection*/
         );
 };
 
