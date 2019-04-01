@@ -1,12 +1,12 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.10.2)  1 APR 2019 16:48
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.10.2)  19 MAR 2019 22:51
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**weekly-summaries.tex
-(./weekly-summaries.tex
+**learning_light_the_reinforced_way.tex
+(./learning_light_the_reinforced_way.tex
 LaTeX2e <2017-04-15>
 Babel <3.10> and hyphenation patterns for 84 language(s) loaded.
-(./IEEEtran.cls
+(/usr/local/texlive/2017/texmf-dist/tex/latex/IEEEtran/IEEEtran.cls
 Document Class: IEEEtran 2015/08/26 V1.8b by Michael Shell
 -- See the "IEEEtran_HOWTO" manual for usage information.
 -- http://www.michaelshell.org/tex/ieeetran/
@@ -509,8 +509,8 @@ Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 2
 )
 \Hy@SectionHShift=\skip51
 )
-(./weekly-summaries.aux)
-\openout1 = `weekly-summaries.aux'.
+(./learning_light_the_reinforced_way.aux)
+\openout1 = `learning_light_the_reinforced_way.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 13.
 LaTeX Font Info:    ... okay on input line 13.
@@ -581,38 +581,24 @@ LaTeX Info: Redefining \ref on input line 13.
 LaTeX Info: Redefining \pageref on input line 13.
 LaTeX Info: Redefining \nameref on input line 13.
 
-(./weekly-summaries.out) (./weekly-summaries.out)
+(./learning_light_the_reinforced_way.out)
+(./learning_light_the_reinforced_way.out)
 \@outlinefile=\write4
-\openout4 = `weekly-summaries.out'.
+\openout4 = `learning_light_the_reinforced_way.out'.
 
-LaTeX Font Info:    Try loading font information for U+msa on input line 30.
+LaTeX Font Info:    Try loading font information for U+msa on input line 29.
 
 (/usr/local/texlive/2017/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 30.
+LaTeX Font Info:    Try loading font information for U+msb on input line 29.
 
 (/usr/local/texlive/2017/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
-)
-LaTeX Font Info:    Try loading font information for OT1+pcr on input line 51.
-
-(/usr/local/texlive/2017/texmf-dist/tex/latex/psnfss/ot1pcr.fd
-File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
 ) [1{/usr/local/texlive/2017/texmf-var/fonts/map/pdftex/updmap/pdftex.map}
 
 
-] [2] [3] [4]
-(./weekly-summaries.bbl
-Underfull \hbox (badness 10000) in paragraph at lines 30--34
-[]\OT1/ptm/m/n/8 opengl.  Model load-ing.  []$http : / / www . opengl-[]tutoria
-l . org /
- []
-
-Missing character: There is no â in font ptmr7t!
-Missing character: There is no € in font ptmr7t!
-Missing character: There is no ¦ in font ptmr7t!
-)
+]
 
 ** Conference Paper **
 Before submitting the final camera ready copy, remember to:
@@ -624,39 +610,38 @@ Before submitting the final camera ready copy, remember to:
  uses only Type 1 fonts and that every step in the generation
  process uses the appropriate paper size.
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 220.
-[5
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 54.
+[2
 
 ]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 220.
- (./weekly-summaries.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 220.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 220.
-Package rerunfilecheck Info: File `weekly-summaries.out' has not changed.
-(rerunfilecheck)             Checksum: B166FA0722C210D3C87E82BCDF92EF0E;1669.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 220.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 54.
+ (./learning_light_the_reinforced_way.aux)
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 54.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 54.
+Package rerunfilecheck Info: File `learning_light_the_reinforced_way.out' has n
+ot changed.
+(rerunfilecheck)             Checksum: B7F2F01870A0195A4F40E8965C73A0E9;245.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 54.
  ) 
 Here is how much of TeX's memory you used:
- 9390 strings out of 492995
- 139401 string characters out of 6132704
- 239483 words of memory out of 5000000
- 12753 multiletter control sequences out of 15000+600000
- 41071 words of font info for 87 fonts, out of 8000000 for 9000
+ 9233 strings out of 492995
+ 137637 string characters out of 6132704
+ 238107 words of memory out of 5000000
+ 12675 multiletter control sequences out of 15000+600000
+ 33570 words of font info for 69 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 34i,8n,35p,1932b,356s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 34i,8n,35p,1491b,395s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/local/texlive/2017/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/t
 exlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/te
-xlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texl
-ive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texliv
-e/2017/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/local/texlive/2017/t
-exmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/local/texlive/2017/texmf-dist/
-fonts/type1/urw/times/utmbi8a.pfb></usr/local/texlive/2017/texmf-dist/fonts/typ
-e1/urw/times/utmr8a.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/urw/tim
-es/utmri8a.pfb>
-Output written on weekly-summaries.pdf (5 pages, 117442 bytes).
+xlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texl
+ive/2017/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/local/texlive/2017/t
+exmf-dist/fonts/type1/urw/times/utmbi8a.pfb></usr/local/texlive/2017/texmf-dist
+/fonts/type1/urw/times/utmr8a.pfb>
+Output written on learning_light_the_reinforced_way.pdf (2 pages, 58181 bytes).
+
 PDF statistics:
- 265 PDF objects out of 1000 (max. 8388607)
- 247 compressed objects within 3 object streams
- 68 named destinations out of 1000 (max. 500000)
- 217 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 51 PDF objects out of 1000 (max. 8388607)
+ 41 compressed objects within 1 object stream
+ 6 named destinations out of 1000 (max. 500000)
+ 25 words of extra memory for PDF output out of 10000 (max. 10000000)
 

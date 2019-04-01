@@ -146,7 +146,71 @@ With the radiance map created and validated, this week brings together a lot of 
 \subsection{Research/Implementation Goals}
 I quickly managed to get an importance sampling version of the path-tracer working by converting the radiance-volume values into a cumulative distribution which I could sample from the inverse of, in order to fire rays more likely towards light sources. This worked well at increasing the number of light rays which intersect with the area light source however some artefacts and strange patterns are present in the image, could this be to do with what \cite{dahm2017learning} suggests about this not being a complete approximation?
 
-I then moved on to implementing the reinforcement learning path tracer which was also fairly quick to implement. This does not perform the pre-computation step and clearly traces light paths towards the light far more effectively then randomly sampling, however once again there are artefacts present. I believe this is to do with my implementation of the radiance map, therefore I am going to
+I then moved on to implementing the reinforcement learning path tracer which was also fairly quick to implement. This does not perform the pre-computation step and clearly traces light paths towards the light far more effectively then randomly sampling, however once again there are artefacts present. I believe this is to do with my implementation of the radiance map, therefore I am going to plot the Voronoi render of my scene for the radiance volumes as shown in \cite{dahm2017learning} to validate I have a similar layout. This will be effective in the future for debugging and visualizing the density of my samples. I have also realised that \cite{dahm2017learning} might use a different sampling method for radiance volume locations using a low-discrepancy sequence  (Hammersley) which I am planning on researching as well. I need to get this base datastructure correct before I can validate my reinforcement learning approach.
+
+I have managed to implement the initial version of the Reinforcement Learning Path Tracer. This version is based upon the CPU and is currently very slow. I now have 4 different rendering methods available to me (although they are not easy to switch between right now), all of which produce different results in different time periods. I would currently say the pre-compute importance sampling approach gives the best results, likely due to the number of rays initially shot however, the pre-computation is very computationally intensive. 
+
+I have begun to research into Cuda in order to run my code on a GPU.
+
+\subsection{Resources}
+Primarily this week I was just implementing the details in the following papers \cite{dahm2017learning} \cite{greger1998irradiance} \cite{shirley1994notes}.
+
+\subsection{Reflection}
+The reinforcement learning approach seems to be learning where the light, however it si difficult to validate it without rendering an image which is near convergence (i.e. has very little noise). With a converged default path tracer render and a converged reinforcement path tracer render, I would be able to compare the two (for the same scene) and figure out if the reinforcement path tracer is working correctly just by visual observation.
+
+The issue I am faced with at the end of this week is that I need to compare the methods against one another and validate their correctness via comparing the renders to a default forward path tracer. However, the render time is far too long and switching between the current implemented methods is not very easy. It would takes days to compute a high quality converged render for all methods, therefore I look to the GPU now to parallelize my code.
+
+\section*{Week 6}
+Cuda will be the story for this week. I have never written code for a GPU and I am unfamiliar with their architecture. Luckily, in my own PC I have a 1070Ti which is one of the most powerful 10 series cards (an 20 RTX series would be nice for my future deep learning). I decided to research Cuda because simply I had heard about it more then OpenCL and saw there were a few tutorials online for getting it to work with a standard path tracer, compared to OpenCL.
+
+I want to stress that the main aim of my project is to not make a path tracer as fast as possible. I believe that I would never win this game in the time period available. There are so many tips and tricks and great experience built up in industry it is useless to compete on this playing field. I instead look to reduce memory consumption and potentially improve the accuracy of the method introduced by \cite{dahm2017learning}. Therefore, the GPU code is only being written so I can validate my results in a couple of minutes compared to a couple of days!
+
+\subsection{Goals}
+\begin{enumerate}
+
+\item Research into Cuda and understand the basic architecture of a GPU and how it compares to a CPU. This will help dictate how I optimally code for the GPU.
+
+\item Transfer the Default path tracer to run on the GPU and correctly work with Cuda. This will require class modifications of my entire code base!
+
+\item Transfer the Reinforcement Path Tracer and Voronoi plot to work on the GPU.
+
+\end{enumerate}
+
+\subsection*{Research/Implementation}
+I began my research into Cuda by taking a look at some notes on the architecture of the Cuda GPU, however I could not find a lot describing it awfully well, but I did find some useful explanations of the differences on Stack Overflow and Quora which gave me enough confidence to start following the tutorial for implementing a default path tracer in Cuda.
+
+The tutorial links to sources for an introduction to Cuda and was overall very helpful and self contained \cite{cuda-pathtracing}. From this, it took about 3 days of solid programming and redesigning of code-base in order to support the Default path tracer on Cuda. Not only did this require the modification of all my classes syntactically, but semantically a lot of the program had to be written in order to run on the device. For example, Cuda has no knowledge of the \verb|std| library, hence there is no easy way (unless using thrust) to work with a vector type. Most of my code relied on this! As mentioned I could have used thrust, but I wanted to be safe and stick with what there is plenty of support for, basic C++ Heap arrays. This gave me a much better understanding of the memory structure of my program. The only one thing I wish I could keep were smart pointer in C++ (being part of the \verb|std| library) due to their automatic memory management. 
+
+While converting the default path-tracer was difficult, it was much harder to convert the reinforcement path tracer, as I had no tutorial holding my hand the way through it. As with the natural progression of things, I now understood Cuda so I had the confidence to apply to my own problem. Now the major difference between the default and reinforcement path tracer in terms of concurrency is its writing/reading from a global array in heap memory during rendering. This means race conditions need to be taken care of when performing the update rule, Cuda atomic operation constructs made this relatively easy. My major difficulty was redesigning the K-D Tree I implemented for quick nearest neighbour search. Initially I got the reinforcement path tracer to work with linear traversal to find the closest radiance volume, but this was slow with thousands of radiance volumes in the room. The K-D Tree was not trivial to implement on the GPU, unlike your standard interview question regarding binary trees, I was not able to define the K-D Tree recursively to be stored on the GPU as I had to \verb|cudaMemcpy| the entire structure to the device with all correct pointers relating to one another within the tree. I remembered that from my algorithms classes any tree structure could be rewritten to be in the form of an array, and that is exactly what I did in order for it to work on the GPU. I implemented this in a couple of days in Cuda and tested it, finding over a 10x speedup from my linear search implementation!. Note, never define any device code in Cuda recursively it's super slow! For example, writing the tree traversal algorithm for finding the nearest neighbour recursively was actually slower then the linear search algorithm. Instead, I implemented my own stack class of Cuda and created an iterative search in the tree using this, and this is where my 10x speed-up came from.
+
+Note, I also implemented the voronoi plot for debugging nearest neighbour search on the GPU.
+
+\subsection{Resources}
+Nvidia documentation and tutorial were massively helpful this week \cite{cuda-intro} \cite{cuda-programming}, and of course stack overflow saved me multiple times.
+
+\subsection{Reflection}
+I now have 2 different path tracers, the default and reinforcement approach both written on the GPU. Both can render an image which has relatively low noise (low enough to tell if the algorithm is converging correctly) in just a few minutes compared to a few days! From this I managed to validate my reinforcement learning implementation and gain the similar benefits to those seen in \cite{dahm2017learning}. I would not call myself a 'good' Cuda programmer, however I know my way around and feel confident using it now.
+
+With this complete I have essentially implemented everything I need from \cite{dahm2017learning}. Now everything I work on is new territory to my knowledge! I will need to do a lot of research on how to move forward!
+
+\section*{Week 7}
+
+With the \cite{dahm2017learning} simple path tracer method implemented, I now need to research non-linear function approximators and see which form applies best for my problem; Given a position in 3D space, output a sampled direction for the ray to scatter in, where the distribution to sample from is the learned irradiance distribution for each $x,y,z$ in space. There are a lot of question that come with this which I will need to research.
+
+My other task is to complete my research poster to go with my project, which is due in on Wednesday this week. So, I will be spending a couple of days doing that this week.
+
+\subsection{Goals}
+\begin{enumerate}
+
+\item Complete the research poster
+
+\item Research a way of modelling all irradiance distributions in the room as a non-linear function (or may have to model each one individually as a non-linear function, this I am currently uncertain about)
+
+\end{enumerate}
+
+\subsection{Research/Implementation}
+
+I mainly worked on the poster for the first 2 days of the week and reflected on what I have done so far. Not much to report on this.
 
 \bibliographystyle{plain}
 \bibliography{weekly-summaries}
