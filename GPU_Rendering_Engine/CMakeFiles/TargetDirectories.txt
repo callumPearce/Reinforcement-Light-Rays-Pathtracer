@@ -1,3 +1,3 @@
-/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/CMakeFiles/rebuild_cache.dir
-/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir
-/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/CMakeFiles/edit_cache.dir
+/home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/CMakeFiles/rebuild_cache.dir
+/home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/CMakeFiles/GPU_Rendering_Engine.dir
+/home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/CMakeFiles/edit_cache.dir

@@ -45,5 +45,5 @@ set(CMAKE_MAKEFILE_PRODUCTS
 
 # Dependency information for all targets:
 set(CMAKE_DEPEND_INFO_FILES
-  "CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/DependInfo.cmake"
+  "CMakeFiles/GPU_Rendering_Engine.dir/DependInfo.cmake"
   )

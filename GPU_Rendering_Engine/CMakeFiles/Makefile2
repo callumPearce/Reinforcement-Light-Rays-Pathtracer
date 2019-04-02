@@ -59,45 +59,45 @@ RM = /usr/local/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda
+CMAKE_SOURCE_DIR = /home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda
+CMAKE_BINARY_DIR = /home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine
 
 #=============================================================================
-# Target rules for target CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir
+# Target rules for target CMakeFiles/GPU_Rendering_Engine.dir
 
 # All Build rule for target.
-CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/all:
-	$(MAKE) -f CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/build.make CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/depend
-	$(MAKE) -f CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/build.make CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28 "Built target Monte_Carlo_Raytracer_Cuda"
-.PHONY : CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/all
+CMakeFiles/GPU_Rendering_Engine.dir/all:
+	$(MAKE) -f CMakeFiles/GPU_Rendering_Engine.dir/build.make CMakeFiles/GPU_Rendering_Engine.dir/depend
+	$(MAKE) -f CMakeFiles/GPU_Rendering_Engine.dir/build.make CMakeFiles/GPU_Rendering_Engine.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28 "Built target GPU_Rendering_Engine"
+.PHONY : CMakeFiles/GPU_Rendering_Engine.dir/all
 
 # Include target in all.
-all: CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/all
+all: CMakeFiles/GPU_Rendering_Engine.dir/all
 
 .PHONY : all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/CMakeFiles 28
-	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/CMakeFiles 0
-.PHONY : CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/rule
+CMakeFiles/GPU_Rendering_Engine.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/CMakeFiles 28
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/GPU_Rendering_Engine.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/CMakeFiles 0
+.PHONY : CMakeFiles/GPU_Rendering_Engine.dir/rule
 
 # Convenience name for target.
-Monte_Carlo_Raytracer_Cuda: CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/rule
+GPU_Rendering_Engine: CMakeFiles/GPU_Rendering_Engine.dir/rule
 
-.PHONY : Monte_Carlo_Raytracer_Cuda
-
-# clean rule for target.
-CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/clean:
-	$(MAKE) -f CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/build.make CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/clean
-.PHONY : CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/clean
+.PHONY : GPU_Rendering_Engine
 
 # clean rule for target.
-clean: CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/clean
+CMakeFiles/GPU_Rendering_Engine.dir/clean:
+	$(MAKE) -f CMakeFiles/GPU_Rendering_Engine.dir/build.make CMakeFiles/GPU_Rendering_Engine.dir/clean
+.PHONY : CMakeFiles/GPU_Rendering_Engine.dir/clean
+
+# clean rule for target.
+clean: CMakeFiles/GPU_Rendering_Engine.dir/clean
 
 .PHONY : clean
 

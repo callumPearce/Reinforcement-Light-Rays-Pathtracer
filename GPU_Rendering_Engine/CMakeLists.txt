@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.7)
-project(Monte_Carlo_Raytracer_Cuda LANGUAGES CXX CUDA)
+project(GPU_Rendering_Engine LANGUAGES CXX CUDA)
 
 # Set compiler
 set(CMAKE_CXX_COMPILER "nvcc")

@@ -1,1 +1,0 @@
-/usr/local/cuda-10.1/bin/nvcc   -Xcompiler=-fPIC -Wno-deprecated-gpu-targets -shared -dlink CMakeFiles/reinforcement_path_tracing.dir/test.cu.o -o CMakeFiles/reinforcement_path_tracing.dir/cmake_device_link.o  -lpthread /usr/local/cuda/lib64/libculibos.a -ldl 

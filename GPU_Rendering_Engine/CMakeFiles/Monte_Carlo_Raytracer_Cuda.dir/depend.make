@@ -3,7 +3,6 @@
 
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/camera.cu.o: Source/camera.cu
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/camera.cu.o: Source/camera.cuh
-CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/camera.cu.o: /usr/local/cuda-10.1/targets/x86_64-linux/include/cuda.h
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/camera.cu.o: glm/glm/./detail/setup.hpp
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/camera.cu.o: glm/glm/./detail/type_mat2x2.hpp
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/camera.cu.o: glm/glm/./detail/type_mat2x2.inl
@@ -784,7 +783,6 @@ CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/main.cu.o: glm/glm/vector_relat
 
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/objects/material.cu.o: Source/objects/material.cu
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/objects/material.cu.o: Source/objects/material.cuh
-CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/objects/material.cu.o: /usr/local/cuda-10.1/targets/x86_64-linux/include/cuda.h
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/objects/material.cu.o: glm/glm/./detail/setup.hpp
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/objects/material.cu.o: glm/glm/./detail/type_mat2x2.hpp
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/objects/material.cu.o: glm/glm/./detail/type_mat2x2.inl
@@ -3635,7 +3633,6 @@ CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/sdl/sdl_screen.cpp.o: /usr/incl
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/sdl/sdl_screen.cpp.o: /usr/include/SDL2/SDL_video.h
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/sdl/sdl_screen.cpp.o: /usr/include/SDL2/begin_code.h
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/sdl/sdl_screen.cpp.o: /usr/include/SDL2/close_code.h
-CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/sdl/sdl_screen.cpp.o: /usr/local/cuda-10.1/targets/x86_64-linux/include/cuda.h
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/sdl/sdl_screen.cpp.o: glm/glm/./detail/setup.hpp
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/sdl/sdl_screen.cpp.o: glm/glm/./detail/type_mat2x2.hpp
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/sdl/sdl_screen.cpp.o: glm/glm/./detail/type_mat2x2.inl
@@ -3794,7 +3791,6 @@ CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/sdl/sdl_screen.cpp.o: glm/glm/v
 
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/utils/printing.cpp.o: Source/utils/printing.cpp
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/utils/printing.cpp.o: Source/utils/printing.h
-CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/utils/printing.cpp.o: /usr/local/cuda-10.1/targets/x86_64-linux/include/cuda.h
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/utils/printing.cpp.o: glm/glm/./detail/setup.hpp
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/utils/printing.cpp.o: glm/glm/./detail/type_mat2x2.hpp
 CMakeFiles/Monte_Carlo_Raytracer_Cuda.dir/Source/utils/printing.cpp.o: glm/glm/./detail/type_mat2x2.inl

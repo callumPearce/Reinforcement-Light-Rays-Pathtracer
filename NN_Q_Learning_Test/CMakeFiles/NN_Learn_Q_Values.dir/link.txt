@@ -1,0 +1,1 @@
+nvcc     CMakeFiles/NN_Learn_Q_Values.dir/Source/main.cu.o CMakeFiles/NN_Learn_Q_Values.dir/cmake_device_link.o  -o Build/NN_Learn_Q_Values  -L/usr/local/cuda/targets/x86_64-linux/lib/stubs  -L/usr/local/cuda/targets/x86_64-linux/lib -L/usr/local/lib/ -ldynet -lcudadevrt -lcudart_static -lrt -lpthread -ldl 
