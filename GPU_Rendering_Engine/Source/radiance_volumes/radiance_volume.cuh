@@ -23,19 +23,6 @@ class RadianceVolume{
 
     private:
 
-        /*
-        * This function takes a point in the unit square,
-        * and maps it to a point on the unit hemisphere.
-        *
-        * Copyright 1994 Kenneth Chiu
-        *
-        * This code may be freely distributed and used
-        * for any purpose, commercial or non-commercial,
-        * as long as attribution is maintained.
-        */
-        __host__ __device__
-        static void map(float x, float y, float& x_ret, float& y_ret, float& z_ret);
-
         // Initialises square grid as a 2D std::vector of vec3s (radiance stores for each angle)
         __host__
         void initialise_radiance_grid(Surface* surfaces);

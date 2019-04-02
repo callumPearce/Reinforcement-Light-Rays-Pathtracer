@@ -301,6 +301,21 @@ int main (int argc, char** argv) {
                 screen.SDL_SaveImage("../Images/reinforcement_render/render.bmp");
                 frames++;
             }
+
+            // Save the radiance_map out to a file if chosen in options
+            if (SAVE_RADIANCE_MAP){
+                // Copy radiance map back to host
+                checkCudaErrors(cudaMemcpy(radiance_map, device_radiance_map, sizeof(RadianceMap), cudaMemcpyDeviceToHost));
+
+                // Copy radiance volumes back to host
+                checkCudaErrors(cudaMemcpy(&host_rvs[0], device_radiance_volumes, host_rvs.size() * sizeof(RadianceVolume), cudaMemcpyDeviceToHost));
+
+                // Set the radiance volumes pointer
+                radiance_map->radiance_volumes = &host_rvs[0];
+                
+                // Save the radiance_maps q-values
+                radiance_map->save_q_vals_to_file();
+            }
             
             // Delete radiance map variables
             cudaFree(device_radiance_volumes);
@@ -332,7 +347,6 @@ int main (int argc, char** argv) {
                 radiance_array_v
             );
 
-            // printf("%d, %d\n", radiance_array_v[20].left_idx, radiance_array_v[20].right_idx);
             
             // Setup the colours of the voronoi plot
             radiance_map->set_voronoi_colours(temp_rvs);

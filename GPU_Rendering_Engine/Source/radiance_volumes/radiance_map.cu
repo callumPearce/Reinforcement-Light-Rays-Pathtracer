@@ -218,3 +218,38 @@ vec3 RadianceMap::get_voronoi_colour(const Intersection& intersection){
         return vec3(0.f);
     }
 }
+
+// Save the radiance map's q-values out to a file
+__host__
+void RadianceMap::save_q_vals_to_file(){
+
+    // Create the file 
+    std::ofstream save_file ("../Radiance_Map_Data/radiance_map_data.txt");
+    if (save_file.is_open()){
+
+        // Write the number of actions per radiance volume
+        save_file << GRID_RESOLUTION * GRID_RESOLUTION << "\n";
+
+        // Write each radiance volumes data
+        for (int i = 0; i < this->radiance_volumes_count; i++){
+
+            // Write the position
+            vec4 position = this->radiance_volumes[i].position;
+            save_file << position.x << "," << position.y << "," << position.z;
+
+            // Write each Q values
+            for (int n = 0; n < GRID_RESOLUTION*GRID_RESOLUTION; n++){
+                save_file << " " << this->radiance_volumes[i].radiance_grid[n];
+            }
+
+            save_file << "\n";
+
+        }
+
+        // Close the file
+        save_file.close();
+    }
+    else{
+        printf("Unable to save the RadianceMap\n");
+    }
+}

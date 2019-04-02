@@ -14,6 +14,10 @@
 #include <curand.h>
 #include <curand_kernel.h>
 
+// File writing
+#include <iostream>
+#include <fstream>
+
 using glm::vec3;
 using glm::mat3;
 using glm::vec4;
@@ -62,9 +66,12 @@ class RadianceMap{
         __device__
         vec3 get_voronoi_colour(const Intersection& intersection);
 
-
         __device__
         RadianceVolume* find_closest_radiance_volume_iterative(float max_dist, vec4 pos, vec4 norm);
+
+        // Save the radiance map's q-values out to a file
+        __host__
+        void save_q_vals_to_file();
 
 };
 
