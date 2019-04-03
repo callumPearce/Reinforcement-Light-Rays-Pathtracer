@@ -1,3 +1,0 @@
-==1182== NVPROF is profiling process 1182, command: /home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Build/Monte_Carlo_Raytracer_Cuda
-==1182== Warning: Some profiling data are not recorded. Make sure cudaProfilerStop() or cuProfilerStop() is called before application exit to flush profile data.
-==1182== Generated result file: /home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/.metadata/.plugins/com.nvidia.viper/launch/0/api_1182.log

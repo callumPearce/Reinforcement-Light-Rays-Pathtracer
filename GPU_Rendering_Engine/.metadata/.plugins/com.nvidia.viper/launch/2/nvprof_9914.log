@@ -1,0 +1,3 @@
+==9914== NVPROF is profiling process 9914, command: /home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/Build/GPU_Rendering_Engine --dynet-devices CPU
+==9914== Warning: Some profiling data are not recorded. Make sure cudaProfilerStop() or cuProfilerStop() is called before application exit to flush profile data.
+==9914== Generated result file: /home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/.metadata/.plugins/com.nvidia.viper/launch/2/api_9914.log

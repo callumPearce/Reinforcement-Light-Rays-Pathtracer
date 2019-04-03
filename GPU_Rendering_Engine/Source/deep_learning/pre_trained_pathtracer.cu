@@ -8,7 +8,8 @@ inline bool file_exists (const std::string& name) {
 // Constructor
 __host__
 PretrainedPathtracer::PretrainedPathtracer(
-    unsigned int frames, 
+    unsigned int frames,
+    unsigned int batch_size, 
     SDLScreen& screen, 
     Scene& scene,
     Camera& camera,
@@ -19,6 +20,8 @@ PretrainedPathtracer::PretrainedPathtracer(
     //////////////////////////////////////////////////////////////
     /*                  Assign attributes                       */
     //////////////////////////////////////////////////////////////
+    this->batch_size = batch_size;
+    this->num_batches = (SCREEN_HEIGHT*SCREEN_WIDTH + (batch_size -1))/batch_size;
     dim3 b_size(8,8);
     this->block_size = b_size;
     int blocks_x = (SCREEN_WIDTH + this->block_size.x - 1)/this->block_size.x;
@@ -39,7 +42,7 @@ PretrainedPathtracer::PretrainedPathtracer(
     //////////////////////////////////////////////////////////////
     /*             Load in the Parameter Values                 */
     //////////////////////////////////////////////////////////////
-    std::string fname = "../Radiance_Map_Data/radiance_map_model.model";
+    std::string fname = "/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Radiance_Map_Data/radiance_map_model.model";
     if (file_exists(fname)){
         dynet::TextFileLoader loader(fname);
         loader.populate(model);
@@ -147,7 +150,7 @@ PretrainedPathtracer::PretrainedPathtracer(
     //////////////////////////////////////////////////////////////
     /*          Save the image and kill the screen              */
     //////////////////////////////////////////////////////////////
-    screen.SDL_SaveImage("../Images/render.bmp");
+    screen.SDL_SaveImage("/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Images/render.bmp");
     screen.kill_screen();
 
     //////////////////////////////////////////////////////////////
@@ -207,7 +210,7 @@ void PretrainedPathtracer::render_frame(
 
         // Trace ray paths until all have intersected with a light/nothing
         unsigned int bounces = 0;
-        while(rays_finished == 0 && bounces < 10){
+        while(rays_finished == 0 && bounces < 20){
 
             printf("Bounces: %d\n",bounces);
 
@@ -227,18 +230,23 @@ void PretrainedPathtracer::render_frame(
                 std::vector<float> host_q_values(SCREEN_HEIGHT * SCREEN_WIDTH * GRID_RESOLUTION * GRID_RESOLUTION);
 
                 // For each ray, compute the Q-values and importance sample a direction over them
-                for (int r = 0; r < SCREEN_HEIGHT * SCREEN_WIDTH; r++){
+                for (int b = 0; b < this->num_batches; b++){
                     // Initialise the computational graph
                     dynet::ComputationGraph graph;
 
+                    // Compute the current batch size
+                    unsigned int batch_start_idx = b*this->batch_size;
+                    unsigned int current_batch_size = std::min(SCREEN_HEIGHT*SCREEN_WIDTH - batch_start_idx, this->batch_size);
+
                     // Get the input expression 
-                    std::vector<float> position = { ray_locations_host[r*3], ray_locations_host[r*3 + 1], ray_locations_host[r*3 + 2] };
-                    dynet::Expression input = dynet::input(graph, {3}, position);
+                    std::vector<float> positions(current_batch_size*3);
+                    memcpy(&positions[0], &ray_locations_host[batch_start_idx], sizeof(float)*current_batch_size*3);
+                    dynet::Expression input = dynet::input(graph, dynet::Dim({3}, current_batch_size), positions);
 
                     // Get the prediction
                     dynet::Expression prediction = dynet::softmax(this->dqn.network_inference(graph, input, false));
-                    std::vector<float> q_vals = dynet::as_vector(graph.forward(prediction));
-                    std::copy_n(q_vals.begin(), GRID_RESOLUTION*GRID_RESOLUTION, host_q_values.begin() + r*GRID_RESOLUTION*GRID_RESOLUTION);
+                    std::vector<float> q_vals = dynet::as_vector( graph.forward( dynet::reshape(prediction, dynet::Dim({GRID_RESOLUTION*GRID_RESOLUTION*current_batch_size}))) );
+                    std::copy_n(q_vals.begin(), GRID_RESOLUTION*GRID_RESOLUTION*current_batch_size, host_q_values.begin() + batch_start_idx*GRID_RESOLUTION*GRID_RESOLUTION);
                 }
 
                 // Copy q-values to device
@@ -443,19 +451,24 @@ void importance_sample_ray_directions(
     int y =  blockIdx.y * blockDim.y + threadIdx.y;
     int i = SCREEN_HEIGHT*x + y;
 
+    unsigned int q_start_idx = i * GRID_RESOLUTION * GRID_RESOLUTION;
+
      // Do nothing if we have already intersected with the light
      if (ray_terminated_device[i] == true){
         return;
     }
 
+    // Copy array onto local memory to speed-up processing
+    float q_vals[ GRID_RESOLUTION * GRID_RESOLUTION ];
+    memcpy(q_vals, &device_q_values[q_start_idx], sizeof(float)*GRID_RESOLUTION*GRID_RESOLUTION);
+
     // Importance sample over Q_values
-    unsigned int q_start_idx = i * GRID_RESOLUTION * GRID_RESOLUTION;
     float rv = curand_uniform(&d_rand_state[i]);
     unsigned int direction_idx = 0;
     float q_sum = 0.f;
     for (unsigned int n = 0; n < GRID_RESOLUTION*GRID_RESOLUTION; n++){
 
-        q_sum += device_q_values[ q_start_idx + n ];
+        q_sum += q_vals[ n ];
         
         if ( q_sum > rv ){
             direction_idx = n;
