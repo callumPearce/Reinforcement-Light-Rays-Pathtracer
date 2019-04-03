@@ -371,12 +371,12 @@ void NeuralQPathtracer::render_frame(
                     // Get the current Q values for the actions taken
                     dynet::Expression current_qs = dynet::pick(current_all_qs, action_value_indices, (unsigned int) 0);
                     
-                    // // 6) Calculate the loss
+                    // 6) Calculate the loss
                     dynet::Expression loss_expr = dynet::pow((td_target - current_qs), dynet::input(graph, 2.f));  
                     loss_expr = dynet::sum_batches(loss_expr); 
                     loss += dynet::as_scalar(graph.forward(loss_expr));
 
-                    // // 7) Train the network
+                    // 7) Train the network
                     graph.backward(loss_expr);
                     trainer.update();
                 }

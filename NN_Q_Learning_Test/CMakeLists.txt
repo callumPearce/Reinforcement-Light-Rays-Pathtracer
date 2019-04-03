@@ -18,12 +18,17 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_HOME_DIRECTORY}/Lib)
 
 # Include project directories
 include_directories(glm)
-include_directories(Source)
+include_directories(
+    Source
+    Source/deep_learning
+)
 
 # Set the sources
 set(
     SOURCES
     Source/main.cu
+    Source/deep_learning/dq_network.cu
+    Source/deep_learning/fc_layer.cu
 )
 
 

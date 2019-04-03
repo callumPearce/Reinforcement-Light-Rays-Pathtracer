@@ -235,7 +235,7 @@ void RadianceMap::save_q_vals_to_file(){
 
             // Write the position
             vec4 position = this->radiance_volumes[i].position;
-            save_file << position.x << "," << position.y << "," << position.z;
+            save_file << position.x << " " << position.y << " " << position.z;
 
             // Write each Q values
             for (int n = 0; n < GRID_RESOLUTION*GRID_RESOLUTION; n++){

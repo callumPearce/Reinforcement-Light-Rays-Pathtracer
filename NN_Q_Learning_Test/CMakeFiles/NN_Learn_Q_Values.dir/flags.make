@@ -6,5 +6,5 @@ CUDA_FLAGS =
 
 CUDA_DEFINES = 
 
-CUDA_INCLUDES = -I/home/calst/Documents/year4/thesis/monte_carlo_raytracer/NN_Q_Learning_Test/glm -I/home/calst/Documents/year4/thesis/monte_carlo_raytracer/NN_Q_Learning_Test/Source -I/home/calst/Documents/year4/thesis/monte_carlo_raytracer/NN_Q_Learning_Test/-I/usr/local/include/dynet 
+CUDA_INCLUDES = -I/home/calst/Documents/year4/thesis/monte_carlo_raytracer/NN_Q_Learning_Test/glm -I/home/calst/Documents/year4/thesis/monte_carlo_raytracer/NN_Q_Learning_Test/Source -I/home/calst/Documents/year4/thesis/monte_carlo_raytracer/NN_Q_Learning_Test/Source/deep_learning -I/home/calst/Documents/year4/thesis/monte_carlo_raytracer/NN_Q_Learning_Test/-I/usr/local/include/dynet 
 

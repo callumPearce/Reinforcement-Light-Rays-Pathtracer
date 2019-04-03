@@ -1,5 +1,7 @@
 file(REMOVE_RECURSE
   "CMakeFiles/NN_Learn_Q_Values.dir/Source/main.cu.o"
+  "CMakeFiles/NN_Learn_Q_Values.dir/Source/deep_learning/dq_network.cu.o"
+  "CMakeFiles/NN_Learn_Q_Values.dir/Source/deep_learning/fc_layer.cu.o"
   "CMakeFiles/NN_Learn_Q_Values.dir/cmake_device_link.o"
   "Build/NN_Learn_Q_Values.pdb"
   "Build/NN_Learn_Q_Values"

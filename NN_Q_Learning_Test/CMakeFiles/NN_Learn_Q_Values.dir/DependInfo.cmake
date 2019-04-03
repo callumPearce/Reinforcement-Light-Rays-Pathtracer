@@ -4,6 +4,8 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CUDA
+  "/home/calst/Documents/year4/thesis/monte_carlo_raytracer/NN_Q_Learning_Test/Source/deep_learning/dq_network.cu" "/home/calst/Documents/year4/thesis/monte_carlo_raytracer/NN_Q_Learning_Test/CMakeFiles/NN_Learn_Q_Values.dir/Source/deep_learning/dq_network.cu.o"
+  "/home/calst/Documents/year4/thesis/monte_carlo_raytracer/NN_Q_Learning_Test/Source/deep_learning/fc_layer.cu" "/home/calst/Documents/year4/thesis/monte_carlo_raytracer/NN_Q_Learning_Test/CMakeFiles/NN_Learn_Q_Values.dir/Source/deep_learning/fc_layer.cu.o"
   "/home/calst/Documents/year4/thesis/monte_carlo_raytracer/NN_Q_Learning_Test/Source/main.cu" "/home/calst/Documents/year4/thesis/monte_carlo_raytracer/NN_Q_Learning_Test/CMakeFiles/NN_Learn_Q_Values.dir/Source/main.cu.o"
   )
 set(CMAKE_CUDA_COMPILER_ID "NVIDIA")
@@ -12,6 +14,7 @@ set(CMAKE_CUDA_COMPILER_ID "NVIDIA")
 set(CMAKE_CUDA_TARGET_INCLUDE_PATH
   "glm"
   "Source"
+  "Source/deep_learning"
   "-I/usr/local/include/dynet"
   )
 
