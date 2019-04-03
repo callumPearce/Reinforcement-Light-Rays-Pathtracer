@@ -1,0 +1,3 @@
+==19982== NVPROF is profiling process 19982, command: /home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/Build/GPU_Rendering_Engine --dynet-devices CPU
+==19982== Warning: Some profiling data are not recorded. Make sure cudaProfilerStop() or cuProfilerStop() is called before application exit to flush profile data.
+==19982== Generated result file: /home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/.metadata/.plugins/com.nvidia.viper/launch/4/api_19982.log

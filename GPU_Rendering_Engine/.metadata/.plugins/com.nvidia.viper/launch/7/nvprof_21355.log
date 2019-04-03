@@ -1,0 +1,2 @@
+==21355== NVPROF is profiling process 21355, command: /home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/Build/GPU_Rendering_Engine --dynet-devices CPU
+==21355== Generated result file: /home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/.metadata/.plugins/com.nvidia.viper/launch/7/api_21355.log

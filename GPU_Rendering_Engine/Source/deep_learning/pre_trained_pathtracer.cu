@@ -210,7 +210,7 @@ void PretrainedPathtracer::render_frame(
 
         // Trace ray paths until all have intersected with a light/nothing
         unsigned int bounces = 0;
-        while(rays_finished == 0 && bounces < 20){
+        while(rays_finished == 0 && bounces < MAX_RAY_BOUNCES){
 
             printf("Bounces: %d\n",bounces);
 
@@ -459,8 +459,8 @@ void importance_sample_ray_directions(
     }
 
     // Copy array onto local memory to speed-up processing
-    float q_vals[ GRID_RESOLUTION * GRID_RESOLUTION ];
-    memcpy(q_vals, &device_q_values[q_start_idx], sizeof(float)*GRID_RESOLUTION*GRID_RESOLUTION);
+    // float q_vals[ GRID_RESOLUTION * GRID_RESOLUTION ];
+    // memcpy(q_vals, &device_q_values[q_start_idx], sizeof(float)*GRID_RESOLUTION*GRID_RESOLUTION);
 
     // Importance sample over Q_values
     float rv = curand_uniform(&d_rand_state[i]);
@@ -468,7 +468,7 @@ void importance_sample_ray_directions(
     float q_sum = 0.f;
     for (unsigned int n = 0; n < GRID_RESOLUTION*GRID_RESOLUTION; n++){
 
-        q_sum += q_vals[ n ];
+        q_sum += device_q_values[q_start_idx + n];
         
         if ( q_sum > rv ){
             direction_idx = n;

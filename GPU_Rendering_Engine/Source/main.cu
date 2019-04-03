@@ -102,8 +102,8 @@ int main (int argc, char** argv) {
     // SPECIAL CASE: Deep Learning
     if ( PATH_TRACING_METHOD == 3 ){
         PretrainedPathtracer(
-            2, 
-            1024,
+            1, 
+            2048,
             screen, 
             scene,
             camera,
