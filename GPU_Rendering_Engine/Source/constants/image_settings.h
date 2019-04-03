@@ -13,6 +13,6 @@
 #define RHO (1.f / (2.f * 3.1415926535f))
 #define ETA 0.3
 
-#define PATH_TRACING_METHOD 1 //0 = default, 1 = reinforcement, 2 = voronoi, 3 = deep learning
+#define PATH_TRACING_METHOD 3 //0 = default, 1 = reinforcement, 2 = voronoi, 3 = deep learning
 
 #endif

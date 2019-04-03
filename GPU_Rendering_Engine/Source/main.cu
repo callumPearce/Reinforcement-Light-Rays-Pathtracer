@@ -25,6 +25,7 @@
 #include "reinforcement_path_tracing.cuh"
 #include "voronoi_trace.cuh"
 #include "neural_q_pathtracer.cuh"
+#include "pre_trained_pathtracer.cuh"
 
 // Cuda
 #include "cuda_helpers.cuh"
@@ -100,9 +101,8 @@ int main (int argc, char** argv) {
 
     // SPECIAL CASE: Deep Learning
     if ( PATH_TRACING_METHOD == 3 ){
-        NeuralQPathtracer(
+        PretrainedPathtracer(
             10, 
-            512, 
             screen, 
             scene,
             camera,

@@ -6,9 +6,8 @@ set(CMAKE_DEPENDS_LANGUAGES
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CUDA
   "/home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/Source/camera.cu" "/home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/CMakeFiles/GPU_Rendering_Engine.dir/Source/camera.cu.o"
-  "/home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/Source/deep_learning/dq_network.cu" "/home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/CMakeFiles/GPU_Rendering_Engine.dir/Source/deep_learning/dq_network.cu.o"
-  "/home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/Source/deep_learning/fc_layer.cu" "/home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/CMakeFiles/GPU_Rendering_Engine.dir/Source/deep_learning/fc_layer.cu.o"
   "/home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/Source/deep_learning/neural_q_pathtracer.cu" "/home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/CMakeFiles/GPU_Rendering_Engine.dir/Source/deep_learning/neural_q_pathtracer.cu.o"
+  "/home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/Source/deep_learning/pre_trained_pathtracer.cu" "/home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/CMakeFiles/GPU_Rendering_Engine.dir/Source/deep_learning/pre_trained_pathtracer.cu.o"
   "/home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/Source/lights/area_light.cu" "/home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/CMakeFiles/GPU_Rendering_Engine.dir/Source/lights/area_light.cu.o"
   "/home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/Source/main.cu" "/home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/CMakeFiles/GPU_Rendering_Engine.dir/Source/main.cu.o"
   "/home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/Source/objects/material.cu" "/home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/CMakeFiles/GPU_Rendering_Engine.dir/Source/objects/material.cu.o"
@@ -29,12 +28,15 @@ set(CMAKE_DEPENDS_CHECK_CUDA
   "/home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/Source/utils/cuda_helpers.cu" "/home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/CMakeFiles/GPU_Rendering_Engine.dir/Source/utils/cuda_helpers.cu.o"
   "/home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/Source/utils/hemisphere_helpers.cu" "/home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/CMakeFiles/GPU_Rendering_Engine.dir/Source/utils/hemisphere_helpers.cu.o"
   "/home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/Source/utils/stack.cu" "/home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/CMakeFiles/GPU_Rendering_Engine.dir/Source/utils/stack.cu.o"
+  "/home/calst/Documents/year4/thesis/monte_carlo_raytracer/NN_Builders/dq_network.cu" "/home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/CMakeFiles/GPU_Rendering_Engine.dir/home/calst/Documents/year4/thesis/monte_carlo_raytracer/NN_Builders/dq_network.cu.o"
+  "/home/calst/Documents/year4/thesis/monte_carlo_raytracer/NN_Builders/fc_layer.cu" "/home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/CMakeFiles/GPU_Rendering_Engine.dir/home/calst/Documents/year4/thesis/monte_carlo_raytracer/NN_Builders/fc_layer.cu.o"
   )
 set(CMAKE_CUDA_COMPILER_ID "NVIDIA")
 
 # The include file search paths:
 set(CMAKE_CUDA_TARGET_INCLUDE_PATH
   "glm"
+  "../NN_Builders"
   "Source"
   "Source/constants"
   "Source/objects"
@@ -58,6 +60,7 @@ set(CMAKE_CXX_COMPILER_ID "GNU")
 # The include file search paths:
 set(CMAKE_CXX_TARGET_INCLUDE_PATH
   "glm"
+  "../NN_Builders"
   "Source"
   "Source/constants"
   "Source/objects"

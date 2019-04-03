@@ -18,21 +18,26 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_HOME_DIRECTORY}/Lib)
 
 # Include project directories
 include_directories(glm)
-include_directories(Source)
-include_directories(Source/constants)
-include_directories(Source/objects)
-include_directories(Source/scenes)
-include_directories(Source/utils)
-include_directories(Source/lights)
-include_directories(Source/sdl)
-include_directories(Source/rays)
-include_directories(Source/path_tracing)
-include_directories(Source/radiance_volumes)
-include_directories(Source/deep_learning)
+include_directories(
+    ../NN_Builders
+    Source
+    Source/constants
+    Source/objects
+    Source/scenes
+    Source/utils
+    Source/lights
+    Source/sdl
+    Source/rays
+    Source/path_tracing
+    Source/radiance_volumes
+    Source/deep_learning
+)
 
 # Set the sources
 set(
     SOURCES
+    ../NN_Builders/dq_network.cu
+    ../NN_Builders/fc_layer.cu
     Source/main.cu
     Source/camera.cu
     Source/sdl/sdl_screen.cpp
@@ -56,9 +61,8 @@ set(
     Source/path_tracing/default_path_tracing.cu
     Source/path_tracing/reinforcement_path_tracing.cu
     Source/path_tracing/voronoi_trace.cu
-    Source/deep_learning/dq_network.cu
-    Source/deep_learning/fc_layer.cu
     Source/deep_learning/neural_q_pathtracer.cu
+    Source/deep_learning/pre_trained_pathtracer.cu
 )
 
 

@@ -1,4 +1,6 @@
 file(REMOVE_RECURSE
+  "CMakeFiles/GPU_Rendering_Engine.dir/home/calst/Documents/year4/thesis/monte_carlo_raytracer/NN_Builders/dq_network.cu.o"
+  "CMakeFiles/GPU_Rendering_Engine.dir/home/calst/Documents/year4/thesis/monte_carlo_raytracer/NN_Builders/fc_layer.cu.o"
   "CMakeFiles/GPU_Rendering_Engine.dir/Source/main.cu.o"
   "CMakeFiles/GPU_Rendering_Engine.dir/Source/camera.cu.o"
   "CMakeFiles/GPU_Rendering_Engine.dir/Source/sdl/sdl_screen.cpp.o"
@@ -22,9 +24,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/GPU_Rendering_Engine.dir/Source/path_tracing/default_path_tracing.cu.o"
   "CMakeFiles/GPU_Rendering_Engine.dir/Source/path_tracing/reinforcement_path_tracing.cu.o"
   "CMakeFiles/GPU_Rendering_Engine.dir/Source/path_tracing/voronoi_trace.cu.o"
-  "CMakeFiles/GPU_Rendering_Engine.dir/Source/deep_learning/dq_network.cu.o"
-  "CMakeFiles/GPU_Rendering_Engine.dir/Source/deep_learning/fc_layer.cu.o"
   "CMakeFiles/GPU_Rendering_Engine.dir/Source/deep_learning/neural_q_pathtracer.cu.o"
+  "CMakeFiles/GPU_Rendering_Engine.dir/Source/deep_learning/pre_trained_pathtracer.cu.o"
   "CMakeFiles/GPU_Rendering_Engine.dir/cmake_device_link.o"
   "Build/GPU_Rendering_Engine.pdb"
   "Build/GPU_Rendering_Engine"

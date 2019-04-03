@@ -57,9 +57,35 @@ include CMakeFiles/GPU_Rendering_Engine.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/GPU_Rendering_Engine.dir/flags.make
 
+CMakeFiles/GPU_Rendering_Engine.dir/home/calst/Documents/year4/thesis/monte_carlo_raytracer/NN_Builders/dq_network.cu.o: CMakeFiles/GPU_Rendering_Engine.dir/flags.make
+CMakeFiles/GPU_Rendering_Engine.dir/home/calst/Documents/year4/thesis/monte_carlo_raytracer/NN_Builders/dq_network.cu.o: /home/calst/Documents/year4/thesis/monte_carlo_raytracer/NN_Builders/dq_network.cu
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CUDA object CMakeFiles/GPU_Rendering_Engine.dir/home/calst/Documents/year4/thesis/monte_carlo_raytracer/NN_Builders/dq_network.cu.o"
+	/usr/local/cuda/bin/nvcc  $(CUDA_DEFINES) $(CUDA_INCLUDES) $(CUDA_FLAGS) -x cu -dc /home/calst/Documents/year4/thesis/monte_carlo_raytracer/NN_Builders/dq_network.cu -o CMakeFiles/GPU_Rendering_Engine.dir/home/calst/Documents/year4/thesis/monte_carlo_raytracer/NN_Builders/dq_network.cu.o
+
+CMakeFiles/GPU_Rendering_Engine.dir/home/calst/Documents/year4/thesis/monte_carlo_raytracer/NN_Builders/dq_network.cu.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CUDA source to CMakeFiles/GPU_Rendering_Engine.dir/home/calst/Documents/year4/thesis/monte_carlo_raytracer/NN_Builders/dq_network.cu.i"
+	$(CMAKE_COMMAND) -E cmake_unimplemented_variable CMAKE_CUDA_CREATE_PREPROCESSED_SOURCE
+
+CMakeFiles/GPU_Rendering_Engine.dir/home/calst/Documents/year4/thesis/monte_carlo_raytracer/NN_Builders/dq_network.cu.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CUDA source to assembly CMakeFiles/GPU_Rendering_Engine.dir/home/calst/Documents/year4/thesis/monte_carlo_raytracer/NN_Builders/dq_network.cu.s"
+	$(CMAKE_COMMAND) -E cmake_unimplemented_variable CMAKE_CUDA_CREATE_ASSEMBLY_SOURCE
+
+CMakeFiles/GPU_Rendering_Engine.dir/home/calst/Documents/year4/thesis/monte_carlo_raytracer/NN_Builders/fc_layer.cu.o: CMakeFiles/GPU_Rendering_Engine.dir/flags.make
+CMakeFiles/GPU_Rendering_Engine.dir/home/calst/Documents/year4/thesis/monte_carlo_raytracer/NN_Builders/fc_layer.cu.o: /home/calst/Documents/year4/thesis/monte_carlo_raytracer/NN_Builders/fc_layer.cu
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CUDA object CMakeFiles/GPU_Rendering_Engine.dir/home/calst/Documents/year4/thesis/monte_carlo_raytracer/NN_Builders/fc_layer.cu.o"
+	/usr/local/cuda/bin/nvcc  $(CUDA_DEFINES) $(CUDA_INCLUDES) $(CUDA_FLAGS) -x cu -dc /home/calst/Documents/year4/thesis/monte_carlo_raytracer/NN_Builders/fc_layer.cu -o CMakeFiles/GPU_Rendering_Engine.dir/home/calst/Documents/year4/thesis/monte_carlo_raytracer/NN_Builders/fc_layer.cu.o
+
+CMakeFiles/GPU_Rendering_Engine.dir/home/calst/Documents/year4/thesis/monte_carlo_raytracer/NN_Builders/fc_layer.cu.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CUDA source to CMakeFiles/GPU_Rendering_Engine.dir/home/calst/Documents/year4/thesis/monte_carlo_raytracer/NN_Builders/fc_layer.cu.i"
+	$(CMAKE_COMMAND) -E cmake_unimplemented_variable CMAKE_CUDA_CREATE_PREPROCESSED_SOURCE
+
+CMakeFiles/GPU_Rendering_Engine.dir/home/calst/Documents/year4/thesis/monte_carlo_raytracer/NN_Builders/fc_layer.cu.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CUDA source to assembly CMakeFiles/GPU_Rendering_Engine.dir/home/calst/Documents/year4/thesis/monte_carlo_raytracer/NN_Builders/fc_layer.cu.s"
+	$(CMAKE_COMMAND) -E cmake_unimplemented_variable CMAKE_CUDA_CREATE_ASSEMBLY_SOURCE
+
 CMakeFiles/GPU_Rendering_Engine.dir/Source/main.cu.o: CMakeFiles/GPU_Rendering_Engine.dir/flags.make
 CMakeFiles/GPU_Rendering_Engine.dir/Source/main.cu.o: Source/main.cu
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CUDA object CMakeFiles/GPU_Rendering_Engine.dir/Source/main.cu.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CUDA object CMakeFiles/GPU_Rendering_Engine.dir/Source/main.cu.o"
 	/usr/local/cuda/bin/nvcc  $(CUDA_DEFINES) $(CUDA_INCLUDES) $(CUDA_FLAGS) -x cu -dc /home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/Source/main.cu -o CMakeFiles/GPU_Rendering_Engine.dir/Source/main.cu.o
 
 CMakeFiles/GPU_Rendering_Engine.dir/Source/main.cu.i: cmake_force
@@ -72,7 +98,7 @@ CMakeFiles/GPU_Rendering_Engine.dir/Source/main.cu.s: cmake_force
 
 CMakeFiles/GPU_Rendering_Engine.dir/Source/camera.cu.o: CMakeFiles/GPU_Rendering_Engine.dir/flags.make
 CMakeFiles/GPU_Rendering_Engine.dir/Source/camera.cu.o: Source/camera.cu
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CUDA object CMakeFiles/GPU_Rendering_Engine.dir/Source/camera.cu.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CUDA object CMakeFiles/GPU_Rendering_Engine.dir/Source/camera.cu.o"
 	/usr/local/cuda/bin/nvcc  $(CUDA_DEFINES) $(CUDA_INCLUDES) $(CUDA_FLAGS) -x cu -dc /home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/Source/camera.cu -o CMakeFiles/GPU_Rendering_Engine.dir/Source/camera.cu.o
 
 CMakeFiles/GPU_Rendering_Engine.dir/Source/camera.cu.i: cmake_force
@@ -85,7 +111,7 @@ CMakeFiles/GPU_Rendering_Engine.dir/Source/camera.cu.s: cmake_force
 
 CMakeFiles/GPU_Rendering_Engine.dir/Source/sdl/sdl_screen.cpp.o: CMakeFiles/GPU_Rendering_Engine.dir/flags.make
 CMakeFiles/GPU_Rendering_Engine.dir/Source/sdl/sdl_screen.cpp.o: Source/sdl/sdl_screen.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/GPU_Rendering_Engine.dir/Source/sdl/sdl_screen.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/GPU_Rendering_Engine.dir/Source/sdl/sdl_screen.cpp.o"
 	nvcc  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/GPU_Rendering_Engine.dir/Source/sdl/sdl_screen.cpp.o -c /home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/Source/sdl/sdl_screen.cpp
 
 CMakeFiles/GPU_Rendering_Engine.dir/Source/sdl/sdl_screen.cpp.i: cmake_force
@@ -98,7 +124,7 @@ CMakeFiles/GPU_Rendering_Engine.dir/Source/sdl/sdl_screen.cpp.s: cmake_force
 
 CMakeFiles/GPU_Rendering_Engine.dir/Source/rays/ray.cu.o: CMakeFiles/GPU_Rendering_Engine.dir/flags.make
 CMakeFiles/GPU_Rendering_Engine.dir/Source/rays/ray.cu.o: Source/rays/ray.cu
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CUDA object CMakeFiles/GPU_Rendering_Engine.dir/Source/rays/ray.cu.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CUDA object CMakeFiles/GPU_Rendering_Engine.dir/Source/rays/ray.cu.o"
 	/usr/local/cuda/bin/nvcc  $(CUDA_DEFINES) $(CUDA_INCLUDES) $(CUDA_FLAGS) -x cu -dc /home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/Source/rays/ray.cu -o CMakeFiles/GPU_Rendering_Engine.dir/Source/rays/ray.cu.o
 
 CMakeFiles/GPU_Rendering_Engine.dir/Source/rays/ray.cu.i: cmake_force
@@ -111,7 +137,7 @@ CMakeFiles/GPU_Rendering_Engine.dir/Source/rays/ray.cu.s: cmake_force
 
 CMakeFiles/GPU_Rendering_Engine.dir/Source/objects/material.cu.o: CMakeFiles/GPU_Rendering_Engine.dir/flags.make
 CMakeFiles/GPU_Rendering_Engine.dir/Source/objects/material.cu.o: Source/objects/material.cu
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CUDA object CMakeFiles/GPU_Rendering_Engine.dir/Source/objects/material.cu.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CUDA object CMakeFiles/GPU_Rendering_Engine.dir/Source/objects/material.cu.o"
 	/usr/local/cuda/bin/nvcc  $(CUDA_DEFINES) $(CUDA_INCLUDES) $(CUDA_FLAGS) -x cu -dc /home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/Source/objects/material.cu -o CMakeFiles/GPU_Rendering_Engine.dir/Source/objects/material.cu.o
 
 CMakeFiles/GPU_Rendering_Engine.dir/Source/objects/material.cu.i: cmake_force
@@ -124,7 +150,7 @@ CMakeFiles/GPU_Rendering_Engine.dir/Source/objects/material.cu.s: cmake_force
 
 CMakeFiles/GPU_Rendering_Engine.dir/Source/objects/shape.cu.o: CMakeFiles/GPU_Rendering_Engine.dir/flags.make
 CMakeFiles/GPU_Rendering_Engine.dir/Source/objects/shape.cu.o: Source/objects/shape.cu
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CUDA object CMakeFiles/GPU_Rendering_Engine.dir/Source/objects/shape.cu.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CUDA object CMakeFiles/GPU_Rendering_Engine.dir/Source/objects/shape.cu.o"
 	/usr/local/cuda/bin/nvcc  $(CUDA_DEFINES) $(CUDA_INCLUDES) $(CUDA_FLAGS) -x cu -dc /home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/Source/objects/shape.cu -o CMakeFiles/GPU_Rendering_Engine.dir/Source/objects/shape.cu.o
 
 CMakeFiles/GPU_Rendering_Engine.dir/Source/objects/shape.cu.i: cmake_force
@@ -137,7 +163,7 @@ CMakeFiles/GPU_Rendering_Engine.dir/Source/objects/shape.cu.s: cmake_force
 
 CMakeFiles/GPU_Rendering_Engine.dir/Source/objects/triangle.cu.o: CMakeFiles/GPU_Rendering_Engine.dir/flags.make
 CMakeFiles/GPU_Rendering_Engine.dir/Source/objects/triangle.cu.o: Source/objects/triangle.cu
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CUDA object CMakeFiles/GPU_Rendering_Engine.dir/Source/objects/triangle.cu.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CUDA object CMakeFiles/GPU_Rendering_Engine.dir/Source/objects/triangle.cu.o"
 	/usr/local/cuda/bin/nvcc  $(CUDA_DEFINES) $(CUDA_INCLUDES) $(CUDA_FLAGS) -x cu -dc /home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/Source/objects/triangle.cu -o CMakeFiles/GPU_Rendering_Engine.dir/Source/objects/triangle.cu.o
 
 CMakeFiles/GPU_Rendering_Engine.dir/Source/objects/triangle.cu.i: cmake_force
@@ -150,7 +176,7 @@ CMakeFiles/GPU_Rendering_Engine.dir/Source/objects/triangle.cu.s: cmake_force
 
 CMakeFiles/GPU_Rendering_Engine.dir/Source/objects/surface.cu.o: CMakeFiles/GPU_Rendering_Engine.dir/flags.make
 CMakeFiles/GPU_Rendering_Engine.dir/Source/objects/surface.cu.o: Source/objects/surface.cu
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CUDA object CMakeFiles/GPU_Rendering_Engine.dir/Source/objects/surface.cu.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CUDA object CMakeFiles/GPU_Rendering_Engine.dir/Source/objects/surface.cu.o"
 	/usr/local/cuda/bin/nvcc  $(CUDA_DEFINES) $(CUDA_INCLUDES) $(CUDA_FLAGS) -x cu -dc /home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/Source/objects/surface.cu -o CMakeFiles/GPU_Rendering_Engine.dir/Source/objects/surface.cu.o
 
 CMakeFiles/GPU_Rendering_Engine.dir/Source/objects/surface.cu.i: cmake_force
@@ -163,7 +189,7 @@ CMakeFiles/GPU_Rendering_Engine.dir/Source/objects/surface.cu.s: cmake_force
 
 CMakeFiles/GPU_Rendering_Engine.dir/Source/objects/object_importer.cu.o: CMakeFiles/GPU_Rendering_Engine.dir/flags.make
 CMakeFiles/GPU_Rendering_Engine.dir/Source/objects/object_importer.cu.o: Source/objects/object_importer.cu
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CUDA object CMakeFiles/GPU_Rendering_Engine.dir/Source/objects/object_importer.cu.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CUDA object CMakeFiles/GPU_Rendering_Engine.dir/Source/objects/object_importer.cu.o"
 	/usr/local/cuda/bin/nvcc  $(CUDA_DEFINES) $(CUDA_INCLUDES) $(CUDA_FLAGS) -x cu -dc /home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/Source/objects/object_importer.cu -o CMakeFiles/GPU_Rendering_Engine.dir/Source/objects/object_importer.cu.o
 
 CMakeFiles/GPU_Rendering_Engine.dir/Source/objects/object_importer.cu.i: cmake_force
@@ -176,7 +202,7 @@ CMakeFiles/GPU_Rendering_Engine.dir/Source/objects/object_importer.cu.s: cmake_f
 
 CMakeFiles/GPU_Rendering_Engine.dir/Source/radiance_volumes/radiance_volume.cu.o: CMakeFiles/GPU_Rendering_Engine.dir/flags.make
 CMakeFiles/GPU_Rendering_Engine.dir/Source/radiance_volumes/radiance_volume.cu.o: Source/radiance_volumes/radiance_volume.cu
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CUDA object CMakeFiles/GPU_Rendering_Engine.dir/Source/radiance_volumes/radiance_volume.cu.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CUDA object CMakeFiles/GPU_Rendering_Engine.dir/Source/radiance_volumes/radiance_volume.cu.o"
 	/usr/local/cuda/bin/nvcc  $(CUDA_DEFINES) $(CUDA_INCLUDES) $(CUDA_FLAGS) -x cu -dc /home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/Source/radiance_volumes/radiance_volume.cu -o CMakeFiles/GPU_Rendering_Engine.dir/Source/radiance_volumes/radiance_volume.cu.o
 
 CMakeFiles/GPU_Rendering_Engine.dir/Source/radiance_volumes/radiance_volume.cu.i: cmake_force
@@ -189,7 +215,7 @@ CMakeFiles/GPU_Rendering_Engine.dir/Source/radiance_volumes/radiance_volume.cu.s
 
 CMakeFiles/GPU_Rendering_Engine.dir/Source/radiance_volumes/radiance_volume_comparator.cu.o: CMakeFiles/GPU_Rendering_Engine.dir/flags.make
 CMakeFiles/GPU_Rendering_Engine.dir/Source/radiance_volumes/radiance_volume_comparator.cu.o: Source/radiance_volumes/radiance_volume_comparator.cu
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CUDA object CMakeFiles/GPU_Rendering_Engine.dir/Source/radiance_volumes/radiance_volume_comparator.cu.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CUDA object CMakeFiles/GPU_Rendering_Engine.dir/Source/radiance_volumes/radiance_volume_comparator.cu.o"
 	/usr/local/cuda/bin/nvcc  $(CUDA_DEFINES) $(CUDA_INCLUDES) $(CUDA_FLAGS) -x cu -dc /home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/Source/radiance_volumes/radiance_volume_comparator.cu -o CMakeFiles/GPU_Rendering_Engine.dir/Source/radiance_volumes/radiance_volume_comparator.cu.o
 
 CMakeFiles/GPU_Rendering_Engine.dir/Source/radiance_volumes/radiance_volume_comparator.cu.i: cmake_force
@@ -202,7 +228,7 @@ CMakeFiles/GPU_Rendering_Engine.dir/Source/radiance_volumes/radiance_volume_comp
 
 CMakeFiles/GPU_Rendering_Engine.dir/Source/radiance_volumes/radiance_tree.cu.o: CMakeFiles/GPU_Rendering_Engine.dir/flags.make
 CMakeFiles/GPU_Rendering_Engine.dir/Source/radiance_volumes/radiance_tree.cu.o: Source/radiance_volumes/radiance_tree.cu
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CUDA object CMakeFiles/GPU_Rendering_Engine.dir/Source/radiance_volumes/radiance_tree.cu.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CUDA object CMakeFiles/GPU_Rendering_Engine.dir/Source/radiance_volumes/radiance_tree.cu.o"
 	/usr/local/cuda/bin/nvcc  $(CUDA_DEFINES) $(CUDA_INCLUDES) $(CUDA_FLAGS) -x cu -dc /home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/Source/radiance_volumes/radiance_tree.cu -o CMakeFiles/GPU_Rendering_Engine.dir/Source/radiance_volumes/radiance_tree.cu.o
 
 CMakeFiles/GPU_Rendering_Engine.dir/Source/radiance_volumes/radiance_tree.cu.i: cmake_force
@@ -215,7 +241,7 @@ CMakeFiles/GPU_Rendering_Engine.dir/Source/radiance_volumes/radiance_tree.cu.s: 
 
 CMakeFiles/GPU_Rendering_Engine.dir/Source/radiance_volumes/radiance_map.cu.o: CMakeFiles/GPU_Rendering_Engine.dir/flags.make
 CMakeFiles/GPU_Rendering_Engine.dir/Source/radiance_volumes/radiance_map.cu.o: Source/radiance_volumes/radiance_map.cu
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CUDA object CMakeFiles/GPU_Rendering_Engine.dir/Source/radiance_volumes/radiance_map.cu.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CUDA object CMakeFiles/GPU_Rendering_Engine.dir/Source/radiance_volumes/radiance_map.cu.o"
 	/usr/local/cuda/bin/nvcc  $(CUDA_DEFINES) $(CUDA_INCLUDES) $(CUDA_FLAGS) -x cu -dc /home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/Source/radiance_volumes/radiance_map.cu -o CMakeFiles/GPU_Rendering_Engine.dir/Source/radiance_volumes/radiance_map.cu.o
 
 CMakeFiles/GPU_Rendering_Engine.dir/Source/radiance_volumes/radiance_map.cu.i: cmake_force
@@ -228,7 +254,7 @@ CMakeFiles/GPU_Rendering_Engine.dir/Source/radiance_volumes/radiance_map.cu.s: c
 
 CMakeFiles/GPU_Rendering_Engine.dir/Source/scenes/cornell_box_scene.cu.o: CMakeFiles/GPU_Rendering_Engine.dir/flags.make
 CMakeFiles/GPU_Rendering_Engine.dir/Source/scenes/cornell_box_scene.cu.o: Source/scenes/cornell_box_scene.cu
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CUDA object CMakeFiles/GPU_Rendering_Engine.dir/Source/scenes/cornell_box_scene.cu.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building CUDA object CMakeFiles/GPU_Rendering_Engine.dir/Source/scenes/cornell_box_scene.cu.o"
 	/usr/local/cuda/bin/nvcc  $(CUDA_DEFINES) $(CUDA_INCLUDES) $(CUDA_FLAGS) -x cu -dc /home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/Source/scenes/cornell_box_scene.cu -o CMakeFiles/GPU_Rendering_Engine.dir/Source/scenes/cornell_box_scene.cu.o
 
 CMakeFiles/GPU_Rendering_Engine.dir/Source/scenes/cornell_box_scene.cu.i: cmake_force
@@ -241,7 +267,7 @@ CMakeFiles/GPU_Rendering_Engine.dir/Source/scenes/cornell_box_scene.cu.s: cmake_
 
 CMakeFiles/GPU_Rendering_Engine.dir/Source/scenes/scene.cu.o: CMakeFiles/GPU_Rendering_Engine.dir/flags.make
 CMakeFiles/GPU_Rendering_Engine.dir/Source/scenes/scene.cu.o: Source/scenes/scene.cu
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CUDA object CMakeFiles/GPU_Rendering_Engine.dir/Source/scenes/scene.cu.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Building CUDA object CMakeFiles/GPU_Rendering_Engine.dir/Source/scenes/scene.cu.o"
 	/usr/local/cuda/bin/nvcc  $(CUDA_DEFINES) $(CUDA_INCLUDES) $(CUDA_FLAGS) -x cu -dc /home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/Source/scenes/scene.cu -o CMakeFiles/GPU_Rendering_Engine.dir/Source/scenes/scene.cu.o
 
 CMakeFiles/GPU_Rendering_Engine.dir/Source/scenes/scene.cu.i: cmake_force
@@ -254,7 +280,7 @@ CMakeFiles/GPU_Rendering_Engine.dir/Source/scenes/scene.cu.s: cmake_force
 
 CMakeFiles/GPU_Rendering_Engine.dir/Source/utils/printing.cpp.o: CMakeFiles/GPU_Rendering_Engine.dir/flags.make
 CMakeFiles/GPU_Rendering_Engine.dir/Source/utils/printing.cpp.o: Source/utils/printing.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building CXX object CMakeFiles/GPU_Rendering_Engine.dir/Source/utils/printing.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Building CXX object CMakeFiles/GPU_Rendering_Engine.dir/Source/utils/printing.cpp.o"
 	nvcc  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/GPU_Rendering_Engine.dir/Source/utils/printing.cpp.o -c /home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/Source/utils/printing.cpp
 
 CMakeFiles/GPU_Rendering_Engine.dir/Source/utils/printing.cpp.i: cmake_force
@@ -267,7 +293,7 @@ CMakeFiles/GPU_Rendering_Engine.dir/Source/utils/printing.cpp.s: cmake_force
 
 CMakeFiles/GPU_Rendering_Engine.dir/Source/utils/hemisphere_helpers.cu.o: CMakeFiles/GPU_Rendering_Engine.dir/flags.make
 CMakeFiles/GPU_Rendering_Engine.dir/Source/utils/hemisphere_helpers.cu.o: Source/utils/hemisphere_helpers.cu
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Building CUDA object CMakeFiles/GPU_Rendering_Engine.dir/Source/utils/hemisphere_helpers.cu.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/CMakeFiles --progress-num=$(CMAKE_PROGRESS_19) "Building CUDA object CMakeFiles/GPU_Rendering_Engine.dir/Source/utils/hemisphere_helpers.cu.o"
 	/usr/local/cuda/bin/nvcc  $(CUDA_DEFINES) $(CUDA_INCLUDES) $(CUDA_FLAGS) -x cu -dc /home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/Source/utils/hemisphere_helpers.cu -o CMakeFiles/GPU_Rendering_Engine.dir/Source/utils/hemisphere_helpers.cu.o
 
 CMakeFiles/GPU_Rendering_Engine.dir/Source/utils/hemisphere_helpers.cu.i: cmake_force
@@ -280,7 +306,7 @@ CMakeFiles/GPU_Rendering_Engine.dir/Source/utils/hemisphere_helpers.cu.s: cmake_
 
 CMakeFiles/GPU_Rendering_Engine.dir/Source/utils/stack.cu.o: CMakeFiles/GPU_Rendering_Engine.dir/flags.make
 CMakeFiles/GPU_Rendering_Engine.dir/Source/utils/stack.cu.o: Source/utils/stack.cu
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Building CUDA object CMakeFiles/GPU_Rendering_Engine.dir/Source/utils/stack.cu.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/CMakeFiles --progress-num=$(CMAKE_PROGRESS_20) "Building CUDA object CMakeFiles/GPU_Rendering_Engine.dir/Source/utils/stack.cu.o"
 	/usr/local/cuda/bin/nvcc  $(CUDA_DEFINES) $(CUDA_INCLUDES) $(CUDA_FLAGS) -x cu -dc /home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/Source/utils/stack.cu -o CMakeFiles/GPU_Rendering_Engine.dir/Source/utils/stack.cu.o
 
 CMakeFiles/GPU_Rendering_Engine.dir/Source/utils/stack.cu.i: cmake_force
@@ -293,7 +319,7 @@ CMakeFiles/GPU_Rendering_Engine.dir/Source/utils/stack.cu.s: cmake_force
 
 CMakeFiles/GPU_Rendering_Engine.dir/Source/utils/cuda_helpers.cu.o: CMakeFiles/GPU_Rendering_Engine.dir/flags.make
 CMakeFiles/GPU_Rendering_Engine.dir/Source/utils/cuda_helpers.cu.o: Source/utils/cuda_helpers.cu
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/CMakeFiles --progress-num=$(CMAKE_PROGRESS_19) "Building CUDA object CMakeFiles/GPU_Rendering_Engine.dir/Source/utils/cuda_helpers.cu.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/CMakeFiles --progress-num=$(CMAKE_PROGRESS_21) "Building CUDA object CMakeFiles/GPU_Rendering_Engine.dir/Source/utils/cuda_helpers.cu.o"
 	/usr/local/cuda/bin/nvcc  $(CUDA_DEFINES) $(CUDA_INCLUDES) $(CUDA_FLAGS) -x cu -dc /home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/Source/utils/cuda_helpers.cu -o CMakeFiles/GPU_Rendering_Engine.dir/Source/utils/cuda_helpers.cu.o
 
 CMakeFiles/GPU_Rendering_Engine.dir/Source/utils/cuda_helpers.cu.i: cmake_force
@@ -306,7 +332,7 @@ CMakeFiles/GPU_Rendering_Engine.dir/Source/utils/cuda_helpers.cu.s: cmake_force
 
 CMakeFiles/GPU_Rendering_Engine.dir/Source/lights/area_light.cu.o: CMakeFiles/GPU_Rendering_Engine.dir/flags.make
 CMakeFiles/GPU_Rendering_Engine.dir/Source/lights/area_light.cu.o: Source/lights/area_light.cu
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/CMakeFiles --progress-num=$(CMAKE_PROGRESS_20) "Building CUDA object CMakeFiles/GPU_Rendering_Engine.dir/Source/lights/area_light.cu.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/CMakeFiles --progress-num=$(CMAKE_PROGRESS_22) "Building CUDA object CMakeFiles/GPU_Rendering_Engine.dir/Source/lights/area_light.cu.o"
 	/usr/local/cuda/bin/nvcc  $(CUDA_DEFINES) $(CUDA_INCLUDES) $(CUDA_FLAGS) -x cu -dc /home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/Source/lights/area_light.cu -o CMakeFiles/GPU_Rendering_Engine.dir/Source/lights/area_light.cu.o
 
 CMakeFiles/GPU_Rendering_Engine.dir/Source/lights/area_light.cu.i: cmake_force
@@ -319,7 +345,7 @@ CMakeFiles/GPU_Rendering_Engine.dir/Source/lights/area_light.cu.s: cmake_force
 
 CMakeFiles/GPU_Rendering_Engine.dir/Source/path_tracing/default_path_tracing.cu.o: CMakeFiles/GPU_Rendering_Engine.dir/flags.make
 CMakeFiles/GPU_Rendering_Engine.dir/Source/path_tracing/default_path_tracing.cu.o: Source/path_tracing/default_path_tracing.cu
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/CMakeFiles --progress-num=$(CMAKE_PROGRESS_21) "Building CUDA object CMakeFiles/GPU_Rendering_Engine.dir/Source/path_tracing/default_path_tracing.cu.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/CMakeFiles --progress-num=$(CMAKE_PROGRESS_23) "Building CUDA object CMakeFiles/GPU_Rendering_Engine.dir/Source/path_tracing/default_path_tracing.cu.o"
 	/usr/local/cuda/bin/nvcc  $(CUDA_DEFINES) $(CUDA_INCLUDES) $(CUDA_FLAGS) -x cu -dc /home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/Source/path_tracing/default_path_tracing.cu -o CMakeFiles/GPU_Rendering_Engine.dir/Source/path_tracing/default_path_tracing.cu.o
 
 CMakeFiles/GPU_Rendering_Engine.dir/Source/path_tracing/default_path_tracing.cu.i: cmake_force
@@ -332,7 +358,7 @@ CMakeFiles/GPU_Rendering_Engine.dir/Source/path_tracing/default_path_tracing.cu.
 
 CMakeFiles/GPU_Rendering_Engine.dir/Source/path_tracing/reinforcement_path_tracing.cu.o: CMakeFiles/GPU_Rendering_Engine.dir/flags.make
 CMakeFiles/GPU_Rendering_Engine.dir/Source/path_tracing/reinforcement_path_tracing.cu.o: Source/path_tracing/reinforcement_path_tracing.cu
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/CMakeFiles --progress-num=$(CMAKE_PROGRESS_22) "Building CUDA object CMakeFiles/GPU_Rendering_Engine.dir/Source/path_tracing/reinforcement_path_tracing.cu.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/CMakeFiles --progress-num=$(CMAKE_PROGRESS_24) "Building CUDA object CMakeFiles/GPU_Rendering_Engine.dir/Source/path_tracing/reinforcement_path_tracing.cu.o"
 	/usr/local/cuda/bin/nvcc  $(CUDA_DEFINES) $(CUDA_INCLUDES) $(CUDA_FLAGS) -x cu -dc /home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/Source/path_tracing/reinforcement_path_tracing.cu -o CMakeFiles/GPU_Rendering_Engine.dir/Source/path_tracing/reinforcement_path_tracing.cu.o
 
 CMakeFiles/GPU_Rendering_Engine.dir/Source/path_tracing/reinforcement_path_tracing.cu.i: cmake_force
@@ -345,7 +371,7 @@ CMakeFiles/GPU_Rendering_Engine.dir/Source/path_tracing/reinforcement_path_traci
 
 CMakeFiles/GPU_Rendering_Engine.dir/Source/path_tracing/voronoi_trace.cu.o: CMakeFiles/GPU_Rendering_Engine.dir/flags.make
 CMakeFiles/GPU_Rendering_Engine.dir/Source/path_tracing/voronoi_trace.cu.o: Source/path_tracing/voronoi_trace.cu
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/CMakeFiles --progress-num=$(CMAKE_PROGRESS_23) "Building CUDA object CMakeFiles/GPU_Rendering_Engine.dir/Source/path_tracing/voronoi_trace.cu.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/CMakeFiles --progress-num=$(CMAKE_PROGRESS_25) "Building CUDA object CMakeFiles/GPU_Rendering_Engine.dir/Source/path_tracing/voronoi_trace.cu.o"
 	/usr/local/cuda/bin/nvcc  $(CUDA_DEFINES) $(CUDA_INCLUDES) $(CUDA_FLAGS) -x cu -dc /home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/Source/path_tracing/voronoi_trace.cu -o CMakeFiles/GPU_Rendering_Engine.dir/Source/path_tracing/voronoi_trace.cu.o
 
 CMakeFiles/GPU_Rendering_Engine.dir/Source/path_tracing/voronoi_trace.cu.i: cmake_force
@@ -354,32 +380,6 @@ CMakeFiles/GPU_Rendering_Engine.dir/Source/path_tracing/voronoi_trace.cu.i: cmak
 
 CMakeFiles/GPU_Rendering_Engine.dir/Source/path_tracing/voronoi_trace.cu.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CUDA source to assembly CMakeFiles/GPU_Rendering_Engine.dir/Source/path_tracing/voronoi_trace.cu.s"
-	$(CMAKE_COMMAND) -E cmake_unimplemented_variable CMAKE_CUDA_CREATE_ASSEMBLY_SOURCE
-
-CMakeFiles/GPU_Rendering_Engine.dir/Source/deep_learning/dq_network.cu.o: CMakeFiles/GPU_Rendering_Engine.dir/flags.make
-CMakeFiles/GPU_Rendering_Engine.dir/Source/deep_learning/dq_network.cu.o: Source/deep_learning/dq_network.cu
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/CMakeFiles --progress-num=$(CMAKE_PROGRESS_24) "Building CUDA object CMakeFiles/GPU_Rendering_Engine.dir/Source/deep_learning/dq_network.cu.o"
-	/usr/local/cuda/bin/nvcc  $(CUDA_DEFINES) $(CUDA_INCLUDES) $(CUDA_FLAGS) -x cu -dc /home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/Source/deep_learning/dq_network.cu -o CMakeFiles/GPU_Rendering_Engine.dir/Source/deep_learning/dq_network.cu.o
-
-CMakeFiles/GPU_Rendering_Engine.dir/Source/deep_learning/dq_network.cu.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CUDA source to CMakeFiles/GPU_Rendering_Engine.dir/Source/deep_learning/dq_network.cu.i"
-	$(CMAKE_COMMAND) -E cmake_unimplemented_variable CMAKE_CUDA_CREATE_PREPROCESSED_SOURCE
-
-CMakeFiles/GPU_Rendering_Engine.dir/Source/deep_learning/dq_network.cu.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CUDA source to assembly CMakeFiles/GPU_Rendering_Engine.dir/Source/deep_learning/dq_network.cu.s"
-	$(CMAKE_COMMAND) -E cmake_unimplemented_variable CMAKE_CUDA_CREATE_ASSEMBLY_SOURCE
-
-CMakeFiles/GPU_Rendering_Engine.dir/Source/deep_learning/fc_layer.cu.o: CMakeFiles/GPU_Rendering_Engine.dir/flags.make
-CMakeFiles/GPU_Rendering_Engine.dir/Source/deep_learning/fc_layer.cu.o: Source/deep_learning/fc_layer.cu
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/CMakeFiles --progress-num=$(CMAKE_PROGRESS_25) "Building CUDA object CMakeFiles/GPU_Rendering_Engine.dir/Source/deep_learning/fc_layer.cu.o"
-	/usr/local/cuda/bin/nvcc  $(CUDA_DEFINES) $(CUDA_INCLUDES) $(CUDA_FLAGS) -x cu -dc /home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/Source/deep_learning/fc_layer.cu -o CMakeFiles/GPU_Rendering_Engine.dir/Source/deep_learning/fc_layer.cu.o
-
-CMakeFiles/GPU_Rendering_Engine.dir/Source/deep_learning/fc_layer.cu.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CUDA source to CMakeFiles/GPU_Rendering_Engine.dir/Source/deep_learning/fc_layer.cu.i"
-	$(CMAKE_COMMAND) -E cmake_unimplemented_variable CMAKE_CUDA_CREATE_PREPROCESSED_SOURCE
-
-CMakeFiles/GPU_Rendering_Engine.dir/Source/deep_learning/fc_layer.cu.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CUDA source to assembly CMakeFiles/GPU_Rendering_Engine.dir/Source/deep_learning/fc_layer.cu.s"
 	$(CMAKE_COMMAND) -E cmake_unimplemented_variable CMAKE_CUDA_CREATE_ASSEMBLY_SOURCE
 
 CMakeFiles/GPU_Rendering_Engine.dir/Source/deep_learning/neural_q_pathtracer.cu.o: CMakeFiles/GPU_Rendering_Engine.dir/flags.make
@@ -395,8 +395,23 @@ CMakeFiles/GPU_Rendering_Engine.dir/Source/deep_learning/neural_q_pathtracer.cu.
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CUDA source to assembly CMakeFiles/GPU_Rendering_Engine.dir/Source/deep_learning/neural_q_pathtracer.cu.s"
 	$(CMAKE_COMMAND) -E cmake_unimplemented_variable CMAKE_CUDA_CREATE_ASSEMBLY_SOURCE
 
+CMakeFiles/GPU_Rendering_Engine.dir/Source/deep_learning/pre_trained_pathtracer.cu.o: CMakeFiles/GPU_Rendering_Engine.dir/flags.make
+CMakeFiles/GPU_Rendering_Engine.dir/Source/deep_learning/pre_trained_pathtracer.cu.o: Source/deep_learning/pre_trained_pathtracer.cu
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/CMakeFiles --progress-num=$(CMAKE_PROGRESS_27) "Building CUDA object CMakeFiles/GPU_Rendering_Engine.dir/Source/deep_learning/pre_trained_pathtracer.cu.o"
+	/usr/local/cuda/bin/nvcc  $(CUDA_DEFINES) $(CUDA_INCLUDES) $(CUDA_FLAGS) -x cu -dc /home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/Source/deep_learning/pre_trained_pathtracer.cu -o CMakeFiles/GPU_Rendering_Engine.dir/Source/deep_learning/pre_trained_pathtracer.cu.o
+
+CMakeFiles/GPU_Rendering_Engine.dir/Source/deep_learning/pre_trained_pathtracer.cu.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CUDA source to CMakeFiles/GPU_Rendering_Engine.dir/Source/deep_learning/pre_trained_pathtracer.cu.i"
+	$(CMAKE_COMMAND) -E cmake_unimplemented_variable CMAKE_CUDA_CREATE_PREPROCESSED_SOURCE
+
+CMakeFiles/GPU_Rendering_Engine.dir/Source/deep_learning/pre_trained_pathtracer.cu.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CUDA source to assembly CMakeFiles/GPU_Rendering_Engine.dir/Source/deep_learning/pre_trained_pathtracer.cu.s"
+	$(CMAKE_COMMAND) -E cmake_unimplemented_variable CMAKE_CUDA_CREATE_ASSEMBLY_SOURCE
+
 # Object files for target GPU_Rendering_Engine
 GPU_Rendering_Engine_OBJECTS = \
+"CMakeFiles/GPU_Rendering_Engine.dir/home/calst/Documents/year4/thesis/monte_carlo_raytracer/NN_Builders/dq_network.cu.o" \
+"CMakeFiles/GPU_Rendering_Engine.dir/home/calst/Documents/year4/thesis/monte_carlo_raytracer/NN_Builders/fc_layer.cu.o" \
 "CMakeFiles/GPU_Rendering_Engine.dir/Source/main.cu.o" \
 "CMakeFiles/GPU_Rendering_Engine.dir/Source/camera.cu.o" \
 "CMakeFiles/GPU_Rendering_Engine.dir/Source/sdl/sdl_screen.cpp.o" \
@@ -420,13 +435,14 @@ GPU_Rendering_Engine_OBJECTS = \
 "CMakeFiles/GPU_Rendering_Engine.dir/Source/path_tracing/default_path_tracing.cu.o" \
 "CMakeFiles/GPU_Rendering_Engine.dir/Source/path_tracing/reinforcement_path_tracing.cu.o" \
 "CMakeFiles/GPU_Rendering_Engine.dir/Source/path_tracing/voronoi_trace.cu.o" \
-"CMakeFiles/GPU_Rendering_Engine.dir/Source/deep_learning/dq_network.cu.o" \
-"CMakeFiles/GPU_Rendering_Engine.dir/Source/deep_learning/fc_layer.cu.o" \
-"CMakeFiles/GPU_Rendering_Engine.dir/Source/deep_learning/neural_q_pathtracer.cu.o"
+"CMakeFiles/GPU_Rendering_Engine.dir/Source/deep_learning/neural_q_pathtracer.cu.o" \
+"CMakeFiles/GPU_Rendering_Engine.dir/Source/deep_learning/pre_trained_pathtracer.cu.o"
 
 # External object files for target GPU_Rendering_Engine
 GPU_Rendering_Engine_EXTERNAL_OBJECTS =
 
+CMakeFiles/GPU_Rendering_Engine.dir/cmake_device_link.o: CMakeFiles/GPU_Rendering_Engine.dir/home/calst/Documents/year4/thesis/monte_carlo_raytracer/NN_Builders/dq_network.cu.o
+CMakeFiles/GPU_Rendering_Engine.dir/cmake_device_link.o: CMakeFiles/GPU_Rendering_Engine.dir/home/calst/Documents/year4/thesis/monte_carlo_raytracer/NN_Builders/fc_layer.cu.o
 CMakeFiles/GPU_Rendering_Engine.dir/cmake_device_link.o: CMakeFiles/GPU_Rendering_Engine.dir/Source/main.cu.o
 CMakeFiles/GPU_Rendering_Engine.dir/cmake_device_link.o: CMakeFiles/GPU_Rendering_Engine.dir/Source/camera.cu.o
 CMakeFiles/GPU_Rendering_Engine.dir/cmake_device_link.o: CMakeFiles/GPU_Rendering_Engine.dir/Source/sdl/sdl_screen.cpp.o
@@ -450,12 +466,11 @@ CMakeFiles/GPU_Rendering_Engine.dir/cmake_device_link.o: CMakeFiles/GPU_Renderin
 CMakeFiles/GPU_Rendering_Engine.dir/cmake_device_link.o: CMakeFiles/GPU_Rendering_Engine.dir/Source/path_tracing/default_path_tracing.cu.o
 CMakeFiles/GPU_Rendering_Engine.dir/cmake_device_link.o: CMakeFiles/GPU_Rendering_Engine.dir/Source/path_tracing/reinforcement_path_tracing.cu.o
 CMakeFiles/GPU_Rendering_Engine.dir/cmake_device_link.o: CMakeFiles/GPU_Rendering_Engine.dir/Source/path_tracing/voronoi_trace.cu.o
-CMakeFiles/GPU_Rendering_Engine.dir/cmake_device_link.o: CMakeFiles/GPU_Rendering_Engine.dir/Source/deep_learning/dq_network.cu.o
-CMakeFiles/GPU_Rendering_Engine.dir/cmake_device_link.o: CMakeFiles/GPU_Rendering_Engine.dir/Source/deep_learning/fc_layer.cu.o
 CMakeFiles/GPU_Rendering_Engine.dir/cmake_device_link.o: CMakeFiles/GPU_Rendering_Engine.dir/Source/deep_learning/neural_q_pathtracer.cu.o
+CMakeFiles/GPU_Rendering_Engine.dir/cmake_device_link.o: CMakeFiles/GPU_Rendering_Engine.dir/Source/deep_learning/pre_trained_pathtracer.cu.o
 CMakeFiles/GPU_Rendering_Engine.dir/cmake_device_link.o: CMakeFiles/GPU_Rendering_Engine.dir/build.make
 CMakeFiles/GPU_Rendering_Engine.dir/cmake_device_link.o: CMakeFiles/GPU_Rendering_Engine.dir/dlink.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/CMakeFiles --progress-num=$(CMAKE_PROGRESS_27) "Linking CUDA device code CMakeFiles/GPU_Rendering_Engine.dir/cmake_device_link.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/CMakeFiles --progress-num=$(CMAKE_PROGRESS_28) "Linking CUDA device code CMakeFiles/GPU_Rendering_Engine.dir/cmake_device_link.o"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/GPU_Rendering_Engine.dir/dlink.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -465,6 +480,8 @@ CMakeFiles/GPU_Rendering_Engine.dir/build: CMakeFiles/GPU_Rendering_Engine.dir/c
 
 # Object files for target GPU_Rendering_Engine
 GPU_Rendering_Engine_OBJECTS = \
+"CMakeFiles/GPU_Rendering_Engine.dir/home/calst/Documents/year4/thesis/monte_carlo_raytracer/NN_Builders/dq_network.cu.o" \
+"CMakeFiles/GPU_Rendering_Engine.dir/home/calst/Documents/year4/thesis/monte_carlo_raytracer/NN_Builders/fc_layer.cu.o" \
 "CMakeFiles/GPU_Rendering_Engine.dir/Source/main.cu.o" \
 "CMakeFiles/GPU_Rendering_Engine.dir/Source/camera.cu.o" \
 "CMakeFiles/GPU_Rendering_Engine.dir/Source/sdl/sdl_screen.cpp.o" \
@@ -488,13 +505,14 @@ GPU_Rendering_Engine_OBJECTS = \
 "CMakeFiles/GPU_Rendering_Engine.dir/Source/path_tracing/default_path_tracing.cu.o" \
 "CMakeFiles/GPU_Rendering_Engine.dir/Source/path_tracing/reinforcement_path_tracing.cu.o" \
 "CMakeFiles/GPU_Rendering_Engine.dir/Source/path_tracing/voronoi_trace.cu.o" \
-"CMakeFiles/GPU_Rendering_Engine.dir/Source/deep_learning/dq_network.cu.o" \
-"CMakeFiles/GPU_Rendering_Engine.dir/Source/deep_learning/fc_layer.cu.o" \
-"CMakeFiles/GPU_Rendering_Engine.dir/Source/deep_learning/neural_q_pathtracer.cu.o"
+"CMakeFiles/GPU_Rendering_Engine.dir/Source/deep_learning/neural_q_pathtracer.cu.o" \
+"CMakeFiles/GPU_Rendering_Engine.dir/Source/deep_learning/pre_trained_pathtracer.cu.o"
 
 # External object files for target GPU_Rendering_Engine
 GPU_Rendering_Engine_EXTERNAL_OBJECTS =
 
+Build/GPU_Rendering_Engine: CMakeFiles/GPU_Rendering_Engine.dir/home/calst/Documents/year4/thesis/monte_carlo_raytracer/NN_Builders/dq_network.cu.o
+Build/GPU_Rendering_Engine: CMakeFiles/GPU_Rendering_Engine.dir/home/calst/Documents/year4/thesis/monte_carlo_raytracer/NN_Builders/fc_layer.cu.o
 Build/GPU_Rendering_Engine: CMakeFiles/GPU_Rendering_Engine.dir/Source/main.cu.o
 Build/GPU_Rendering_Engine: CMakeFiles/GPU_Rendering_Engine.dir/Source/camera.cu.o
 Build/GPU_Rendering_Engine: CMakeFiles/GPU_Rendering_Engine.dir/Source/sdl/sdl_screen.cpp.o
@@ -518,13 +536,12 @@ Build/GPU_Rendering_Engine: CMakeFiles/GPU_Rendering_Engine.dir/Source/lights/ar
 Build/GPU_Rendering_Engine: CMakeFiles/GPU_Rendering_Engine.dir/Source/path_tracing/default_path_tracing.cu.o
 Build/GPU_Rendering_Engine: CMakeFiles/GPU_Rendering_Engine.dir/Source/path_tracing/reinforcement_path_tracing.cu.o
 Build/GPU_Rendering_Engine: CMakeFiles/GPU_Rendering_Engine.dir/Source/path_tracing/voronoi_trace.cu.o
-Build/GPU_Rendering_Engine: CMakeFiles/GPU_Rendering_Engine.dir/Source/deep_learning/dq_network.cu.o
-Build/GPU_Rendering_Engine: CMakeFiles/GPU_Rendering_Engine.dir/Source/deep_learning/fc_layer.cu.o
 Build/GPU_Rendering_Engine: CMakeFiles/GPU_Rendering_Engine.dir/Source/deep_learning/neural_q_pathtracer.cu.o
+Build/GPU_Rendering_Engine: CMakeFiles/GPU_Rendering_Engine.dir/Source/deep_learning/pre_trained_pathtracer.cu.o
 Build/GPU_Rendering_Engine: CMakeFiles/GPU_Rendering_Engine.dir/build.make
 Build/GPU_Rendering_Engine: CMakeFiles/GPU_Rendering_Engine.dir/cmake_device_link.o
 Build/GPU_Rendering_Engine: CMakeFiles/GPU_Rendering_Engine.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/CMakeFiles --progress-num=$(CMAKE_PROGRESS_28) "Linking CXX executable Build/GPU_Rendering_Engine"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/CMakeFiles --progress-num=$(CMAKE_PROGRESS_29) "Linking CXX executable Build/GPU_Rendering_Engine"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/GPU_Rendering_Engine.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
