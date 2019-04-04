@@ -81,8 +81,10 @@ int main (int argc, char** argv) {
         std::vector<float> data_line(3 + action_count);
         std::copy( radiance_map_data[i].begin(), radiance_map_data[i].end(), data_line.begin());
 
+        double rv = ((double) rand() / (RAND_MAX));
+
         // Training
-        if( i < int(radiance_map_data.size()/2)+1 ){
+        if( rv < 0.8  ){
             training_data.push_back(data_line);
         }
         // Test
@@ -139,7 +141,7 @@ int main (int argc, char** argv) {
                 unsigned int data_idx = sidx+k;
 
                 std::vector<float> batch_targets(training_data[data_idx].begin()+3, training_data[data_idx].end());
-                std::vector<float> batch_inputs(training_data[data_idx].begin(), training_data[data_idx].begin()+4);
+                std::vector<float> batch_inputs(training_data[data_idx].begin(), training_data[data_idx].begin()+3);
 
                 current_targets[k] = dynet::input(graph, {(unsigned int)action_count}, batch_targets);
                 current_batch[k] = dynet::input(graph, {3}, batch_inputs);

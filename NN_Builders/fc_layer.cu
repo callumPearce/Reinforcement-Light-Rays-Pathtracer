@@ -14,13 +14,13 @@ dynet::Expression FCLayer::activate(dynet::Expression infer_in){
         case LINEAR:
           return infer_in;
         case RELU:
-          return rectify(infer_in);
+          return dynet::rectify(infer_in);
         case SIGMOID:
-          return logistic(infer_in);
+          return dynet::logistic(infer_in);
         case TANH:
-          return tanh(infer_in);
+          return dynet::tanh(infer_in);
         case SOFTMAX:
-          return softmax(infer_in);
+          return dynet::softmax(infer_in);
     }
     return infer_in;
 }

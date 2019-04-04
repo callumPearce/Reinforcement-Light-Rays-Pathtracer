@@ -279,3 +279,11 @@ vec3 RadianceVolume::get_voronoi_colour(){
     colour.z = this->radiance_grid[2];
     return colour;
 }
+
+// Conver the radiance volumes cumulative distribution to a distribution
+__host__
+void RadianceVolume::convert_radiance_distribution(){
+    for (unsigned int i = 0; i < GRID_RESOLUTION*GRID_RESOLUTION; i++){
+        this->radiance_distribution[ GRID_RESOLUTION*GRID_RESOLUTION - i] -= this->radiance_distribution[ GRID_RESOLUTION*GRID_RESOLUTION - (i + 1) ];
+    }
+}

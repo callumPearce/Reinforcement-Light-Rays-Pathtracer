@@ -219,6 +219,14 @@ vec3 RadianceMap::get_voronoi_colour(const Intersection& intersection){
     }
 }
 
+// Convert the radiance distributions from cumulative distribution to distribution
+__host__
+void RadianceMap::convert_radiance_volumes_distributions(){
+    for (unsigned int i = 0; i < this->radiance_volumes_count; i++){
+        this->radiance_volumes[i].convert_radiance_distribution();
+    }
+}
+
 // Save the radiance map's q-values out to a file
 __host__
 void RadianceMap::save_q_vals_to_file(){
@@ -239,7 +247,7 @@ void RadianceMap::save_q_vals_to_file(){
 
             // Write each Q values
             for (int n = 0; n < GRID_RESOLUTION*GRID_RESOLUTION; n++){
-                save_file << " " << this->radiance_volumes[i].radiance_grid[n];
+                save_file << " " << this->radiance_volumes[i].radiance_distribution[n];
             }
 
             save_file << "\n";
@@ -250,6 +258,6 @@ void RadianceMap::save_q_vals_to_file(){
         save_file.close();
     }
     else{
-        printf("Unable to save the RadianceMap\n");
+        printf("Unable to save the RadianceMap.\n");
     }
 }

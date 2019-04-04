@@ -1,2 +1,3 @@
-ExecutablePath=/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Cuda/Build
+ExecutablePath=/home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/Build
+WorkingDirPath=/home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine
 eclipse.preferences.version=1

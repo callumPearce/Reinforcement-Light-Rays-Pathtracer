@@ -73,6 +73,9 @@ class RadianceMap{
         __host__
         void save_q_vals_to_file();
 
+        // Convert the radiance distributions from cumulative distribution to distribution
+        __host__
+        void convert_radiance_volumes_distributions();
 };
 
 #endif

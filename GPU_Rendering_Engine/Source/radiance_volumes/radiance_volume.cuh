@@ -100,6 +100,10 @@ class RadianceVolume{
         // Gets the voronoi colour of the radiance volume
         __device__
         vec3 get_voronoi_colour();
+
+        // Conver the radiance volumes cumulative distribution to a distribution
+        __host__
+        void convert_radiance_distribution();
 };
 
 #endif

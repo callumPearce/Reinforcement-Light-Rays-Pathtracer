@@ -72,19 +72,20 @@ void importance_sample_ray_directions(
     float* ray_directions_device,
     float* ray_locations_device,
     float* ray_throughputs_device,
-    bool* ray_terminated_device
+    bool* ray_terminated_device,
+    int batch_start_idx
 );
 
 // Randomly sample with the given grid index a 3D ray direction
 __device__
 void sample_ray_for_grid_index(
     curandState* d_rand_state,
-    unsigned int grid_idx,
+    int grid_idx,
     float* ray_directions_device,
     float* ray_normals_device,
     float* ray_locations_device,
     float* ray_throughputs_device,
-    unsigned int i
+    int i
 );
 
 // Update pixel values stored in the device_buffer
@@ -106,6 +107,16 @@ __global__
 void sum_path_lengths(
     int* total_path_lengths_device,
     unsigned int* ray_bounces
+);
+
+// Sample random directions to further trace the rays in
+__global__
+void sample_next_ray_directions_randomly(
+    curandState* d_rand_state,
+    float* ray_normals, 
+    float* ray_directions,
+    float* ray_throughputs,
+    bool* ray_terminated
 );
 
 
@@ -135,7 +146,6 @@ class PretrainedPathtracer{
         // Render a frame to output
         __host__
         void render_frame(
-            dynet::AdamTrainer trainer,
             curandState* d_rand_state,
             Camera* device_camera,
             Scene* device_scene,

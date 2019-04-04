@@ -103,7 +103,7 @@ int main (int argc, char** argv) {
     if ( PATH_TRACING_METHOD == 3 ){
         PretrainedPathtracer(
             1, 
-            2048,
+            16,
             screen, 
             scene,
             camera,
@@ -313,6 +313,9 @@ int main (int argc, char** argv) {
 
                 // Set the radiance volumes pointer
                 radiance_map->radiance_volumes = &host_rvs[0];
+
+                // Conver the radiance cumulative distributions to regular distributions
+                radiance_map->convert_radiance_volumes_distributions();
                 
                 // Save the radiance_maps q-values
                 radiance_map->save_q_vals_to_file();
