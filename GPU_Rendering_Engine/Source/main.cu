@@ -103,7 +103,7 @@ int main (int argc, char** argv) {
     if ( PATH_TRACING_METHOD == 3 ){
         PretrainedPathtracer(
             1, 
-            16,
+            32,
             screen, 
             scene,
             camera,

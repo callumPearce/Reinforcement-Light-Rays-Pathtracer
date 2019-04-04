@@ -247,7 +247,7 @@ void RadianceMap::save_q_vals_to_file(){
 
             // Write each Q values
             for (int n = 0; n < GRID_RESOLUTION*GRID_RESOLUTION; n++){
-                save_file << " " << this->radiance_volumes[i].radiance_distribution[n];
+                save_file << " " << this->radiance_volumes[i].radiance_grid[n];
             }
 
             save_file << "\n";

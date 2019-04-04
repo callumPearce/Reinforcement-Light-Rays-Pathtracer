@@ -127,15 +127,15 @@ class PretrainedPathtracer{
         // Attributes
         dim3 num_blocks;
         dim3 block_size;
-        unsigned int batch_size;
-        unsigned int num_batches;
+        int batch_size;
+        int num_batches;
         DQNetwork dqn;
     
         // Constructor
         __host__
         PretrainedPathtracer(
             unsigned int frames,
-            unsigned int batch_size, 
+            int batch_size, 
             SDLScreen& screen, 
             Scene& scene,
             Camera& camera,

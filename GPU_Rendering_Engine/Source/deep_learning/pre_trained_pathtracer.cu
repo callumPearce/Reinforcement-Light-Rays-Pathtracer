@@ -9,7 +9,7 @@ inline bool file_exists (const std::string& name) {
 __host__
 PretrainedPathtracer::PretrainedPathtracer(
     unsigned int frames,
-    unsigned int batch_size, 
+    int batch_size, 
     SDLScreen& screen, 
     Scene& scene,
     Camera& camera,
@@ -228,47 +228,52 @@ void PretrainedPathtracer::render_frame(
                 checkCudaErrors(cudaMemcpy(ray_locations_host, ray_locations_device, sizeof(float) * SCREEN_HEIGHT * SCREEN_WIDTH * 3, cudaMemcpyDeviceToHost));
 
                 // For each ray, compute the Q-values and importance sample a direction over them
-                for (int b = 0; b < 1; b++){
+                for (int b = 0; b < this->num_batches; b++){
+
+                    // Compute the current batch size
+                    int batch_start_idx = b*this->batch_size;
+                    int current_batch_size = std::min(SCREEN_HEIGHT*SCREEN_WIDTH - batch_start_idx, this->batch_size);
 
                     // Initialise the Q-value storage on device
                     float* device_q_values;
-                    checkCudaErrors(cudaMalloc(&device_q_values, sizeof(float) * this->num_batches * GRID_RESOLUTION * GRID_RESOLUTION));
+                    checkCudaErrors(cudaMalloc(&device_q_values, sizeof(float) * current_batch_size * GRID_RESOLUTION * GRID_RESOLUTION));
 
                     // Initialise the computational graph
                     dynet::ComputationGraph graph;
 
-                    // Compute the current batch size
-                    unsigned int batch_start_idx = b*this->batch_size;
-                    unsigned int current_batch_size = std::min(SCREEN_HEIGHT*SCREEN_WIDTH - batch_start_idx, this->batch_size);
-
                     // Get the input expression 
                     std::vector<float> positions(current_batch_size*3);
-                    memcpy(&positions[0], &ray_locations_host[batch_start_idx], sizeof(float)*current_batch_size*3);
+                    memcpy(&(positions[0]), &(ray_locations_host[batch_start_idx*3]), sizeof(float)*current_batch_size*3);
                     dynet::Expression input = dynet::input(graph, dynet::Dim({3}, current_batch_size), positions);
+
+
+                    // for (int n = 0; n < current_batch_size*3; n+=3){
+                    //     std::cout << n << ": " <<  positions[n] << "," << positions[n+1] << "," << positions[n+2] << std::endl;
+                    // }
+                    // std::cout << positions.size() << std::endl;
 
                     // Get the q-vals
                     dynet::Expression prediction = this->dqn.network_inference(graph, input, false);
-
-                    std::vector<dynet::real> q_vals = dynet::as_vector( graph.forward(prediction));                 // Some q_vals are all zero
+                    std::vector<float> q_vals = dynet::as_vector( graph.forward(prediction));                 // Some q_vals are all zero
                     
-                    std::cout << q_vals.size() << std::endl;
+                    // std::cout << q_vals.size() << std::endl;
 
-                    for (int x = 0; x < GRID_RESOLUTION*GRID_RESOLUTION; x++){
-                        std::cout << q_vals[GRID_RESOLUTION*GRID_RESOLUTION*16 + x] << std::endl;
-                    }
-
+                    // for (int x = 0; x < GRID_RESOLUTION*GRID_RESOLUTION; x++){
+                    //     std::cout << q_vals[GRID_RESOLUTION*GRID_RESOLUTION*31 + x] << std::endl;
+                    // }
+                    
                     // Copy q-values to device
-                    checkCudaErrors(cudaMemcpy(device_q_values, &q_vals[0], sizeof(float) * q_vals.size(), cudaMemcpyHostToDevice));
+                    checkCudaErrors(cudaMemcpy(device_q_values, &(q_vals[0]), sizeof(float) * q_vals.size(), cudaMemcpyHostToDevice));
                 
                     // Run cuda kernel to compute new ray directions
-                    int threads = 32;
-                    int blocks = int(current_batch_size/32)+1;
+                    int threads = 16;
+                    int blocks = int(current_batch_size/threads);
                     importance_sample_ray_directions<<<blocks, threads>>>(
                         d_rand_state,
                         device_q_values,
                         ray_normals_device,
-                        ray_locations_device,
                         ray_directions_device,
+                        ray_locations_device,
                         ray_throughputs_device,
                         ray_terminated_device,
                         (b*this->batch_size)
@@ -405,9 +410,9 @@ void trace_ray(
         // TERMINAL STATE: R_(t+1) = Environment light power
         case NOTHING:
             ray_terminated[i] = true;
-            ray_throughputs[(i*3)] = ray_throughputs[(i*3)] * ENVIRONMENT_LIGHT;
-            ray_throughputs[(i*3)+1] = ray_throughputs[(i*3)+1] * ENVIRONMENT_LIGHT;
-            ray_throughputs[(i*3)+2] = ray_throughputs[(i*3)+2] * ENVIRONMENT_LIGHT;
+            ray_throughputs[(i*3)] = ray_throughputs[(i*3)] * ENVIRONMENT_LIGHT*1;
+            ray_throughputs[(i*3)+1] = ray_throughputs[(i*3)+1] * ENVIRONMENT_LIGHT*1;
+            ray_throughputs[(i*3)+2] = ray_throughputs[(i*3)+2] * ENVIRONMENT_LIGHT*1;
             ray_bounces[i] = (unsigned int)bounces;
             break;
         
@@ -473,27 +478,38 @@ void importance_sample_ray_directions(
         return;
     }
 
-    // Copy array onto local memory to speed-up processing
-    // Importance sample over Q_values
-    float rv = curand_uniform(&d_rand_state[batch_start_idx + i]);
-    int direction_idx = 0;
-    float q_sum = 0.f;
-    for (int n = 0; n < GRID_RESOLUTION*GRID_RESOLUTION; n++){ 
+    // // Copy array onto local memory to speed-up processing
+    // // Importance sample over Q_values
+    // float rv = curand_uniform(&d_rand_state[batch_start_idx + i]);
+    // int direction_idx = 0;
+    // float q_sum = 0.f;
+    // for (int n = 0; n < GRID_RESOLUTION*GRID_RESOLUTION; n++){ 
 
-        q_sum += device_q_values[q_start_idx + n];
-        // printf("%.5f\n",q_sum);
-        if ( q_sum > rv ){
-            direction_idx = n;
-            break;
-        }
-    }
-
-    // if (q_sum == 0.f){
-    //     for (int n = 0; n < GRID_RESOLUTION*GRID_RESOLUTION; n++){
-    //         printf("%.5f\n",device_q_values[q_start_idx + n]);
+    //     q_sum += device_q_values[q_start_idx + n];
+    //     // printf("%.5f\n",q_sum);
+    //     if ( q_sum > rv ){
+    //         direction_idx = n;
+    //         break;
     //     }
     // }
-    // printf("%.5f ,%d\n",q_sum, direction_idx);
+
+    // Get max q-val
+    int max_q_index = 0;
+    int max_q = device_q_values[0];
+    float summation = 0.f;
+    for (int n = 1; n < GRID_RESOLUTION*GRID_RESOLUTION; n++){
+        float temp_q = device_q_values[q_start_idx + n];
+        summation += temp_q;
+        if (temp_q > max_q){
+            max_q_index = n;
+            max_q = temp_q;
+        }
+    }
+    int direction_idx = max_q_index;
+
+    // if (max_q_index == GRID_RESOLUTION*GRID_RESOLUTION-1){
+    //     printf("%.3f\n",device_q_values[q_start_idx + max_q_index]);
+    // }
 
     // Convert the direction index sampled into an actual 3D direction
     sample_ray_for_grid_index(

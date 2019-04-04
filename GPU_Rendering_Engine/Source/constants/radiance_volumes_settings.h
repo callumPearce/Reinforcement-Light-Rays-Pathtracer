@@ -6,7 +6,7 @@
 #define RADIANCE_VOLUMES_SETTINGS_H
 
 // Building
-#define GRID_RESOLUTION 24
+#define GRID_RESOLUTION 4
 #define DIAMETER 0.1f
 #define AREA_PER_SAMPLE 0.0002f
 
