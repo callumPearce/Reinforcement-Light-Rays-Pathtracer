@@ -232,7 +232,7 @@ __host__
 void RadianceMap::save_q_vals_to_file(){
 
     // Create the file 
-    std::ofstream save_file ("../Radiance_Map_Data/radiance_map_data.txt");
+    std::ofstream save_file ("../Radiance_Map_Data/radiance_map_data_normalised.txt");
     if (save_file.is_open()){
 
         // Write the number of actions per radiance volume
@@ -247,7 +247,7 @@ void RadianceMap::save_q_vals_to_file(){
 
             // Write each Q values
             for (int n = 0; n < GRID_RESOLUTION*GRID_RESOLUTION; n++){
-                save_file << " " << this->radiance_volumes[i].radiance_grid[n];
+                save_file << " " << this->radiance_volumes[i].radiance_distribution[n];
             }
 
             save_file << "\n";

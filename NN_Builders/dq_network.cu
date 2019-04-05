@@ -10,25 +10,19 @@ void DQNetwork::initialize(dynet::ParameterCollection& model, int actions_count)
     // Input: 3x1
     // FC1: 30x1
     // FC2: 100x1
-    // Output: 900x1 (30x30 angle values)
-    FCLayer FC1 = FCLayer(/*Activation*/ RELU, /*Input dim (rows)*/ 3, /*Output dim (rows)*/ 30, /*Dropout*/ 0.f);
-    FCLayer FC2 = FCLayer(/*Activation*/ RELU, /*Input dim (rows)*/ 30, /*Output dim (rows)*/ 90, /*Dropout*/ 0.f);
-    FCLayer FC3 = FCLayer(/*Activation*/ RELU, /*Input dim (rows)*/ 90, /*Output dim (rows)*/ 256, /*Dropout*/ 0.f);
-    FCLayer FC4 = FCLayer(/*Activation*/ RELU, /*Input dim (rows)*/ 256, /*Output dim (rows)*/ 124, /*Dropout*/ 0.f);
-    FCLayer OUT_FC = FCLayer(/*Activation*/ RELU, /*Input dim (rows)*/ 124, /*Output dim (rows)*/ actions_count, /*Dropout*/ 0.f);
+    // Output: action_countx1
+    FCLayer FC1 = FCLayer(/*Activation*/ RELU, /*Input dim (rows)*/ 3, /*Output dim (rows)*/ 50, /*Dropout*/ 0.f);
+    FCLayer FC2 = FCLayer(/*Activation*/ RELU, /*Input dim (rows)*/ 50, /*Output dim (rows)*/ 200, /*Dropout*/ 0.f);
+    FCLayer OUT_FC = FCLayer(/*Activation*/ RELU, /*Input dim (rows)*/ 200, /*Output dim (rows)*/ actions_count, /*Dropout*/ 0.f);
 
     // Add the parameters of each layer to the vector of maintained params
     FC1.add_params(model, this->params);
     FC2.add_params(model, this->params);
-    FC3.add_params(model, this->params);
-    FC4.add_params(model, this->params);
     OUT_FC.add_params(model, this->params);
 
     // Add layers to the networks vector of layers
     this->layers.push_back(FC1);
     this->layers.push_back(FC2);
-    this->layers.push_back(FC3);
-    this->layers.push_back(FC4);
     this->layers.push_back(OUT_FC);
 
     // Set the depth of the network
@@ -48,5 +42,5 @@ dynet::Expression DQNetwork::network_inference(dynet::ComputationGraph& graph, d
     }
 
     // Return the output of the network
-    return h_curr;
+    return dynet::softmax(h_curr);
 }

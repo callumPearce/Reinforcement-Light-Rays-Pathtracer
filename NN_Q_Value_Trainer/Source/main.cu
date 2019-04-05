@@ -18,7 +18,7 @@ void load_radiance_map_data(std::vector<std::vector<float>>& radiance_map_data, 
 
     // Open the file and read line by line
     std::string line;
-    std::ifstream save_file ("../Radiance_Map_Data/radiance_map_data.txt");
+    std::ifstream save_file ("../Radiance_Map_Data/radiance_map_data_normalised.txt");
     if (save_file.is_open()){
 
         int line_idx = 0;
@@ -109,7 +109,7 @@ int main (int argc, char** argv) {
     //////////////////////////////////////////////////////////////
     /*             Load in the Parameter Values                 */
     //////////////////////////////////////////////////////////////
-    std::string fname = "../Radiance_Map_Data/radiance_map_model.model";
+    std::string fname = "../Radiance_Map_Data/radiance_map_model_normalized.model";
     if (LOAD_MODEL && file_exists(fname)){
         dynet::TextFileLoader loader(fname);
         loader.populate(model);

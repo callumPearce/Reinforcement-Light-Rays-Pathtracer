@@ -26,6 +26,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/GPU_Rendering_Engine.dir/Source/path_tracing/voronoi_trace.cu.o"
   "CMakeFiles/GPU_Rendering_Engine.dir/Source/deep_learning/neural_q_pathtracer.cu.o"
   "CMakeFiles/GPU_Rendering_Engine.dir/Source/deep_learning/pre_trained_pathtracer.cu.o"
+  "CMakeFiles/GPU_Rendering_Engine.dir/Source/deep_learning/nn_rendering_helpers.cu.o"
   "CMakeFiles/GPU_Rendering_Engine.dir/cmake_device_link.o"
   "Build/GPU_Rendering_Engine.pdb"
   "Build/GPU_Rendering_Engine"
