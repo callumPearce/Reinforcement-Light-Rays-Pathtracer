@@ -42,5 +42,5 @@ dynet::Expression DQNetwork::network_inference(dynet::ComputationGraph& graph, d
     }
 
     // Return the output of the network
-    return dynet::softmax(h_curr);
+    return h_curr;
 }

@@ -6,7 +6,7 @@
 #define MONTE_CARLO_SETTING_H
 
 #define MAX_RAY_BOUNCES 50
-#define SAMPLES_PER_PIXEL 1
+#define SAMPLES_PER_PIXEL 2
 #define ENVIRONMENT_LIGHT 0.1f
 
 #endif

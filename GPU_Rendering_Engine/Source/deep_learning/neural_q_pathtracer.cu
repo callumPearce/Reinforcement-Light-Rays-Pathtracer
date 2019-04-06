@@ -41,6 +41,15 @@ NeuralQPathtracer::NeuralQPathtracer(
     this->dqn.initialize(model, GRID_RESOLUTION*GRID_RESOLUTION);
 
     //////////////////////////////////////////////////////////////
+    /*                Load the previous DQN Model               */
+    //////////////////////////////////////////////////////////////
+    std::string fname = "../Radiance_Map_Data/deep_q_learning.model";
+    if (LOAD_MODEL && file_exists(fname)){
+        dynet::TextFileLoader loader(fname);
+        loader.populate(model);
+    }
+
+    //////////////////////////////////////////////////////////////
     /*          Intialise Pixel value buffers                   */
     //////////////////////////////////////////////////////////////
     vec3* host_buffer = new vec3[ SCREEN_HEIGHT * SCREEN_WIDTH ];
@@ -147,6 +156,16 @@ NeuralQPathtracer::NeuralQPathtracer(
             }
         }
         screen.SDL_Renderframe();
+
+        //////////////////////////////////////////////////////////////
+        /*                  Save the DQN Model                      */
+        //////////////////////////////////////////////////////////////
+        std::cout << "Saving model..." << std::endl;
+        if (SAVE_MODEL){
+            dynet::TextFileSaver saver(fname);
+            saver.save(model);
+        }
+        std::cout << "Model saved." << std::endl;
     }
 
     //////////////////////////////////////////////////////////////
@@ -230,7 +249,7 @@ void NeuralQPathtracer::render_frame(
             printf("Bounce: %d/%d\n", bounces, MAX_RAY_BOUNCES);
 
             // Maintain previous locations for reinforcment Q(s,a) update
-            checkCudaErrors(cudaMemcpy(prev_location_host, ray_locations, sizeof(vec3) * SCREEN_HEIGHT * SCREEN_WIDTH, cudaMemcpyDeviceToHost));
+            checkCudaErrors(cudaMemcpy(prev_location_host, ray_locations, sizeof(float) * 3 * SCREEN_HEIGHT * SCREEN_WIDTH, cudaMemcpyDeviceToHost));
 
             // Does not apply to shooting from camera
             if (bounces > 0){
@@ -249,7 +268,7 @@ void NeuralQPathtracer::render_frame(
                     dynet::Expression states_batch = dynet::input(graph, input_dim, input_states); //TODO might need pointer on last element
                     
                     // Get the Q-values
-                    dynet::Expression prediction = this->dqn.network_inference(graph, states_batch, true);
+                    dynet::Expression prediction = this->dqn.network_inference(graph, states_batch, false);
                     std::vector<float> current_qs = dynet::as_vector(graph.forward(prediction));
 
                     // Copy Q-vals to GPU for find the argmax
@@ -263,7 +282,7 @@ void NeuralQPathtracer::render_frame(
 
                     // Get direction indices (Call once for every element in the batch)
                     int threads = 32;
-                    int blocks = int(current_batch_size/threads)+1;
+                    int blocks = int((current_batch_size + (threads-1))/threads);
                     sample_batch_ray_directions_eta_greedy<<<threads, blocks>>>(
                         ETA,
                         d_rand_state,
@@ -320,7 +339,7 @@ void NeuralQPathtracer::render_frame(
                     // Get the input batch for the new ray positions
                     dynet::Dim input_dim({3},current_batch_size);
                     std::vector<float> input_vals(3*current_batch_size);
-                    memcpy(&(input_vals[0]), &ray_locations_host[n*current_batch_size*3], sizeof(float) * 3 * current_batch_size);
+                    memcpy(&(input_vals[0]), &(ray_locations_host[n*current_batch_size*3]), sizeof(float) * 3 * current_batch_size);
                     dynet::Expression input_batch = dynet::input(graph, input_dim, &input_vals);
 
                     // 2) Get max_a Q(S_{t+1}, a)
@@ -333,7 +352,7 @@ void NeuralQPathtracer::render_frame(
                     checkCudaErrors(cudaMemcpy(td_targets_device, &(td_targets[0]), sizeof(float) * current_batch_size, cudaMemcpyHostToDevice));
 
                     int threads = 32;
-                    int blocks = int(current_batch_size/threads)+1;
+                    int blocks = int((current_batch_size + (threads-1))/threads);
                     compute_td_targets<<<threads, blocks>>>(
                         td_targets_device,
                         ray_rewards,
@@ -574,7 +593,7 @@ void sample_batch_ray_directions_eta_greedy(
     int action_count = GRID_RESOLUTION*GRID_RESOLUTION;
 
     // Direction grid idx to convert to 3D direction
-    int direction_grid_idx = 0;
+    unsigned int direction_grid_idx = 0;
 
     // Greedy
     if (rv > eta){
@@ -602,7 +621,7 @@ void sample_batch_ray_directions_eta_greedy(
     // // Convert the found grid idx to a 3D direction and store in ray_directions
     sample_ray_for_grid_index(
         d_rand_state,
-        direction_grid_idx,
+        (int)direction_grid_idx,
         ray_directions,
         ray_normals,
         ray_locations,

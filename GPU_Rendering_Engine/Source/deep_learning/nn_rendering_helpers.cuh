@@ -16,6 +16,8 @@
 #include "hemisphere_helpers.cuh"
 #include "radiance_volumes_settings.h"
 #include "camera.cuh"
+#include <sys/stat.h>
+#include <unistd.h>
 
 /* Cuda */
 #include <stdint.h>
@@ -85,5 +87,7 @@ void sum_path_lengths(
     int* total_path_lengths_device,
     unsigned int* ray_bounces
 );
+
+inline bool file_exists (const std::string& name);
 
 #endif

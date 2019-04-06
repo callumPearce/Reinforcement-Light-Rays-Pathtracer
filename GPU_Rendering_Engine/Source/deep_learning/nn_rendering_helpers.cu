@@ -77,6 +77,9 @@ void compute_td_targets(
         int batch_start_idx
 ){
     int batch_idx = blockIdx.x * blockDim.x + threadIdx.x;
+  
+    if (batch_start_idx + batch_idx >= SCREEN_HEIGHT*SCREEN_WIDTH) return;
+
     td_targets_device[ batch_idx ] =  ray_rewards[ batch_idx + batch_start_idx ] + td_targets_device[ batch_idx ]*ray_discounts[ batch_idx + batch_start_idx ];
 }   
 
@@ -124,4 +127,9 @@ void sum_path_lengths(
     int i = SCREEN_HEIGHT*x + y;
 
     atomicAdd(total_path_lengths_device, (int)ray_bounces[i]); 
+}
+
+inline bool file_exists (const std::string& name) {
+    struct stat buffer;   
+    return (stat (name.c_str(), &buffer) == 0); 
 }
