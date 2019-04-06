@@ -20,6 +20,7 @@ PretrainedPathtracer::PretrainedPathtracer(
     //////////////////////////////////////////////////////////////
     /*                  Assign attributes                       */
     //////////////////////////////////////////////////////////////
+    load_scene_data(scene, this->scene_data);
     this->batch_size = batch_size;
     this->num_batches = (SCREEN_HEIGHT*SCREEN_WIDTH + (batch_size -1))/batch_size;
     dim3 b_size(8,8);
@@ -36,12 +37,12 @@ PretrainedPathtracer::PretrainedPathtracer(
     dynet::initialize(dyparams);
     dynet::ParameterCollection model;
     this->dqn = DQNetwork();
-    this->dqn.initialize(model, GRID_RESOLUTION*GRID_RESOLUTION);
+    this->dqn.initialize(model, 3+this->scene_data.size(), GRID_RESOLUTION*GRID_RESOLUTION);
 
     //////////////////////////////////////////////////////////////
     /*             Load in the Parameter Values                 */
     //////////////////////////////////////////////////////////////
-    std::string fname = "/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Radiance_Map_Data/radiance_map_model.model";
+    std::string fname = "/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Radiance_Map_Data/deep_q_learning.model";
     if (file_exists(fname)){
         dynet::TextFileLoader loader(fname);
         loader.populate(model);
@@ -78,6 +79,7 @@ PretrainedPathtracer::PretrainedPathtracer(
     Camera* device_camera; /* Camera on the CUDA device */
     Surface* device_surfaces;
     AreaLight* device_light_planes;
+    float* device_vertices;
     Scene* device_scene;   /* Scene to render */
 
     // Copy the camera
@@ -92,11 +94,16 @@ PretrainedPathtracer::PretrainedPathtracer(
     checkCudaErrors(cudaMalloc(&device_light_planes, scene.area_light_count * sizeof(AreaLight)));
     checkCudaErrors(cudaMemcpy(device_light_planes, scene.area_lights, scene.area_light_count * sizeof(AreaLight), cudaMemcpyHostToDevice));    
 
-    // Copy the scene structure into the device and its corresponding pointers to Surfaces and Area Lights
+    // Copy vertices into device memory space
+    checkCudaErrors(cudaMalloc(&device_vertices, scene.vertices_count * sizeof(float)));
+    checkCudaErrors(cudaMemcpy(device_vertices, scene.vertices, scene.vertices_count * sizeof(float), cudaMemcpyHostToDevice));  
+
+    // Copy the scene structure into the device and its corresponding pointers to Surfaces, Area Lights and Vertices
     checkCudaErrors(cudaMalloc(&device_scene, sizeof(Scene)));
     checkCudaErrors(cudaMemcpy(device_scene, &scene, sizeof(Scene), cudaMemcpyHostToDevice));
     checkCudaErrors(cudaMemcpy(&(device_scene->surfaces), &device_surfaces, sizeof(Surface*), cudaMemcpyHostToDevice));
-    checkCudaErrors(cudaMemcpy(&(device_scene->area_lights), &device_light_planes, sizeof(AreaLight*), cudaMemcpyHostToDevice));    
+    checkCudaErrors(cudaMemcpy(&(device_scene->area_lights), &device_light_planes, sizeof(AreaLight*), cudaMemcpyHostToDevice));
+    checkCudaErrors(cudaMemcpy(&(device_scene->vertices), &device_vertices, sizeof(float*), cudaMemcpyHostToDevice));
 
     //////////////////////////////////////////////////////////////
     /*                  Intialise cuRand State                  */
@@ -163,6 +170,11 @@ PretrainedPathtracer::PretrainedPathtracer(
     cudaFree(ray_terminated_device);
     cudaFree(ray_throughputs_device);
     cudaFree(ray_bounces_device);
+    cudaFree(device_camera);
+    cudaFree(device_surfaces);
+    cudaFree(device_light_planes);
+    cudaFree(device_vertices);
+    cudaFree(device_scene);
 }
 
 // Render a frame to output
@@ -242,12 +254,31 @@ void PretrainedPathtracer::render_frame(
                     dynet::ComputationGraph graph;
 
                     // Get the input expression 
-                    std::vector<float> positions(current_batch_size*3);
-                    memcpy(&(positions[0]), &(ray_locations_host[batch_start_idx*3]), sizeof(float)*current_batch_size*3);
-                    dynet::Expression input = dynet::input(graph, dynet::Dim({3}, current_batch_size), positions);
+                    // std::vector<float> positions(current_batch_size*3);
+                    // memcpy(&(positions[0]), &(ray_locations_host[batch_start_idx*3]), sizeof(float)*current_batch_size*3);
+                    // dynet::Expression input = dynet::input(graph, dynet::Dim({3}, current_batch_size), positions);
+                    
+                    // Formulate the expression with the state and the scenes vertices
+                    dynet::Dim input_dim({3 + (unsigned int)this->scene_data.size()},current_batch_size);
+                    std::vector<float> input_vals(3*current_batch_size + this->scene_data.size()*current_batch_size);
+                    for (int s = 0; s < current_batch_size; s++){
+                        // Copy the current position
+                        memcpy(
+                            &(input_vals[3*s + this->scene_data.size()*s]),           // dst
+                            &(ray_locations_host[b*this->batch_size*3 + 3*s]), // src 
+                            sizeof(float) * 3                                      // count
+                        );
+                        // Copy the list off all vertices
+                        memcpy(
+                            &(input_vals[3*s + this->scene_data.size()*s + 3]),
+                            &(this->scene_data[0]),
+                            sizeof(float) * this->scene_data.size()
+                        );
+                    }
+                    dynet::Expression input = dynet::input(graph, input_dim, input_vals);                     
 
                     // Get the q-vals
-                    dynet::Expression prediction = this->dqn.network_inference(graph, input, false);
+                    dynet::Expression prediction = dynet::softmax(this->dqn.network_inference(graph, input, false));
                     std::vector<float> q_vals = dynet::as_vector( graph.forward(prediction));                 // Some q_vals are all zero
                     
                     // Copy q-values to device

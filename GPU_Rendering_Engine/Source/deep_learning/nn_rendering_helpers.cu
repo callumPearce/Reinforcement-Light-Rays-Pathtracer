@@ -133,3 +133,50 @@ inline bool file_exists (const std::string& name) {
     struct stat buffer;   
     return (stat (name.c_str(), &buffer) == 0); 
 }
+
+
+// Read the scene data file and populate the list of vertices
+void load_scene_data(Scene& scene, std::vector<float>& scene_data){
+
+    for (int i = 0; i < scene.surfaces_count; i++){
+        
+        Surface sf = scene.surfaces[i];
+
+        // Normals
+        scene_data.push_back(sf.normal.x);
+        scene_data.push_back(sf.normal.y);
+        scene_data.push_back(sf.normal.z);
+
+        // Vertices
+        scene_data.push_back(sf.v0.x);
+        scene_data.push_back(sf.v0.y);
+        scene_data.push_back(sf.v0.z);
+        scene_data.push_back(sf.v1.x);
+        scene_data.push_back(sf.v1.y);
+        scene_data.push_back(sf.v1.z);
+        scene_data.push_back(sf.v2.x);
+        scene_data.push_back(sf.v2.y);
+        scene_data.push_back(sf.v2.z);
+    }
+
+    for (int i = 0; i < scene.area_light_count; i++){
+
+        AreaLight al = scene.area_lights[i];
+
+        // Normals
+        scene_data.push_back(al.normal.x);
+        scene_data.push_back(al.normal.y);
+        scene_data.push_back(al.normal.z);
+
+        // Vertices
+        scene_data.push_back(al.v0.x);
+        scene_data.push_back(al.v0.y);
+        scene_data.push_back(al.v0.z);
+        scene_data.push_back(al.v1.x);
+        scene_data.push_back(al.v1.y);
+        scene_data.push_back(al.v1.z);
+        scene_data.push_back(al.v2.x);
+        scene_data.push_back(al.v2.y);
+        scene_data.push_back(al.v2.z);
+    }
+}

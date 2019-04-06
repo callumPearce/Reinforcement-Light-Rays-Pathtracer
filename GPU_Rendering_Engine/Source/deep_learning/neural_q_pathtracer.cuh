@@ -89,6 +89,8 @@ class NeuralQPathtracer{
         dim3 num_blocks;
         dim3 block_size;
         DQNetwork dqn;
+        int vertices_count;
+        float epsilon;
 
         // Constructor
         __host__
@@ -107,6 +109,7 @@ class NeuralQPathtracer{
         void render_frame(
             dynet::AdamTrainer trainer,
             curandState* d_rand_state,
+            float* host_vertices,
             Camera* device_camera,
             Scene* device_scene,
             vec3* device_buffer,

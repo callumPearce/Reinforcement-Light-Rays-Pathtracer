@@ -98,12 +98,13 @@ int main (int argc, char** argv) {
     // Initialise the scene
     Scene scene = Scene();
     scene.load_custom_scene("/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Models/door_room.obj");
+    scene.save_NN_scene_data_to_file();
 
     // SPECIAL CASE: Deep Learning
     if ( PATH_TRACING_METHOD == 3 ){
-        NeuralQPathtracer(
+        PretrainedPathtracer(
             4, 
-            2048,
+            256,
             screen, 
             scene,
             camera,
@@ -118,6 +119,7 @@ int main (int argc, char** argv) {
         Scene* device_scene;
         Surface* device_surfaces;
         AreaLight* device_light_planes;
+        float* device_vertices;
         curandState * d_rand_state;
         vec3* host_buffer = new vec3[ SCREEN_HEIGHT * SCREEN_WIDTH ];
         Camera* device_camera;
@@ -133,11 +135,16 @@ int main (int argc, char** argv) {
         checkCudaErrors(cudaMalloc(&device_light_planes, scene.area_light_count * sizeof(AreaLight)));
         checkCudaErrors(cudaMemcpy(device_light_planes, scene.area_lights, scene.area_light_count * sizeof(AreaLight), cudaMemcpyHostToDevice));
 
-        // Copy the scene structure into the device and its corresponding pointers to Surfaces and Area Lights
+        // Copy vertices into device memory space
+        checkCudaErrors(cudaMalloc(&device_vertices, scene.vertices_count * sizeof(float)));
+        checkCudaErrors(cudaMemcpy(device_vertices, scene.vertices, scene.vertices_count * sizeof(float), cudaMemcpyHostToDevice));  
+
+        // Copy the scene structure into the device and its corresponding pointers to Surfaces, Area Lights and Vertices
         checkCudaErrors(cudaMalloc(&device_scene, sizeof(Scene)));
         checkCudaErrors(cudaMemcpy(device_scene, &scene, sizeof(Scene), cudaMemcpyHostToDevice));
         checkCudaErrors(cudaMemcpy(&(device_scene->surfaces), &device_surfaces, sizeof(Surface*), cudaMemcpyHostToDevice));
         checkCudaErrors(cudaMemcpy(&(device_scene->area_lights), &device_light_planes, sizeof(AreaLight*), cudaMemcpyHostToDevice));
+        checkCudaErrors(cudaMemcpy(&(device_scene->vertices), &device_vertices, sizeof(float*), cudaMemcpyHostToDevice));
 
         // Create the random state array for random number generation
         checkCudaErrors(cudaMalloc(&d_rand_state, (float)SCREEN_HEIGHT * (float)SCREEN_WIDTH * sizeof(curandState)));
@@ -416,6 +423,7 @@ int main (int argc, char** argv) {
         cudaFree(device_buffer);
         cudaFree(device_surfaces);
         cudaFree(device_light_planes);
+        cudaFree(device_vertices);
         cudaFree(d_rand_state);
         cudaFree(device_scene);
         cudaFree(device_camera);

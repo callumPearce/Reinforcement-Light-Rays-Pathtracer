@@ -5,7 +5,7 @@
 
 // Load a given object file into the scene to be rendered
 __host__
-bool load_scene(const char* path, std::vector<Surface>& surfaces, std::vector<AreaLight>& area_lights){
+bool load_scene(const char* path, std::vector<Surface>& surfaces, std::vector<AreaLight>& area_lights, std::vector<float>& vertices){
 
     // Attempt to open the object file in the supplied path
     FILE* file = fopen(path, "r");
@@ -80,13 +80,13 @@ bool load_scene(const char* path, std::vector<Surface>& surfaces, std::vector<Ar
         }
     }
     fclose (file);
-    build_surfaces(surfaces, vertex_indices, temp_vertices);
-    build_area_lights(area_lights);
+    build_surfaces(surfaces, vertices, vertex_indices, temp_vertices);
+    build_area_lights(area_lights, vertices);
 }
 
 // Convert the temporary stored data into triangles for rendering
 __host__
-void build_surfaces(std::vector<Surface>& surfaces, std::vector<vec3>& vertex_indices, std::vector<vec3>& temp_vertices){
+void build_surfaces(std::vector<Surface>& surfaces, std::vector<float>& vertices, std::vector<vec3>& vertex_indices, std::vector<vec3>& temp_vertices){
 
     // Find the max and min vertex position of each dimension
     float max_pos[3] = {0.f};
@@ -153,6 +153,17 @@ void build_surfaces(std::vector<Surface>& surfaces, std::vector<vec3>& vertex_in
         }
         Surface surface = Surface(v1, v3, v2, mat);
 
+        // Add the vertices to the vector
+        vertices.push_back(v1.x);
+        vertices.push_back(v1.y);
+        vertices.push_back(v1.z);
+        vertices.push_back(v2.x);
+        vertices.push_back(v2.y);
+        vertices.push_back(v2.z);
+        vertices.push_back(v3.x);
+        vertices.push_back(v3.y);
+        vertices.push_back(v3.z);
+
         // Compute and set the normal
         surface.compute_and_set_normal();
 
@@ -184,7 +195,7 @@ void split_string(std::vector<std::string>& sub_strs, std::string search_string,
 
 // Builds some custom predifined area lights into the scene
 __host__
-void build_area_lights(std::vector<AreaLight>& area_lights){
+void build_area_lights(std::vector<AreaLight>& area_lights, std::vector<float>& vertices){
 
     // Define the area light vectors
     float l = 2.f;
@@ -227,6 +238,17 @@ void build_area_lights(std::vector<AreaLight>& area_lights){
         newV2.y *= -1;
         newV2.w = 1.0f;
         area_lights[i].v2 = newV2;
+
+        // Add to vertices list
+        vertices.push_back(newV0.x);
+        vertices.push_back(newV0.y);
+        vertices.push_back(newV0.z);
+        vertices.push_back(newV1.x);
+        vertices.push_back(newV1.y);
+        vertices.push_back(newV1.z);
+        vertices.push_back(newV2.x);
+        vertices.push_back(newV2.y);
+        vertices.push_back(newV2.z);
 
         area_lights[i].compute_and_set_normal();
     }

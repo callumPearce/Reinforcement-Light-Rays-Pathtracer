@@ -88,6 +88,7 @@ class PretrainedPathtracer{
         int batch_size;
         int num_batches;
         DQNetwork dqn;
+        std::vector<float> scene_data;
     
         // Constructor
         __host__

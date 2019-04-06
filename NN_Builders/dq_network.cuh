@@ -25,7 +25,7 @@ class DQNetwork{
         DQNetwork();
 
         // Initialize the network with its parameters
-        void initialize(dynet::ParameterCollection& model, int actions_count);
+        void initialize(dynet::ParameterCollection& model, int input_dims, int actions_count);
 
         // Performs and inference iteration upon the network with the given input
         dynet::Expression network_inference(dynet::ComputationGraph& graph, dynet::Expression input, bool training);

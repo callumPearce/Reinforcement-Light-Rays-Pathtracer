@@ -90,4 +90,7 @@ void sum_path_lengths(
 
 inline bool file_exists (const std::string& name);
 
+// Read the scene data file and populate the list of vertices
+void load_scene_data(Scene& scene, std::vector<float>& scene_data);
+
 #endif

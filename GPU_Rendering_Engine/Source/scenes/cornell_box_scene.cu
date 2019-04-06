@@ -1,7 +1,7 @@
 #include "cornell_box_scene.cuh"
 
 __host__
-void get_cornell_shapes(std::vector<Surface>& Surfaces, std::vector<AreaLight>& light_planes) {
+void get_cornell_shapes(std::vector<Surface>& Surfaces, std::vector<AreaLight>& light_planes, std::vector<float>& vertices) {
     
     // Materials
     Material blue = Material(vec3(0.15f, 0.15f, 0.75f));
@@ -187,6 +187,17 @@ void get_cornell_shapes(std::vector<Surface>& Surfaces, std::vector<AreaLight>& 
         newV2.w = 1.0f;
         Surfaces[i].v2 = newV2;
 
+        // Add to vertices list
+        vertices.push_back(newV0.x);
+        vertices.push_back(newV0.y);
+        vertices.push_back(newV0.z);
+        vertices.push_back(newV1.x);
+        vertices.push_back(newV1.y);
+        vertices.push_back(newV1.z);
+        vertices.push_back(newV2.x);
+        vertices.push_back(newV2.y);
+        vertices.push_back(newV2.z);
+
         Surfaces[i].compute_and_set_normal();
     }
     
@@ -216,6 +227,17 @@ void get_cornell_shapes(std::vector<Surface>& Surfaces, std::vector<AreaLight>& 
         newV2.y *= -1;
         newV2.w = 1.0f;
         light_planes[i].v2 = newV2;
+
+        // Add to vertices list
+        vertices.push_back(newV0.x);
+        vertices.push_back(newV0.y);
+        vertices.push_back(newV0.z);
+        vertices.push_back(newV1.x);
+        vertices.push_back(newV1.y);
+        vertices.push_back(newV1.z);
+        vertices.push_back(newV2.x);
+        vertices.push_back(newV2.y);
+        vertices.push_back(newV2.z);
 
         light_planes[i].compute_and_set_normal();
     }

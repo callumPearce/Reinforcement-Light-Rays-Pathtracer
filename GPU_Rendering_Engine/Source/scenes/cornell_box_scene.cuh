@@ -13,6 +13,6 @@ using glm::vec4;
 using glm::mat4;
 
 __host__
-void get_cornell_shapes(std::vector<Surface>& surfaces, std::vector<AreaLight>& light_planes);
+void get_cornell_shapes(std::vector<Surface>& surfaces, std::vector<AreaLight>& light_planes, std::vector<float>& vertices);
 
 #endif

@@ -8,6 +8,10 @@
 #include "ray.cuh"
 #include "object_importer.cuh"
 
+// File writing
+#include <iostream>
+#include <fstream>
+
 using glm::vec3;
 using glm::vec2;
 using glm::mat3;
@@ -29,12 +33,17 @@ class Scene{
         int surfaces_count;
         AreaLight* area_lights;
         int area_light_count;
+        float* vertices;
+        int vertices_count;
 
         Scene();
 
         void load_cornell_box_scene();
 
         void load_custom_scene(const char* filename);
+
+        // Save vertices to file
+        void save_NN_scene_data_to_file();
 };
 
 #endif

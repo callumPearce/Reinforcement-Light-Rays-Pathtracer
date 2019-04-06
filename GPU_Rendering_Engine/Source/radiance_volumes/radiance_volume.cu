@@ -230,6 +230,28 @@ vec4 RadianceVolume::sample_direction_from_radiance_distribution(curandState* d_
     return vec4(0.f,0.f,0.f,1.f);
 }
 
+// Samples a direction from the radiance volume using binary search for the sector
+__device__
+vec4 RadianceVolume::sample_max_direction_from_radiance_distribution(curandState* d_rand_state, int pixel_x, int pixel_y, int& sector_x, int& sector_y){
+    
+    // Find max val in radiance grid
+    int max_idx = 0;
+    float max_irradiance = this->radiance_grid[ 0 ];
+    for (int i = 0; i < GRID_RESOLUTION*GRID_RESOLUTION; i++){
+        if( max_irradiance < this->radiance_grid[i] ){
+            max_irradiance = this->radiance_grid[i];
+            max_idx = i;
+        }
+    }
+    // Found the sector at location max
+    sector_x = (int)max_idx/GRID_RESOLUTION;
+    sector_y = max_idx - (sector_x*GRID_RESOLUTION);
+    // Randomly sample within the sector
+    float rx = curand_uniform(&d_rand_state[pixel_x*SCREEN_HEIGHT + pixel_y]);
+    float ry = curand_uniform(&d_rand_state[pixel_x*SCREEN_HEIGHT + pixel_y]);
+    return vec4(convert_grid_pos_to_direction(sector_x+rx, sector_y+ry, vec3(this->position), this->transformation_matrix), 1.f);
+}
+
 // Performs a temporal difference update for the current radiance volume for the incident
 // radiance in the sector specified with the intersection surfaces irradiance value
 __device__
