@@ -317,8 +317,8 @@ void NeuralQPathtracer::render_frame(
 
                     // Get direction indices (Call once for every element in the batch)
                     int threads = 32;
-                    int blocks = int((current_batch_size + (threads-1))/threads);
-                    sample_batch_ray_directions_eta_greedy<<<threads, blocks>>>(
+                    int blocks = (current_batch_size + (threads-1))/threads;
+                    sample_batch_ray_directions_eta_greedy<<<blocks, threads>>>(
                         this->epsilon,
                         d_rand_state,
                         ray_direction_indices,
@@ -397,23 +397,32 @@ void NeuralQPathtracer::render_frame(
                     dynet::Expression input_batch = dynet::input(graph, input_dim, input_vals); 
 
                     // 2) Get max_a Q(S_{t+1}, a)
-                    dynet::Expression next_qs = dynet::max_dim(this->dqn.network_inference(graph, input_batch, false),0);
-                    std::vector<float> td_targets = dynet::as_vector(graph.forward(next_qs));
+                    dynet::Expression next_qs_expr = this->dqn.network_inference(graph, input_batch, false);
+                    std::vector<float> next_qs = dynet::as_vector(graph.forward(next_qs_expr));
 
                     // 3) Compute TD-Targets
+                    float* next_qs_device;
+                    checkCudaErrors(cudaMalloc(&next_qs_device, sizeof(float) * current_batch_size * GRID_RESOLUTION * GRID_RESOLUTION));
+                    checkCudaErrors(cudaMemcpy(next_qs_device, &(next_qs[0]), sizeof(float) * current_batch_size * GRID_RESOLUTION * GRID_RESOLUTION, cudaMemcpyHostToDevice));
+
                     float* td_targets_device;
                     checkCudaErrors(cudaMalloc(&td_targets_device, sizeof(float) * current_batch_size));
-                    checkCudaErrors(cudaMemcpy(td_targets_device, &(td_targets[0]), sizeof(float) * current_batch_size, cudaMemcpyHostToDevice));
 
                     int threads = 32;
                     int blocks = int((current_batch_size + (threads-1))/threads);
-                    compute_td_targets<<<threads, blocks>>>(
+                    compute_td_targets<<<blocks, threads>>>(
+                        d_rand_state,
+                        next_qs_device,
                         td_targets_device,
+                        ray_locations,
+                        ray_normals,
                         ray_rewards,
                         ray_discounts,
                         (n*this->ray_batch_size)
                     );
                     cudaDeviceSynchronize();
+
+                    std::vector<float> td_targets(current_batch_size);
                     checkCudaErrors(cudaMemcpy(&(td_targets[0]), td_targets_device, sizeof(float) * current_batch_size, cudaMemcpyDeviceToHost));
                     cudaFree(td_targets_device);
 
@@ -431,8 +440,8 @@ void NeuralQPathtracer::render_frame(
                     for (int s = 0; s < current_batch_size; s++){
                         // Copy the current position
                         memcpy(
-                            &(input_states[3*s + this->vertices_count*s]),             // dst
-                            &(ray_locations_host[n*this->ray_batch_size*3 + 3*s]), // src 
+                            &(input_states[3*s + this->vertices_count*s]),         // dst
+                            &(prev_location_host[n*this->ray_batch_size*3 + 3*s]), // src 
                             sizeof(float) * 3                                      // count
                         );
                         // Copy the list off all vertices
@@ -448,7 +457,7 @@ void NeuralQPathtracer::render_frame(
                     
                     // Get the vector of action value indices we took 
                     std::vector<unsigned int> action_value_indices(current_batch_size);
-                    memcpy(&action_value_indices[0], &directions_host[this->ray_batch_size*n], sizeof(unsigned int) * current_batch_size);
+                    memcpy(&(action_value_indices[0]), &directions_host[this->ray_batch_size*n], sizeof(unsigned int) * current_batch_size);
 
                     // Get the current Q values for the actions taken
                     dynet::Expression current_qs = dynet::pick(prediction_qs, action_value_indices, (unsigned int) 0);
@@ -662,7 +671,7 @@ void sample_batch_ray_directions_eta_greedy(
     int batch_elem =  blockIdx.x * blockDim.x + threadIdx.x;
 
     // If the ray is out of index, or if it has already intersected with a surface, terminate
-    if ( batch_start_idx + batch_elem >= SCREEN_HEIGHT*SCREEN_WIDTH || ray_terminated[ batch_start_idx + batch_elem ] ) return;
+    if ( batch_start_idx + batch_elem >= SCREEN_HEIGHT*SCREEN_WIDTH  ) return;
     
     // Sample the random number to be used for eta-greedy policy
     float rv = curand_uniform(&d_rand_state[ batch_start_idx + batch_elem ]);
@@ -690,7 +699,7 @@ void sample_batch_ray_directions_eta_greedy(
     else{
         // Sample a random grid index
         direction_grid_idx = 
-            (unsigned int)(int((curand_uniform(&d_rand_state[ batch_start_idx + batch_elem ]) - 0.0001f) * action_count));
+            (unsigned int)((curand_uniform(&d_rand_state[ batch_start_idx + batch_elem ]) - 0.0001f) * action_count);
     }
 
     // Update the direction index storage

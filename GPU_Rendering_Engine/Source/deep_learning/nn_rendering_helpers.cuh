@@ -45,6 +45,16 @@ void sample_ray_for_grid_index(
     int i
 );
 
+// Randomly sample a ray within the given grid idx and return as vec3
+__device__
+vec3 sample_ray_for_grid_index(
+    curandState* d_rand_state,
+    int grid_idx,
+    float* ray_normals_device,
+    float* ray_locations_device,
+    int i
+);
+
 // Sample random directions to further trace the rays in
 __global__
 void sample_next_ray_directions_randomly(
@@ -58,10 +68,14 @@ void sample_next_ray_directions_randomly(
 // Compute the TD targets for the current batch size
 __global__
 void compute_td_targets(
-        float* td_targets_device,
-        float* ray_rewards,
-        float* ray_discounts,
-        int batch_start_idx
+    curandState* d_rand_state,
+    float* next_qs_device,
+    float* td_targets_device,
+    float* ray_locations,
+    float* ray_normals,
+    float* ray_rewards,
+    float* ray_discounts,
+    int batch_start_idx
 );
 
 

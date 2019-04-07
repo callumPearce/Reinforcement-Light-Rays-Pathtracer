@@ -12,9 +12,6 @@ void sample_ray_for_grid_index(
     float* ray_throughputs_device,
     int i
 ){
-
-    // printf("%d\n",grid_idx);
-
     // Convert the index to a grid position
     int dir_x = int(grid_idx/GRID_RESOLUTION);
     int dir_y = grid_idx - (dir_x*GRID_RESOLUTION);
@@ -33,6 +30,26 @@ void sample_ray_for_grid_index(
     ray_throughputs_device[(i*3)    ] = (ray_throughputs_device[(i*3)    ] * cos_theta)/RHO;
     ray_throughputs_device[(i*3) + 1] = (ray_throughputs_device[(i*3) + 1] * cos_theta)/RHO;
     ray_throughputs_device[(i*3) + 2] = (ray_throughputs_device[(i*3) + 2] * cos_theta)/RHO;
+}
+
+// Randomly sample a ray within the given grid idx and return as vec3
+__device__
+vec3 sample_ray_for_grid_index(
+    curandState* d_rand_state,
+    int grid_idx,
+    float* ray_normals_device,
+    float* ray_locations_device,
+    int i
+){
+    // Convert the index to a grid position
+    int dir_x = int(grid_idx/GRID_RESOLUTION);
+    int dir_y = grid_idx - (dir_x*GRID_RESOLUTION);
+
+    // Convert to 3D direction and update the direction
+    vec3 position = vec3(ray_locations_device[(i*3)], ray_locations_device[(i*3) + 1], ray_locations_device[(i*3) + 2]);
+    vec3 normal  = vec3(ray_normals_device[(i*3)], ray_normals_device[(i*3) + 1], ray_normals_device[(i*3) + 2]);
+    mat4 transformation_matrix = create_transformation_matrix(normal, vec4(position, 1.f));
+    return convert_grid_pos_to_direction_random(d_rand_state, (float) dir_x, (float) dir_y, i, position, transformation_matrix);
 }
 
 // Sample random directions to further trace the rays in
@@ -68,19 +85,47 @@ void sample_next_ray_directions_randomly(
     ray_throughputs[(i*3) + 2] = (ray_throughputs[(i*3) + 2] * cos_theta)/RHO;
 }
 
+
 // Compute the TD targets for the current batch size
 __global__
 void compute_td_targets(
-        float* td_targets_device,
-        float* ray_rewards,
-        float* ray_discounts,
-        int batch_start_idx
+    curandState* d_rand_state,
+    float* next_qs_device,
+    float* td_targets_device,
+    float* ray_locations,
+    float* ray_normals,
+    float* ray_rewards,
+    float* ray_discounts,
+    int batch_start_idx
 ){
     int batch_idx = blockIdx.x * blockDim.x + threadIdx.x;
   
     if (batch_start_idx + batch_idx >= SCREEN_HEIGHT*SCREEN_WIDTH) return;
 
-    td_targets_device[ batch_idx ] =  ray_rewards[ batch_idx + batch_start_idx ] + td_targets_device[ batch_idx ]*ray_discounts[ batch_idx + batch_start_idx ];
+    // Get the max q_val
+    unsigned int max_idx = 0;
+    float max_q_val = next_qs_device[batch_idx];
+    for (unsigned int i = 1; i < GRID_RESOLUTION*GRID_RESOLUTION; i++){
+        float temp_q = next_qs_device[batch_idx + i];
+        if (max_q_val < temp_q){
+            max_q_val = temp_q;
+            max_idx = i;
+        }
+    }
+
+    // Calculate cos_theta
+    vec3 dir = sample_ray_for_grid_index(
+        d_rand_state,
+        max_idx,
+        ray_normals,
+        ray_locations,
+        (batch_idx+batch_start_idx)
+    );
+    vec3 normal(ray_normals[(batch_start_idx+batch_idx)*3], ray_normals[(batch_start_idx+batch_idx)*3 + 1], ray_normals[(batch_start_idx+batch_idx)*3 + 2]);
+    float cos_theta = dot(normal, dir);
+
+    //TODO: Fix this, cos_theta multiplication causing program crash
+    td_targets_device[ batch_idx ] =  ray_rewards[ batch_idx + batch_start_idx ] + max_q_val*ray_discounts[ batch_idx + batch_start_idx ];//*cos_theta;
 }   
 
 // Update pixel values stored in the device_buffer
