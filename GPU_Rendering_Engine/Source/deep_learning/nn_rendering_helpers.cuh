@@ -113,6 +113,15 @@ void sample_random_scene_pos(
     int i
 );
 
+// Get all vertices in corrdinate system for the current point
+__host__
+void convert_vertices_to_point_coord_system(
+    std::vector<float>& converted_vertices, 
+    vec3& pos, 
+    float* vertices, 
+    int vertices_count
+);
+
 inline bool file_exists (const std::string& name);
 
 // Read the scene data file and populate the list of vertices

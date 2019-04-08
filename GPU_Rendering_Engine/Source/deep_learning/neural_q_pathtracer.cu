@@ -40,7 +40,7 @@ NeuralQPathtracer::NeuralQPathtracer(
     dynet::ParameterCollection model;
     dynet::AdamTrainer trainer(model);
     this->dqn = DQNetwork();
-    this->dqn.initialize(model, this->vertices_count + 3 /* Input dims */, GRID_RESOLUTION*GRID_RESOLUTION /* Output dims */);
+    this->dqn.initialize(model, this->vertices_count /* Input dims */, GRID_RESOLUTION*GRID_RESOLUTION /* Output dims */);
 
     //////////////////////////////////////////////////////////////
     /*                Load the previous DQN Model               */
@@ -276,27 +276,31 @@ void NeuralQPathtracer::render_frame(
 
                     // Initialise the graph
                     dynet::ComputationGraph graph;
-
-                    // Formulate the input expression
-                    // dynet::Dim input_dim({3},current_batch_size);
-                    // std::vector<float> input_states(3*current_batch_size);
-                    // memcpy(&(input_states[0]), &(prev_location_host[n*this->ray_batch_size*3]), sizeof(float) * 3 * current_batch_size);
-                    // dynet::Expression states_batch = dynet::input(graph, input_dim, input_states); //TODO might need pointer on last element
-
+                    
                     // Formulate the expression with the state and the scenes vertices
-                    dynet::Dim input_dim({3 + (unsigned int)this->vertices_count},current_batch_size);
-                    std::vector<float> input_vals(3*current_batch_size + this->vertices_count*current_batch_size);
+                    dynet::Dim input_dim({(unsigned int)this->vertices_count},current_batch_size);
+                    std::vector<float> input_vals(this->vertices_count*current_batch_size);
                     for (int s = 0; s < current_batch_size; s++){
-                        // Copy the current position
-                        memcpy(
-                            &(input_vals[3*s + this->vertices_count*s]),             // dst
-                            &(prev_location_host[n*this->ray_batch_size*3 + 3*s]), // src 
-                            sizeof(float) * 3                                      // count
+
+                        // Create the list of vertices and get the current position for the ray in the batch
+                        std::vector<float> converted_vertices(this->vertices_count);
+                        float x = prev_location_host[n*this->ray_batch_size*3 + 3*s    ];
+                        float y = prev_location_host[n*this->ray_batch_size*3 + 3*s + 1];
+                        float z = prev_location_host[n*this->ray_batch_size*3 + 3*s + 2];
+                        vec3 pos(x,y,z);
+                        
+                        // Convert the list of vertices into the points coord system
+                        convert_vertices_to_point_coord_system(
+                            converted_vertices, 
+                            pos,
+                            host_vertices, 
+                            this->vertices_count
                         );
-                        // Copy the list off all vertices
+                        
+                        // Copy the list of all modified vertices
                         memcpy(
-                            &(input_vals[3*s + this->vertices_count*s + 3]),
-                            host_vertices,
+                            &(input_vals[this->vertices_count*s]),
+                            (&converted_vertices[0]),
                             sizeof(float) * this->vertices_count
                         );
                     }
@@ -372,26 +376,30 @@ void NeuralQPathtracer::render_frame(
                     // 1) Create the input expression to the neural network for S_t+1
                     unsigned int current_batch_size = std::min(SCREEN_HEIGHT*SCREEN_WIDTH - (n*this->ray_batch_size), this->ray_batch_size);
 
-                    // Get the input batch for the new ray positions
-                    // dynet::Dim input_dim({3},current_batch_size);
-                    // std::vector<float> input_vals(3*current_batch_size);
-                    // memcpy(&(input_vals[0]), &(ray_locations_host[n*current_batch_size*3]), sizeof(float) * 3 * current_batch_size);
-                    // dynet::Expression input_batch = dynet::input(graph, input_dim, &input_vals);
-
                     // Formulate the expression with the state and the scenes vertices
-                    dynet::Dim input_dim({3 + (unsigned int)this->vertices_count},current_batch_size);
-                    std::vector<float> input_vals(3*current_batch_size + this->vertices_count*current_batch_size);
+                    dynet::Dim input_dim({(unsigned int)this->vertices_count},current_batch_size);
+                    std::vector<float> input_vals(this->vertices_count*current_batch_size);
                     for (int s = 0; s < current_batch_size; s++){
-                        // Copy the current position
-                        memcpy(
-                            &(input_vals[3*s + this->vertices_count*s]),             // dst
-                            &(ray_locations_host[n*this->ray_batch_size*3 + 3*s]), // src 
-                            sizeof(float) * 3                                      // count
+
+                        // Create the list of vertices and get the current position for the ray in the batch
+                        std::vector<float> converted_vertices(this->vertices_count);
+                        float x = ray_locations_host[n*this->ray_batch_size*3 + 3*s    ];
+                        float y = ray_locations_host[n*this->ray_batch_size*3 + 3*s + 1];
+                        float z = ray_locations_host[n*this->ray_batch_size*3 + 3*s + 2];
+                        vec3 pos(x,y,z);
+                        
+                        // Convert the list of vertices into the points coord system
+                        convert_vertices_to_point_coord_system(
+                            converted_vertices, 
+                            pos,
+                            host_vertices, 
+                            this->vertices_count
                         );
-                        // Copy the list off all vertices
+                        
+                        // Copy the list of all modified vertices
                         memcpy(
-                            &(input_vals[3*s + this->vertices_count*s + 3]),
-                            host_vertices,
+                            &(input_vals[this->vertices_count*s]),
+                            (&converted_vertices[0]),
                             sizeof(float) * this->vertices_count
                         );
                     }
@@ -434,27 +442,33 @@ void NeuralQPathtracer::render_frame(
                     dynet::Expression td_target = dynet::input(graph, dynet::Dim({1}, current_batch_size), td_targets);
 
                     // // 5) Get current Q(s,a) value
-                    // std::vector<float> input_states(3*current_batch_size);
-                    // memcpy(&(input_states[0]), &prev_location_host[n*current_batch_size*3], sizeof(float) * 3 * current_batch_size);
-                    // dynet::Expression states_batch = dynet::input(graph, input_dim, input_states);
-                    
                     // Formulate the expression with the state and the scenes vertices
-                    std::vector<float> input_states(3*current_batch_size + this->vertices_count*current_batch_size);
+                    std::vector<float> input_curr_state(this->vertices_count*current_batch_size);
                     for (int s = 0; s < current_batch_size; s++){
-                        // Copy the current position
-                        memcpy(
-                            &(input_states[3*s + this->vertices_count*s]),         // dst
-                            &(prev_location_host[n*this->ray_batch_size*3 + 3*s]), // src 
-                            sizeof(float) * 3                                      // count
+
+                        // Create the list of vertices and get the current position for the ray in the batch
+                        std::vector<float> converted_vertices(this->vertices_count);
+                        float x = prev_location_host[n*this->ray_batch_size*3 + 3*s    ];
+                        float y = prev_location_host[n*this->ray_batch_size*3 + 3*s + 1];
+                        float z = prev_location_host[n*this->ray_batch_size*3 + 3*s + 2];
+                        vec3 pos(x,y,z);
+                        
+                        // Convert the list of vertices into the points coord system
+                        convert_vertices_to_point_coord_system(
+                            converted_vertices, 
+                            pos,
+                            host_vertices, 
+                            this->vertices_count
                         );
-                        // Copy the list off all vertices
+                        
+                        // Copy the list of all modified vertices
                         memcpy(
-                            &(input_states[3*s + this->vertices_count*s + 3]),
-                            host_vertices,
+                            &(input_curr_state[this->vertices_count*s]),
+                            (&converted_vertices[0]),
                             sizeof(float) * this->vertices_count
                         );
                     }
-                    dynet::Expression states_batch = dynet::input(graph, input_dim, input_states); 
+                    dynet::Expression states_batch = dynet::input(graph, input_dim, input_curr_state); 
 
                     dynet::Expression prediction_qs = this->dqn.network_inference(graph, states_batch, true);
                     
@@ -621,7 +635,7 @@ void trace_ray(
         // TERMINAL STATE: R_(t+1) = Area light power
         case AREA_LIGHT:
             float diffuse_light_power = scene->area_lights[ray.intersection.index].luminance; 
-            ray_rewards[i] = diffuse_light_power;
+            ray_rewards[i] = diffuse_light_power*200.f;
             ray_discounts[i] = 0.f;
 
             if ( !ray_terminated[i] ){
@@ -715,10 +729,26 @@ void sample_batch_ray_directions_eta_greedy(
         // Get the larget q-values index
         unsigned int max_idx = 0;
         float max_q = current_qs_device[ action_count * batch_elem ];
+
         for (unsigned int n = 0; n < action_count; n++){
-            if (current_qs_device[ action_count * batch_elem + n] > max_q){
+
+            float temp_q = current_qs_device[ action_count * batch_elem + n];
+
+            // Calculate cos_theta
+            vec3 dir = sample_ray_for_grid_index(
+                d_rand_state,
+                n,
+                ray_normals,
+                ray_locations,
+                (batch_elem+batch_start_idx)
+            );
+            vec3 normal(ray_normals[(batch_start_idx+batch_elem)*3], ray_normals[(batch_start_idx+batch_elem)*3 + 1], ray_normals[(batch_start_idx+batch_elem)*3 + 2]);
+
+            temp_q *= dot(normal, dir);
+
+            if (temp_q > max_q){
                 max_idx = n;
-                max_q = current_qs_device[ action_count * batch_elem + n];
+                max_q = temp_q;
             }
         }
         direction_grid_idx = max_idx;

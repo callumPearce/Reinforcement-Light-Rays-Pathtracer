@@ -103,30 +103,35 @@ void compute_td_targets(
   
     if (batch_start_idx + batch_idx >= SCREEN_HEIGHT*SCREEN_WIDTH) return;
 
-    // Get the max q_val
+    int action_count = GRID_RESOLUTION*GRID_RESOLUTION;
+
+    // Get the max q_val multiplied by related cos_theta (cos_theta being part of the discount factor )
     unsigned int max_idx = 0;
-    float max_q_val = next_qs_device[batch_idx];
+    float max_q_val = next_qs_device[batch_idx*GRID_RESOLUTION*GRID_RESOLUTION];
     for (unsigned int i = 1; i < GRID_RESOLUTION*GRID_RESOLUTION; i++){
-        float temp_q = next_qs_device[batch_idx + i];
+
+        float temp_q = next_qs_device[batch_idx*action_count + i];
+
+        // Calculate cos_theta
+        vec3 dir = sample_ray_for_grid_index(
+            d_rand_state,
+            i,
+            ray_normals,
+            ray_locations,
+            (batch_idx+batch_start_idx)
+        );
+        vec3 normal(ray_normals[(batch_start_idx+batch_idx)*3], ray_normals[(batch_start_idx+batch_idx)*3 + 1], ray_normals[(batch_start_idx+batch_idx)*3 + 2]);
+
+        temp_q *= dot(normal, dir);
+
         if (max_q_val < temp_q){
             max_q_val = temp_q;
             max_idx = i;
         }
     }
 
-    // Calculate cos_theta
-    vec3 dir = sample_ray_for_grid_index(
-        d_rand_state,
-        max_idx,
-        ray_normals,
-        ray_locations,
-        (batch_idx+batch_start_idx)
-    );
-    vec3 normal(ray_normals[(batch_start_idx+batch_idx)*3], ray_normals[(batch_start_idx+batch_idx)*3 + 1], ray_normals[(batch_start_idx+batch_idx)*3 + 2]);
-    float cos_theta = dot(normal, dir);
-
-    //TODO: Fix this, cos_theta multiplication causing program crash
-    td_targets_device[ batch_idx ] =  ray_rewards[ batch_idx + batch_start_idx ] + max_q_val*ray_discounts[ batch_idx + batch_start_idx ];//*cos_theta;
+    // Calculate the TD-Target
+    td_targets_device[ batch_idx ] =  ray_rewards[ batch_idx + batch_start_idx ] + max_q_val*ray_discounts[ batch_idx + batch_start_idx ];
 }   
 
 // Update pixel values stored in the device_buffer
@@ -250,4 +255,20 @@ void sample_random_scene_pos(
     ray_locations[ (i*3)    ] = pos.x;
     ray_locations[ (i*3) + 2] = pos.y;
     ray_locations[ (i*3) + 1] = pos.z;
+}
+
+// Get all vertices in corrdinate system for the current point
+__host__
+void convert_vertices_to_point_coord_system(
+    std::vector<float>& converted_vertices, 
+    vec3& pos,
+    float* vertices, 
+    int vertices_count
+){
+    
+    for (int i = 0; i < vertices_count; i+=3){
+        converted_vertices[i  ] = vertices[i  ] - pos.x;
+        converted_vertices[i+1] = vertices[i+1] - pos.y;
+        converted_vertices[i+2] = vertices[i+2] - pos.z;
+    }
 }
