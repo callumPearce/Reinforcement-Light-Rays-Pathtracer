@@ -20,7 +20,7 @@ PretrainedPathtracer::PretrainedPathtracer(
     //////////////////////////////////////////////////////////////
     /*                  Assign attributes                       */
     //////////////////////////////////////////////////////////////
-    load_scene_data(scene, this->scene_data);
+    this->vertices_count = scene.vertices_count;
     this->batch_size = batch_size;
     this->num_batches = (SCREEN_HEIGHT*SCREEN_WIDTH + (batch_size -1))/batch_size;
     dim3 b_size(8,8);
@@ -37,7 +37,7 @@ PretrainedPathtracer::PretrainedPathtracer(
     dynet::initialize(dyparams);
     dynet::ParameterCollection model;
     this->dqn = DQNetwork();
-    this->dqn.initialize(model, 3+this->scene_data.size(), GRID_RESOLUTION*GRID_RESOLUTION);
+    this->dqn.initialize(model, this->vertices_count, GRID_RESOLUTION*GRID_RESOLUTION);
 
     //////////////////////////////////////////////////////////////
     /*             Load in the Parameter Values                 */
@@ -58,6 +58,12 @@ PretrainedPathtracer::PretrainedPathtracer(
     vec3* host_buffer = new vec3[ SCREEN_HEIGHT * SCREEN_WIDTH ];
     vec3* device_buffer;
     checkCudaErrors(cudaMalloc(&device_buffer, SCREEN_HEIGHT * SCREEN_WIDTH * sizeof(vec3)));
+
+    //////////////////////////////////////////////////////////////
+    /*               Initialise device buffers                  */
+    //////////////////////////////////////////////////////////////
+    float* host_vertices = new float[ scene.vertices_count ];
+    memcpy(host_vertices, scene.vertices, sizeof(float) * this->vertices_count);
 
     //////////////////////////////////////////////////////////////
     /*               Initialise device buffers                  */
@@ -132,6 +138,7 @@ PretrainedPathtracer::PretrainedPathtracer(
             device_camera,
             device_scene,
             device_buffer,
+            host_vertices,
             ray_locations_device,
             ray_normals_device,   
             ray_directions_device,
@@ -162,6 +169,7 @@ PretrainedPathtracer::PretrainedPathtracer(
     /*                      Free memory used                    */
     //////////////////////////////////////////////////////////////
     delete [] host_buffer;
+    delete [] host_vertices;
     cudaFree(device_buffer);
     cudaFree(d_rand_state);
     cudaFree(ray_locations_device);
@@ -184,6 +192,7 @@ void PretrainedPathtracer::render_frame(
     Camera* device_camera,
     Scene* device_scene,
     vec3* device_buffer,
+    float* host_vertices,
     float* ray_locations_device,
     float* ray_normals_device,   
     float* ray_directions_device,
@@ -221,19 +230,11 @@ void PretrainedPathtracer::render_frame(
         unsigned int bounces = 0;
         while(rays_finished == 0 && bounces < MAX_RAY_BOUNCES){
 
-            printf("Bounces: %d\n",bounces);
+            printf("Bounces: %d/%d\n",bounces, MAX_RAY_BOUNCES);
 
             // DIRECTION UPDATE
             // Don't modify the direction of the initial ray from the camera
             if (bounces > 0){
-
-                // sample_next_ray_directions_randomly<<<this->num_blocks, this->block_size>>>(
-                //     d_rand_state,
-                //     ray_normals_device, 
-                //     ray_directions_device,
-                //     ray_throughputs_device,
-                //     ray_terminated_device
-                // );
 
                 // Copy over the ray locations from the device to the host for inference
                 float* ray_locations_host = new float[ SCREEN_HEIGHT * SCREEN_WIDTH * 3 ];
@@ -253,29 +254,34 @@ void PretrainedPathtracer::render_frame(
                     // Initialise the computational graph
                     dynet::ComputationGraph graph;
 
-                    // Get the input expression 
-                    // std::vector<float> positions(current_batch_size*3);
-                    // memcpy(&(positions[0]), &(ray_locations_host[batch_start_idx*3]), sizeof(float)*current_batch_size*3);
-                    // dynet::Expression input = dynet::input(graph, dynet::Dim({3}, current_batch_size), positions);
-                    
                     // Formulate the expression with the state and the scenes vertices
-                    dynet::Dim input_dim({3 + (unsigned int)this->scene_data.size()},current_batch_size);
-                    std::vector<float> input_vals(3*current_batch_size + this->scene_data.size()*current_batch_size);
+                    dynet::Dim input_dim({(unsigned int)this->vertices_count},current_batch_size);
+                    std::vector<float> input_vals(this->vertices_count*current_batch_size);
                     for (int s = 0; s < current_batch_size; s++){
-                        // Copy the current position
-                        memcpy(
-                            &(input_vals[3*s + this->scene_data.size()*s]),           // dst
-                            &(ray_locations_host[b*this->batch_size*3 + 3*s]), // src 
-                            sizeof(float) * 3                                      // count
+
+                        // Create the list of vertices and get the current position for the ray in the batch
+                        std::vector<float> converted_vertices(this->vertices_count);
+                        float x = ray_locations_host[b*this->batch_size*3 + 3*s    ];
+                        float y = ray_locations_host[b*this->batch_size*3 + 3*s + 1];
+                        float z = ray_locations_host[b*this->batch_size*3 + 3*s + 2];
+                        vec3 pos(x,y,z);
+                        
+                        // Convert the list of vertices into the points coord system
+                        convert_vertices_to_point_coord_system(
+                            converted_vertices, 
+                            pos,
+                            host_vertices, 
+                            this->vertices_count
                         );
-                        // Copy the list off all vertices
+                        
+                        // Copy the list of all modified vertices
                         memcpy(
-                            &(input_vals[3*s + this->scene_data.size()*s + 3]),
-                            &(this->scene_data[0]),
-                            sizeof(float) * this->scene_data.size()
+                            &(input_vals[this->vertices_count*s]),
+                            (&converted_vertices[0]),
+                            sizeof(float) * this->vertices_count
                         );
                     }
-                    dynet::Expression input = dynet::input(graph, input_dim, input_vals);                     
+                    dynet::Expression input = dynet::input(graph, input_dim, input_vals);                  
 
                     // Get the q-vals
                     dynet::Expression prediction = dynet::softmax(this->dqn.network_inference(graph, input, false));
@@ -493,7 +499,7 @@ void importance_sample_ray_directions(
     int q_start_idx = i * GRID_RESOLUTION * GRID_RESOLUTION;
 
      // Do nothing if we have already intersected with the light
-     if (ray_terminated_device[batch_start_idx + i] == true){
+     if (ray_terminated_device[batch_start_idx + i]){
         return;
     }
 

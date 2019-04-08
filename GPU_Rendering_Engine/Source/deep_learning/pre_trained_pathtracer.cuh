@@ -89,6 +89,7 @@ class PretrainedPathtracer{
         int num_batches;
         DQNetwork dqn;
         std::vector<float> scene_data;
+        int vertices_count;
     
         // Constructor
         __host__
@@ -109,6 +110,7 @@ class PretrainedPathtracer{
             Camera* device_camera,
             Scene* device_scene,
             vec3* device_buffer, 
+            float* host_vertices,
             float* ray_locations_device,
             float* ray_normals_device,   
             float* ray_directions_device,
