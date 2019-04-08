@@ -538,6 +538,7 @@ void importance_sample_ray_directions(
         ray_normals_device,
         ray_locations_device,
         ray_throughputs_device,
+        ray_terminated_device,
         (batch_start_idx + i)
     );
 }

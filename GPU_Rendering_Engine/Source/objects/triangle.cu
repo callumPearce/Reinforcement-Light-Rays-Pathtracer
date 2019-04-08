@@ -44,6 +44,25 @@ vec4 Triangle::sample_position_on_plane(){
     return pos;
 }
 
+// Sample a position on the triangles plane
+__device__ 
+vec4 Triangle::sample_position_on_plane(curandState* d_rand_state, int i){
+    // http://mathworld.wolfram.com/TrianglePointPicking.html
+    // https://math.stackexchange.com/questions/538458/triangle-point-picking-in-3d
+    // x =  v0 + a_1*(v1-v0) + a_2*(v2-v0) 
+    float a1 = 1.f;
+    float a2 = 1.f;
+    vec4 pos = vec4(0);
+    do{
+        a1 = (curand_uniform(&d_rand_state[ i ]));
+        a2 = (curand_uniform(&d_rand_state[ i ]));
+        pos = this->v0 + a1*(this->v1 - this->v0)  + a2*(this->v2 - this->v0);
+    }
+    while(a1 + a2 > 1.f);
+    pos.w = 1.f;
+    return pos;
+}
+
 __host__
 void Triangle::compute_and_set_normal() {
     vec3 e1 = vec3(v1.x-v0.x,v1.y-v0.y,v1.z-v0.z);

@@ -104,7 +104,7 @@ int main (int argc, char** argv) {
     if ( PATH_TRACING_METHOD == 3 ){
         NeuralQPathtracer(
             4, 
-            64,
+            128,
             screen, 
             scene,
             camera,

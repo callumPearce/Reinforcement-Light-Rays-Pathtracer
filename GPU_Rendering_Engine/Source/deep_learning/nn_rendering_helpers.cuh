@@ -42,6 +42,7 @@ void sample_ray_for_grid_index(
     float* ray_normals_device,
     float* ray_locations_device,
     float* ray_throughputs_device,
+    bool* ray_terminated_device,
     int i
 );
 
@@ -100,6 +101,16 @@ __global__
 void sum_path_lengths(
     int* total_path_lengths_device,
     unsigned int* ray_bounces
+);
+
+// Sample a random position on the scenes geometry and update the normal
+__device__
+void sample_random_scene_pos(
+    Scene* scene,
+    curandState* d_rand_state,
+    float* ray_normals,
+    float* ray_locations,
+    int i
 );
 
 inline bool file_exists (const std::string& name);

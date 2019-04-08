@@ -10,8 +10,10 @@ void sample_ray_for_grid_index(
     float* ray_normals_device,
     float* ray_locations_device,
     float* ray_throughputs_device,
+    bool* ray_terminated_device,
     int i
 ){
+
     // Convert the index to a grid position
     int dir_x = int(grid_idx/GRID_RESOLUTION);
     int dir_y = grid_idx - (dir_x*GRID_RESOLUTION);
@@ -26,10 +28,12 @@ void sample_ray_for_grid_index(
     ray_directions_device[(i*3) + 2] = dir.z;
 
     // Update throughput with new sampled angle
-    float cos_theta = dot(normal, dir);
-    ray_throughputs_device[(i*3)    ] = (ray_throughputs_device[(i*3)    ] * cos_theta)/RHO;
-    ray_throughputs_device[(i*3) + 1] = (ray_throughputs_device[(i*3) + 1] * cos_theta)/RHO;
-    ray_throughputs_device[(i*3) + 2] = (ray_throughputs_device[(i*3) + 2] * cos_theta)/RHO;
+    if ( !ray_terminated_device[i] ){
+        float cos_theta = dot(normal, dir);
+        ray_throughputs_device[(i*3)    ] = (ray_throughputs_device[(i*3)    ] * cos_theta)/RHO;
+        ray_throughputs_device[(i*3) + 1] = (ray_throughputs_device[(i*3) + 1] * cos_theta)/RHO;
+        ray_throughputs_device[(i*3) + 2] = (ray_throughputs_device[(i*3) + 2] * cos_theta)/RHO;
+    }
 }
 
 // Randomly sample a ray within the given grid idx and return as vec3
@@ -67,11 +71,6 @@ void sample_next_ray_directions_randomly(
     int y =  blockIdx.y * blockDim.y + threadIdx.y;
     int i = SCREEN_HEIGHT*x + y;
 
-    // Do nothing if we have already intersected with the light
-    if (ray_terminated[i] == true){
-        return;
-    }
-
     // Sample the new direction and record it along with cos_theta
     float cos_theta;
     vec3 dir = vec3(sample_random_direction_around_intersection(d_rand_state, vec3(ray_normals[(i*3)], ray_normals[(i*3)+1], ray_normals[(i*3)+2]), cos_theta));
@@ -80,9 +79,11 @@ void sample_next_ray_directions_randomly(
     ray_directions[(i*3) + 2] = dir.z;
 
     // Update throughput with new sampled angle
-    ray_throughputs[(i*3)    ] = (ray_throughputs[(i*3)    ] * cos_theta)/RHO;
-    ray_throughputs[(i*3) + 1] = (ray_throughputs[(i*3) + 1] * cos_theta)/RHO;
-    ray_throughputs[(i*3) + 2] = (ray_throughputs[(i*3) + 2] * cos_theta)/RHO;
+    if ( !ray_terminated[i] ){
+        ray_throughputs[(i*3)    ] = (ray_throughputs[(i*3)    ] * cos_theta)/RHO;
+        ray_throughputs[(i*3) + 1] = (ray_throughputs[(i*3) + 1] * cos_theta)/RHO;
+        ray_throughputs[(i*3) + 2] = (ray_throughputs[(i*3) + 2] * cos_theta)/RHO;
+    }
 }
 
 
@@ -224,4 +225,29 @@ void load_scene_data(Scene& scene, std::vector<float>& scene_data){
         scene_data.push_back(al.v2.y);
         scene_data.push_back(al.v2.z);
     }
+}
+
+// Sample a random position on the scenes geometry and update the normal
+__device__
+void sample_random_scene_pos(
+    Scene* scene,
+    curandState* d_rand_state,
+    float* ray_normals,
+    float* ray_locations,
+    int i
+){
+    float rv = curand_uniform(&d_rand_state[ i ]);
+    int surface_idx = scene->surfaces_count * rv;
+
+    Surface s = scene->surfaces[surface_idx];
+    vec4 pos = s.sample_position_on_plane(d_rand_state, i);
+    vec4 normal = s.normal;
+
+    ray_normals[ (i*3)    ] = normal.x;
+    ray_normals[ (i*3) + 1] = normal.y;
+    ray_normals[ (i*3) + 2] = normal.z;
+    
+    ray_locations[ (i*3)    ] = pos.x;
+    ray_locations[ (i*3) + 2] = pos.y;
+    ray_locations[ (i*3) + 1] = pos.z;
 }

@@ -2,6 +2,8 @@
 #define TRIANGLE_H
 
 #include "shape.cuh"
+#include <curand_kernel.h>
+#include <curand.h>
 using glm::dot;
 
 /*
@@ -29,6 +31,10 @@ class Triangle : public Shape {
         // Samples a position on the triangle plane
         __host__
         vec4 sample_position_on_plane();
+
+        // Sample a position on the triangles plane
+        __device__ 
+        vec4 sample_position_on_plane(curandState* d_rand_state, int i);
 
         __host__
         void compute_and_set_normal();

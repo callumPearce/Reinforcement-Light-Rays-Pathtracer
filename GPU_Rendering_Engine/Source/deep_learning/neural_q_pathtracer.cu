@@ -344,6 +344,7 @@ void NeuralQPathtracer::render_frame(
             // Trace the rays in their set directions
             trace_ray<<<this->num_blocks, this->block_size>>>(
                 device_scene,
+                d_rand_state,
                 device_rays_finished,
                 ray_locations, 
                 ray_normals,
@@ -421,6 +422,8 @@ void NeuralQPathtracer::render_frame(
                         (n*this->ray_batch_size)
                     );
                     cudaDeviceSynchronize();
+
+                    cudaFree(next_qs_device);
 
                     std::vector<float> td_targets(current_batch_size);
                     checkCudaErrors(cudaMemcpy(&(td_targets[0]), td_targets_device, sizeof(float) * current_batch_size, cudaMemcpyDeviceToHost));
@@ -562,6 +565,7 @@ void initialise_ray(
 __global__
 void trace_ray(
         Scene* scene,
+        curandState* d_rand_state,
         int* rays_finished,
         float* ray_locations, 
         float* ray_normals, 
@@ -579,10 +583,6 @@ void trace_ray(
     int y =  blockIdx.y * blockDim.y + threadIdx.y;
     int i = SCREEN_HEIGHT*x + y;
 
-    // Do nothing if we have already intersected with the light
-    if (ray_terminated[i] == true){
-        return;
-    }
 
     // For the current ray, get its next state by shooting a ray in the direction stored in ray_directions
     vec3 position = vec3(ray_locations[(i*3)], ray_locations[(i*3)+1], ray_locations[(i*3)+2]);
@@ -597,25 +597,50 @@ void trace_ray(
 
         // TERMINAL STATE: R_(t+1) = Environment light power
         case NOTHING:
-            ray_terminated[i] = true;
             ray_rewards[i] = 0.f;
-            ray_throughputs[(i*3)] = ray_throughputs[(i*3)] * ENVIRONMENT_LIGHT;
-            ray_throughputs[(i*3)+1] = ray_throughputs[(i*3)+1] * ENVIRONMENT_LIGHT;
-            ray_throughputs[(i*3)+2] = ray_throughputs[(i*3)+2] * ENVIRONMENT_LIGHT;
-            ray_bounces[i] = (unsigned int)bounces;
+            ray_discounts[i] = 0.f;
+
+            if ( !ray_terminated[i] ){
+                ray_throughputs[(i*3)] = ray_throughputs[(i*3)] * ENVIRONMENT_LIGHT;
+                ray_throughputs[(i*3)+1] = ray_throughputs[(i*3)+1] * ENVIRONMENT_LIGHT;
+                ray_throughputs[(i*3)+2] = ray_throughputs[(i*3)+2] * ENVIRONMENT_LIGHT;
+                ray_terminated[i] = true;
+                ray_bounces[i] = (unsigned int)bounces;
+            }
+
+            // Sample a random starting position for ray on any surface in the scene to continue training
+            sample_random_scene_pos(
+                scene,
+                d_rand_state,
+                ray_normals,
+                ray_locations,
+                i
+            );
             break;
         
         // TERMINAL STATE: R_(t+1) = Area light power
         case AREA_LIGHT:
-            ray_terminated[i] = true;
             float diffuse_light_power = scene->area_lights[ray.intersection.index].luminance; 
             ray_rewards[i] = diffuse_light_power;
-            
-            vec3 diffuse_p = scene->area_lights[ray.intersection.index].diffuse_p;
-            ray_throughputs[(i*3)] = ray_throughputs[(i*3)] * diffuse_p.x;
-            ray_throughputs[(i*3)+1] = ray_throughputs[(i*3)+1] * diffuse_p.y;
-            ray_throughputs[(i*3)+2] = ray_throughputs[(i*3)+2] * diffuse_p.z;
-            ray_bounces[i] = (unsigned int)bounces;
+            ray_discounts[i] = 0.f;
+
+            if ( !ray_terminated[i] ){
+                vec3 diffuse_p = scene->area_lights[ray.intersection.index].diffuse_p;
+                ray_throughputs[(i*3)] = ray_throughputs[(i*3)] * diffuse_p.x;
+                ray_throughputs[(i*3)+1] = ray_throughputs[(i*3)+1] * diffuse_p.y;
+                ray_throughputs[(i*3)+2] = ray_throughputs[(i*3)+2] * diffuse_p.z;
+                ray_terminated[i] = true;
+                ray_bounces[i] = (unsigned int)bounces;
+            }
+
+            // Sample a random starting position for ray on any surface in the scene to continue training
+            sample_random_scene_pos(
+                scene,
+                d_rand_state,
+                ray_normals,
+                ray_locations,
+                i
+            );
             break;
 
         // NON-TERMINAL STATE: R_(t+1) + \gamma * max_a Q(S_t+1, a) 
@@ -641,14 +666,20 @@ void trace_ray(
             float luminance = 0.5f * (max_rgb + min_rgb);
 
             // discount_factors holds cos_theta currently, update rgb throughput first
-            ray_throughputs[(i*3)] = ray_throughputs[(i*3)] * (BRDF.x / (float)M_PI);
-            ray_throughputs[(i*3)+1] = ray_throughputs[(i*3)+1] * (BRDF.y / (float)M_PI);
-            ray_throughputs[(i*3)+2] = ray_throughputs[(i*3)+2] * (BRDF.z / (float)M_PI);
+            if ( !ray_terminated[i] ){
+                ray_throughputs[(i*3)] = ray_throughputs[(i*3)] * (BRDF.x / (float)M_PI);
+                ray_throughputs[(i*3)+1] = ray_throughputs[(i*3)+1] * (BRDF.y / (float)M_PI);
+                ray_throughputs[(i*3)+2] = ray_throughputs[(i*3)+2] * (BRDF.z / (float)M_PI);
+            }
 
             // Now update discount_factors with luminance
-            ray_discounts[i] *= luminance;
+            ray_rewards[i] = 0.f;
+            ray_discounts[i] = luminance;
+
             // Still a ray being to bounce, so not finished
-            atomicExch(rays_finished, 0);
+            if ( !ray_terminated[i] ){
+                atomicExch(rays_finished, 0);
+            }
             break;
     }
 }
@@ -669,9 +700,6 @@ void sample_batch_ray_directions_eta_greedy(
 ){
     // Get the index of the ray in the current batch
     int batch_elem =  blockIdx.x * blockDim.x + threadIdx.x;
-
-    // If the ray is out of index, or if it has already intersected with a surface, terminate
-    if ( batch_start_idx + batch_elem >= SCREEN_HEIGHT*SCREEN_WIDTH  ) return;
     
     // Sample the random number to be used for eta-greedy policy
     float rv = curand_uniform(&d_rand_state[ batch_start_idx + batch_elem ]);
@@ -713,6 +741,7 @@ void sample_batch_ray_directions_eta_greedy(
         ray_normals,
         ray_locations,
         ray_throughputs,
+        ray_terminated,
         (batch_start_idx + batch_elem)
     );
 }

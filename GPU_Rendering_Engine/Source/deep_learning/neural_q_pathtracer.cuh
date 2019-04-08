@@ -36,6 +36,7 @@ using glm::mat4;
 __global__
 static void trace_ray(
     Scene* scene,
+    curandState* d_rand_state,
     int* rays_finished,
     float* ray_locations, 
     float* ray_normals, 
