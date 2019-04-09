@@ -1,0 +1,13 @@
+\begin{thebibliography}{1}
+
+\bibitem{latexbook1}
+L.~Lamport.
+\newblock {\em {\LaTeX}: {A} Document Preparation System}.
+\newblock Addison-Wesley, 1986.
+
+\bibitem{latexbook2}
+F.~Mittelbach, M.~Goossens, J.~Braams, D.~Carlisle, and C.~Rowley.
+\newblock {\em The {\LaTeX} Companion}.
+\newblock Addison-Wesley, 2nd edition, 2004.
+
+\end{thebibliography}

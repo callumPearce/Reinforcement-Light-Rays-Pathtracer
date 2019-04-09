@@ -27,8 +27,8 @@
                 % the degree programme
                     degree={MEng},
                 % the dissertation    title (which cannot be blank)
-                     title={Efficient Path Tracing using Reinforcement Learning Methods},
-                % the dissertation subtitle (which can    be blank)
+                     title={How effective are Temporal difference learning methods in reducing the number of zero contribution light paths in Path tracing?},
+                % the dissertation subtitle (which can be blank)
                   subtitle={},
                 % the dissertation     type
                       type={research},
@@ -105,6 +105,7 @@ of authorship may still be produced online via
 
 \chapter*{Executive Summary}
 
+\begin{comment}
 {\bf A compulsory section, of at most $1$ page} 
 \vspace{1cm} 
 
@@ -148,8 +149,54 @@ an might be as follows:
       compared the results with several alternatives.
 \end{itemize}
 \end{quote}
+\end{comment}
+
+In the field of Computer Graphics, Path tracing is an algorithm which 
+accurately approximates global illumination in order to produce 
+photo-realistic images. Path tracing has traditionally been known to 
+trade speed for image quality. This is due to the lengthy process of 
+finding of accurately finding a pixels colour, whereby many light rays are 
+fired through each pixel into scene, then directions for each ray are 
+continually sampled until it intersects with a light source. Due to 
+this, a variety of Importance sampling algorithms have been invented 
+to avoid sampling directions which lead to rays contributing no light 
+to the rendered image. The paths formed by sampling rays in these 
+directions are known as zero contribution light paths. By not sampling 
+zero contribution light paths, it is possible to significantly reduce 
+the noise in rendered images using the same number of sampled rays per 
+pixel.
+
+Recently a Temporal Difference learning method was used by Nvidia to
+achieve impressive results in Importance sampling within a Path tracer.
+The algorithm essentially learns which directions light is coming from for
+a given point in the scene. It then uses importance sampling to favour shooting
+rays those stored directions, reducing the number of zero contribution light paths
+sampled. I have further investigated Nvidia's state of the art Expected SARSA
+learning algorithm's performance against both a default Path tracer, and my 
+newly designed Deep Q-Learning path tracing algorithm. Which leads to my
+hypothesis:
+
+\begin{quote}
+A deep reinforcement learning Path tracer is able to reduce
+the number of zero contribution light paths than an Expected SARSA
+Path tracer with the same memory budget.
+\end{quote}
 
 \subsection{Plan}
+\subsubsection{Breakdown}
+
+\begin{itemize}
+\item \textbf{Small Intro}: What is Path tracing (1-2 sentences)? Why is it important (1 sentence)? Seek for real-time ray-tracing (1 sentence). Importance sampling and how temporal difference learning is beginning to be used for importance sampling to avoid sampling rays which do not contribute to the creation of the image(1-2 sentences). 
+
+\item \textbf{Aims \& Objectives}: Evaluate the performance of the state of the art temporal difference learning method compared to a simple path tracer. Furthermore, I present a new deep Q-learning on-line path-tracing scheme and evaluate its performance against the state of the art temporal difference learning scheme and the default path tracer.
+
+\item \textbf{Outcomes}: From my experiments, Temporal difference learning has clear potential to reduce the number of zero contribution light paths sampled by the path tracer, even more so, deep q-learning is shown to outperform temporal difference learning (TODO)
+
+\item \textbf{Main areas of work}: Built a path tracing engine from scratch using only pixel \& basic maths libraries. Researched into efficient light transport simulation. Reimplemented the Irradiance Volume Paper and Nvidia's Learning light the reinforced way paper. Researched into temporal difference learning \& deep reinforcement learning. Developed a new deep q-learning path-tracing algorithm.
+
+\end{itemize}
+
+\subsubsection{Preliminary}
 \begin{enumerate}
 \item Path tracing is a ray-tracing method for rendering computer generated 
 photo-realistic images by accurately approximating global illumination. 

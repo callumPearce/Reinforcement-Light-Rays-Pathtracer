@@ -232,14 +232,13 @@ void PretrainedPathtracer::render_frame(
 
             printf("Bounces: %d/%d\n",bounces, MAX_RAY_BOUNCES);
 
+            // Copy over the ray locations from the device to the host for inference
+            float* ray_locations_host = new float[ SCREEN_HEIGHT * SCREEN_WIDTH * 3 ];
+            checkCudaErrors(cudaMemcpy(ray_locations_host, ray_locations_device, sizeof(float) * SCREEN_HEIGHT * SCREEN_WIDTH * 3, cudaMemcpyDeviceToHost));
+
             // DIRECTION UPDATE
             // Don't modify the direction of the initial ray from the camera
             if (bounces > 0){
-
-                // Copy over the ray locations from the device to the host for inference
-                float* ray_locations_host = new float[ SCREEN_HEIGHT * SCREEN_WIDTH * 3 ];
-                checkCudaErrors(cudaMemcpy(ray_locations_host, ray_locations_device, sizeof(float) * SCREEN_HEIGHT * SCREEN_WIDTH * 3, cudaMemcpyDeviceToHost));
-
                 // For each ray, compute the Q-values and importance sample a direction over them
                 for (int b = 0; b < this->num_batches; b++){
 
@@ -289,21 +288,27 @@ void PretrainedPathtracer::render_frame(
                     
                     // Copy q-values to device
                     checkCudaErrors(cudaMemcpy(device_q_values, &(q_vals[0]), sizeof(float) * q_vals.size(), cudaMemcpyHostToDevice));
-                
+                    
+                    unsigned int* ray_direction_indices;
+                    checkCudaErrors(cudaMalloc(&ray_direction_indices, sizeof(unsigned int) * current_batch_size));
+                    
                     // Run cuda kernel to compute new ray directions
-                    int threads = 16;
+                    int threads = 32;
                     int blocks = int(current_batch_size/threads);
-                    importance_sample_ray_directions<<<blocks, threads>>>(
+                    sample_batch_ray_directions_epsilon_greedy<<<blocks, threads>>>(
+                        EPSILON_START,
                         d_rand_state,
+                        ray_direction_indices,
                         device_q_values,
-                        ray_normals_device,
                         ray_directions_device,
                         ray_locations_device,
+                        ray_normals_device,
                         ray_throughputs_device,
                         ray_terminated_device,
                         (b*this->batch_size)
                     );
                     cudaDeviceSynchronize();
+                    cudaFree(ray_direction_indices);
 
                     // Free memory
                     cudaFree(device_q_values);
@@ -417,7 +422,7 @@ void trace_ray(
     int i = SCREEN_HEIGHT*x + y;
 
     // Do nothing if we have already intersected with the light
-    if (ray_terminated[i] == true){
+    if (ray_terminated[i]){
         return;
     }
 
@@ -435,9 +440,9 @@ void trace_ray(
         // TERMINAL STATE: R_(t+1) = Environment light power
         case NOTHING:
             ray_terminated[i] = true;
-            ray_throughputs[(i*3)] = ray_throughputs[(i*3)] * ENVIRONMENT_LIGHT*1;
-            ray_throughputs[(i*3)+1] = ray_throughputs[(i*3)+1] * ENVIRONMENT_LIGHT*1;
-            ray_throughputs[(i*3)+2] = ray_throughputs[(i*3)+2] * ENVIRONMENT_LIGHT*1;
+            ray_throughputs[(i*3)] = ray_throughputs[(i*3)] * ENVIRONMENT_LIGHT;
+            ray_throughputs[(i*3)+1] = ray_throughputs[(i*3)+1] * ENVIRONMENT_LIGHT;
+            ray_throughputs[(i*3)+2] = ray_throughputs[(i*3)+2] * ENVIRONMENT_LIGHT;
             ray_bounces[i] = (unsigned int)bounces;
             break;
         
@@ -465,98 +470,15 @@ void trace_ray(
             ray_normals[(i*3)+1] = new_norm.y;
             ray_normals[(i*3)+2] = new_norm.z;
 
-            vec3 BRDF = scene->surfaces[ray.intersection.index].material.diffuse_c;
+            vec3 BRDF = scene->surfaces[ray.intersection.index].material.diffuse_c / (float)M_PI;
 
             // discount_factors holds cos_theta currently, update rgb throughput first
-            ray_throughputs[(i*3)] = ray_throughputs[(i*3)] * (BRDF.x / (float)M_PI);
-            ray_throughputs[(i*3)+1] = ray_throughputs[(i*3)+1] * (BRDF.y / (float)M_PI);
-            ray_throughputs[(i*3)+2] = ray_throughputs[(i*3)+2] * (BRDF.z / (float)M_PI);
+            ray_throughputs[(i*3)] *= BRDF.x;
+            ray_throughputs[(i*3)+1] *= BRDF.y;
+            ray_throughputs[(i*3)+2] *= BRDF.z;
 
             // Still a ray being to bounce, so not finished
             atomicExch(rays_finished, 0);
             break;
-    }
-}
-
-// Importance samples rays directions from Q-values
-__global__
-void importance_sample_ray_directions(
-    curandState* d_rand_state,
-    float* device_q_values,
-    float* ray_normals_device,
-    float* ray_directions_device,
-    float* ray_locations_device,
-    float* ray_throughputs_device,
-    bool* ray_terminated_device,
-    int batch_start_idx
-){
-
-    // Batch index
-    int i =  blockIdx.x * blockDim.x + threadIdx.x;
-
-    if ( batch_start_idx+i >= SCREEN_HEIGHT*SCREEN_WIDTH || ray_terminated_device[batch_start_idx + i]) return;
-
-    int q_start_idx = i * GRID_RESOLUTION * GRID_RESOLUTION;
-
-    // // // Copy array onto local memory to speed-up processing
-    // // // Importance sample over Q_values
-    // float rv = curand_uniform(&d_rand_state[batch_start_idx + i]);
-    // int direction_idx = 0;
-    // float q_sum = 0.f;
-    // for (int n = 0; n < GRID_RESOLUTION*GRID_RESOLUTION; n++){ 
-
-    //     q_sum += device_q_values[q_start_idx + n];
-    //     // printf("%.5f\n",q_sum);
-    //     if ( q_sum > rv ){
-    //         direction_idx = n;
-    //         break;
-    //     }
-    // }
-
-    // Get max q-val
-    int max_q_index = 0;
-    float max_q = -999999999.f;
-    vec3 direction = vec3(0.f);
-    float cos_theta = 0.f;
-
-    // Find the max_q val (when scaled by cos_theta)
-    for (int n = 0; n < GRID_RESOLUTION*GRID_RESOLUTION; n++){
-        // Get the current q_value
-        float temp_q = device_q_values[q_start_idx + n];
-
-        // Sample the direction to get cos_theta
-        vec3 temp_dir = sample_ray_for_grid_index(
-            d_rand_state,
-            n,
-            ray_normals_device,
-            ray_locations_device,
-            (batch_start_idx + i)
-        );
-        vec3 normal(
-            ray_normals_device[(batch_start_idx+i)*3], 
-            ray_normals_device[(batch_start_idx+i)*3 + 1], 
-            ray_normals_device[(batch_start_idx+i)*3 + 2]
-        );
-        float temp_cos_theta = dot(normal, temp_dir);
-        temp_q *= temp_cos_theta;
-
-        if (temp_q > max_q){
-            max_q_index = n;
-            max_q = temp_q;
-            direction = temp_dir;
-            cos_theta = temp_cos_theta;
-        }
-    }
-
-    // Update the 3D stored direction
-    ray_directions_device[(batch_start_idx+i)*3]     = direction.x;
-    ray_directions_device[(batch_start_idx+i)*3 + 1] = direction.y; 
-    ray_directions_device[(batch_start_idx+i)*3 + 2] = direction.z;
-
-    // Update throughput with new sampled angle
-    if ( !ray_terminated_device[(batch_start_idx+i)] ){
-        ray_throughputs_device[(batch_start_idx+i)*3    ] = (ray_throughputs_device[(batch_start_idx+i)*3    ] * cos_theta)/RHO;
-        ray_throughputs_device[(batch_start_idx+i)*3 + 1] = (ray_throughputs_device[(batch_start_idx+i)*3 + 1] * cos_theta)/RHO;
-        ray_throughputs_device[(batch_start_idx+i)*3 + 2] = (ray_throughputs_device[(batch_start_idx+i)*3 + 2] * cos_theta)/RHO;
     }
 }

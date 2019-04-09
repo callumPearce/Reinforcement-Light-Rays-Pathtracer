@@ -45,7 +45,7 @@ NeuralQPathtracer::NeuralQPathtracer(
     //////////////////////////////////////////////////////////////
     /*                Load the previous DQN Model               */
     //////////////////////////////////////////////////////////////
-    std::string fname = "../Radiance_Map_Data/deep_q_learning.model";
+    std::string fname = "../Radiance_Map_Data/trained_deep_q_learning.model";
     if (LOAD_MODEL && file_exists(fname)){
         dynet::TextFileLoader loader(fname);
         loader.populate(model);
@@ -322,7 +322,7 @@ void NeuralQPathtracer::render_frame(
                     // Get direction indices (Call once for every element in the batch)
                     int threads = 32;
                     int blocks = (current_batch_size + (threads-1))/threads;
-                    sample_batch_ray_directions_eta_greedy<<<blocks, threads>>>(
+                    sample_batch_ray_directions_epsilon_greedy<<<blocks, threads>>>(
                         this->epsilon,
                         d_rand_state,
                         ray_direction_indices,
@@ -695,98 +695,5 @@ void trace_ray(
                 atomicExch(rays_finished, 0);
             }
             break;
-    }
-}
-
-// Sample index directions according the neural network q vals
-__global__
-void sample_batch_ray_directions_eta_greedy(
-    float eta,
-    curandState* d_rand_state,
-    unsigned int* ray_direction_indices,
-    float* current_qs_device,
-    float* ray_directions,
-    float* ray_locations,
-    float* ray_normals,
-    float* ray_throughputs,
-    bool* ray_terminated,
-    int batch_start_idx
-){
-    // Get the index of the ray in the current batch
-    int batch_elem =  blockIdx.x * blockDim.x + threadIdx.x;
-    
-    // Sample the random number to be used for eta-greedy policy
-    float rv = curand_uniform(&d_rand_state[ batch_start_idx + batch_elem ]);
-
-    // The total number of actions to choose from
-    int action_count = GRID_RESOLUTION*GRID_RESOLUTION;
-
-    // Greedy
-    if (rv > eta){
-        // Get the larget q-values index
-        unsigned int max_idx = 0;
-        float max_q = -999999.f;
-        float cos_theta = 0.f;
-        vec3 dir(0.f);
-
-        for (unsigned int n = 0; n < action_count; n++){
-
-            float temp_q = current_qs_device[ action_count * batch_elem + n];
-
-            // Calculate cos_theta
-            vec3 temp_dir = sample_ray_for_grid_index( 
-                d_rand_state,
-                n,
-                ray_normals,
-                ray_locations,
-                (batch_elem+batch_start_idx)
-            );
-            vec3 normal(ray_normals[(batch_start_idx+batch_elem)*3], ray_normals[(batch_start_idx+batch_elem)*3 + 1], ray_normals[(batch_start_idx+batch_elem)*3 + 2]);
-
-            float temp_cos_theta = dot(normal, temp_dir);
-            temp_q *= temp_cos_theta;
-
-            if (temp_q > max_q){
-                max_idx = n;
-                max_q = temp_q;
-                dir = temp_dir;
-                cos_theta = temp_cos_theta;
-            }
-        }
-        // Update the direction index storage
-        ray_direction_indices[ batch_elem ] = max_idx;
-
-        // Update the 3D stored direction
-        ray_directions[(batch_start_idx+batch_elem)*3]     = dir.x;
-        ray_directions[(batch_start_idx+batch_elem)*3 + 1] = dir.y; 
-        ray_directions[(batch_start_idx+batch_elem)*3 + 2] = dir.z;
-
-        // Update throughput with new sampled angle
-        if ( !ray_terminated[(batch_start_idx+batch_elem)] ){
-            ray_throughputs[(batch_start_idx+batch_elem)*3    ] = (ray_throughputs[(batch_start_idx+batch_elem)*3    ] * cos_theta)/RHO;
-            ray_throughputs[(batch_start_idx+batch_elem)*3 + 1] = (ray_throughputs[(batch_start_idx+batch_elem)*3 + 1] * cos_theta)/RHO;
-            ray_throughputs[(batch_start_idx+batch_elem)*3 + 2] = (ray_throughputs[(batch_start_idx+batch_elem)*3 + 2] * cos_theta)/RHO;
-        }
-    }
-    // Explore
-    else{
-        // Sample a random grid index
-        unsigned int direction_grid_idx = 
-            (unsigned int)((curand_uniform(&d_rand_state[ batch_start_idx + batch_elem ]) - 0.0001f) * action_count);
-
-        // Convert the found grid idx to a 3D direction and store in ray_directions
-        sample_ray_for_grid_index( 
-            d_rand_state,
-            (int)direction_grid_idx,
-            ray_directions,
-            ray_normals,
-            ray_locations,
-            ray_throughputs,
-            ray_terminated,
-            (batch_start_idx + batch_elem)
-        );
-
-        // Update the direction index storage
-        ray_direction_indices[ batch_elem ] = direction_grid_idx;
     }
 }

@@ -127,4 +127,19 @@ inline bool file_exists (const std::string& name);
 // Read the scene data file and populate the list of vertices
 void load_scene_data(Scene& scene, std::vector<float>& scene_data);
 
+// Sample index directions according the neural network q vals
+__global__
+void sample_batch_ray_directions_epsilon_greedy(
+    float eta,
+    curandState* d_rand_state,
+    unsigned int* ray_direction_indices,
+    float* current_qs_device,
+    float* ray_directions,
+    float* ray_locations,
+    float* ray_normals,
+    float* ray_throughputs,
+    bool* ray_terminated,
+    int batch_start_idx
+);
+
 #endif

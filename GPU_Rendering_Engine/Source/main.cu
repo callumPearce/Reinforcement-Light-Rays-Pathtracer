@@ -100,11 +100,23 @@ int main (int argc, char** argv) {
     scene.load_custom_scene("/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Models/door_room.obj");
     scene.save_vertices_to_file();
 
-    // SPECIAL CASE: Deep Learning
+    // SPECIAL CASE: Deep Reinforcement Learning
     if ( PATH_TRACING_METHOD == 3 ){
-        PretrainedPathtracer(
-            10, 
+        NeuralQPathtracer(
+            2, 
             256,
+            screen, 
+            scene,
+            camera,
+            argc,
+            argv
+        );
+    }
+    // SPECIAL CASE: Trained network inferece
+    else if( PATH_TRACING_METHOD == 4 ){
+        PretrainedPathtracer(
+            1, 
+            2048,
             screen, 
             scene,
             camera,

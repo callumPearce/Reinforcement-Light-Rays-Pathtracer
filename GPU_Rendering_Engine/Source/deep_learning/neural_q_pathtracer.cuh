@@ -64,22 +64,6 @@ static void initialise_ray(
 );
 
 
-// Sample ray directions according the neural network q vals
-__global__
-void sample_batch_ray_directions_eta_greedy(
-    float eta,
-    curandState* d_rand_state,
-    unsigned int* ray_direction_indices,
-    float* current_qs_device,
-    float* ray_directions,
-    float* ray_locations,
-    float* ray_normals,
-    float* ray_throughputs,
-    bool* ray_terminated,
-    int batch_start_idx
-);
-
-
 class NeuralQPathtracer{
 
     public:
