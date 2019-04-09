@@ -43,7 +43,7 @@ class Scene{
         void load_custom_scene(const char* filename);
 
         // Save vertices to file
-        void save_NN_scene_data_to_file();
+        void save_vertices_to_file();
 };
 
 #endif

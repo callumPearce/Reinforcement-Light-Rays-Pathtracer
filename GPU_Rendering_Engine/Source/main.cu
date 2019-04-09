@@ -98,12 +98,12 @@ int main (int argc, char** argv) {
     // Initialise the scene
     Scene scene = Scene();
     scene.load_custom_scene("/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Models/door_room.obj");
-    scene.save_NN_scene_data_to_file();
+    scene.save_vertices_to_file();
 
     // SPECIAL CASE: Deep Learning
     if ( PATH_TRACING_METHOD == 3 ){
-        NeuralQPathtracer(
-            3, 
+        PretrainedPathtracer(
+            10, 
             256,
             screen, 
             scene,

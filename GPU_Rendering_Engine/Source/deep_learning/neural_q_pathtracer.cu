@@ -721,21 +721,20 @@ void sample_batch_ray_directions_eta_greedy(
     // The total number of actions to choose from
     int action_count = GRID_RESOLUTION*GRID_RESOLUTION;
 
-    // Direction grid idx to convert to 3D direction
-    unsigned int direction_grid_idx = 0;
-
     // Greedy
     if (rv > eta){
         // Get the larget q-values index
         unsigned int max_idx = 0;
-        float max_q = current_qs_device[ action_count * batch_elem ];
+        float max_q = -999999.f;
+        float cos_theta = 0.f;
+        vec3 dir(0.f);
 
         for (unsigned int n = 0; n < action_count; n++){
 
             float temp_q = current_qs_device[ action_count * batch_elem + n];
 
             // Calculate cos_theta
-            vec3 dir = sample_ray_for_grid_index(
+            vec3 temp_dir = sample_ray_for_grid_index( 
                 d_rand_state,
                 n,
                 ray_normals,
@@ -744,34 +743,50 @@ void sample_batch_ray_directions_eta_greedy(
             );
             vec3 normal(ray_normals[(batch_start_idx+batch_elem)*3], ray_normals[(batch_start_idx+batch_elem)*3 + 1], ray_normals[(batch_start_idx+batch_elem)*3 + 2]);
 
-            temp_q *= dot(normal, dir);
+            float temp_cos_theta = dot(normal, temp_dir);
+            temp_q *= temp_cos_theta;
 
             if (temp_q > max_q){
                 max_idx = n;
                 max_q = temp_q;
+                dir = temp_dir;
+                cos_theta = temp_cos_theta;
             }
         }
-        direction_grid_idx = max_idx;
+        // Update the direction index storage
+        ray_direction_indices[ batch_elem ] = max_idx;
+
+        // Update the 3D stored direction
+        ray_directions[(batch_start_idx+batch_elem)*3]     = dir.x;
+        ray_directions[(batch_start_idx+batch_elem)*3 + 1] = dir.y; 
+        ray_directions[(batch_start_idx+batch_elem)*3 + 2] = dir.z;
+
+        // Update throughput with new sampled angle
+        if ( !ray_terminated[(batch_start_idx+batch_elem)] ){
+            ray_throughputs[(batch_start_idx+batch_elem)*3    ] = (ray_throughputs[(batch_start_idx+batch_elem)*3    ] * cos_theta)/RHO;
+            ray_throughputs[(batch_start_idx+batch_elem)*3 + 1] = (ray_throughputs[(batch_start_idx+batch_elem)*3 + 1] * cos_theta)/RHO;
+            ray_throughputs[(batch_start_idx+batch_elem)*3 + 2] = (ray_throughputs[(batch_start_idx+batch_elem)*3 + 2] * cos_theta)/RHO;
+        }
     }
     // Explore
     else{
         // Sample a random grid index
-        direction_grid_idx = 
+        unsigned int direction_grid_idx = 
             (unsigned int)((curand_uniform(&d_rand_state[ batch_start_idx + batch_elem ]) - 0.0001f) * action_count);
+
+        // Convert the found grid idx to a 3D direction and store in ray_directions
+        sample_ray_for_grid_index( 
+            d_rand_state,
+            (int)direction_grid_idx,
+            ray_directions,
+            ray_normals,
+            ray_locations,
+            ray_throughputs,
+            ray_terminated,
+            (batch_start_idx + batch_elem)
+        );
+
+        // Update the direction index storage
+        ray_direction_indices[ batch_elem ] = direction_grid_idx;
     }
-
-    // Update the direction index storage
-    ray_direction_indices[ batch_elem ] = direction_grid_idx;
-
-    // // Convert the found grid idx to a 3D direction and store in ray_directions
-    sample_ray_for_grid_index(
-        d_rand_state,
-        (int)direction_grid_idx,
-        ray_directions,
-        ray_normals,
-        ray_locations,
-        ray_throughputs,
-        ray_terminated,
-        (batch_start_idx + batch_elem)
-    );
 }

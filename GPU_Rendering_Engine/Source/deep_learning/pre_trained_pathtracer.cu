@@ -42,7 +42,7 @@ PretrainedPathtracer::PretrainedPathtracer(
     //////////////////////////////////////////////////////////////
     /*             Load in the Parameter Values                 */
     //////////////////////////////////////////////////////////////
-    std::string fname = "/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Radiance_Map_Data/deep_q_learning.model";
+    std::string fname = "/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Radiance_Map_Data/trained_deep_q_learning.model";
     if (file_exists(fname)){
         dynet::TextFileLoader loader(fname);
         loader.populate(model);
@@ -284,7 +284,7 @@ void PretrainedPathtracer::render_frame(
                     dynet::Expression input = dynet::input(graph, input_dim, input_vals);                  
 
                     // Get the q-vals
-                    dynet::Expression prediction = dynet::softmax(this->dqn.network_inference(graph, input, false));
+                    dynet::Expression prediction = this->dqn.network_inference(graph, input, false);
                     std::vector<float> q_vals = dynet::as_vector( graph.forward(prediction));                 // Some q_vals are all zero
                     
                     // Copy q-values to device
@@ -494,57 +494,69 @@ void importance_sample_ray_directions(
     // Batch index
     int i =  blockIdx.x * blockDim.x + threadIdx.x;
 
-    if ( batch_start_idx+i >= SCREEN_HEIGHT*SCREEN_WIDTH ) return;
+    if ( batch_start_idx+i >= SCREEN_HEIGHT*SCREEN_WIDTH || ray_terminated_device[batch_start_idx + i]) return;
 
     int q_start_idx = i * GRID_RESOLUTION * GRID_RESOLUTION;
 
-     // Do nothing if we have already intersected with the light
-     if (ray_terminated_device[batch_start_idx + i]){
-        return;
-    }
+    // // // Copy array onto local memory to speed-up processing
+    // // // Importance sample over Q_values
+    // float rv = curand_uniform(&d_rand_state[batch_start_idx + i]);
+    // int direction_idx = 0;
+    // float q_sum = 0.f;
+    // for (int n = 0; n < GRID_RESOLUTION*GRID_RESOLUTION; n++){ 
 
-    // // Copy array onto local memory to speed-up processing
-    // // Importance sample over Q_values
-    float rv = curand_uniform(&d_rand_state[batch_start_idx + i]);
-    int direction_idx = 0;
-    float q_sum = 0.f;
-    for (int n = 0; n < GRID_RESOLUTION*GRID_RESOLUTION; n++){ 
+    //     q_sum += device_q_values[q_start_idx + n];
+    //     // printf("%.5f\n",q_sum);
+    //     if ( q_sum > rv ){
+    //         direction_idx = n;
+    //         break;
+    //     }
+    // }
 
-        q_sum += device_q_values[q_start_idx + n];
-        // printf("%.5f\n",q_sum);
-        if ( q_sum > rv ){
-            direction_idx = n;
-            break;
+    // Get max q-val
+    int max_q_index = 0;
+    float max_q = -999999999.f;
+    vec3 direction = vec3(0.f);
+    float cos_theta = 0.f;
+
+    // Find the max_q val (when scaled by cos_theta)
+    for (int n = 0; n < GRID_RESOLUTION*GRID_RESOLUTION; n++){
+        // Get the current q_value
+        float temp_q = device_q_values[q_start_idx + n];
+
+        // Sample the direction to get cos_theta
+        vec3 temp_dir = sample_ray_for_grid_index(
+            d_rand_state,
+            n,
+            ray_normals_device,
+            ray_locations_device,
+            (batch_start_idx + i)
+        );
+        vec3 normal(
+            ray_normals_device[(batch_start_idx+i)*3], 
+            ray_normals_device[(batch_start_idx+i)*3 + 1], 
+            ray_normals_device[(batch_start_idx+i)*3 + 2]
+        );
+        float temp_cos_theta = dot(normal, temp_dir);
+        temp_q *= temp_cos_theta;
+
+        if (temp_q > max_q){
+            max_q_index = n;
+            max_q = temp_q;
+            direction = temp_dir;
+            cos_theta = temp_cos_theta;
         }
     }
 
-    // // Get max q-val
-    // int max_q_index = 0;
-    // int max_q = device_q_values[0];
-    // // float summation = 0.f;
-    // for (int n = 1; n < GRID_RESOLUTION*GRID_RESOLUTION; n++){
-    //     float temp_q = device_q_values[q_start_idx + n];
-    //     // summation += temp_q;
-    //     if (temp_q > max_q){
-    //         max_q_index = n;
-    //         max_q = temp_q;
-    //     }
-    // }
-    // int direction_idx = max_q_index;
+    // Update the 3D stored direction
+    ray_directions_device[(batch_start_idx+i)*3]     = direction.x;
+    ray_directions_device[(batch_start_idx+i)*3 + 1] = direction.y; 
+    ray_directions_device[(batch_start_idx+i)*3 + 2] = direction.z;
 
-    // if (max_q_index == GRID_RESOLUTION*GRID_RESOLUTION-1){
-    //     printf("%.3f\n",device_q_values[q_start_idx + max_q_index]);
-    // }
-
-    // Convert the direction index sampled into an actual 3D direction
-    sample_ray_for_grid_index(
-        d_rand_state,
-        direction_idx,
-        ray_directions_device,
-        ray_normals_device,
-        ray_locations_device,
-        ray_throughputs_device,
-        ray_terminated_device,
-        (batch_start_idx + i)
-    );
+    // Update throughput with new sampled angle
+    if ( !ray_terminated_device[(batch_start_idx+i)] ){
+        ray_throughputs_device[(batch_start_idx+i)*3    ] = (ray_throughputs_device[(batch_start_idx+i)*3    ] * cos_theta)/RHO;
+        ray_throughputs_device[(batch_start_idx+i)*3 + 1] = (ray_throughputs_device[(batch_start_idx+i)*3 + 1] * cos_theta)/RHO;
+        ray_throughputs_device[(batch_start_idx+i)*3 + 2] = (ray_throughputs_device[(batch_start_idx+i)*3 + 2] * cos_theta)/RHO;
+    }
 }

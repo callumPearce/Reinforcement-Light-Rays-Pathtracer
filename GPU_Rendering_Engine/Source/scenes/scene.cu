@@ -51,33 +51,29 @@ void Scene::load_custom_scene(const char* filename){
 }
 
 // Save vertices to file
-void Scene::save_NN_scene_data_to_file(){
+void Scene::save_vertices_to_file(){
     // Create the file 
-    std::ofstream save_file ("../Radiance_Map_Data/nn_scene_data.txt");
+    std::ofstream save_file ("../Radiance_Map_Data/vertices.txt");
     if (save_file.is_open()){
 
         for (int i = 0; i < this->surfaces_count; i++){
-            // Write the normals
             Surface sf = this->surfaces[i];
 
             // Write the vertices
             save_file << sf.v0.x << " " << sf.v0.y << " " << sf.v0.z << " " << sf.v1.x << " " << sf.v1.y << " " << sf.v1.z << " " << sf.v2.x << " " << sf.v2.y << " " << sf.v2.z << "\n";
-            save_file << sf.normal.x << " "  << sf.normal.y  << " "  << sf.normal.z << "\n";
         }
 
         for (int i = 0; i < this->area_light_count; i++){
-            // Write the normals
             AreaLight al = this->area_lights[i];
 
             // Write the vertices
             save_file << al.v0.x << " " << al.v0.y << " " << al.v0.z << " " << al.v1.x << " " << al.v1.y << " " << al.v1.z << " " << al.v2.x << " " << al.v2.y << " " << al.v2.z << "\n";
-            save_file << al.normal.x << " "  << al.normal.y  << " "  << al.normal.z << "\n";
         }
 
         // Close the file
         save_file.close();
     }
     else{
-        printf("Unable to save the Scene data.\n");
+        printf("Unable to save the vertices.\n");
     }
 }

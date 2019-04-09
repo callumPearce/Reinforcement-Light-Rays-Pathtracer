@@ -8,17 +8,39 @@
 #include "settings.cuh"
 #include "dq_network.cuh"
 
+/* GLM */
+#include <glm/glm.hpp>
+using glm::vec3;
+using glm::mat3;
+using glm::vec4;
+using glm::mat4;
+
+
 inline bool file_exists (const std::string& name) {
     struct stat buffer;   
     return (stat (name.c_str(), &buffer) == 0); 
 }
 
+// Get all vertices in corrdinate system for the current point
+void convert_vertices_to_point_coord_system(
+    std::vector<float>& converted_vertices, 
+    vec3& pos,
+    std::vector<float>& vertices
+){
+    
+    for (int i = 0; i < vertices.size(); i+=3){
+        converted_vertices[i  ] = vertices[i  ] - pos.x;
+        converted_vertices[i+1] = vertices[i+1] - pos.y;
+        converted_vertices[i+2] = vertices[i+2] - pos.z;
+    }
+}
+
 // Read the scene data file and populate the list of scene data
-void load_scene_data(std::vector<float>& scene_data){
+void load_vertices(std::vector<float>& vertices){
 
     // Open the file and read line by line
     std::string line;
-    std::ifstream save_file ("../Radiance_Map_Data/nn_scene_data.txt");
+    std::ifstream save_file ("../Radiance_Map_Data/vertices.txt");
     if (save_file.is_open()){
 
         int line_idx = 0;
@@ -32,14 +54,14 @@ void load_scene_data(std::vector<float>& scene_data){
 
                 // Add the data to the list (Note first 3 numbers are the position)
                 token = line.substr(0, pos);
-                scene_data.push_back(std::stof(token));
+                vertices.push_back(std::stof(token));
 
                 // Delete the part that we have read
                 line.erase(0, pos + 1);
             }
 
             // Add the final float in
-            scene_data.push_back(std::stof(line));
+            vertices.push_back(std::stof(line));
         }
     }
     else{
@@ -108,9 +130,9 @@ int main (int argc, char** argv) {
     //////////////////////////////////////////////////////////////
     /*           Read in the scene data                         */
     //////////////////////////////////////////////////////////////
-    std::vector<float> scene_data;
-    load_scene_data(scene_data);
-    std::cout << "Read " << scene_data.size() << " line of scene data." << std::endl;
+    std::vector<float> vertices;
+    load_vertices(vertices);
+    std::cout << "Read " << vertices.size()/3 << " vertices." << std::endl;
 
     //////////////////////////////////////////////////////////////
     /*           Select test and training data                  */
@@ -145,7 +167,7 @@ int main (int argc, char** argv) {
     dynet::ParameterCollection model;
     dynet::AdamTrainer trainer(model);
     DQNetwork dnn = DQNetwork();
-    dnn.initialize(model, 3+scene_data.size(), action_count);
+    dnn.initialize(model, vertices.size(), action_count);
 
     //////////////////////////////////////////////////////////////
     /*             Load in the Parameter Values                 */
@@ -159,7 +181,7 @@ int main (int argc, char** argv) {
     //////////////////////////////////////////////////////////////
     /*              Train and test the DNN                      */
     //////////////////////////////////////////////////////////////
-    unsigned int num_batches = training_data.size() / BATCH_SIZE - 1;
+    unsigned int num_batches = (training_data.size() + BATCH_SIZE - 1) / BATCH_SIZE;
 
     for (int i = 0; i < EPOCHS; i++){
 
@@ -181,29 +203,29 @@ int main (int argc, char** argv) {
 
                 unsigned int data_idx = sidx+k;
 
-                // Get the inputs
+                // Get the outputs
                 std::vector<float> batch_targets(training_data[data_idx].begin()+3, training_data[data_idx].end());
                 
-                // Get the outputs
-                std::vector<float> batch_inputs(3 + scene_data.size());
-                memcpy(
-                    &(batch_inputs[0]),
-                    &(training_data[data_idx][0]),
-                    sizeof(float) * 3
-                );
-                memcpy(
-                    &(batch_inputs[3]),
-                    &(scene_data[0]),
-                    sizeof(float) * scene_data.size()
+                // Get the inputs
+                std::vector<float> converted_vertices(vertices.size());
+                vec3 pos(
+                    training_data[data_idx][0],
+                    training_data[data_idx][1],
+                    training_data[data_idx][2]
                 );
 
-                // std::vector<float> batch_inputs(training_data[data_idx].begin(), training_data[data_idx].begin()+3);
+                // Get the list of vertices in the converted coordinate space
+                convert_vertices_to_point_coord_system(
+                    converted_vertices, 
+                    pos,
+                    vertices
+                );
 
                 current_targets[k] = dynet::input(graph, {(unsigned int)action_count}, batch_targets);
-                current_batch[k] = dynet::input(graph, {3 + (unsigned int)scene_data.size()}, batch_inputs);
+                current_batch[k] = dynet::input(graph, {(unsigned int)converted_vertices.size()}, converted_vertices);
             }
             dynet::Expression targets_batch = reshape(concatenate_cols(current_targets), dynet::Dim({(unsigned int) action_count}, batch_size));
-            dynet::Expression input_batch = reshape(concatenate_cols(current_batch), dynet::Dim({3 + (unsigned int)scene_data.size()}, batch_size));
+            dynet::Expression input_batch = reshape(concatenate_cols(current_batch), dynet::Dim({(unsigned int)vertices.size()}, batch_size));
 
             // Forward pass through the network
             dynet::Expression output_batch = dnn.network_inference(graph, input_batch, true);
@@ -226,22 +248,23 @@ int main (int argc, char** argv) {
 
             // Get the input expression and ground truth
             std::vector<float> targets(test_data[t].begin()+3, test_data[t].end());
-            // std::vector<float> inputs(test_data[t].begin(), test_data[t].begin()+4);
 
-            // Get the outputs
-            std::vector<float> inputs(3 + scene_data.size());
-            memcpy(
-                &(inputs[0]),
-                &(test_data[t][0]),
-                sizeof(float) * 3
-            );
-            memcpy(
-                &(inputs[3]),
-                &(scene_data[0]),
-                sizeof(float) * scene_data.size()
+            // Get the inputs
+            std::vector<float> converted_vertices(vertices.size());
+            vec3 pos(
+                test_data[t][0],
+                test_data[t][1],
+                test_data[t][2]
             );
 
-            dynet::Expression input = dynet::input(graph, {3 + (unsigned int)scene_data.size()}, inputs);
+            // Get the list of vertices in the converted coordinate space
+            convert_vertices_to_point_coord_system(
+                converted_vertices, 
+                pos,
+                vertices
+            );
+
+            dynet::Expression input = dynet::input(graph, {(unsigned int)vertices.size()}, converted_vertices);
             dynet::Expression ground_truth = dynet::input(graph, {(unsigned int) action_count}, targets);
 
             // Get the predictions
