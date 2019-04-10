@@ -27,7 +27,7 @@
                 % the degree programme
                     degree={MEng},
                 % the dissertation    title (which cannot be blank)
-                     title={How effective are Temporal difference learning methods in reducing the number of zero contribution light paths in Path tracing?},
+                     title={How effective are Temporal difference learning methods for reducing the number of zero contribution light paths while still accurately approximating Global Illumination in Path tracing?},
                 % the dissertation subtitle (which can be blank)
                   subtitle={},
                 % the dissertation     type
@@ -158,7 +158,7 @@ trade speed for image quality. This is due to the lengthy process of accurately
 finding each pixels colour, whereby many light rays are 
 fired through each pixel into scene, then directions for each ray are 
 continually sampled until it intersects with a light source. Due to 
-this, a variety of Importance sampling algorithms have been invented 
+this, a variety of Importance sampling algorithms have been designed 
 to avoid sampling directions which lead to rays contributing no light 
 to the rendered image. The paths formed by sampling rays in these 
 directions are known as zero contribution light paths. By not sampling 
@@ -170,11 +170,11 @@ Recently a Temporal Difference learning method was used by Nvidia to
 achieve impressive results in Importance sampling within a Path tracer.
 The algorithm essentially learns which directions light is coming from for
 a given point in the scene. It then uses importance sampling to favour shooting
-rays those stored directions, reducing the number of zero contribution light paths
-sampled. Nvidia only explore two classic Temporal Difference learning schemes
-in doing so. Therefore, there is more potential research to assess the 
-ability of deep reinforcement learning schemes in Temporal Difference 
-learning for reducing the number zero contribution light paths sampled.
+rays stored in those directions, reducing the number of zero contribution light paths
+sampled. With this success, there is plenty of potential to experiment with
+other Temporal Difference learning methods, particularly Deep Q-Learning.
+It is also important to assess both of these methods on their ability to 
+accurately approximate Global Illumination to produce photo-realistic images.
 
 \noindent
 My goals are as follows:
@@ -182,21 +182,26 @@ My goals are as follows:
 \begin{enumerate}
 \item Reimplement Nvidia's state of the art on-line Temporal 
 Difference learning Path Tracer in order to further investigate its ability
-to reduce the number of zero contribution light paths, and at what costs
-the method bears in doing so. 
+to reduce the number of zero contribution light paths.
 
 \item Design and implement an on-line Deep Q-Learning variant of the
-Path tracing algorithm and investigate its ability to reduce the number of zero contribution light paths sampled, and what costs the method bear in doing so.
+Path tracing algorithm and investigate its ability to reduce the number of zero contribution light paths sampled.
+
+\item Assess both Nvidia's state of the art on-line Temporal Difference 
+learning Path tracer, and the Deep Q-Learning Path tracer' on their ability 
+to accurately simulate Global Illumination.
 
 \end{enumerate}
 
 \noindent
-Both of these goals together contribute to confirming the following hypothesis:
+The goals above were used to confirm the following hypothesis for simple
+diffuse scene rendering:
 
 \begin{quote}
 A Deep Q-learning Path tracer is better able to reduce
 the number of zero contribution light paths than an Expected SARSA
-Path tracer with the same memory budget.
+Path tracer with the same memory budget, whilst still accurately
+simulating Global Illumination.
 \end{quote}
 
 
@@ -223,58 +228,6 @@ designed for the algorithm.
 
 \end{itemize}
 
-\subsection{Plan}
-\subsubsection{Breakdown}
-
-\begin{itemize}
-\item \textbf{Small Intro}: What is Path tracing (1-2 sentences)? Why is it important (1 sentence)? Seek for real-time ray-tracing (1 sentence). Importance sampling and how temporal difference learning is beginning to be used for importance sampling to avoid sampling rays which do not contribute to the creation of the image(1-2 sentences). 
-
-\item \textbf{Aims \& Objectives}: Evaluate the performance of the state of the art temporal difference learning method compared to a simple path tracer. Furthermore, I present a new deep Q-learning on-line path-tracing scheme and evaluate its performance against the state of the art temporal difference learning scheme and the default path tracer.
-
-\item \textbf{Outcomes}: From my experiments, Temporal difference learning has clear potential to reduce the number of zero contribution light paths sampled by the path tracer, even more so, deep q-learning is shown to outperform temporal difference learning (TODO)
-
-\item \textbf{Main areas of work}: Built a path tracing engine from scratch using only pixel \& basic maths libraries. Researched into efficient light transport simulation. Reimplemented the Irradiance Volume Paper and Nvidia's Learning light the reinforced way paper. Researched into temporal difference learning \& deep reinforcement learning. Developed a new deep q-learning path-tracing algorithm.
-
-\end{itemize}
-
-\subsubsection{Preliminary}
-\begin{enumerate}
-\item Path tracing is a ray-tracing method for rendering computer generated 
-photo-realistic images by accurately approximating global illumination. 
-Traditionally it has been thought to trade off rendering speeds with image quality. 
-
-\item The goal is to design and implement modified path-tracing algorithms
- which reduces the number of zero-contribution light paths in its estimation 
- of global illumination. This will lead to less noisy image with the same number
- of samples per pixel. I have integrated different reinforcement learning 
- algorithms into the path-tracing rendering pipeline, which was initially motivated 
- by  Nvidia's promising results when integrating Q-learning % define a light path
-
-\item More specifically, the task of the reinforcement learning AI agent is to learn 
-for any given point in the scene the light power contribution from all incident angles. 
-This is known as the Irradiance Distribution, the term introduced by (cite The 
-Irradiance Volume). It is then possible to importance sample scattering directions 
-from the learned irradiance distribution at a given point in the scene to dramatically
-reduce the number of rays scattered in directions giving zero-light power 
-contribution, also known as zero-contribution light paths. 
-
-\item I have assessed different on-line reinforcement learning techniques for learning
- the irradiance distribution for any point in a scene by comparing metrics such as
-  average path length, number of ray paths connecting to a light - generalization
-
-\item I have spent x hours researching into reinforcement learning for Dynamic 
-Programming methods, Monte Carlo methods, Temporal Difference methods, Deep
- reinforcement learning methods including monte-carlo and temporal difference 
- learning approaches
-
-\item I have spent x hours researching into the newly emerging field of learning 
-light transport
-
-\item I have created my own path-tracing graphics engine which supports naive 
-path-tracing, reinforcement learning approach introduced by Ken Dahm, and my 
-newly proposed deep reinforcement learning scheme for learning the irradiance 
-distribution for any point in the scene
-\end{enumerate}
 
 % -----------------------------------------------------------------------------
 
@@ -407,6 +360,16 @@ advice or time), and so on.
 \chapter{Contextual Background}
 \label{chap:context}
 
+\section{Path Tracing and its significance in Computer Graphics}
+Path Tracing is a Monte Carlo method for rendering photo-realistic images of 3D scenes by accurately approximating global illumination \cite{christensen2016path}. 
+
+Simulating global illumination means that Path tracing accounts for both direct and indirect illumination. Direct illumination being rays of light emitted from a light source, which reflect off exactly one surface before reaching the camera in the scene. Whereas indirect illumination are ray of light which reflect 2 or times before reaching the camera.
+
+\begin{itemize}
+\item Pinhole camera ?
+\item Shooting a ray though a pixel (check Carl's lecture slides to find exactly what it is called and find an image rather then describing it in too much detail)
+\end{itemize}
+
 \begin{comment}
 {\bf A compulsory chapter,     of roughly $5$ pages}
 \vspace{1cm} 
@@ -458,7 +421,16 @@ More specifically, the concrete aims are:
 
 \item \textbf{What is it}: What is path tracing in computer graphics, related to ray-tracing. What is global illumination? Other methods of global illumination. A conceptual description of the path tracing algorithm and where importance sampling comes in and why it reduces image noise. This will definitely require an image of sampling on a diffuse surface and how we can benefit from importance sampling. 
 
+
 \item How reinforcement learning links in with on-line learning in a path tracer and how what it learns can be used to reduce the number of zero-contribution light paths. A picture now relating to the one above but there is a blocker in the way of the light and the agent is able to learn that is not a favourable direction to shoot the ray in. Discuss how this work builds on top of Nvidias and on the topic of efficient light path sampling itself.
+
+\item More specifically, the task of the reinforcement learning AI agent is to learn 
+for any given point in the scene the light power contribution from all incident angles. 
+This is known as the Irradiance Distribution, the term introduced by (cite The 
+Irradiance Volume). It is then possible to importance sample scattering directions 
+from the learned irradiance distribution at a given point in the scene to dramatically
+reduce the number of rays scattered in directions giving zero-light power 
+contribution, also known as zero-contribution light paths. 
 
 \item Need to have something describing the potential for deep reinforcement learning to be applied compared to standard temporal difference learning.
 

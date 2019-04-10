@@ -1,9 +1,7 @@
-\contentsline {subsection}{\numberline {0.0.1}Plan}{xiv}{subsection.0.0.1}
-\contentsline {subsubsection}{Breakdown}{xiv}{section*.9}
-\contentsline {subsubsection}{Preliminary}{xiv}{section*.10}
-\contentsline {subsection}{\numberline {0.0.2}Plan}{xix}{subsection.0.0.2}
+\contentsline {subsection}{\numberline {0.0.1}Plan}{xix}{subsection.0.0.1}
 \contentsline {chapter}{\numberline {1}Contextual Background}{1}{chapter.1}
-\contentsline {subsection}{\numberline {1.0.1}Plan}{1}{subsection.1.0.1}
+\contentsline {section}{\numberline {1.1}Path Tracing and its significance in Computer Graphics}{1}{section.1.1}
+\contentsline {subsection}{\numberline {1.1.1}Plan}{1}{subsection.1.1.1}
 \contentsline {chapter}{\numberline {2}Technical Background}{3}{chapter.2}
 \contentsline {subsection}{\numberline {2.0.1}Plan}{3}{subsection.2.0.1}
 \contentsline {chapter}{\numberline {3}Deep Q-Learning Path tracer}{5}{chapter.3}

@@ -1,6 +1,7 @@
 \BOOKMARK [0][-]{chapter.1}{Contextual Background}{}% 1
-\BOOKMARK [0][-]{chapter.2}{Technical Background}{}% 2
-\BOOKMARK [0][-]{chapter.3}{Deep Q-Learning Path tracer}{}% 3
-\BOOKMARK [0][-]{chapter.4}{Critical Evaluation}{}% 4
-\BOOKMARK [0][-]{chapter.5}{Conclusion}{}% 5
-\BOOKMARK [0][-]{appendix.A}{An Example Appendix}{}% 6
+\BOOKMARK [1][-]{section.1.1}{Path Tracing and its significance in Computer Graphics}{chapter.1}% 2
+\BOOKMARK [0][-]{chapter.2}{Technical Background}{}% 3
+\BOOKMARK [0][-]{chapter.3}{Deep Q-Learning Path tracer}{}% 4
+\BOOKMARK [0][-]{chapter.4}{Critical Evaluation}{}% 5
+\BOOKMARK [0][-]{chapter.5}{Conclusion}{}% 6
+\BOOKMARK [0][-]{appendix.A}{An Example Appendix}{}% 7
