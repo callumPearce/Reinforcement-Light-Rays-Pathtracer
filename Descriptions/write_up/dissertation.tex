@@ -154,8 +154,8 @@ an might be as follows:
 In the field of Computer Graphics, Path tracing is an algorithm which 
 accurately approximates global illumination in order to produce 
 photo-realistic images. Path tracing has traditionally been known to 
-trade speed for image quality. This is due to the lengthy process of 
-finding of accurately finding a pixels colour, whereby many light rays are 
+trade speed for image quality. This is due to the lengthy process of accurately 
+finding each pixels colour, whereby many light rays are 
 fired through each pixel into scene, then directions for each ray are 
 continually sampled until it intersects with a light source. Due to 
 this, a variety of Importance sampling algorithms have been invented 
@@ -164,23 +164,64 @@ to the rendered image. The paths formed by sampling rays in these
 directions are known as zero contribution light paths. By not sampling 
 zero contribution light paths, it is possible to significantly reduce 
 the noise in rendered images using the same number of sampled rays per 
-pixel.
+pixel.\\
 
 Recently a Temporal Difference learning method was used by Nvidia to
 achieve impressive results in Importance sampling within a Path tracer.
 The algorithm essentially learns which directions light is coming from for
 a given point in the scene. It then uses importance sampling to favour shooting
 rays those stored directions, reducing the number of zero contribution light paths
-sampled. I have further investigated Nvidia's state of the art Expected SARSA
-learning algorithm's performance against both a default Path tracer, and my 
-newly designed Deep Q-Learning path tracing algorithm. Which leads to my
-hypothesis:
+sampled. Nvidia only explore two classic Temporal Difference learning schemes
+in doing so. Therefore, there is more potential research to assess the 
+ability of deep reinforcement learning schemes in Temporal Difference 
+learning for reducing the number zero contribution light paths sampled.
+
+\noindent
+My goals are as follows:
+
+\begin{enumerate}
+\item Reimplement Nvidia's state of the art on-line Temporal 
+Difference learning Path Tracer in order to further investigate its ability
+to reduce the number of zero contribution light paths, and at what costs
+the method bears in doing so. 
+
+\item Design and implement an on-line Deep Q-Learning variant of the
+Path tracing algorithm and investigate its ability to reduce the number of zero contribution light paths sampled, and what costs the method bear in doing so.
+
+\end{enumerate}
+
+\noindent
+Both of these goals together contribute to confirming the following hypothesis:
 
 \begin{quote}
-A deep reinforcement learning Path tracer is able to reduce
+A Deep Q-learning Path tracer is better able to reduce
 the number of zero contribution light paths than an Expected SARSA
 Path tracer with the same memory budget.
 \end{quote}
+
+
+\noindent
+\textbf{Outcomes}
+\begin{itemize}
+\item Which is better able to reduce the number of zero contribution light paths expected SARSA or Deep Q-learning
+\item Can Expected SARSA learning handle multiple lights well in a scene \& deep q-learning
+\end{itemize}
+
+\noindent
+\textbf{Main areas of work}
+\begin{itemize}
+\item I have written $x$ lines of code to build a  Path tracing engine from scratch which supports a variety of GPU accelerated Path tracing algorithms I have experimented with.
+
+\item I have spent $x$ hours researching into the field of efficient light transport simulation for ray-tracing techniques.
+
+\item I have spent $x$ hours researching into Reinforcement learning, particularly Temporal Difference learning and Deep Reinforcement learning, neither of which I have been taught before.
+
+\item I spent $x$ hours implementing and validating the on-line Expected SARSA Path tracing algorithm proposed by Nvidia, which required me to implement the Irradiance Volume data structure as a prerequisite.
+
+\item I have spent $x$ hours designing, implementing and analysing my own on-line Deep Q-learning Path tracing algorithm, along with a neural network architecture
+designed for the algorithm.
+
+\end{itemize}
 
 \subsection{Plan}
 \subsubsection{Breakdown}
@@ -239,6 +280,7 @@ distribution for any point in the scene
 
 \chapter*{Supporting Technologies}
 
+\begin{comment}
 {\bf A compulsory section, of at most $1$ page}
 \vspace{1cm} 
 
@@ -268,19 +310,27 @@ dissertation''); an example is as follows:
       \url{http://wordpress.org/}.
 \end{itemize}
 \end{quote}
+\end{comment}
 
-\subsection{Plan}
+
 \begin{enumerate}
-\item \verb|SDL2| for displaying the rendered images and saving the images 
-as \verb|.bmp| format
-\item \verb|OpenGL| mathematics library to support my ray-tracing calculations
- and includes GPU accelerated implementations of each function
-\item \verb|CUDA Toolkit 10.1| parallel computing platform for accelerating the 
-path tracer implementations
-\item \verb|Nvidia 1070Ti| graphics card for rendering images, this was my own 
-personal graphics card
-\item \verb|Dynet| neural network framework for the implementation of deep 
-reinforcement learning within the path tracing rendering pipeline
+\item I used the \verb|SDL2|  library for displaying and saving rendered 
+images from my Path tracing engine.
+
+\item I used the \verb|OpenGL| mathematics library to support low level 
+operations in my Path tracing engine. It includes GPU accelerated 
+ implementations for all of its functions.
+ 
+\item I used the \verb|CUDA Toolkit 10.1| parallel computing platform for
+ accelerating Path tracing algorithms. This means the \verb|CUDA nvcc|
+ compiler must be used to compile my Path tracing engine.
+
+\item All experiments were run on my own desktop machine with an
+Nvidia \verb|1070Ti| GPU, Intel \verb|i5-8600K| CPU and $16$GB of RAM.
+
+\item I used the C++ API for the \verb|Dynet| neural network framework 
+to implement all of my Neural Network code as it is able to be compiled
+by the \verb|CUDA| compiler.
 \end{enumerate}
 
 % -----------------------------------------------------------------------------
@@ -357,6 +407,7 @@ advice or time), and so on.
 \chapter{Contextual Background}
 \label{chap:context}
 
+\begin{comment}
 {\bf A compulsory chapter,     of roughly $5$ pages}
 \vspace{1cm} 
 
@@ -399,8 +450,27 @@ More specifically, the concrete aims are:
       are worthwhile.
 \end{enumerate}
 \end{quote}
+\end{comment}
 
 \subsection{Plan}
+\textbf{Breakdown}
+\begin{itemize}
+
+\item \textbf{What is it}: What is path tracing in computer graphics, related to ray-tracing. What is global illumination? Other methods of global illumination. A conceptual description of the path tracing algorithm and where importance sampling comes in and why it reduces image noise. This will definitely require an image of sampling on a diffuse surface and how we can benefit from importance sampling. 
+
+\item How reinforcement learning links in with on-line learning in a path tracer and how what it learns can be used to reduce the number of zero-contribution light paths. A picture now relating to the one above but there is a blocker in the way of the light and the agent is able to learn that is not a favourable direction to shoot the ray in. Discuss how this work builds on top of Nvidias and on the topic of efficient light path sampling itself.
+
+\item Need to have something describing the potential for deep reinforcement learning to be applied compared to standard temporal difference learning.
+
+\item \textbf{Why is it important}: Where is it used in industry. It's current position and potential future usage in other industries. Why speed is becoming more valuable. While the goal of my thesis is not directly improve the speed of path tracing, it is to reduce the number of samples required in the algorithm to accurately approximate global illumination in hope that these more efficient sampling technique can be refined and optimised in future path tracing engines. Nvidia already showed it is possible to get their method to be only 20\% slower than a standard path-tracer yet the superior results in image quality outweigh the time penalty. Reduces path length over time, so there is potential for the method to not only produce better images but be faster in doing so as well.
+
+\item \textbf{Who and why will they benefit from the project}: Film \& Media industry from potentially improved render times. More targeted towards reaching real-time ray-tracing. Opens up more avenues to explore further deep reinforcement learning methods as part of the rendering pipeline e.g. actor-critic algorithm.
+
+\item \textbf{Challenges involved with the project}: Assessing the costs which the method proposed by Nvidia brings. Researching in how deep reinforcement learning applies to rendering equation. Designing an on-line algorithm for learning and a suitable network architecture. Accelerating the algorithms on a GPU in order to get results in a reasonable amount of time. Accelerating Nvidias algorithm on a GPU to find it's shortcomings.
+
+\end{itemize}
+
+\textbf{Preliminary}
 \begin{enumerate}
 \item Path-tracing in industry/ray-tracing in general, why is it important 
 and how is the current field moving. Why should we optimise it algorithmically. 
@@ -457,6 +527,7 @@ rendering pipeline for a path-tracer
 \chapter{Technical Background}
 \label{chap:technical}
 
+\begin{comment}
 {\bf A compulsory chapter,     of roughly $10$ pages} 
 \vspace{1cm} 
 
@@ -477,8 +548,35 @@ understand what {\em you} have done (by reading subsequent sections), then
 accurately assess your work.  You might view an additional goal as giving 
 the reader confidence that you are able to absorb, understand and clearly 
 communicate highly technical material.
+\end{comment}
 
 \subsection{Plan}
+\textbf{Breakdown}
+
+\begin{itemize}
+\item The rendering equation and what each component is, how this relates to global illumination
+
+\item Path tracings use of the rendering equation. How monte carlo comes into play. The iterative version of the path tracing algorithm. Concept of a light path.
+
+\item Importance sampling in terms of BRDF and relating this to reducing variance in pixel colours leading to less noise. Give examples of classical importance sampling techniques and their performance. Critic them and clearly present where their shortcomings are and how they are unavoidable.
+
+\item Introduce reinforcement learning: Markov Decision Process, Bellman 
+Equation, Temporal Difference Learning and its strong points and weaknesses,
+ how does it differ to traditional monte-carlo (might not be relevant). Proved 
+ to converge on the true valuation function for a given state-action pair when 
+ run infinitely
+ 
+ \item Give Nvidia's derivation of their learning rule. How does the Markov Decision Process relate to a rendered scene, i.e. what is the AI doing for us here. Provide a justification of parameter matching. Essentially cover all reinforcement learning theory of the paper here, with a justification (mathematical) and visual examples of why it works. 
+ 
+ \item Discretizing the state space is required for Q-learning to be applied, shortcoming is that it may not work very well with infinite state spaces. Introduce the Irradiance volume and how it can be used to rather store actual irradiance values to instead store Q-values. The irradiance distribution for a given point in the scene. Sampling the irradiance volumes around the scene onto geometry. 
+ 
+ \item Present the full algorithm proposed by Nvidia, displaying irradiance volumes learned Q-values (as an image of hemispheres) throughout the process and stating how these update a cumulative distribution to sample from.
+ 
+ \item Introduce concept of Deep Q-learning and how it no longer needs a discretized state space. However it still requires action space to be discretized (unlike an actor-critic setup). What is the role of the network and what other function approximators can be trialled. Explain in quite some detail the DeepMind Atari paper which introduced Deep Reinforcement learning.
+ 
+\end{itemize}
+
+\textbf{Preliminary}
 \begin{enumerate}
 \item Define what a ray-tracing rendering algorithm consists of and the difference 
 between global and direct illumination. Acknowledge other ray-tracing algorithm l
@@ -523,9 +621,10 @@ discretizing the state and action space into the Irradiance Volume data-structur
 
 % -----------------------------------------------------------------------------
 
-\chapter{Project Execution}
-\label{chap:execution}
+\chapter{Deep Q-Learning Path tracer}
+\label{chap:deep-q}
 
+\begin{comment}
 {\bf A topic-specific chapter, of roughly $15$ pages} 
 \vspace{1cm} 
 
@@ -623,48 +722,26 @@ the following content is auto-generated dummy text.
 This is an example paragraph; note the trailing full-stop in the title,
 which is intended to ensure it does not run into the text.
 
+\end{comment}
+
 \subsection{Plan}
+
+% I imagine this section to be like a mini paper starting at new method
+
+\textbf{Breakdown}
 \begin{enumerate}
-\item Decision on why implementing path-tracer with bare bones tools GLM 
-and SDL rather than other packages or frameworks that perform a lot of 
-functionality - we needed complete customizability of the algorithm to get
-all the data we needed and to modify the pipeline completely. Quick justification 
-on why C++ was used
 
-\item Implementing path-tracer and the specific algorithm used with pseudo-code.
-With a description of implementing it with CUDA and why the algorithm is 
-embarrassingly parralleizable. Present results for different number of samples.
+\item State learning rule for deep Q-learning and the difference from deep Q-learning to q-learning. Maybe some of the difficulties associated with deep q-learning versus q-learning, and some of the general advantages. 
 
-\item Q-value storage implementation using the Irradiance volume structure.
-Describe how the space was split up  via sampling irradiance volumes uniformly
-over the state space. Visualize the scene discretization with hemispheres and the
-voronoi plot.
+\item Derive the learning rule for deep q-learning network which I used, once again justifying terms throughout the derivation.
 
-\item Describe how nearest neighbour search was used to find closest radiance volume
-but how this was tricky to convert into CUDA. Describe and state the new algorithm 
-proposed by Ken and Dahm with the importance sampling and update steps involving the 
-irradiance volumes nearest neighbour search. 
+\item Explain concept of eta-greedy policy used. Explain exploration vs exploitation but we will talk about this more later
 
-\item Present results for expected SARSA approach and how it compares to the default
-path-tracer. Why is it better in terms of number of zero-contribution light paths
-included and show how this directly relates to a reduction in noise within the 
-image. Also present the fall in avg path length.
+\item Describe how the current method is used for diffuse surfaces. Introduce the pseudo code for the new algorithm. Give a description of each stage and what it does. Relating back to properties such as bias rendering and pointing out assumption made by the path tracer.
 
-\item Introduce state-action space for deep reinforcement learning approach and
-how it differs to expected SARSA approach. Introduce reasoning behind wanting to
-try the neural network approach vs discretized state space (not continuous)
+\item Present and explain the network architecture. Explain in depth about how the state was modelled as a point relative to all vertices to give the network information about the position of the vertex relative to the rest of the world compared to passing in a single position. Relate this to Atari games, we get an image showing where we are relative to the world rather than just a single position in the world.
 
-\item Present findings to see if Q-values  (irradiance distributions) can be learned
-by the neural network by using the previous methods converged irradiance volumes outputs
-as ground truth and train the network against a subset of them and test the network
-against a subset of them.
-
-\item Introduced designed online algorithm to learn the Q-values for any given
-state-action pair. Explain discretization of action space. Explain neural network
-architecture and why the configuration was chosen. Describe the loss function
-and the newly derived update rule.
-
-\item Go through implementation details with GPU and other decisions made
+\item Present some results side by side against a default path tracer and Nvidia's reinforcement learning approach. Pointing out aspects of the image and reasoning for certain parts.
 
 \end{enumerate}
 
@@ -703,6 +780,8 @@ in a suitable manner.
 
 \subsection{Plan}
 \begin{enumerate}
+\item Exploration vs Exploitation for both techniques, exploration can yield to better results plus exploitation does not accurately simulate light, relate to the rendering equation and how light works in the physical world.
+
 \item Show for about 4 different scenes the results for a $n$ different numbers of samples; the images, average path length, number of light paths which actually contribute to the image which are sampled between all techniques. I will have to analyse which reduces the number of zero contribution paths the most, but also still assess if the image is photo-realistic.
 
 \item Also analyse default Q-learnings ability on top of expected SARSA
