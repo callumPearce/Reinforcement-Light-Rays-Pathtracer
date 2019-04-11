@@ -1,7 +1,8 @@
 \contentsline {subsection}{\numberline {0.0.1}Plan}{xix}{subsection.0.0.1}
 \contentsline {chapter}{\numberline {1}Contextual Background}{1}{chapter.1}
 \contentsline {section}{\numberline {1.1}Path Tracing for Light Transport Simulation}{1}{section.1.1}
-\contentsline {subsection}{\numberline {1.1.1}Plan}{2}{subsection.1.1.1}
+\contentsline {section}{\numberline {1.2}Reinforcement Learning for Ray Direction Importance Sampling}{2}{section.1.2}
+\contentsline {subsection}{\numberline {1.2.1}Plan}{2}{subsection.1.2.1}
 \contentsline {chapter}{\numberline {2}Technical Background}{5}{chapter.2}
 \contentsline {subsection}{\numberline {2.0.1}Plan}{5}{subsection.2.0.1}
 \contentsline {chapter}{\numberline {3}Deep Q-Learning Path tracer}{7}{chapter.3}

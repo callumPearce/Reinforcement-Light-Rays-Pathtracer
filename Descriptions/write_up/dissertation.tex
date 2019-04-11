@@ -390,7 +390,7 @@ are a product of accurate light transport simulation. \\
 
 % Put and image of the scene with a big light on the write, 4096 spp and 1 bounce on the left and 4096 spp 1000 bounces on the right
 
-Path tracings ability to model light transport faithfully to that of the photons in 
+Path tracings ability to model light transport faithfully to that of photons in 
 the real world interacting with a variety of surfaces make it a physically-based
 rendering method. Other physically based rendering methods exist for accurate
 light transport simulation, including Photon mapping \cite{jensen1996global}, as
@@ -401,27 +401,36 @@ perform less manual image tweaking. Due to this, the Computer Graphics industry
 has seen a large resurgence in research and usage of physically-based rendering 
 methods in the past decade \cite{krivanek2014recent}. \\
 
-Following the current industries trend, my interests for this thesis lie in efficient 
-light transport simulation for physically-based rendering techniques. In particular, 
-I focus on using Importance sampling for creating light ray paths in Path tracing by 
-using Temporal Difference learning methods. More specifically, for any intersection
-point in a 3D scene, it is possible to learn which directions to favour firing the ray in 
-next to minimize the number of zero contribution light paths. Where a zero
-contribution light path is one whose estimated colour values are almost zero for all
-$(R,G,B)$ components. By avoiding sampling zero contribution light paths, the noise
-in adjacent pixel values will become far lower, and pixel values will be closer to
-their true values for the same number of sampled rays per pixel. Meaning, Importance
-sampling can reduce the number of rays needed to be sampled per pixel in order to
-receive a photo-realistic (also known as converged) image from Path tracing. Note, 
-many physically based rendering techniques can benefit in a similar way \cite{} from 
-Importance sampling, as these techniques share many properties of its light 
-transport simulation with Path tracing.
+My work in this thesis focuses on developing importance sampling techniques for
+light transport simulation in forward Path tracing. In particular, More specifically,
+for any intersection point in a 3D scene, I attempt to create an AI agent that learns 
+and samples in  directions light is coming from, reducing the total number of 
+zero contribution light paths. A zero contribution light path is one whose 
+estimated colour values are almost zero for all $(R,G,B)$ components, hence,
+they contribute almost no visible difference to the rendered image. We should 
+instead focus our sampling on light paths which do contribute to the image,
+reducing the noise in pixel values and bringing them closer to their true 
+values for the same number of sampled rays per pixel. Meaning, Importance 
+sampling can reduce the number of rays needed to be sampled per pixel in 
+order to receive a photo-realistic (also known as converged) image from Path 
+tracing. An example of this reduction in noise can be see in \ref{}, where the 
+naive forward Path tracing algorithms output is compared to Nvidia's on-line
+reinforcement learning Path tracer using Importance sampling. Note, many 
+physically-based rendering techniques can benefit in a similar way from 
+Importance sampling \cite{}, as these techniques share many properties 
+of light transport simulation with Path tracing.\\
+
+% Comparison between importance sampling and path tracing with the same number of samples
+
+It is paramount that the modified Path tracing algorithm continues to accurately
+simulates global illumination in order to produce photo-realistic images in single
+rendering pass, as this is the major selling point of Path tracing over other 
+methods. Therefore, I will also be assessing the accuracy of the global
+illumination approximation made by the Importance sampling methods compared
+to that of the naive forward Path tracing algorithm.
 
 
-Physically-based rendering algorithms  can benefit  from Importance sampling in their simulation of light transport as for each one there exists favourable directions to shoot rays in, leading to 
-reduced noise in rendered images. This leads to my reasoning for choosing
-Path tracing 
-
+\section{Reinforcement Learning for Ray Direction Importance Sampling}
 
 \begin{comment}
 {\bf A compulsory chapter,     of roughly $5$ pages}
@@ -472,7 +481,7 @@ More specifically, the concrete aims are:
 \textbf{Breakdown}
 \begin{itemize}
 
-\item \textbf{What is it}: What is path tracing in computer graphics, related to ray-tracing. What is global illumination? Other methods of global illumination. A conceptual description of the path tracing algorithm and where importance sampling comes in and why it reduces image noise. This will definitely require an image of sampling on a diffuse surface and how we can benefit from importance sampling. 
+\item \textbf{What is it}: What is path tracing in computer graphics, related to ray-tracing. What is global illumination? Other methods of global illumination. A conceptual description of the path tracing algorithm and where importance sampling comes in and why it reduces image noise. This will definitely require an image of sampling on a diffuse surface and how we can benefit from importance sampling.  NEEDS IMAGES
 
 
 \item How reinforcement learning links in with on-line learning in a path tracer and how what it learns can be used to reduce the number of zero-contribution light paths. A picture now relating to the one above but there is a blocker in the way of the light and the agent is able to learn that is not a favourable direction to shoot the ray in. Discuss how this work builds on top of Nvidias and on the topic of efficient light path sampling itself.
