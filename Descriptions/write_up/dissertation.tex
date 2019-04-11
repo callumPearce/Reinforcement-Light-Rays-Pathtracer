@@ -360,15 +360,68 @@ advice or time), and so on.
 \chapter{Contextual Background}
 \label{chap:context}
 
-\section{Path Tracing and its significance in Computer Graphics}
-Path Tracing is a Monte Carlo method for rendering photo-realistic images of 3D scenes by accurately approximating global illumination \cite{christensen2016path}. 
+\section{Path Tracing for Light Transport Simulation}
+Path Tracing is a Monte Carlo method for rendering photo-realistic images of 3D 
+scenes by accurately approximating global illumination \cite{christensen2016path}.
+Figure \ref{} summarises on a high level how a forward Path tracing produces a 
+2D image of a 3D scene. For each pixel multiple rays are shot from the camera through the 
+pixel and into the scene. Any ray which intersects with an area light terminates, 
+otherwise a new direction is sampled for the ray and it is fired again. This process 
+is repeated until all rays have intersected with an area light, at which point the pixel 
+colour value can  be found by averaging the colour estimate of each ray fired 
+through that pixel. Each rays colour estimate is calculated based on the material 
+surface properties it intersects with before intersecting with the light, as well as the
+intersected lights colour and power.\\
 
-Simulating global illumination means that Path tracing accounts for both direct and indirect illumination. Direct illumination being rays of light emitted from a light source, which reflect off exactly one surface before reaching the camera in the scene. Whereas indirect illumination are ray of light which reflect 2 or times before reaching the camera.
+% Figure of path tracing, needs to clearly label what a light transport path is
 
-\begin{itemize}
-\item Pinhole camera ?
-\item Shooting a ray though a pixel (check Carl's lecture slides to find exactly what it is called and find an image rather then describing it in too much detail)
-\end{itemize}
+Path tracing simulates global illumination, meaning it accounts for both direct and 
+indirect illumination. Direct illumination being rays of light emitted from a light 
+source, which reflect off exactly one surface before reaching the camera in the 
+scene. Whereas indirect illumination are ray of light which reflect 2 or times before
+reaching the camera. In \ref{}, an identical scene is shown with only direct illumination
+(left) and the other with global illumination (right). The globally illuminated scene displays
+a range of effects due to Path tracings ability to accurately simulate light transport, 
+which is not the case for the directly illuminated scene. Where light transport simulation
+refers to firing and summing up the contributions of light transport paths that connect from the
+camera to light sources \cite{keller2016path}, such as those displayed in \ref{}. For 
+example, effects such as (a) colour bleeding, (b) soft shadows, and (c) indirect diffuse lighting
+are a product of accurate light transport simulation. \\
+
+% Put and image of the scene with a big light on the write, 4096 spp and 1 bounce on the left and 4096 spp 1000 bounces on the right
+
+Path tracings ability to model light transport faithfully to that of the photons in 
+the real world interacting with a variety of surfaces make it a physically-based
+rendering method. Other physically based rendering methods exist for accurate
+light transport simulation, including Photon mapping \cite{jensen1996global}, as
+well as Path space filtering \cite{keller2016path}. Physically-based rendering 
+methods are able to produce many complex light transport effects by a simple 
+single pass rendering algorithm, allowing artists to increase productivity and 
+perform less manual image tweaking. Due to this, the Computer Graphics industry
+has seen a large resurgence in research and usage of physically-based rendering 
+methods in the past decade \cite{krivanek2014recent}. \\
+
+Following the current industries trend, my interests for this thesis lie in efficient 
+light transport simulation for physically-based rendering techniques. In particular, 
+I focus on using Importance sampling for creating light ray paths in Path tracing by 
+using Temporal Difference learning methods. More specifically, for any intersection
+point in a 3D scene, it is possible to learn which directions to favour firing the ray in 
+next to minimize the number of zero contribution light paths. Where a zero
+contribution light path is one whose estimated colour values are almost zero for all
+$(R,G,B)$ components. By avoiding sampling zero contribution light paths, the noise
+in adjacent pixel values will become far lower, and pixel values will be closer to
+their true values for the same number of sampled rays per pixel. Meaning, Importance
+sampling can reduce the number of rays needed to be sampled per pixel in order to
+receive a photo-realistic (also known as converged) image from Path tracing. Note, 
+many physically based rendering techniques can benefit in a similar way \cite{} from 
+Importance sampling, as these techniques share many properties of its light 
+transport simulation with Path tracing.
+
+
+Physically-based rendering algorithms  can benefit  from Importance sampling in their simulation of light transport as for each one there exists favourable directions to shoot rays in, leading to 
+reduced noise in rendered images. This leads to my reasoning for choosing
+Path tracing 
+
 
 \begin{comment}
 {\bf A compulsory chapter,     of roughly $5$ pages}

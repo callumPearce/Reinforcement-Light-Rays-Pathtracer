@@ -71,3 +71,77 @@
   year={2015},
   organization={ACM}
 }
+
+% Recursive ray-tracing for global illumination
+@inproceedings{whitted2005improved,
+  title={An improved illumination model for shaded display},
+  author={Whitted, Turner},
+  booktitle={ACM Siggraph 2005 Courses},
+  pages={4},
+  year={2005},
+  organization={ACM}
+}
+
+% Introduction of the rendering equation and path tracing
+@inproceedings{kajiya1986rendering,
+  title={The rendering equation},
+  author={Kajiya, James T},
+  booktitle={ACM SIGGRAPH computer graphics},
+  volume={20},
+  number={4},
+  pages={143--150},
+  year={1986},
+  organization={ACM}
+}
+
+% Radiosity method for global illumination
+@inproceedings{goral1984modeling,
+  title={Modeling the interaction of light between diffuse surfaces},
+  author={Goral, Cindy M and Torrance, Kenneth E and Greenberg, Donald P and Battaile, Bennett},
+  booktitle={ACM SIGGRAPH computer graphics},
+  volume={18},
+  number={3},
+  pages={213--222},
+  year={1984},
+  organization={ACM}
+}
+
+% Voxel cone tracing
+@inproceedings{crassin2011interactive,
+  title={Interactive indirect illumination using voxel cone tracing},
+  author={Crassin, Cyril and Neyret, Fabrice and Sainz, Miguel and Green, Simon and Eisemann, Elmar},
+  booktitle={Computer Graphics Forum},
+  volume={30},
+  number={7},
+  pages={1921--1930},
+  year={2011},
+  organization={Wiley Online Library}
+}
+
+% Photon mapping
+@incollection{jensen1996global,
+  title={Global illumination using photon maps},
+  author={Jensen, Henrik Wann},
+  booktitle={Rendering Techniques’ 96},
+  pages={21--30},
+  year={1996},
+  publisher={Springer}
+}
+
+% Path space filtering
+@incollection{keller2016path,
+  title={Path space filtering},
+  author={Keller, Alexander and Dahm, Ken and Binder, Nikolaus},
+  booktitle={Monte Carlo and Quasi-Monte Carlo Methods},
+  pages={423--436},
+  year={2016},
+  publisher={Springer}
+}
+
+@inproceedings{krivanek2014recent,
+  title={Recent advances in light transport simulation: some theory and a lot of practice.},
+  author={Kriv{\'a}nek, Jaroslav and Keller, Alexander and Georgiev, Iliyan and Kaplanyan, Anton S and Fajardo, Marcos and Meyer, Mark and Nahmias, Jean-Daniel and Karl{\'\i}k, Ondrej and Juan Canada},
+  booktitle={SIGGRAPH Courses},
+  pages={17--1},
+  year={2014}
+}

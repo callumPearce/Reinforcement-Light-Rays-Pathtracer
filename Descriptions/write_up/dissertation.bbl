@@ -6,4 +6,23 @@ Per~H Christensen, Wojciech Jarosz, et~al.
 \newblock {\em Foundations and Trends{\textregistered} in Computer Graphics and
   Vision}, 10(2):103--175, 2016.
 
+\bibitem{jensen1996global}
+Henrik~Wann Jensen.
+\newblock Global illumination using photon maps.
+\newblock In {\em Rendering Techniques’ 96}, pages 21--30. Springer, 1996.
+
+\bibitem{keller2016path}
+Alexander Keller, Ken Dahm, and Nikolaus Binder.
+\newblock Path space filtering.
+\newblock In {\em Monte Carlo and Quasi-Monte Carlo Methods}, pages 423--436.
+  Springer, 2016.
+
+\bibitem{krivanek2014recent}
+Jaroslav Kriv{\'a}nek, Alexander Keller, Iliyan Georgiev, Anton~S Kaplanyan,
+  Marcos Fajardo, Mark Meyer, Jean-Daniel Nahmias, Ondrej Karl{\'\i}k, and Juan
+  Canada.
+\newblock Recent advances in light transport simulation: some theory and a lot
+  of practice.
+\newblock In {\em SIGGRAPH Courses}, pages 17--1, 2014.
+
 \end{thebibliography}
