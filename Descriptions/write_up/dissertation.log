@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.10.2)  11 APR 2019 22:42
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.10.2)  12 APR 2019 16:56
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -717,34 +717,34 @@ LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
 ]
 Chapter 1.
 
-LaTeX Warning: Reference `' on page 1 undefined on input line 366.
+LaTeX Warning: Reference `' on page 1 undefined on input line 363.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 364--375
-
- []
-
-
-LaTeX Warning: Reference `' on page 1 undefined on input line 382.
-
-
-LaTeX Warning: Reference `' on page 1 undefined on input line 387.
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 378--390
+Underfull \hbox (badness 10000) in paragraph at lines 361--372
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 393--403
+LaTeX Warning: Reference `' on page 1 undefined on input line 379.
+
+
+LaTeX Warning: Reference `' on page 1 undefined on input line 384.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 375--387
 
  []
 
 
-LaTeX Warning: Reference `' on page 1 undefined on input line 416.
+Underfull \hbox (badness 10000) in paragraph at lines 390--396
+
+ []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 404--422
+LaTeX Warning: Reference `' on page 1 undefined on input line 410.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 397--417
 
  []
 
@@ -752,31 +752,46 @@ pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has
 been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.422 
-       [1
+l.420 I
+       t is paramount that Importance sampling Path tracing algorithms conti...
+[1
 
 ]pdfTeX warning (ext4): destination with the same identifier (name{page.2}) has
  been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.516 
-       [2] [3] [4
+l.508 
+       [2]
+
+LaTeX Warning: Reference `' on page 3 undefined on input line 513.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 512--520
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 523--528
+
+ []
+
+[3] [4] [5] [6
 
 ]
 Chapter 2.
-[5] [6]
+[7] [8]
 Chapter 3.
-[7
+[9
 
-] [8
+] [10
 
 ]
 Chapter 4.
-[9] [10]
+[11] [12]
 Chapter 5.
-[11
+[13
 
-] [12
+] [14
 
 ] (./dissertation.bbl
 LaTeX Font Info:    Font shape `OMS/cmr/m/it' in size <10> not available
@@ -784,21 +799,28 @@ LaTeX Font Info:    Font shape `OMS/cmr/m/it' in size <10> not available
 Missing character: There is no â in font cmti10!
 Missing character: There is no € in font cmti10!
 Missing character: There is no ™ in font cmti10!
-) [13
+) [15
 
-] [14
+] [16
 
 ]
 Appendix A.
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 940.
-[15]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 940.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1048.
+[17]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 1048.
  (./dissertation.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 940.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 940.
-Package rerunfilecheck Info: File `dissertation.out' has not changed.
-(rerunfilecheck)             Checksum: 937FA1ADCBB959B65DF542DE3DEBA8BF;522.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1048.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1048.
 
+
+
+Package rerunfilecheck Warning: File `dissertation.out' has changed.
+(rerunfilecheck)                Rerun to get outlines right
+(rerunfilecheck)                or use package `bookmark'.
+
+Package rerunfilecheck Info: Checksums for `dissertation.out':
+(rerunfilecheck)             Before: C6D64540DB9D55288E6058486A7B24CF;528
+(rerunfilecheck)             After:  FF0D9F63F844AA50443E009CAD960DB4;584.
 
 LaTeX Warning: There were undefined references.
 
@@ -808,31 +830,29 @@ LaTeX Warning: There were undefined references.
 ### simple group (level 1) entered at line 1061 ({)
 ### bottom level 
 Here is how much of TeX's memory you used:
- 11947 strings out of 492995
- 181216 string characters out of 6132704
- 423329 words of memory out of 5000000
- 15159 multiletter control sequences out of 15000+600000
+ 11963 strings out of 492995
+ 181543 string characters out of 6132704
+ 424520 words of memory out of 5000000
+ 15163 multiletter control sequences out of 15000+600000
  11835 words of font info for 46 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 42i,11n,45p,1036b,6902s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 42i,12n,45p,1036b,6980s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts
 /cm/cmbx10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/
 cm/cmbx12.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/c
 m/cmmi10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm
-/cmmi7.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/c
-mr10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr
-12.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17
-.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pf
-b></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsl10.pfb
-></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb>
-</usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb><
-/usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></
-usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pf
-b>
-Output written on dissertation.pdf (37 pages, 219040 bytes).
+/cmr10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/c
+mr12.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr
+17.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.
+pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsl10.p
+fb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pf
+b></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb
+></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
+
+Output written on dissertation.pdf (39 pages, 218079 bytes).
 PDF statistics:
- 379 PDF objects out of 1000 (max. 8388607)
- 322 compressed objects within 4 object streams
- 128 named destinations out of 1000 (max. 500000)
+ 397 PDF objects out of 1000 (max. 8388607)
+ 340 compressed objects within 4 object streams
+ 140 named destinations out of 1000 (max. 500000)
  70 words of extra memory for PDF output out of 10000 (max. 10000000)
 

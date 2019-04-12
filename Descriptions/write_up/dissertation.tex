@@ -290,6 +290,7 @@ by the \verb|CUDA| compiler.
 
 \chapter*{Notation and Acronyms}
 
+\begin{comment}
 {\bf An optional section, of roughly $1$ or $2$ pages}
 \vspace{1cm} 
 
@@ -306,16 +307,12 @@ can be useful to include an additional, dedicated list at the start
 of the dissertation; the advantage of doing so is that you cannot 
 mistakenly use an acronym before defining it.  A limited example is 
 as follows:
+\end{comment}
 
 \begin{quote}
 \noindent
 \begin{tabular}{lcl}
-AES                 &:     & Advanced Encryption Standard                                         \\
-DES                 &:     & Data Encryption Standard                                             \\
-                    &\vdots&                                                                      \\
-${\mathcal H}( x )$ &:     & the Hamming weight of $x$                                            \\
-${\mathbb  F}_q$    &:     & a finite field with $q$ elements                                     \\
-$x_i$               &:     & the $i$-th bit of some binary sequence $x$, st. $x_i \in \{ 0, 1 \}$ \\
+TD learning    &:    & Temporal Difference learning\\
 \end{tabular}
 \end{quote}
 
@@ -390,19 +387,16 @@ are a product of accurate light transport simulation. \\
 
 % Put and image of the scene with a big light on the write, 4096 spp and 1 bounce on the left and 4096 spp 1000 bounces on the right
 
-Path tracings ability to model light transport faithfully to that of photons in 
-the real world interacting with a variety of surfaces make it a physically-based
-rendering method. Other physically based rendering methods exist for accurate
-light transport simulation, including Photon mapping \cite{jensen1996global}, as
-well as Path space filtering \cite{keller2016path}. Physically-based rendering 
-methods are able to produce many complex light transport effects by a simple 
-single pass rendering algorithm, allowing artists to increase productivity and 
-perform less manual image tweaking. Due to this, the Computer Graphics industry
-has seen a large resurgence in research and usage of physically-based rendering 
-methods in the past decade \cite{krivanek2014recent}. \\
+Light transport simulation methods are able to produce 
+many complex light transport effects by a simple single pass of a rendering algorithm.
+This allows artists to increase productivity and perform less manual image tweaking
+in the production of photo-realistic images. Due to this, the Computer Graphics 
+industry has seen a large resurgence in research and usage of light transport simulation 
+rendering methods in the past decade \cite{krivanek2014recent}. \\
 
-My work in this thesis focuses on developing importance sampling techniques for
-light transport simulation in forward Path tracing. In particular, More specifically,
+My work in this thesis focuses on developing and assessing importance sampling 
+techniques using Temporal Difference learning methods for light transport simulation 
+in forward Path tracing. In particular, More specifically,
 for any intersection point in a 3D scene, I attempt to create an AI agent that learns 
 and samples in  directions light is coming from, reducing the total number of 
 zero contribution light paths. A zero contribution light path is one whose 
@@ -415,22 +409,146 @@ sampling can reduce the number of rays needed to be sampled per pixel in
 order to receive a photo-realistic (also known as converged) image from Path 
 tracing. An example of this reduction in noise can be see in \ref{}, where the 
 naive forward Path tracing algorithms output is compared to Nvidia's on-line
-reinforcement learning Path tracer using Importance sampling. Note, many 
-physically-based rendering techniques can benefit in a similar way from 
-Importance sampling \cite{}, as these techniques share many properties 
-of light transport simulation with Path tracing.\\
+reinforcement learning Path tracer using Importance sampling. Note, any 
+light transport simulation algorithm can benefit from the Temporal DIfference learning
+schemes which will be described \cite{jensen1996global, keller2016path}, 
+as they are all derived from what is known as the rendering equation. This equation
+is used as a mathematical basis of modelling light transport.\\
 
 % Comparison between importance sampling and path tracing with the same number of samples
 
-It is paramount that the modified Path tracing algorithm continues to accurately
-simulates global illumination in order to produce photo-realistic images in single
+It is paramount that Importance sampling Path tracing algorithms continue to accurately
+simulates global illumination in order to produce photo-realistic images in a single
 rendering pass, as this is the major selling point of Path tracing over other 
 methods. Therefore, I will also be assessing the accuracy of the global
-illumination approximation made by the Importance sampling methods compared
+illumination approximation made by the Importance sampling algorithms compared
 to that of the naive forward Path tracing algorithm.
 
+\section{Temporal Difference Learning for Ray Direction Importance Sampling}
 
-\section{Reinforcement Learning for Ray Direction Importance Sampling}
+There are three important unanswered questions up to this point; a) what is temporal
+difference learning?  b) How can temporal difference learning methods be 
+used to importance sample new ray directions for a given intersection point in 
+the scene? c) Why use temporal difference learning methods over other Importance 
+sampling methods to do so? 
+
+\subsection{What is Temporal Difference learning?}
+Temporal difference learning, which I will refer to from 
+here on as TD learning, are a set of model free Reinforcement learning methods. 
+Firstly, Reinforcement learning is the process of an AI agent learning what is the 
+best action to take in any given state of the system it exists within, in order to 
+maximise a numerical reward signal \cite{sutton2011reinforcement}.
+The AI agent is not told which actions are  best to take in a given state, but
+ instead it must learn which ones are by trialling them and observing the reward 
+signal. Actions taken may not only affect the immediate 
+reward, but all subsequent rewards received for taking future actions. For 
+example, picture a robot rover whose duty it is to explore the surrounding area 
+as much possible. A state in this case is a position in the world it is exploring, 
+and its action are the directions to move in for a given distance. If it discovers 
+a new area, it receives a positive reward signal. Now, if the robot chooses to 
+explore a given area it may not be able to get back from, say a canyon, the 
+robot is limited to searching areas reachable from the canyon. Hence, all 
+subsequent reward signals are limited to what can be received from exploration 
+of the canyon, compared to not entering the canyon and exploring areas which 
+can be returned from first.
+
+As mentioned TD learning methods are model free methods, meaning the methods 
+do not require a model of the system dynamics they are placed in, instead they
+ learn over time by interacting with the system. In other words, they learn from 
+ raw experience  \cite{sutton2011reinforcement}. TD methods update their current
+estimates based on a combination of data received from interacting with the 
+environment, and partly on their current learned estimates without waiting for the 
+final outcome of events, this is known as bootstrapping. To illustrate the concept 
+of bootstrapping, imagine you are driving home from work and you wish to estimate 
+how long it will take you get home. By following a TD learning method, if you hit 
+traffic you can update your current estimate of the time it takes you to drive home
+based on this new data, and your pre-existing estimate. Whereas compared to 
+another set of Reinforcement learning methods known as Monte Carlo methods, 
+you would have to wait until you got home to update your current estimate of how 
+long it takes to get home from work. Meaning you have to wait for the final outcome
+before learning can begin, which is not the case for TD learning.
+
+\subsection{Temporal Difference learning methods for Efficient Light Transport Simulation}
+
+One of my main aims to reduce the number of zero contribution light paths sampled 
+in Path tracing by the use of TD learning methods. In order to do so I must formulate 
+the problem a reinforcement learning problem, which is done in detail in Chapter
+\ref{chap:technical}. However for a conceptual overview it suffices to explain what a 
+state, action, and reward signal will be in the case of light transport simulation within 
+Path tracing:
+
+\begin{itemize}
+
+\item \textbf{State}: A 3D intersection position in the scene for a given ray to sample 
+the rays next direction from. 
+
+\item \textbf{Action}: Firing the ray in a given direction (3D vector) from the current 
+state.
+
+\item \textbf{Reward Signal}: The amount of light incident from the direction the ray 
+was sampled in.
+
+\end{itemize}
+
+In this reinforcement learning setting, we can use TD-learning methods to create 
+an AI agent which learns by taking different actions in different states and observes 
+their reward signals to find out for each state which actions have the highest valuations.
+By then converting the action space into a probability distribution weighted by each
+actions learned valuation, the AI agent will more likely sample non-zero contribution 
+light paths, reducing noise in rendered images. Note, the term valuation means the 
+total expected reward for taking a given action, meaning valuation not only accounts 
+for the immediate reward, but the expected reward for taking all future actions to come 
+until the ray intersects with a light. Also, for the proposed AI agent, current actions 
+can affect future rewards, as when the ray intersects a surface it looses some energy. 
+Therefore, future rewards received after many intersections will be discounted 
+compared to the reward of received immediately to match this behaviour. This means 
+the agent will aim to minimise the average number of intersection a ray makes before 
+intersecting with a light source, making it a good metric to test evaluate against to 
+determine how well the AI agent is performing.
+
+\subsection{Why use Temporal Difference Learning for Importance Sampling?}
+
+\subsubsection{Blockers}
+Traditional Importance sampling techniques for Path tracing do not take into account 
+the visibility of the object from light. A light blocker is shown in \ref{}, where the 
+blocking object stops rays from directly reaching the light. Due to the unknown 
+presence of blockers, traditional importance sampling methods can fail to avoid 
+sampling zero contribution light paths. Therefore, scenes which are significantly 
+affected by blockers will not receive the benefits from traditional Importance sampling 
+and can even benefit more from an uniform sampling scheme 
+\cite{ramamoorthi2012theory}.\\
+
+% vector art to display the concept of a light blocker
+
+Temporal difference learning methods are able to solve this problem 
+\cite{dahm2017learning}. As the AI agent described in the previous section learns 
+which directions light is coming from in the scene and concentrates its sampling 
+towards these directions. Directions leading to blockers will have a low value, 
+hence it is unlikely the AI agent will sample rays in these directions.\\
+
+\subsubsection{Wider benefits to Path tracing renderers}
+Not only does TD learning aid in improving the specific problem of efficiently 
+approximating of global illumination in the presence of blockers, but it also relates
+to progressing towards true real-time light transport simulation. In industry the
+term real-time ray-tracing is thrown around a lot, but many projects
+which claim to perform real-time ray-tracing do not actually perform 
+accurate light transport simulation to produce photo-realistic images. Recently
+most research and investment has been focused on purpose built hardware and 
+Deep learning  post-processing methods in an attempt to bring accurate light
+transport simulation into real-time. 
+
+The most signficant leap recently for hardware to support light transport simulation is Nvidia's Turing Ray Tracing Technology \cite{nvidia_turing_architecture_whitepaper_2018}, which is promoted for developers to support a hybrid of rasterization and ray-tracing real-time graphics engine. The 20 series Turing GPU architecture has significantly improved the speed of ray-casting for light transport simulation, and has the capacity for  simulating 10 Giga Rays per second.
+
+Whilst for post-processing Pixar are the first company to trial 
+
+\begin{itemize}
+\item Post processing
+\item Why combining purpose built hardware, post processing, and more efficient light transport simulation techniques are all required to bring real-time light transport simulation
+\item Why is real-time light transport simulation good? Polygon count  and photo-realistic appearance
+\item Application to huge movie, gaming and simulations industry.
+\end{itemize}
+
+\section{Challenges}
 
 \begin{comment}
 {\bf A compulsory chapter,     of roughly $5$ pages}
@@ -484,17 +602,7 @@ More specifically, the concrete aims are:
 \item \textbf{What is it}: What is path tracing in computer graphics, related to ray-tracing. What is global illumination? Other methods of global illumination. A conceptual description of the path tracing algorithm and where importance sampling comes in and why it reduces image noise. This will definitely require an image of sampling on a diffuse surface and how we can benefit from importance sampling.  NEEDS IMAGES
 
 
-\item How reinforcement learning links in with on-line learning in a path tracer and how what it learns can be used to reduce the number of zero-contribution light paths. A picture now relating to the one above but there is a blocker in the way of the light and the agent is able to learn that is not a favourable direction to shoot the ray in. Discuss how this work builds on top of Nvidias and on the topic of efficient light path sampling itself.
-
-\item More specifically, the task of the reinforcement learning AI agent is to learn 
-for any given point in the scene the light power contribution from all incident angles. 
-This is known as the Irradiance Distribution, the term introduced by (cite The 
-Irradiance Volume). It is then possible to importance sample scattering directions 
-from the learned irradiance distribution at a given point in the scene to dramatically
-reduce the number of rays scattered in directions giving zero-light power 
-contribution, also known as zero-contribution light paths. 
-
-\item Need to have something describing the potential for deep reinforcement learning to be applied compared to standard temporal difference learning.
+\item How reinforcement learning links in with on-line learning in a path tracer and how what it learns can be used to reduce the number of zero-contribution light paths. A picture now relating to the one above but there is a blocker in the way of the light and the agent is able to learn that is not a favourable direction to shoot the ray in. Discuss how this work builds on top of Nvidias and on the topic of efficient light path sampling itself. NEEDS IMAGES
 
 \item \textbf{Why is it important}: Where is it used in industry. It's current position and potential future usage in other industries. Why speed is becoming more valuable. While the goal of my thesis is not directly improve the speed of path tracing, it is to reduce the number of samples required in the algorithm to accurately approximate global illumination in hope that these more efficient sampling technique can be refined and optimised in future path tracing engines. Nvidia already showed it is possible to get their method to be only 20\% slower than a standard path-tracer yet the superior results in image quality outweigh the time penalty. Reduces path length over time, so there is potential for the method to not only produce better images but be faster in doing so as well.
 

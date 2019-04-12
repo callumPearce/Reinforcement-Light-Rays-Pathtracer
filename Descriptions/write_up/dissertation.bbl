@@ -6,6 +6,11 @@ Per~H Christensen, Wojciech Jarosz, et~al.
 \newblock {\em Foundations and Trends{\textregistered} in Computer Graphics and
   Vision}, 10(2):103--175, 2016.
 
+\bibitem{dahm2017learning}
+Ken Dahm and Alexander Keller.
+\newblock Learning light transport the reinforced way.
+\newblock {\em arXiv preprint arXiv:1701.07403}, 2017.
+
 \bibitem{jensen1996global}
 Henrik~Wann Jensen.
 \newblock Global illumination using photon maps.
@@ -24,5 +29,19 @@ Jaroslav Kriv{\'a}nek, Alexander Keller, Iliyan Georgiev, Anton~S Kaplanyan,
 \newblock Recent advances in light transport simulation: some theory and a lot
   of practice.
 \newblock In {\em SIGGRAPH Courses}, pages 17--1, 2014.
+
+\bibitem{nvidia_turing_architecture_whitepaper_2018}
+NVIDIA.
+\newblock {\em NVIDIA Turing Architecture Whitepaper}, 2018.
+
+\bibitem{ramamoorthi2012theory}
+Ravi Ramamoorthi, John Anderson, Mark Meyer, and Derek Nowrouzezahrai.
+\newblock A theory of monte carlo visibility sampling.
+\newblock {\em ACM Transactions on Graphics (TOG)}, 31(5):121, 2012.
+
+\bibitem{sutton2011reinforcement}
+Richard~S Sutton and Andrew~G Barto.
+\newblock {\em Reinforcement learning: An introduction}.
+\newblock Cambridge, MA: MIT Press, 2011.
 
 \end{thebibliography}

@@ -1,8 +1,9 @@
 \BOOKMARK [0][-]{chapter.1}{Contextual Background}{}% 1
 \BOOKMARK [1][-]{section.1.1}{Path Tracing for Light Transport Simulation}{chapter.1}% 2
-\BOOKMARK [1][-]{section.1.2}{Reinforcement Learning for Ray Direction Importance Sampling}{chapter.1}% 3
-\BOOKMARK [0][-]{chapter.2}{Technical Background}{}% 4
-\BOOKMARK [0][-]{chapter.3}{Deep Q-Learning Path tracer}{}% 5
-\BOOKMARK [0][-]{chapter.4}{Critical Evaluation}{}% 6
-\BOOKMARK [0][-]{chapter.5}{Conclusion}{}% 7
-\BOOKMARK [0][-]{appendix.A}{An Example Appendix}{}% 8
+\BOOKMARK [1][-]{section.1.2}{Temporal Difference Learning for Ray Direction Importance Sampling}{chapter.1}% 3
+\BOOKMARK [1][-]{section.1.3}{Challenges}{chapter.1}% 4
+\BOOKMARK [0][-]{chapter.2}{Technical Background}{}% 5
+\BOOKMARK [0][-]{chapter.3}{Deep Q-Learning Path tracer}{}% 6
+\BOOKMARK [0][-]{chapter.4}{Critical Evaluation}{}% 7
+\BOOKMARK [0][-]{chapter.5}{Conclusion}{}% 8
+\BOOKMARK [0][-]{appendix.A}{An Example Appendix}{}% 9
