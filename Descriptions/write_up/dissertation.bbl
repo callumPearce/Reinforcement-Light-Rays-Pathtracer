@@ -1,4 +1,29 @@
-\begin{thebibliography}{1}
+\begin{thebibliography}{10}
+
+\bibitem{bako2017kernel}
+Steve Bako, Thijs Vogels, Brian McWilliams, Mark Meyer, Jan Nov{\'a}k, Alex
+  Harvill, Pradeep Sen, Tony Derose, and Fabrice Rousselle.
+\newblock Kernel-predicting convolutional networks for denoising monte carlo
+  renderings.
+\newblock {\em ACM Trans. Graph.}, 36(4):97--1, 2017.
+
+\bibitem{bloomberg.com}
+Bloomberg.
+\newblock Peak video game? top analyst sees industry slumping in 2019.
+
+\bibitem{chaitanya2017interactive}
+Chakravarty R~Alla Chaitanya, Anton~S Kaplanyan, Christoph Schied, Marco Salvi,
+  Aaron Lefohn, Derek Nowrouzezahrai, and Timo Aila.
+\newblock Interactive reconstruction of monte carlo image sequences using a
+  recurrent denoising autoencoder.
+\newblock {\em ACM Transactions on Graphics (TOG)}, 36(4):98, 2017.
+
+\bibitem{christensen2018renderman}
+Per Christensen, Julian Fong, Jonathan Shade, Wayne Wooten, Brenden Schubert,
+  Andrew Kensler, Stephen Friedman, Charlie Kilpatrick, Cliff Ramshaw, Marc
+  Bannister, et~al.
+\newblock Renderman: An advanced path-tracing architecture for movie rendering.
+\newblock {\em ACM Transactions on Graphics (TOG)}, 37(3):30, 2018.
 
 \bibitem{christensen2016path}
 Per~H Christensen, Wojciech Jarosz, et~al.
@@ -10,6 +35,13 @@ Per~H Christensen, Wojciech Jarosz, et~al.
 Ken Dahm and Alexander Keller.
 \newblock Learning light transport the reinforced way.
 \newblock {\em arXiv preprint arXiv:1701.07403}, 2017.
+
+\bibitem{georgiev2018arnold}
+Iliyan Georgiev, Thiago Ize, Mike Farnsworth, Ram{\'o}n Montoya-Vozmediano,
+  Alan King, Brecht~Van Lommel, Angel Jimenez, Oscar Anson, Shinji Ogaki, Eric
+  Johnston, et~al.
+\newblock Arnold: A brute-force production path tracer.
+\newblock {\em ACM Transactions on Graphics (TOG)}, 37(3):32, 2018.
 
 \bibitem{jensen1996global}
 Henrik~Wann Jensen.
@@ -33,6 +65,11 @@ Jaroslav Kriv{\'a}nek, Alexander Keller, Iliyan Georgiev, Anton~S Kaplanyan,
 \bibitem{nvidia_turing_architecture_whitepaper_2018}
 NVIDIA.
 \newblock {\em NVIDIA Turing Architecture Whitepaper}, 2018.
+
+\bibitem{pan2006virtual}
+Zhigeng Pan, Adrian~David Cheok, Hongwei Yang, Jiejie Zhu, and Jiaoying Shi.
+\newblock Virtual reality and mixed reality for virtual learning environments.
+\newblock {\em Computers \& graphics}, 30(1):20--28, 2006.
 
 \bibitem{ramamoorthi2012theory}
 Ravi Ramamoorthi, John Anderson, Mark Meyer, and Derek Nowrouzezahrai.

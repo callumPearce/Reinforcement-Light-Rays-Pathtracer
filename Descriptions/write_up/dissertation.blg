@@ -6,45 +6,45 @@ Database file #1: dissertation.bib
 Warning--I didn't find a database entry for "latexbook1"
 Warning--I didn't find a database entry for "latexbook2"
 Warning--empty title in nvidia_turing_architecture_whitepaper_2018
-You've used 8 entries,
+You've used 14 entries,
             2118 wiz_defined-function locations,
-            547 strings with 5315 characters,
-and the built_in function-call counts, 2931 in all, are:
-= -- 284
-> -- 147
+            577 strings with 6745 characters,
+and the built_in function-call counts, 5589 in all, are:
+= -- 509
+> -- 384
 < -- 3
-+ -- 60
-- -- 50
-* -- 196
-:= -- 484
-add.period$ -- 25
-call.type$ -- 8
-change.case$ -- 46
++ -- 154
+- -- 138
+* -- 443
+:= -- 967
+add.period$ -- 42
+call.type$ -- 14
+change.case$ -- 106
 chr.to.int$ -- 0
-cite$ -- 9
-duplicate$ -- 121
-empty$ -- 223
-format.name$ -- 50
-if$ -- 621
+cite$ -- 15
+duplicate$ -- 183
+empty$ -- 360
+format.name$ -- 138
+if$ -- 1122
 int.to.chr$ -- 0
-int.to.str$ -- 8
-missing$ -- 9
-newline$ -- 42
-num.names$ -- 16
-pop$ -- 59
+int.to.str$ -- 14
+missing$ -- 14
+newline$ -- 71
+num.names$ -- 28
+pop$ -- 113
 preamble$ -- 1
-purify$ -- 40
+purify$ -- 94
 quote$ -- 0
-skip$ -- 86
+skip$ -- 132
 stack$ -- 0
-substring$ -- 153
-swap$ -- 32
+substring$ -- 236
+swap$ -- 38
 text.length$ -- 3
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 30
+type$ -- 54
 warning$ -- 1
-while$ -- 28
-width$ -- 9
-write$ -- 87
+while$ -- 47
+width$ -- 16
+write$ -- 149
 (There were 3 warnings)

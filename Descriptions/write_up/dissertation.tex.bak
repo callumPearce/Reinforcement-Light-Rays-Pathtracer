@@ -508,7 +508,6 @@ determine how well the AI agent is performing.
 
 \subsection{Why use Temporal Difference Learning for Importance Sampling?}
 
-\subsubsection{Blockers}
 Traditional Importance sampling techniques for Path tracing do not take into account 
 the visibility of the object from light. A light blocker is shown in \ref{}, where the 
 blocking object stops rays from directly reaching the light. Due to the unknown 
@@ -526,26 +525,23 @@ which directions light is coming from in the scene and concentrates its sampling
 towards these directions. Directions leading to blockers will have a low value, 
 hence it is unlikely the AI agent will sample rays in these directions.\\
 
-\subsubsection{Wider benefits to Path tracing renderers}
-Not only does TD learning aid in improving the specific problem of efficiently 
-approximating of global illumination in the presence of blockers, but it also relates
-to progressing towards true real-time light transport simulation. In industry the
-term real-time ray-tracing is thrown around a lot, but many projects
-which claim to perform real-time ray-tracing do not actually perform 
-accurate light transport simulation to produce photo-realistic images. Recently
-most research and investment has been focused on purpose built hardware and 
-Deep learning  post-processing methods in an attempt to bring accurate light
-transport simulation into real-time. 
+\section{Motivation}
 
-The most signficant leap recently for hardware to support light transport simulation is Nvidia's Turing Ray Tracing Technology \cite{nvidia_turing_architecture_whitepaper_2018}, which is promoted for developers to support a hybrid of rasterization and ray-tracing real-time graphics engine. The 20 series Turing GPU architecture has significantly improved the speed of ray-casting for light transport simulation, and has the capacity for  simulating 10 Giga Rays per second.
+Rendering time of my graphics engine is not something I have tried to heavily optimise. I instead focus on producing higher quality images using the same number of samples per pixel in light transport simulation in hope that future work will find ways of optimising my methods for speed. Therefore, my work still aims to contribute to the wider goal seen in computer graphics to use accurate light transport simulation in the rendering of photo-realistic images for complex scenes in real-time.  Speeding up the methods I use is a large topic in itself, requiring a deep investigation into the best software, hardware, and parallel programming paradigms to use.\\
 
-Whilst for post-processing Pixar are the first company to trial 
+\subsection{Real time Rendering using Accurate Light Transport Simulation}
+The motivation for using accurate light transport simulation in real-time comes from the clear superior visual quality of images rendered using this techniques, compared to that of scanline methods which are currently used. Where scanline rendering, also known as rasterizing, is the current computer graphics industry standard method for real-time rendering. Not only are renders for a wide range of scenes clearly superior from methods which accurately simulate light transport, but they also scale far better with the number of polygons used to build the scenes surfaces. Therefore, scanline rendering for scenes with extremely complex geometry in real-time is currently not and option. Accurate light transport simulation methods therefore have great potential to be used in ultra realistic simulations for applications such as scenario planning and virtual reality learning environments \cite{pan2006virtual}. Also, many games sell realism as one of their most important features, therefore developing photo-realistic graphics in real-time has clear economic incentive for the video games industry which was valued at over \$$136$ by the end of 2018 \cite{bloomberg.com}. An economic incentive can also be seen for the film industry, where reductions in render times lead to a direct saving on compute time, as well as the hardware required to render full length films.
 
-\begin{itemize}
-\item Post processing
-\item Why combining purpose built hardware, post processing, and more efficient light transport simulation techniques are all required to bring real-time light transport simulation
-\item Why is real-time light transport simulation good? Polygon count  and 
-\end{itemize}
+\subsection{Recent Developments}
+Due to the incentives, a large amount of research and investment has been focused on purpose built hardware and Deep learning  post-processing methods in an attempt to bring accurate light transport simulation into real-time. NVIDIA's Turing Ray Tracing Technology \cite{nvidia_turing_architecture_whitepaper_2018} represents a significant leap in the hardware to support light transport simulation. It allows for real-time graphics engines to be a hybrid of both scanline rendering, and ray-tracing. The 20 series Turing GPU architecture has significantly improved the speed of ray-casting for light transport simulation, and has the capacity for  simulating 10 Giga Rays per second. However, using this hardware alone with current rendering methods is not enough to perform accurate light transport simulation for complex scenes in real-time.\\
+
+Post-processing methods are designed to take a noisy input image produced by a render which simulates light transport, and then reconstruct the image to remove the noise present in the image. Generally these methods rely on pre-trained deep neural networks to reconstruct the image far quicker then it would take for the renderer to produce an image of the same visual quality \cite{bako2017kernel}. Once again NVIDIA has made significant advancements in this area with NVIDIA OptiX AI Accelerated Denoiser, which is based on their newly designed recurrent denoising autoencoder \cite{chaitanya2017interactive}. OptiX has been successfully integrated in to many of the top rendering engines which accurately simulate light transport, such as RenderMan \cite{christensen2018renderman} and Arnold \cite{georgiev2018arnold}. Whilst post-processing has significantly reduced the number of samples required to render photo-realistic images, there is still more work to be done to produce these images in real-time.\\
+
+By using importance sampling by TD learning to reduce the number of samples required for accurate light transport simulation, the same standard of noisy image can be fed into an AI accelerated denoiser with fewer samples per pixel in light transport simulation. Running a rendering engine optimised in this way on purpose built hardware could make accurate light transport simulation for rendering photo-realistic images closer than it ever has been to real-time.
+
+\section{Challenges and Objectives}
+
+As previously mentioned, there already exists an example of TD learning used for importance sampling ray directions in a forward Path tracer \cite{dahm2017learning}. However, further methods of analysis need to be conducted upon this new method to determine its performance for reducing the number of zero contribution light paths for different scenes with different settings. It is difficult to assess this as there are infinitely many scenes the method can be used to render, so coming to a clear conclusion is difficult. Another difficult task is that of designing an algorithm for an AI agent to learn what are the favourable directions to sample in a scene are using the deep Q-learning method. This includes some important unanswered questions, such as; is it possible for a deep neural network to model all Q values for a continuous scene space? If so, what is a suitable network architecture? All of which I will describe in more depth in Chapter \ref{chap:deep-q}. Then the actual task of implementing such an algorithm which
 
 \begin{comment}
 {\bf A compulsory chapter,     of roughly $5$ pages}
