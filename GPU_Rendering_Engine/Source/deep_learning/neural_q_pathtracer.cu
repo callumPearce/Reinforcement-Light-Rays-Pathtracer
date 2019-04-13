@@ -45,7 +45,7 @@ NeuralQPathtracer::NeuralQPathtracer(
     //////////////////////////////////////////////////////////////
     /*                Load the previous DQN Model               */
     //////////////////////////////////////////////////////////////
-    std::string fname = "../Radiance_Map_Data/trained_deep_q_learning.model";
+    std::string fname = "../Radiance_Map_Data/deep_q_learning_12_12.model";
     if (LOAD_MODEL && file_exists(fname)){
         dynet::TextFileLoader loader(fname);
         loader.populate(model);

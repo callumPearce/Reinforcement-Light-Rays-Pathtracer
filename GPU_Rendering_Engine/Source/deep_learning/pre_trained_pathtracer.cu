@@ -42,7 +42,7 @@ PretrainedPathtracer::PretrainedPathtracer(
     //////////////////////////////////////////////////////////////
     /*             Load in the Parameter Values                 */
     //////////////////////////////////////////////////////////////
-    std::string fname = "/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Radiance_Map_Data/trained_deep_q_learning.model";
+    std::string fname = "/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Radiance_Map_Data/deep_q_learning_12_12.model";
     if (file_exists(fname)){
         dynet::TextFileLoader loader(fname);
         loader.populate(model);
@@ -147,6 +147,8 @@ PretrainedPathtracer::PretrainedPathtracer(
             ray_bounces_device
         );
 
+        std::cout << "Rendered " << i+1 << " frames." << std::endl;
+
         // Copy the device buffer values to the host buffer
         checkCudaErrors(cudaMemcpy(host_buffer, device_buffer, SCREEN_HEIGHT * SCREEN_WIDTH * sizeof(vec3), cudaMemcpyDeviceToHost));
 
@@ -246,10 +248,6 @@ void PretrainedPathtracer::render_frame(
                     int batch_start_idx = b*this->batch_size;
                     int current_batch_size = std::min(SCREEN_HEIGHT*SCREEN_WIDTH - batch_start_idx, this->batch_size);
 
-                    // Initialise the Q-value storage on device
-                    float* device_q_values;
-                    checkCudaErrors(cudaMalloc(&device_q_values, sizeof(float) * current_batch_size * GRID_RESOLUTION * GRID_RESOLUTION));
-
                     // Initialise the computational graph
                     dynet::ComputationGraph graph;
 
@@ -287,6 +285,9 @@ void PretrainedPathtracer::render_frame(
                     std::vector<float> q_vals = dynet::as_vector( graph.forward(prediction));                 // Some q_vals are all zero
                     
                     // Copy q-values to device
+                    // Initialise the Q-value storage on device
+                    float* device_q_values;
+                    checkCudaErrors(cudaMalloc(&device_q_values, sizeof(float) * q_vals.size()));
                     checkCudaErrors(cudaMemcpy(device_q_values, &(q_vals[0]), sizeof(float) * q_vals.size(), cudaMemcpyHostToDevice));
                     
                     unsigned int* ray_direction_indices;
@@ -294,11 +295,21 @@ void PretrainedPathtracer::render_frame(
                     
                     // Run cuda kernel to compute new ray directions
                     int threads = 32;
-                    int blocks = int(current_batch_size/threads);
-                    sample_batch_ray_directions_epsilon_greedy<<<blocks, threads>>>(
-                        EPSILON_START,
+                    int blocks = (current_batch_size + (threads-1))/threads;
+                    // sample_batch_ray_directions_epsilon_greedy<<<blocks, threads>>>(
+                    //     EPSILON_START,
+                    //     d_rand_state,
+                    //     ray_direction_indices,
+                    //     device_q_values,
+                    //     ray_directions_device,
+                    //     ray_locations_device,
+                    //     ray_normals_device,
+                    //     ray_throughputs_device,
+                    //     ray_terminated_device,
+                    //     (b*this->batch_size)
+                    // );
+                    sample_batch_ray_directions_importance_sample<<<blocks, threads>>>(
                         d_rand_state,
-                        ray_direction_indices,
                         device_q_values,
                         ray_directions_device,
                         ray_locations_device,
@@ -346,6 +357,8 @@ void PretrainedPathtracer::render_frame(
         );
         cudaDeviceSynchronize();
         cudaFree(device_rays_finished);
+
+        std::cout << "SPP: " << i << std::endl;
     }
     // Update the device_buffer with the throughput
     update_device_buffer<<<this->num_blocks, this->block_size>>>(
@@ -480,5 +493,97 @@ void trace_ray(
             // Still a ray being to bounce, so not finished
             atomicExch(rays_finished, 0);
             break;
+    }
+}
+
+__global__
+void sample_batch_ray_directions_importance_sample(
+    curandState* d_rand_state,
+    float* q_values_device,
+    float* ray_directions_device,
+    float* ray_locations_device,
+    float* ray_normals_device,
+    float* ray_throughputs_device,
+    bool* ray_terminated_device,
+    int batch_start_idx
+){
+    // Get the index of the ray in the current batch
+    int batch_elem =  blockIdx.x * blockDim.x + threadIdx.x;
+
+    if (batch_start_idx + batch_elem >= SCREEN_HEIGHT*SCREEN_WIDTH) return;
+
+    // Sample the random number to be used for eta-greedy policy
+    float rv = curand_uniform(&d_rand_state[ batch_start_idx + batch_elem ]);
+    
+    // The total number of actions to choose from
+    const int action_count = GRID_RESOLUTION*GRID_RESOLUTION;
+
+    // Convert q_vals to distribution
+    float total_q = 0.0;
+    for (int a = 0; a < action_count; a++){
+
+        // Weight by cos_theta
+        vec3 dir = sample_ray_for_grid_index( 
+            d_rand_state,
+            a,
+            ray_normals_device,
+            ray_locations_device,
+            (batch_elem+batch_start_idx)
+        );
+        vec3 normal(
+            ray_normals_device[(batch_start_idx+batch_elem)*3], 
+            ray_normals_device[(batch_start_idx+batch_elem)*3 + 1], 
+            ray_normals_device[(batch_start_idx+batch_elem)*3 + 2]
+        );
+
+        float cos_theta = dot(normal, dir);
+        
+        q_values_device[batch_elem*action_count + a] *= cos_theta;
+
+        total_q += q_values_device[batch_elem*action_count + a];
+    }
+    float q_dist[action_count];
+    for (int a = 0; a < action_count; a++){
+        q_dist[a] = (q_values_device[batch_elem*action_count + a])/total_q;
+    }
+
+    // Importance sample dir
+    float q_sum = 0.0;
+    int dir_idx = 0;
+    vec3 dir(0.f);
+    for (int a = 0; a < action_count; a++){
+        q_sum = q_sum + q_dist[a];
+
+        // Found the index to sample in
+        if (q_sum > rv){
+            dir = sample_ray_for_grid_index( 
+                d_rand_state,
+                a,
+                ray_normals_device,
+                ray_locations_device,
+                (batch_elem+batch_start_idx)
+            );
+            vec3 normal(
+                ray_normals_device[(batch_start_idx+batch_elem)*3], 
+                ray_normals_device[(batch_start_idx+batch_elem)*3 + 1], 
+                ray_normals_device[(batch_start_idx+batch_elem)*3 + 2]
+            );
+
+            float cos_theta = dot(normal, dir);
+
+            // Update the 3D stored direction
+            ray_directions_device[(batch_start_idx+batch_elem)*3]     = dir.x;
+            ray_directions_device[(batch_start_idx+batch_elem)*3 + 1] = dir.y; 
+            ray_directions_device[(batch_start_idx+batch_elem)*3 + 2] = dir.z;
+
+            // Update throughput with new sampled angle
+            if ( !ray_terminated_device[(batch_start_idx+batch_elem)] ){
+                ray_throughputs_device[(batch_start_idx+batch_elem)*3    ] = (ray_throughputs_device[(batch_start_idx+batch_elem)*3    ] * cos_theta)/RHO;
+                ray_throughputs_device[(batch_start_idx+batch_elem)*3 + 1] = (ray_throughputs_device[(batch_start_idx+batch_elem)*3 + 1] * cos_theta)/RHO;
+                ray_throughputs_device[(batch_start_idx+batch_elem)*3 + 2] = (ray_throughputs_device[(batch_start_idx+batch_elem)*3 + 2] * cos_theta)/RHO;
+            }
+
+            break;
+        }
     }
 }

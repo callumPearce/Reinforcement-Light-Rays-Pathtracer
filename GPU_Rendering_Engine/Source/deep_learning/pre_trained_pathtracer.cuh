@@ -77,6 +77,18 @@ void importance_sample_ray_directions(
     int batch_start_idx
 );
 
+// Sample a batch of ray directions by importance sampling over q-vals
+__global__
+void sample_batch_ray_directions_importance_sample(
+    curandState* d_rand_state,
+    float* q_values_device,
+    float* ray_directions_device,
+    float* ray_locations_device,
+    float* ray_normals_device,
+    float* ray_throughputs_device,
+    bool* ray_terminated_device,
+    int batch_start_idx
+);
 
 class PretrainedPathtracer{
 

@@ -204,7 +204,7 @@ void build_area_lights(std::vector<AreaLight>& area_lights, std::vector<float>& 
     vec4 K((2.58f*l)/8, (l*6.f)/8, 1.499f*l, 1);
     vec4 L((2.58f*l)/8, 0, 1.499f*l, 1);
 
-    vec3 diffuse_p = 1.f * vec3(1.f, 1.f, 1.f);
+    vec3 diffuse_p = 10.f * vec3(1.f, 1.f, 1.f);
     AreaLight a1 = AreaLight(K, I, J, diffuse_p);
     area_lights.push_back(a1);
 
