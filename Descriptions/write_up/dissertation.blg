@@ -1,0 +1,50 @@
+This is BibTeX, Version 0.99d (TeX Live 2017)
+Capacity: max_strings=100000, hash_size=100000, hash_prime=85009
+The top-level auxiliary file: dissertation.aux
+The style file: plain.bst
+Database file #1: dissertation.bib
+Warning--I didn't find a database entry for "latexbook1"
+Warning--I didn't find a database entry for "latexbook2"
+Warning--empty title in nvidia_turing_architecture_whitepaper_2018
+You've used 14 entries,
+            2118 wiz_defined-function locations,
+            577 strings with 6745 characters,
+and the built_in function-call counts, 5589 in all, are:
+= -- 509
+> -- 384
+< -- 3
++ -- 154
+- -- 138
+* -- 443
+:= -- 967
+add.period$ -- 42
+call.type$ -- 14
+change.case$ -- 106
+chr.to.int$ -- 0
+cite$ -- 15
+duplicate$ -- 183
+empty$ -- 360
+format.name$ -- 138
+if$ -- 1122
+int.to.chr$ -- 0
+int.to.str$ -- 14
+missing$ -- 14
+newline$ -- 71
+num.names$ -- 28
+pop$ -- 113
+preamble$ -- 1
+purify$ -- 94
+quote$ -- 0
+skip$ -- 132
+stack$ -- 0
+substring$ -- 236
+swap$ -- 38
+text.length$ -- 3
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 54
+warning$ -- 1
+while$ -- 47
+width$ -- 16
+write$ -- 149
+(There were 3 warnings)
