@@ -82,7 +82,7 @@ class RadianceVolume{
         // Samples a direction from the radiance_distribution of this radiance
         // volume
         __device__
-        vec4 sample_direction_from_radiance_distribution(curandState* d_rand_state, int pixel_x, int pixel_y, int& sector_x, int& sector_y);
+        vec4 sample_direction_from_radiance_distribution(curandState* d_rand_state, int pixel_x, int pixel_y, int& sector_x, int& sector_y, float& pdf);
 
         // Samples a direction from the radiance volume using binary search for the sector
         __device__

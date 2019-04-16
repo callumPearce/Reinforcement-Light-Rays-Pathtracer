@@ -42,7 +42,7 @@ PretrainedPathtracer::PretrainedPathtracer(
     //////////////////////////////////////////////////////////////
     /*             Load in the Parameter Values                 */
     //////////////////////////////////////////////////////////////
-    std::string fname = "/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Radiance_Map_Data/deep_q_learning_12_12.model";
+    std::string fname = "/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Radiance_Map_Data/deep_q_learning_20_20.model";
     if (file_exists(fname)){
         dynet::TextFileLoader loader(fname);
         loader.populate(model);
@@ -62,25 +62,21 @@ PretrainedPathtracer::PretrainedPathtracer(
     //////////////////////////////////////////////////////////////
     /*               Initialise device buffers                  */
     //////////////////////////////////////////////////////////////
-    float* host_vertices = new float[ scene.vertices_count ];
-    memcpy(host_vertices, scene.vertices, sizeof(float) * this->vertices_count);
-
-    //////////////////////////////////////////////////////////////
-    /*               Initialise device buffers                  */
-    //////////////////////////////////////////////////////////////
     float* ray_directions_device;   /* Direction to next shoot the ray (3D) */
     float* ray_locations_device;    /* Current intersection location of the ray (3D) */
     float* ray_normals_device;      /* Current intersected surfaces normal for the ray (3D) */
-    bool* ray_terminated_device;    /* Has the ray intersected with a light/nothing? */
+    unsigned int* ray_states_device;    /* Has the ray intersected with a light/nothing? */
     float* ray_throughputs_device;  /* RGB scalars representing current colour throughput of the ray (3D) */
     unsigned int* ray_bounces_device;      /* Number of time the ray has bounced */
+    float* ray_vertices_device;     /* All vertices of the scene in a coordinate system relative to current ray position*/
 
     checkCudaErrors(cudaMalloc(&ray_directions_device, sizeof(float) * 3 * SCREEN_HEIGHT * SCREEN_WIDTH));
     checkCudaErrors(cudaMalloc(&ray_locations_device, sizeof(float) * 3 * SCREEN_HEIGHT * SCREEN_WIDTH));
     checkCudaErrors(cudaMalloc(&ray_normals_device, sizeof(float) * 3 *SCREEN_HEIGHT * SCREEN_WIDTH));
-    checkCudaErrors(cudaMalloc(&ray_terminated_device, sizeof(bool) * SCREEN_HEIGHT * SCREEN_WIDTH));
+    checkCudaErrors(cudaMalloc(&ray_states_device, sizeof(unsigned int) * SCREEN_HEIGHT * SCREEN_WIDTH));
     checkCudaErrors(cudaMalloc(&ray_throughputs_device, sizeof(float) * 3 * SCREEN_HEIGHT * SCREEN_WIDTH));
     checkCudaErrors(cudaMalloc(&ray_bounces_device, sizeof(unsigned int) * SCREEN_HEIGHT * SCREEN_WIDTH));
+    checkCudaErrors(cudaMalloc(&ray_vertices_device, sizeof(float) * this->vertices_count * SCREEN_HEIGHT * SCREEN_WIDTH));
 
     Camera* device_camera; /* Camera on the CUDA device */
     Surface* device_surfaces;
@@ -138,13 +134,14 @@ PretrainedPathtracer::PretrainedPathtracer(
             device_camera,
             device_scene,
             device_buffer,
-            host_vertices,
+            device_vertices,
             ray_locations_device,
             ray_normals_device,   
             ray_directions_device,
-            ray_terminated_device,  
+            ray_states_device,  
             ray_throughputs_device,
-            ray_bounces_device
+            ray_bounces_device,
+            ray_vertices_device
         );
 
         std::cout << "Rendered " << i+1 << " frames." << std::endl;
@@ -162,29 +159,29 @@ PretrainedPathtracer::PretrainedPathtracer(
     }
 
     //////////////////////////////////////////////////////////////
-    /*          Save the image and kill the screen              */
+    /*                      Save the image                      */
     //////////////////////////////////////////////////////////////
     screen.SDL_SaveImage("/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Images/render.bmp");
-    screen.kill_screen();
 
     //////////////////////////////////////////////////////////////
     /*                      Free memory used                    */
     //////////////////////////////////////////////////////////////
     delete [] host_buffer;
-    delete [] host_vertices;
     cudaFree(device_buffer);
     cudaFree(d_rand_state);
     cudaFree(ray_locations_device);
     cudaFree(ray_normals_device);
     cudaFree(ray_directions_device);
-    cudaFree(ray_terminated_device);
+    cudaFree(ray_states_device);
     cudaFree(ray_throughputs_device);
     cudaFree(ray_bounces_device);
+    cudaFree(ray_vertices_device);
     cudaFree(device_camera);
     cudaFree(device_surfaces);
     cudaFree(device_light_planes);
     cudaFree(device_vertices);
     cudaFree(device_scene);
+    cudaFree(device_vertices);
 }
 
 // Render a frame to output
@@ -194,13 +191,14 @@ void PretrainedPathtracer::render_frame(
     Camera* device_camera,
     Scene* device_scene,
     vec3* device_buffer,
-    float* host_vertices,
+    float* device_vertices,
     float* ray_locations_device,
     float* ray_normals_device,   
     float* ray_directions_device,
-    bool* ray_terminated_device,  
+    unsigned int* ray_states_device,  
     float* ray_throughputs_device,
-    unsigned int* ray_bounces_device
+    unsigned int* ray_bounces_device,
+    float* ray_vertices_device
 ){
     // Initialise the buffer to hold the total throughput
     vec3* total_throughputs;
@@ -216,7 +214,7 @@ void PretrainedPathtracer::render_frame(
             device_camera,
             ray_locations_device,
             ray_directions_device,
-            ray_terminated_device,
+            ray_states_device,
             ray_throughputs_device,
             ray_bounces_device
         );
@@ -232,18 +230,29 @@ void PretrainedPathtracer::render_frame(
         unsigned int bounces = 0;
         while(rays_finished == 0 && bounces < MAX_RAY_BOUNCES){
 
-            printf("Bounces: %d/%d\n",bounces, MAX_RAY_BOUNCES);
+            printf("Bounces: %d/%d\n",bounces+1, MAX_RAY_BOUNCES);
 
-            // Copy over the ray locations from the device to the host for inference
-            float* ray_locations_host = new float[ SCREEN_HEIGHT * SCREEN_WIDTH * 3 ];
-            checkCudaErrors(cudaMemcpy(ray_locations_host, ray_locations_device, sizeof(float) * SCREEN_HEIGHT * SCREEN_WIDTH * 3, cudaMemcpyDeviceToHost));
+            std::chrono::time_point<std::chrono::high_resolution_clock> start;
+            if (TIMING){
+                // TIMER START: Sampling ray directions
+                start = std::chrono::high_resolution_clock::now();
+            }
+
+            // Get vertices in coordinate system surrounding current location
+            convert_vertices_to_point_coord_system<<<this->num_blocks, this->block_size>>>(
+                ray_vertices_device, 
+                ray_locations_device,
+                device_vertices,
+                this->vertices_count
+            );
+            cudaDeviceSynchronize();
 
             // DIRECTION UPDATE
             // Don't modify the direction of the initial ray from the camera
             if (bounces > 0){
                 // For each ray, compute the Q-values and importance sample a direction over them
                 for (int b = 0; b < this->num_batches; b++){
-
+                    
                     // Compute the current batch size
                     int batch_start_idx = b*this->batch_size;
                     int current_batch_size = std::min(SCREEN_HEIGHT*SCREEN_WIDTH - batch_start_idx, this->batch_size);
@@ -254,30 +263,7 @@ void PretrainedPathtracer::render_frame(
                     // Formulate the expression with the state and the scenes vertices
                     dynet::Dim input_dim({(unsigned int)this->vertices_count},current_batch_size);
                     std::vector<float> input_vals(this->vertices_count*current_batch_size);
-                    for (int s = 0; s < current_batch_size; s++){
-
-                        // Create the list of vertices and get the current position for the ray in the batch
-                        std::vector<float> converted_vertices(this->vertices_count);
-                        float x = ray_locations_host[b*this->batch_size*3 + 3*s    ];
-                        float y = ray_locations_host[b*this->batch_size*3 + 3*s + 1];
-                        float z = ray_locations_host[b*this->batch_size*3 + 3*s + 2];
-                        vec3 pos(x,y,z);
-                        
-                        // Convert the list of vertices into the points coord system
-                        convert_vertices_to_point_coord_system(
-                            converted_vertices, 
-                            pos,
-                            host_vertices, 
-                            this->vertices_count
-                        );
-                        
-                        // Copy the list of all modified vertices
-                        memcpy(
-                            &(input_vals[this->vertices_count*s]),
-                            (&converted_vertices[0]),
-                            sizeof(float) * this->vertices_count
-                        );
-                    }
+                    checkCudaErrors(cudaMemcpy(&(input_vals[0]), &(ray_vertices_device[b*this->batch_size*this->vertices_count]), sizeof(float) * this->vertices_count * current_batch_size, cudaMemcpyDeviceToHost));
                     dynet::Expression input = dynet::input(graph, input_dim, input_vals);                  
 
                     // Get the q-vals
@@ -289,25 +275,14 @@ void PretrainedPathtracer::render_frame(
                     float* device_q_values;
                     checkCudaErrors(cudaMalloc(&device_q_values, sizeof(float) * q_vals.size()));
                     checkCudaErrors(cudaMemcpy(device_q_values, &(q_vals[0]), sizeof(float) * q_vals.size(), cudaMemcpyHostToDevice));
-                    
+
+                    // Setup the deivce storage for the ray direction indices
                     unsigned int* ray_direction_indices;
                     checkCudaErrors(cudaMalloc(&ray_direction_indices, sizeof(unsigned int) * current_batch_size));
-                    
+
                     // Run cuda kernel to compute new ray directions
                     int threads = 32;
                     int blocks = (current_batch_size + (threads-1))/threads;
-                    // sample_batch_ray_directions_epsilon_greedy<<<blocks, threads>>>(
-                    //     EPSILON_START,
-                    //     d_rand_state,
-                    //     ray_direction_indices,
-                    //     device_q_values,
-                    //     ray_directions_device,
-                    //     ray_locations_device,
-                    //     ray_normals_device,
-                    //     ray_throughputs_device,
-                    //     ray_terminated_device,
-                    //     (b*this->batch_size)
-                    // );
                     sample_batch_ray_directions_importance_sample<<<blocks, threads>>>(
                         d_rand_state,
                         device_q_values,
@@ -315,19 +290,29 @@ void PretrainedPathtracer::render_frame(
                         ray_locations_device,
                         ray_normals_device,
                         ray_throughputs_device,
-                        ray_terminated_device,
+                        ray_states_device,
+                        ray_direction_indices,
                         (b*this->batch_size)
                     );
                     cudaDeviceSynchronize();
-                    cudaFree(ray_direction_indices);
 
                     // Free memory
+                    cudaFree(ray_direction_indices);
                     cudaFree(device_q_values);
                 }
-
-                delete [] ray_locations_host;
             }
 
+            if (TIMING){
+                // TIMER END: Sampling ray directions
+                auto end = std::chrono::high_resolution_clock::now();
+                std::chrono::duration<double> elapsed = end - start;
+                std::cout << "Sampling Ray Dir Time: " << elapsed.count() << "s" << std::endl;
+            }
+
+            if (TIMING){
+                // TIMER START: Tracing rays
+                start = std::chrono::high_resolution_clock::now();
+            }
             // TRACE RAYS
             trace_ray<<<this->num_blocks, this->block_size>>>(
                 device_scene,
@@ -335,7 +320,7 @@ void PretrainedPathtracer::render_frame(
                 ray_locations_device, 
                 ray_normals_device, 
                 ray_directions_device,
-                ray_terminated_device,  
+                ray_states_device,  
                 ray_throughputs_device,
                 ray_bounces_device,
                 bounces
@@ -345,6 +330,13 @@ void PretrainedPathtracer::render_frame(
             // Copy over value to check if all rays have intersected with a light
             checkCudaErrors(cudaMemcpy(&rays_finished, device_rays_finished, sizeof(int), cudaMemcpyDeviceToHost));
             checkCudaErrors(cudaMemset(device_rays_finished, 1, sizeof(int)));
+
+            if (TIMING){
+                // TIMER END: Tracing rays
+                auto end = std::chrono::high_resolution_clock::now();
+                std::chrono::duration<double> elapsed = end - start;
+                std::cout << "Tracing Ray Time: " << elapsed.count() << "s" << std::endl;
+            }
 
             // Increment the number of bounces
             bounces++;            
@@ -358,7 +350,7 @@ void PretrainedPathtracer::render_frame(
         cudaDeviceSynchronize();
         cudaFree(device_rays_finished);
 
-        std::cout << "SPP: " << i << std::endl;
+        std::cout << "SPP: " << i+1 << std::endl;
     }
     // Update the device_buffer with the throughput
     update_device_buffer<<<this->num_blocks, this->block_size>>>(
@@ -388,7 +380,7 @@ void initialise_ray(
     Camera* device_camera, 
     float* ray_locations, 
     float* ray_directions,
-    bool* ray_terminated, 
+    unsigned int* ray_states, 
     float* ray_throughputs,
     unsigned int* ray_bounces
 ){
@@ -408,7 +400,7 @@ void initialise_ray(
     ray_directions[(i*3) + 2] = r.direction.z;
 
     // Initialise ray_variables
-    ray_terminated[i] = false;
+    ray_states[i] = 0;
     ray_throughputs[(i*3)    ] = 1.f;
     ray_throughputs[(i*3) + 1] = 1.f;
     ray_throughputs[(i*3) + 2] = 1.f;
@@ -423,7 +415,7 @@ void trace_ray(
     float* ray_locations, 
     float* ray_normals, 
     float* ray_directions,
-    bool* ray_terminated,  
+    unsigned int* ray_states,  
     float* ray_throughputs,
     unsigned int* ray_bounces,
     int bounces
@@ -435,7 +427,7 @@ void trace_ray(
     int i = SCREEN_HEIGHT*x + y;
 
     // Do nothing if we have already intersected with the light
-    if (ray_terminated[i]){
+    if (ray_states[i] != 0){
         return;
     }
 
@@ -452,7 +444,7 @@ void trace_ray(
 
         // TERMINAL STATE: R_(t+1) = Environment light power
         case NOTHING:
-            ray_terminated[i] = true;
+            ray_states[i] = 1;
             ray_throughputs[(i*3)] = ray_throughputs[(i*3)] * ENVIRONMENT_LIGHT;
             ray_throughputs[(i*3)+1] = ray_throughputs[(i*3)+1] * ENVIRONMENT_LIGHT;
             ray_throughputs[(i*3)+2] = ray_throughputs[(i*3)+2] * ENVIRONMENT_LIGHT;
@@ -461,7 +453,7 @@ void trace_ray(
         
         // TERMINAL STATE: R_(t+1) = Area light power
         case AREA_LIGHT:
-            ray_terminated[i] = true;
+            ray_states[i] = 1;
             
             vec3 diffuse_p = scene->area_lights[ray.intersection.index].diffuse_p;
             ray_throughputs[(i*3)] = ray_throughputs[(i*3)] * diffuse_p.x;
@@ -493,97 +485,5 @@ void trace_ray(
             // Still a ray being to bounce, so not finished
             atomicExch(rays_finished, 0);
             break;
-    }
-}
-
-__global__
-void sample_batch_ray_directions_importance_sample(
-    curandState* d_rand_state,
-    float* q_values_device,
-    float* ray_directions_device,
-    float* ray_locations_device,
-    float* ray_normals_device,
-    float* ray_throughputs_device,
-    bool* ray_terminated_device,
-    int batch_start_idx
-){
-    // Get the index of the ray in the current batch
-    int batch_elem =  blockIdx.x * blockDim.x + threadIdx.x;
-
-    if (batch_start_idx + batch_elem >= SCREEN_HEIGHT*SCREEN_WIDTH) return;
-
-    // Sample the random number to be used for eta-greedy policy
-    float rv = curand_uniform(&d_rand_state[ batch_start_idx + batch_elem ]);
-    
-    // The total number of actions to choose from
-    const int action_count = GRID_RESOLUTION*GRID_RESOLUTION;
-
-    // Convert q_vals to distribution
-    float total_q = 0.0;
-    for (int a = 0; a < action_count; a++){
-
-        // Weight by cos_theta
-        vec3 dir = sample_ray_for_grid_index( 
-            d_rand_state,
-            a,
-            ray_normals_device,
-            ray_locations_device,
-            (batch_elem+batch_start_idx)
-        );
-        vec3 normal(
-            ray_normals_device[(batch_start_idx+batch_elem)*3], 
-            ray_normals_device[(batch_start_idx+batch_elem)*3 + 1], 
-            ray_normals_device[(batch_start_idx+batch_elem)*3 + 2]
-        );
-
-        float cos_theta = dot(normal, dir);
-        
-        q_values_device[batch_elem*action_count + a] *= cos_theta;
-
-        total_q += q_values_device[batch_elem*action_count + a];
-    }
-    float q_dist[action_count];
-    for (int a = 0; a < action_count; a++){
-        q_dist[a] = (q_values_device[batch_elem*action_count + a])/total_q;
-    }
-
-    // Importance sample dir
-    float q_sum = 0.0;
-    int dir_idx = 0;
-    vec3 dir(0.f);
-    for (int a = 0; a < action_count; a++){
-        q_sum = q_sum + q_dist[a];
-
-        // Found the index to sample in
-        if (q_sum > rv){
-            dir = sample_ray_for_grid_index( 
-                d_rand_state,
-                a,
-                ray_normals_device,
-                ray_locations_device,
-                (batch_elem+batch_start_idx)
-            );
-            vec3 normal(
-                ray_normals_device[(batch_start_idx+batch_elem)*3], 
-                ray_normals_device[(batch_start_idx+batch_elem)*3 + 1], 
-                ray_normals_device[(batch_start_idx+batch_elem)*3 + 2]
-            );
-
-            float cos_theta = dot(normal, dir);
-
-            // Update the 3D stored direction
-            ray_directions_device[(batch_start_idx+batch_elem)*3]     = dir.x;
-            ray_directions_device[(batch_start_idx+batch_elem)*3 + 1] = dir.y; 
-            ray_directions_device[(batch_start_idx+batch_elem)*3 + 2] = dir.z;
-
-            // Update throughput with new sampled angle
-            if ( !ray_terminated_device[(batch_start_idx+batch_elem)] ){
-                ray_throughputs_device[(batch_start_idx+batch_elem)*3    ] = (ray_throughputs_device[(batch_start_idx+batch_elem)*3    ] * cos_theta)/RHO;
-                ray_throughputs_device[(batch_start_idx+batch_elem)*3 + 1] = (ray_throughputs_device[(batch_start_idx+batch_elem)*3 + 1] * cos_theta)/RHO;
-                ray_throughputs_device[(batch_start_idx+batch_elem)*3 + 2] = (ray_throughputs_device[(batch_start_idx+batch_elem)*3 + 2] * cos_theta)/RHO;
-            }
-
-            break;
-        }
     }
 }

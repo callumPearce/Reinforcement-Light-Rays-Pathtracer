@@ -8,6 +8,8 @@ void update_radiance_volume_distributions(RadianceMap* radiance_map){
     
     int i = blockIdx.x * blockDim.x + threadIdx.x;
     radiance_map->radiance_volumes[i].update_radiance_distribution();
+
+    float temp = radiance_map->radiance_volumes[i].get_irradiance_estimate();
 }
 
 __global__
@@ -91,13 +93,14 @@ vec3 path_trace_reinforcement_iterative(int pixel_x, int pixel_y, Camera* camera
             case SURFACE:
 
                 vec4 sampled_direction = vec4(0.f);
-                radiance_map->importance_sample_ray_direction(d_rand_state, ray.intersection, current_sector_x, current_sector_y, pixel_x, pixel_y, sampled_direction, current_radiance_volume);
+                float pdf = 0.f;
+                radiance_map->importance_sample_ray_direction(d_rand_state, ray.intersection, current_sector_x, current_sector_y, pixel_x, pixel_y, sampled_direction, current_radiance_volume, pdf);
 
                 vec3 BRDF = scene->surfaces[ray.intersection.index].material.diffuse_c / (float)M_PI;
                 float cos_theta = dot(vec3(scene->surfaces[ray.intersection.index].normal), vec3(sampled_direction));
 
                 current_BRDF = (scene->surfaces[ray.intersection.index].material.luminance) / (float)M_PI;
-                throughput *= (BRDF * cos_theta) / RHO;
+                throughput *= (BRDF * cos_theta) / pdf;
                 
                 vec4 start = ray.intersection.position + sampled_direction * 0.00001f;
                 start.w = 1.f;

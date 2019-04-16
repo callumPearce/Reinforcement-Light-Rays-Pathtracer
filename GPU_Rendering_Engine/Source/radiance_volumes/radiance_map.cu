@@ -88,19 +88,20 @@ void RadianceMap::uniformly_sample_radiance_volumes(Surface* surfaces, int surfa
 // Given an intersection point, importance sample a ray direction according to the
 // cumulative distribution formed by the closest RadianceVolume's radiance_map
 __device__
-void RadianceMap::importance_sample_ray_direction(curandState* d_rand_state, const Intersection& intersection, int& sector_x, int& sector_y, int x, int y, vec4& sampled_direction, RadianceVolume* closest_volume){
+void RadianceMap::importance_sample_ray_direction(curandState* d_rand_state, const Intersection& intersection, int& sector_x, int& sector_y, int x, int y, vec4& sampled_direction, RadianceVolume* closest_volume, float& pdf){
 
     // If a radiance volume is not found, just sample randomly 
     if (closest_volume == NULL){
         float cos_theta;
         sampled_direction = sample_random_direction_around_intersection(d_rand_state, intersection.normal, cos_theta); 
+        pdf = RHO;
     }
     else{
         // 2) Generate a random float uniformly between [0,1] and find which 
         //    part of the cumulative distribution this number falls in range
         //    of i.e. sample from the inverse of the cumulative distribution.
         //    This gives the location on the grid we sample our direction from
-        sampled_direction = closest_volume->sample_direction_from_radiance_distribution(d_rand_state, x, y, sector_x, sector_y);
+        sampled_direction = closest_volume->sample_direction_from_radiance_distribution(d_rand_state, x, y, sector_x, sector_y, pdf);
     }
 }
 
@@ -132,6 +133,10 @@ RadianceVolume* RadianceMap::temporal_difference_update_radiance_volume_sector(f
             else{
                 // Get the radiance incident from all directions for the next position and perform temporal diff update
                 float next_pos_irradiance = closest_volume->get_irradiance_estimate(); 
+
+                // if (closest_volume->irradiance_accum < 0.f)
+                    // printf("%.3f\n",next_pos_irradiance);
+
                 next_pos_irradiance *= current_BRDF;
                 current_radiance_volume->temporal_difference_update(next_pos_irradiance, current_sector_x, current_sector_y, scene->surfaces);
                 return closest_volume;

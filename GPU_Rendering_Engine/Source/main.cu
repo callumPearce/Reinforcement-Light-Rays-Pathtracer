@@ -103,8 +103,8 @@ int main (int argc, char** argv) {
     // SPECIAL CASE: Deep Reinforcement Learning
     if ( PATH_TRACING_METHOD == 3 ){
         NeuralQPathtracer(
-            10, 
-            256,
+            100, 
+            4096,
             screen, 
             scene,
             camera,
@@ -113,10 +113,10 @@ int main (int argc, char** argv) {
         );
     }
     // SPECIAL CASE: Trained network inferece
-    else if( PATH_TRACING_METHOD == 4 ){
+    if( PATH_TRACING_METHOD == 4 ){
         PretrainedPathtracer(
             1, 
-            256,
+            4096,
             screen, 
             scene,
             camera,

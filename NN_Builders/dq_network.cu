@@ -11,9 +11,9 @@ void DQNetwork::initialize(dynet::ParameterCollection& model, int input_dims, in
     // FC1: 30x1
     // FC2: 100x1
     // Output: action_countx1
-    FCLayer FC1 = FCLayer(/*Activation*/ RELU, /*Input dim (rows)*/ input_dims, /*Output dim (rows)*/ 500, /*Dropout*/ 0.f);
-    FCLayer FC2 = FCLayer(/*Activation*/ RELU, /*Input dim (rows)*/ 500, /*Output dim (rows)*/ 300, /*Dropout*/ 0.f);
-    FCLayer FC3 = FCLayer(/*Activation*/ RELU, /*Input dim (rows)*/ 300, /*Output dim (rows)*/ 100, /*Dropout*/ 0.f);
+    FCLayer FC1 = FCLayer(/*Activation*/ RELU, /*Input dim (rows)*/ input_dims, /*Output dim (rows)*/ 300, /*Dropout*/ 0.f);
+    FCLayer FC2 = FCLayer(/*Activation*/ RELU, /*Input dim (rows)*/ 300, /*Output dim (rows)*/ 200, /*Dropout*/ 0.f);
+    FCLayer FC3 = FCLayer(/*Activation*/ RELU, /*Input dim (rows)*/ 200, /*Output dim (rows)*/ 100, /*Dropout*/ 0.f);
     FCLayer OUT_FC = FCLayer(/*Activation*/ RELU, /*Input dim (rows)*/ 100, /*Output dim (rows)*/ actions_count, /*Dropout*/ 0.f);
 
     // Add the parameters of each layer to the vector of maintained params

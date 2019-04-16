@@ -210,6 +210,7 @@ CMakeFiles/GPU_Rendering_Engine.dir/Source/deep_learning/neural_q_pathtracer.cu.
  /usr/include/SDL2/begin_code.h
  /usr/include/SDL2/close_code.h
  Source/camera.cuh
+ Source/constants/deep_learning_settings.h
  Source/constants/image_settings.h
  Source/constants/monte_carlo_settings.h
  Source/constants/radiance_volumes_settings.h
@@ -430,6 +431,7 @@ CMakeFiles/GPU_Rendering_Engine.dir/Source/deep_learning/nn_rendering_helpers.cu
  /usr/include/SDL2/begin_code.h
  /usr/include/SDL2/close_code.h
  Source/camera.cuh
+ Source/constants/deep_learning_settings.h
  Source/constants/image_settings.h
  Source/constants/monte_carlo_settings.h
  Source/constants/radiance_volumes_settings.h
@@ -651,6 +653,7 @@ CMakeFiles/GPU_Rendering_Engine.dir/Source/deep_learning/pre_trained_pathtracer.
  /usr/include/SDL2/begin_code.h
  /usr/include/SDL2/close_code.h
  Source/camera.cuh
+ Source/constants/deep_learning_settings.h
  Source/constants/image_settings.h
  Source/constants/monte_carlo_settings.h
  Source/constants/radiance_volumes_settings.h
@@ -1035,6 +1038,7 @@ CMakeFiles/GPU_Rendering_Engine.dir/Source/main.cu.o
  /usr/include/SDL2/SDL_video.h
  /usr/include/SDL2/begin_code.h
  /usr/include/SDL2/close_code.h
+ Source/constants/deep_learning_settings.h
  Source/constants/image_settings.h
  Source/constants/monte_carlo_settings.h
  Source/constants/radiance_volumes_settings.h

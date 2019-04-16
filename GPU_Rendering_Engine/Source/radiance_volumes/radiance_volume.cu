@@ -41,16 +41,16 @@ void RadianceVolume::initialise_radiance_grid(Surface* surfaces){
     }
     // Compute the current irradiance estimate
     float temp_irradiance = 0.f;
+    float luminance = surfaces[this->surface_index].material.luminance;
     for (int x = 0; x < GRID_RESOLUTION; x++){
         for (int y = 0; y < GRID_RESOLUTION; y++){
-            vec3 dir = convert_grid_pos_to_direction((float)x,(float)y, vec3(this->position), this->transformation_matrix);
+            vec3 dir = convert_grid_pos_to_direction((float)x+0.5f,(float)y+0.5f, vec3(this->position), this->transformation_matrix);
             // Get the angle between the dir std::vector and the normal
             float cos_theta = dot(dir, this->normal); // No need to divide by lengths as they have been normalized
-            temp_irradiance += cos_theta * this->radiance_grid[ x*GRID_RESOLUTION + y ];
+            
+            temp_irradiance += cos_theta * (luminance / M_PI) * this->radiance_grid[ x*GRID_RESOLUTION + y ];
         }
     }
-    float luminance = surfaces[this->surface_index].material.luminance;
-    temp_irradiance *= luminance / (float)M_PI;
     this->irradiance_accum = temp_irradiance;
 }
 
@@ -162,7 +162,16 @@ void RadianceVolume::update_radiance_distribution(){
     float total = 0.0000000001f;
     for (int x = 0; x < GRID_RESOLUTION; x++){
         for (int y = 0; y < GRID_RESOLUTION; y++){
-            total += this->radiance_grid[ x*GRID_RESOLUTION + y ]; 
+            // Get the direction
+            vec3 dir = convert_grid_pos_to_direction((float)x+0.5f, (float)y+0.5f, vec3(this->position), this->transformation_matrix);
+            // Get the angle between the dir std::vector and the normal
+            float cos_theta = dot(dir, this->normal);
+
+            float temp = this->radiance_grid[ x*GRID_RESOLUTION + y ]*cos_theta;
+            
+            temp = temp > DISTRIBUTION_THRESHOLD ? temp : DISTRIBUTION_THRESHOLD;
+            
+            total += temp;
         }
     }
     // Use this total to convert all radiance_grid values into probabilities
@@ -170,16 +179,27 @@ void RadianceVolume::update_radiance_distribution(){
     float prev_radiance = 0.f;
     for (int x = 0; x < GRID_RESOLUTION; x++){
         for (int y = 0; y < GRID_RESOLUTION; y++){
-            float radiance = this->radiance_grid[ x*GRID_RESOLUTION + y ]/total + prev_radiance;
+            // Get the direction
+            vec3 dir = convert_grid_pos_to_direction((float)x+0.5f, (float)y+0.5f, vec3(this->position), this->transformation_matrix);
+            // Get the angle between the dir std::vector and the normal
+            float cos_theta = dot(dir, this->normal);
+
+            float temp = this->radiance_grid[ x*GRID_RESOLUTION + y ]*cos_theta;
+            
+            temp = temp > DISTRIBUTION_THRESHOLD ? temp : DISTRIBUTION_THRESHOLD;
+
+            float radiance = (temp)/total + prev_radiance;
             this->radiance_distribution[ x*GRID_RESOLUTION + y ] = radiance;
             prev_radiance = radiance;
         }
     }
+    if (total < 0.f)
+        printf("%.3f\n",total);
 }
 
 // Samples a direction from the radiance volume using binary search for the sector
 __device__
-vec4 RadianceVolume::sample_direction_from_radiance_distribution(curandState* d_rand_state, int pixel_x, int pixel_y, int& sector_x, int& sector_y){
+vec4 RadianceVolume::sample_direction_from_radiance_distribution(curandState* d_rand_state, int pixel_x, int pixel_y, int& sector_x, int& sector_y, float& pdf){
     
     // Generate a random float uniformly 
     float r = curand_uniform(&d_rand_state[pixel_x*SCREEN_HEIGHT + pixel_y]);
@@ -192,6 +212,7 @@ vec4 RadianceVolume::sample_direction_from_radiance_distribution(curandState* d_
         // Randomly sample within the sector
         float rx = curand_uniform(&d_rand_state[pixel_x*SCREEN_HEIGHT + pixel_y]);
         float ry = curand_uniform(&d_rand_state[pixel_x*SCREEN_HEIGHT + pixel_y]);
+        pdf = RHO * (this->radiance_distribution[ 0 ] / GRID_RHO);
         return vec4(convert_grid_pos_to_direction(sector_x+rx, sector_y+ry, vec3(this->position), this->transformation_matrix), 1.f);
     }
 
@@ -214,6 +235,8 @@ vec4 RadianceVolume::sample_direction_from_radiance_distribution(curandState* d_
             // Randomly sample within the sector
             float rx = curand_uniform(&d_rand_state[pixel_x*SCREEN_HEIGHT + pixel_y]);
             float ry = curand_uniform(&d_rand_state[pixel_x*SCREEN_HEIGHT + pixel_y]);
+
+            pdf = RHO * ((mid_val-prev_mid_val) / GRID_RHO);
             return vec4(convert_grid_pos_to_direction(sector_x+rx, sector_y+ry, vec3(this->position), this->transformation_matrix), 1.f);
         }
 
@@ -266,7 +289,7 @@ void RadianceVolume::temporal_difference_update(float sector_irradiance, int sec
     // Calculate the new update value
     float radiance = this->radiance_grid[ sector_location ];
     float update = ((1.f - (alpha)) * radiance) + (alpha * sector_irradiance);
-    // update = update > (float)RADIANCE_THRESHOLD ? update : (float)RADIANCE_THRESHOLD;
+    update = update > (float)RADIANCE_THRESHOLD ? update : (float)RADIANCE_THRESHOLD;
 
     // Update the radiance grid value and the alpha value
     atomicInc(&(this->visits[ sector_location ]), vs+1);
@@ -278,7 +301,7 @@ void RadianceVolume::temporal_difference_update(float sector_irradiance, int sec
 // Gets the current irradiance estimate for the radiance volume
 __device__
 float RadianceVolume::get_irradiance_estimate(){
-    return this->irradiance_accum * (2.f * (float)M_PI) / ((float)(GRID_RESOLUTION * GRID_RESOLUTION));
+    return this->irradiance_accum * ((2.f * (float)M_PI) / ((float)(GRID_RESOLUTION * GRID_RESOLUTION)));
 }
 
 // Sets a voronoi colour for the radiance volume (random colour) in the first entry of its radiance grid
