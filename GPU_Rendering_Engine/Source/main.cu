@@ -63,11 +63,13 @@ bool Update(Camera& camera){
                 {
                     case SDLK_UP:
                         /* Move camera forwards*/
-                        camera.move_forwards(0.01f);
+                        // camera.move_forwards(0.01f);
+                        camera.rotate_up(0.008f);
                     break;
                     case SDLK_DOWN:
                         /* Move camera backwards */
-                        camera.move_backwards(0.01f);
+                        // camera.move_backwards(0.01f);
+                        camera.rotate_down(0.008f);
                     break;
                     case SDLK_LEFT:
                         /* Move camera left */
@@ -95,11 +97,12 @@ int main (int argc, char** argv) {
     memset(screen.buffer, 0, screen.height*screen.width*sizeof(uint32_t));
 
     // Create the camera
-    Camera camera = Camera(vec4(0.f, 0.5f, -0.9f, 1.f));
+    Camera camera = Camera(vec4(-0.7f, -0.5f, -0.2f, 1.f));
+    camera.rotate_down(0.032f);
 
     // Initialise the scene
     Scene scene = Scene();
-    scene.load_custom_scene("/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Models/door_room.obj");
+    scene.load_custom_scene("../Models/simple_room_closed.obj");
     scene.save_vertices_to_file();
 
     // CASE: Deep Reinforcement Learning

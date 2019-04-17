@@ -87,30 +87,6 @@ void RadianceVolume::initialise_visits(){
     }
 }
 
-
-// Returns a list of vertices for the generated radiance volume
-__host__
-std::vector<vec4> RadianceVolume::get_vertices(){
-    std::vector<vec4> vertices;
-    // For every grid coordinate, add the corresponding 3D world coordinate
-    for (int x = 0; x <= GRID_RESOLUTION; x++){
-        for (int y = 0; y <= GRID_RESOLUTION; y++){
-            // Get the coordinates on the unit hemisphere
-            float x_h, y_h, z_h;
-            map(x/(float)GRID_RESOLUTION, y/(float)GRID_RESOLUTION, x_h, y_h, z_h);
-            // Scale to the correct diameter desired of the hemisphere
-            x_h *= DIAMETER;
-            y_h *= DIAMETER;
-            z_h *= DIAMETER;
-            // Convert to world space
-            vec4 world_position = this->transformation_matrix * vec4(x_h, y_h, z_h, 1.f);
-            // Add the point to vertices_row
-            vertices.push_back(world_position);
-        }
-    }
-    return vertices;
-}
-
 // Gets the irradiance for an intersection point by solving the rendering equations (summing up 
 // radiance from all directions whilst multiplying by BRDF and cos(theta)) (Following expected SARSA)
 __device__
@@ -378,10 +354,8 @@ void RadianceVolume::write_volume_to_file(std::string filename){
 // Set the radiance distribution of the radiance volume to the
 // supplied q_vals
 void RadianceVolume::set_q_vals(std::vector<float>& q_vals){
-    for (int x = 0; x < GRID_RESOLUTION; x++){
-        for (int y = 0; y < GRID_RESOLUTION; y++){
-            this->radiance_distribution[x*GRID_RESOLUTION + y] = q_vals[x*GRID_RESOLUTION + y];
-        }
+    for (int n = 0; n < GRID_RESOLUTION*GRID_RESOLUTION; n++){
+        this->radiance_distribution[n] = q_vals[n];
     }
 }
 
@@ -449,22 +423,58 @@ void RadianceVolume::read_radiance_volumes_from_file(
     }
 }
 
+// Returns a list of vertices for the generated radiance volume
+__host__
+std::vector<std::vector<vec4>> RadianceVolume::get_vertices(){
+    std::vector<std::vector<vec4>> vertices;
+    // For every grid coordinate, add the corresponding 3D world coordinate
+    for (int x = 0; x <= GRID_RESOLUTION; x++){
+        std::vector<vec4> vecs;
+        for (int y = 0; y <= GRID_RESOLUTION; y++){
+            // Get the coordinates on the unit hemisphere
+            float x_h, y_h, z_h;
+            map(x/(float)GRID_RESOLUTION, y/(float)GRID_RESOLUTION, x_h, y_h, z_h);
+            // Scale to the correct diameter desired of the hemisphere
+            x_h *= DIAMETER;
+            y_h *= DIAMETER;
+            z_h *= DIAMETER;
+            // Convert to world space
+            vec4 world_position = this->transformation_matrix * vec4(x_h, y_h, z_h, 1.f);
+            // Add the point to vertices_row
+            vecs.push_back(world_position);
+        }
+        vertices.push_back(vecs);
+    }
+    return vertices;
+}
+
 // Build the radiance volumes surfaces and add it to the list based
 // on the radiance distribution values
 void RadianceVolume::build_surfaces(std::vector<Surface>& surfaces){
+    // Find the max q_val to determine colour
+    float max_q = 0.f;
+    for (int n = 0; n < GRID_RESOLUTION*GRID_RESOLUTION; n++){
+        if ( max_q < this->radiance_distribution[n] ) max_q = this->radiance_distribution[n];
+    }
+
     // Get the vertices for the radiance volume
-    std::vector<vec4> vertices = this->get_vertices();
+    std::vector<std::vector<vec4>> vertices = this->get_vertices();
     // Build the surfaces
-    for (int x = 0; x < GRID_RESOLUTION-1; x++){
-        for (int y = 0; y < GRID_RESOLUTION-1; y++){
+    for (int x = 0; x < GRID_RESOLUTION; x++){
+        for (int y = 0; y < GRID_RESOLUTION; y++){
             // Get the square of vertices
-            vec4 v0 = vertices[GRID_RESOLUTION*x + y];
-            vec4 v1 = vertices[GRID_RESOLUTION*(x+1) + y];
-            vec4 v2 = vertices[GRID_RESOLUTION*x + y+1];
-            vec4 v3 = vertices[GRID_RESOLUTION*(x+1) + y+1];
+            vec4 v0 = vertices[x][y];
+            vec4 v1 = vertices[x+1][y];
+            vec4 v2 = vertices[x][y+1];
+            vec4 v3 = vertices[x+1][y+1];
+            vec4 mid_p = (v0 + v1 + v2 + v3)/4.f;
+
             // Build two triangles using radiance_distribution for colour
-            Surface s1 = Surface(v0, v1, v2, Material(vec3(1.f - this->radiance_distribution[x*GRID_RESOLUTION + y])));
-            Surface s2 = Surface(v0, v2, v3, Material(vec3(1.f - this->radiance_distribution[x*GRID_RESOLUTION + y])));
+            float ratio = this->radiance_distribution[x*GRID_RESOLUTION + y]/max_q;
+            Surface s1 = Surface(v0, v2, v1, Material(vec3(ratio, 1.f-ratio, 0.f)));
+            Surface s2 = Surface(v1, v2, v3, Material(vec3(ratio, 1.f-ratio, 0.f)));
+            s1.normal = normalize(mid_p - this->position);
+            s2.normal = s1.normal;
             // Add the surfaces to the list of surfaces
             surfaces.push_back(s1);
             surfaces.push_back(s2);

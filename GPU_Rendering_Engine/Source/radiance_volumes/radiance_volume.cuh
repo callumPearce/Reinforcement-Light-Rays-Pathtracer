@@ -67,7 +67,7 @@ class RadianceVolume{
 
         // Returns a list of vertices for the generated radiance volume
         __host__
-        std::vector<vec4> get_vertices();
+        std::vector<std::vector<vec4>> get_vertices();
 
         __device__
         void expected_sarsa_irradiance(Surface* surfaces, const float update, const int sector_x, const int sector_y);
