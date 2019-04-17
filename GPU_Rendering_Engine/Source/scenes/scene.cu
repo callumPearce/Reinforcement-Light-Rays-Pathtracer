@@ -36,6 +36,13 @@ void Scene::load_custom_scene(const char* filename){
     std::vector<float> vertices_v;
     load_scene(filename, surfaces_v, area_lights_v, vertices_v);
 
+    if ( RENDER_SAVED_RADIANCE_VOLUMES ){
+        RadianceVolume::read_radiance_volumes_to_surfaces(
+            "../Radiance_Map_Data/selected_radiance_volumes/selected_deep.txt",
+            surfaces_v
+        );
+    }
+
     // Set the size
     this->surfaces_count = surfaces_v.size();
     this->area_light_count = area_lights_v.size();

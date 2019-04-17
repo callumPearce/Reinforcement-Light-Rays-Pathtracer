@@ -12,7 +12,9 @@
 #define EPS 0.00001f
 #define RHO (1.f / (2.f*3.1415926535f))
 
-#define PATH_TRACING_METHOD 5
+#define RENDER_SAVED_RADIANCE_VOLUMES true
+
+#define PATH_TRACING_METHOD 0
 //0 = default
 //1 = reinforcement: expected SARSA
 //2 = voronoi

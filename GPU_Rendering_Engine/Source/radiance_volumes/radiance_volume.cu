@@ -23,6 +23,19 @@ RadianceVolume::RadianceVolume(Surface* surfaces, vec4 position, vec4 normal, un
     this->index = idx;
 }
 
+// Constructor for loading radiance volume to render
+__host__
+RadianceVolume::RadianceVolume(vec4 position, vec3 normal, std::vector<float>& q_vals){
+    this->position = position;
+    this->normal = normal;
+
+    // Create the transformation matrix for this hemisphere: local->world
+    this->transformation_matrix = create_transformation_matrix(normal, position);
+
+    // Set the q_vals read in
+    this->set_q_vals(q_vals);
+}
+
 // Updates the transformation matrix with the current set values of the normal and position
 __host__
 void RadianceVolume::update_transformation_matrix(){
@@ -76,9 +89,9 @@ void RadianceVolume::initialise_visits(){
 
 
 // Returns a list of vertices for the generated radiance volume
-__device__
-vec4* RadianceVolume::get_vertices(){
-    vec4* vertices = new vec4[ (GRID_RESOLUTION+1) * (GRID_RESOLUTION+1) ];
+__host__
+std::vector<vec4> RadianceVolume::get_vertices(){
+    std::vector<vec4> vertices;
     // For every grid coordinate, add the corresponding 3D world coordinate
     for (int x = 0; x <= GRID_RESOLUTION; x++){
         for (int y = 0; y <= GRID_RESOLUTION; y++){
@@ -92,7 +105,7 @@ vec4* RadianceVolume::get_vertices(){
             // Convert to world space
             vec4 world_position = this->transformation_matrix * vec4(x_h, y_h, z_h, 1.f);
             // Add the point to vertices_row
-            vertices[ x*GRID_RESOLUTION + y ] = world_position;
+            vertices.push_back(world_position);
         }
     }
     return vertices;
@@ -359,5 +372,121 @@ void RadianceVolume::write_volume_to_file(std::string filename){
     }
     else{
         printf("Unable to save the Radiance Volume.\n");
+    }
+}
+
+// Set the radiance distribution of the radiance volume to the
+// supplied q_vals
+void RadianceVolume::set_q_vals(std::vector<float>& q_vals){
+    for (int x = 0; x < GRID_RESOLUTION; x++){
+        for (int y = 0; y < GRID_RESOLUTION; y++){
+            this->radiance_distribution[x*GRID_RESOLUTION + y] = q_vals[x*GRID_RESOLUTION + y];
+        }
+    }
+}
+
+// Read radiance Volumes from a file 
+__host__
+void RadianceVolume::read_radiance_volumes_from_file(
+    std::string fname, 
+    std::vector<RadianceVolume>& rvs
+){
+    
+    // Read each line of the file individually and build a radiance
+    // volume from the data
+    std::string line;
+    std::ifstream rvs_file(fname);
+    
+    if (rvs_file.is_open()){
+        while ( std::getline (rvs_file, line)){
+
+            // Data structures for radiance volume budiling
+            vec4 position(1.f);
+            vec3 normal(0.f);
+            std::vector<float> q_vals(GRID_RESOLUTION*GRID_RESOLUTION);
+            
+            // For each space
+            unsigned int idx = 0;
+            size_t pos = 0;
+            float data_elem;
+            while ((pos = line.find(" ")) != std::string::npos){
+                
+                // Get the next string
+                data_elem = std::stof(line.substr(0, pos));
+
+                // 0 - 2: Position
+                if (idx < 3){
+                    position[idx] = data_elem;
+                }
+
+                // 3 - 5: Normal
+                else if(idx < 6){
+                    normal[idx%3] = data_elem;
+                }
+
+                // 6 - GRID_RES*GRID_RES+6: Radiance Distribution
+                else{
+                    q_vals[idx-6] = data_elem;
+                }
+
+                // Increment the index for the current data_elem
+                idx++;
+
+                // Delete the part that we have read
+                line.erase(0, pos + 1);
+            }
+
+            // Add the final float in
+            q_vals[idx-6] = std::stof(line);
+
+            // Create the radiance volume and add it to the list
+            RadianceVolume rv = RadianceVolume(position, normal, q_vals);
+            rvs.push_back(rv);
+        }
+    }
+    else{
+        std::cout << "Could not read radiance volumes." << std::endl;
+    }
+}
+
+// Build the radiance volumes surfaces and add it to the list based
+// on the radiance distribution values
+void RadianceVolume::build_surfaces(std::vector<Surface>& surfaces){
+    // Get the vertices for the radiance volume
+    std::vector<vec4> vertices = this->get_vertices();
+    // Build the surfaces
+    for (int x = 0; x < GRID_RESOLUTION-1; x++){
+        for (int y = 0; y < GRID_RESOLUTION-1; y++){
+            // Get the square of vertices
+            vec4 v0 = vertices[GRID_RESOLUTION*x + y];
+            vec4 v1 = vertices[GRID_RESOLUTION*(x+1) + y];
+            vec4 v2 = vertices[GRID_RESOLUTION*x + y+1];
+            vec4 v3 = vertices[GRID_RESOLUTION*(x+1) + y+1];
+            // Build two triangles using radiance_distribution for colour
+            Surface s1 = Surface(v0, v1, v2, Material(vec3(1.f - this->radiance_distribution[x*GRID_RESOLUTION + y])));
+            Surface s2 = Surface(v0, v2, v3, Material(vec3(1.f - this->radiance_distribution[x*GRID_RESOLUTION + y])));
+            // Add the surfaces to the list of surfaces
+            surfaces.push_back(s1);
+            surfaces.push_back(s2);
+        }
+    }
+}
+
+// Read the list of radiance volumes from a file and build surfaces of them
+__host__
+void RadianceVolume::read_radiance_volumes_to_surfaces(
+    std::string fname,
+    std::vector<Surface>& surfaces
+){
+    // Get the radiance volumes from the file
+    std::vector<RadianceVolume> rvs;
+    RadianceVolume::read_radiance_volumes_from_file(
+        fname, 
+        rvs
+    );
+
+    // For each RV, build its surfaces and add it to the list
+    for (int i = 0; i < rvs.size(); i++){
+        rvs[i].build_surfaces(surfaces);
     }
 }

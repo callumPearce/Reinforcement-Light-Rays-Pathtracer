@@ -17,6 +17,7 @@
 #include "camera.cuh"
 #include "area_light.cuh"
 #include "radiance_map.cuh"
+#include "radiance_volume.cuh"
 #include "scene.cuh"
 #include "radiance_tree.cuh"
 

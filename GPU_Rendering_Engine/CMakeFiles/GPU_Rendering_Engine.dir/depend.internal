@@ -220,12 +220,15 @@ CMakeFiles/GPU_Rendering_Engine.dir/Source/deep_learning/neural_q_pathtracer.cu.
  Source/objects/shape.cuh
  Source/objects/surface.cuh
  Source/objects/triangle.cuh
+ Source/path_tracing/default_path_tracing.cuh
+ Source/radiance_volumes/radiance_volume.cuh
  Source/rays/ray.cuh
  Source/scenes/cornell_box_scene.cuh
  Source/scenes/scene.cuh
  Source/sdl/sdl_screen.h
  Source/utils/cuda_helpers.cuh
  Source/utils/hemisphere_helpers.cuh
+ Source/utils/printing.h
  glm/glm/./detail/setup.hpp
  glm/glm/./detail/type_mat2x2.hpp
  glm/glm/./detail/type_mat2x2.inl
@@ -441,12 +444,15 @@ CMakeFiles/GPU_Rendering_Engine.dir/Source/deep_learning/nn_rendering_helpers.cu
  Source/objects/shape.cuh
  Source/objects/surface.cuh
  Source/objects/triangle.cuh
+ Source/path_tracing/default_path_tracing.cuh
+ Source/radiance_volumes/radiance_volume.cuh
  Source/rays/ray.cuh
  Source/scenes/cornell_box_scene.cuh
  Source/scenes/scene.cuh
  Source/sdl/sdl_screen.h
  Source/utils/cuda_helpers.cuh
  Source/utils/hemisphere_helpers.cuh
+ Source/utils/printing.h
  glm/glm/./detail/setup.hpp
  glm/glm/./detail/type_mat2x2.hpp
  glm/glm/./detail/type_mat2x2.inl
@@ -663,12 +669,15 @@ CMakeFiles/GPU_Rendering_Engine.dir/Source/deep_learning/pre_trained_pathtracer.
  Source/objects/shape.cuh
  Source/objects/surface.cuh
  Source/objects/triangle.cuh
+ Source/path_tracing/default_path_tracing.cuh
+ Source/radiance_volumes/radiance_volume.cuh
  Source/rays/ray.cuh
  Source/scenes/cornell_box_scene.cuh
  Source/scenes/scene.cuh
  Source/sdl/sdl_screen.h
  Source/utils/cuda_helpers.cuh
  Source/utils/hemisphere_helpers.cuh
+ Source/utils/printing.h
  glm/glm/./detail/setup.hpp
  glm/glm/./detail/type_mat2x2.hpp
  glm/glm/./detail/type_mat2x2.inl
@@ -831,6 +840,7 @@ CMakeFiles/GPU_Rendering_Engine.dir/Source/deep_learning/q_value_extractor.cu.o
  /home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/Source/deep_learning/q_value_extractor.cuh
  Source/camera.cuh
  Source/constants/image_settings.h
+ Source/constants/monte_carlo_settings.h
  Source/constants/radiance_volumes_settings.h
  Source/lights/area_light.cuh
  Source/objects/material.cuh
@@ -838,10 +848,13 @@ CMakeFiles/GPU_Rendering_Engine.dir/Source/deep_learning/q_value_extractor.cu.o
  Source/objects/shape.cuh
  Source/objects/surface.cuh
  Source/objects/triangle.cuh
+ Source/path_tracing/default_path_tracing.cuh
+ Source/radiance_volumes/radiance_volume.cuh
  Source/rays/ray.cuh
  Source/scenes/cornell_box_scene.cuh
  Source/scenes/scene.cuh
  Source/utils/hemisphere_helpers.cuh
+ Source/utils/printing.h
  glm/glm/./detail/setup.hpp
  glm/glm/./detail/type_mat2x2.hpp
  glm/glm/./detail/type_mat2x2.inl
@@ -2220,6 +2233,7 @@ CMakeFiles/GPU_Rendering_Engine.dir/Source/path_tracing/default_path_tracing.cu.
  Source/objects/shape.cuh
  Source/objects/surface.cuh
  Source/objects/triangle.cuh
+ Source/radiance_volumes/radiance_volume.cuh
  Source/rays/ray.cuh
  Source/scenes/cornell_box_scene.cuh
  Source/scenes/scene.cuh
@@ -3536,14 +3550,20 @@ CMakeFiles/GPU_Rendering_Engine.dir/Source/rays/ray.cu.o
  /home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/Source/rays/ray.cuh
  Source/camera.cuh
  Source/constants/image_settings.h
+ Source/constants/monte_carlo_settings.h
+ Source/constants/radiance_volumes_settings.h
  Source/lights/area_light.cuh
  Source/objects/material.cuh
  Source/objects/object_importer.cuh
  Source/objects/shape.cuh
  Source/objects/surface.cuh
  Source/objects/triangle.cuh
+ Source/path_tracing/default_path_tracing.cuh
+ Source/radiance_volumes/radiance_volume.cuh
  Source/scenes/cornell_box_scene.cuh
  Source/scenes/scene.cuh
+ Source/utils/hemisphere_helpers.cuh
+ Source/utils/printing.h
  glm/glm/./detail/setup.hpp
  glm/glm/./detail/type_mat2x2.hpp
  glm/glm/./detail/type_mat2x2.inl
@@ -3871,13 +3891,19 @@ CMakeFiles/GPU_Rendering_Engine.dir/Source/scenes/scene.cu.o
  /home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/Source/scenes/scene.cuh
  Source/camera.cuh
  Source/constants/image_settings.h
+ Source/constants/monte_carlo_settings.h
+ Source/constants/radiance_volumes_settings.h
  Source/lights/area_light.cuh
  Source/objects/material.cuh
  Source/objects/object_importer.cuh
  Source/objects/shape.cuh
  Source/objects/surface.cuh
  Source/objects/triangle.cuh
+ Source/path_tracing/default_path_tracing.cuh
+ Source/radiance_volumes/radiance_volume.cuh
  Source/rays/ray.cuh
+ Source/utils/hemisphere_helpers.cuh
+ Source/utils/printing.h
  glm/glm/./detail/setup.hpp
  glm/glm/./detail/type_mat2x2.hpp
  glm/glm/./detail/type_mat2x2.inl

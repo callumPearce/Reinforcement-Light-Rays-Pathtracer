@@ -56,13 +56,18 @@ class RadianceVolume{
         __host__
         RadianceVolume(Surface* surfaces, vec4 position, vec4 normal, unsigned int surface_index, int idx);
 
+        // Constructor for radiance volume which will be rendered
+        // Constructor for loading radiance volume to render
+        __host__
+        RadianceVolume(vec4 position, vec3 normal, std::vector<float>& q_vals);
+
         // Update the transformation matrix with the current normal and position values
         __host__
         void update_transformation_matrix();
 
-        // Get vertices of radiance volume in world space
-        __device__
-        vec4* get_vertices();
+        // Returns a list of vertices for the generated radiance volume
+        __host__
+        std::vector<vec4> get_vertices();
 
         __device__
         void expected_sarsa_irradiance(Surface* surfaces, const float update, const int sector_x, const int sector_y);
@@ -112,6 +117,29 @@ class RadianceVolume{
         // Write the radiance volumes Q-values out to a file
         __host__
         void write_volume_to_file(std::string filename);
+
+        // Set the radiance distribution of the radiance volume to the
+        // supplied q_vals
+        void set_q_vals(std::vector<float>& q_vals);
+
+        // Build the radiance volumes surfaces and add it to the list based
+        // on the radiance distribution values
+        void build_surfaces(std::vector<Surface>& surfaces);
+
+        // Read radiance volumes in from a file and populate the list rvs
+        // rvs with them
+        __host__
+        static void read_radiance_volumes_from_file(
+            std::string fname, 
+            std::vector<RadianceVolume>& rvs
+        );
+
+        // Read the list of radiance volumes from a file and build surfaces of them
+        __host__
+        static void read_radiance_volumes_to_surfaces(
+            std::string fname,
+            std::vector<Surface>& surfaces
+        );
 };
 
 #endif

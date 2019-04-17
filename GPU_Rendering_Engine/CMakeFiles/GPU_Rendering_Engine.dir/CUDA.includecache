@@ -145,6 +145,8 @@ ray.cuh
 Source/scenes/ray.cuh
 object_importer.cuh
 Source/scenes/object_importer.cuh
+radiance_volume.cuh
+Source/scenes/radiance_volume.cuh
 iostream
 -
 fstream

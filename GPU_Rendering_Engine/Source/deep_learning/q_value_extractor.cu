@@ -51,7 +51,7 @@ void write_q_values_for_position(
     std::ofstream save_file (output_fname, std::ios::app);
     if (save_file.is_open()){
         // Write the position
-        save_file << position.x << " " << position.y << " " << position.z << " ";
+        save_file << position.x << " " << position.y << " " << position.z;
 
         // Write the normal
         save_file << " " << normal.x << " " << normal.y << " " << normal.z;
