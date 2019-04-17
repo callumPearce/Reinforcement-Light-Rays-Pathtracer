@@ -6,7 +6,7 @@
 #define RADIANCE_VOLUMES_SETTINGS_H
 
 // Building
-#define GRID_RESOLUTION 8
+#define GRID_RESOLUTION 12
 #define GRID_RHO (1.f/((float)GRID_RESOLUTION*(float)GRID_RESOLUTION))
 #define DIAMETER 0.1f
 #define AREA_PER_SAMPLE 0.001f
@@ -19,6 +19,7 @@
 #define DISTRIBUTION_THRESHOLD 0.f
 
 // MISC
-#define SAVE_RADIANCE_MAP true
+#define SAVE_RADIANCE_MAP false
+#define SAVE_REQUESTED_VOLUMES true
 
 #endif

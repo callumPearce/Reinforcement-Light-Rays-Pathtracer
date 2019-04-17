@@ -64,6 +64,7 @@ set(
     Source/deep_learning/neural_q_pathtracer.cu
     Source/deep_learning/pre_trained_pathtracer.cu
     Source/deep_learning/nn_rendering_helpers.cu
+    Source/deep_learning/q_value_extractor.cu
 )
 
 

@@ -1,7 +1,7 @@
 #include "stack.cuh"
 #include <stdio.h>
 
-__device__
+__host__ __device__
 Stack::Stack(int max_size){
     // this->stack_data = new int[ max_size ];
     // memset(this->stack_data, 0, max_size);
@@ -9,12 +9,12 @@ Stack::Stack(int max_size){
     this->size = max_size;
 }
 
-__device__
+__host__ __device__
 Stack::~Stack(){
     // delete [] stack_data;
 }
 
-__device__
+__host__ __device__
 bool Stack::push(int x){
     if (this->top < this->size - 1){
         this->stack_data[this->top] = x;
@@ -26,7 +26,7 @@ bool Stack::push(int x){
     }
 }
 
-__device__
+__host__ __device__
 bool Stack::pop(int& value){
     if (this->top > 0){
         this->top--;
@@ -38,7 +38,7 @@ bool Stack::pop(int& value){
     }
 }
 
-__device__
+__host__ __device__
 bool Stack::peek(int& value){
     if (this->top > 0){
         value = this->stack_data[this->top-1];

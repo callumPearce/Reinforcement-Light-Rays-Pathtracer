@@ -224,3 +224,58 @@ void map(float x, float y, float& x_ret, float& y_ret, float& z_ret) {
     y_ret = cos(theta);
     z_ret = sin(theta)*sin(phi);
 }
+
+// Read in hemisphere locations and normals
+__host__
+void read_hemisphere_locations_and_normals(
+    std::string fname, 
+    std::vector<vec3>& volume_locations, 
+    std::vector<vec3>& volume_normals
+){
+    // Read in the file for the location of the closest rvs
+    std::ifstream rv_locations(fname);
+    std::string line;
+
+    if (rv_locations.is_open()){
+        while ( std::getline (rv_locations, line)){
+
+            // For each space
+            size_t pos = 0;
+            std::string token;
+            vec3 location(0.f);
+            vec3 normal(0.f);
+            int idx = 0;
+            while ((pos = line.find(" ")) != std::string::npos){
+
+                // The next string
+                token = line.substr(0, pos);
+
+                // First 3 numbers are the position
+                if (idx < 3){
+                    location[idx] = std::stof(token);
+                }
+
+                // Last 3 are the normals
+                else{
+                    normal[idx%3] = std::stof(token);
+                }
+
+                // Increment the index
+                idx++;
+
+                // Delete the part that we have read
+                line.erase(0, pos + 1);
+            }
+
+            // Add the final float in
+            normal[idx%3] = std::stof(line);
+
+            // Add to the list of volume locations and normals
+            volume_locations.push_back(location);
+            volume_normals.push_back(normal);
+        }
+    }
+    else{
+        std::cout << "Cannot read in hemisphere locations and normals." << std::endl;
+    }
+}

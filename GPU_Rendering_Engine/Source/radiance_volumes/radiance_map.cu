@@ -146,7 +146,7 @@ RadianceVolume* RadianceMap::temporal_difference_update_radiance_volume_sector(f
 }
 
 // Get the closest radiance volume iteratively
-__device__
+__host__ __device__
 RadianceVolume* RadianceMap::find_closest_radiance_volume_iterative(float max_dist, vec4 pos, vec4 norm){
 
     vec3 position = vec3(pos);
@@ -264,5 +264,39 @@ void RadianceMap::save_q_vals_to_file(){
     }
     else{
         printf("Unable to save the RadianceMap.\n");
+    }
+}
+
+// Save the selected radiance volumes out to a file
+__host__
+void RadianceMap::save_selected_radiance_volumes_vals(std::string fpath){
+
+    // file locations
+    std::string read_in = fpath + "to_select.txt";
+    std::string write_out = fpath + "selected_sarsa.txt";
+
+    // Delete the previous radiance volume data file
+    std::remove(write_out.c_str());
+
+    // Read in the file for the location of the closest rvs
+    std::vector<vec3> volume_locations;
+    std::vector<vec3> volume_normals;
+
+    read_hemisphere_locations_and_normals(
+        read_in, 
+        volume_locations, 
+        volume_normals
+    );
+
+    // Get the closest radiance volume and write its radiance distribution to a file
+    for (int i = 0; i < volume_locations.size(); i++){
+        
+        RadianceVolume* rv = find_closest_radiance_volume_iterative(
+            MAX_DIST, 
+            vec4(volume_locations[i],1.f), 
+            vec4(volume_normals[i],1.f)
+        );
+
+        rv->write_volume_to_file(write_out);
     }
 }

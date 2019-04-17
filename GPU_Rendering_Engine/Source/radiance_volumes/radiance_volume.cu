@@ -332,3 +332,32 @@ void RadianceVolume::convert_radiance_distribution(){
         this->radiance_distribution[ GRID_RESOLUTION*GRID_RESOLUTION - i] -= this->radiance_distribution[ GRID_RESOLUTION*GRID_RESOLUTION - (i + 1) ];
     }
 }
+
+// Write the radiance volumes Q-values out to a file
+__host__
+void RadianceVolume::write_volume_to_file(std::string filename){
+    // Create the file 
+    std::ofstream save_file (filename, std::ios::app);
+    if (save_file.is_open()){
+        // Write the position
+        vec4 position = this->position;
+        save_file << position.x << " " << position.y << " " << position.z;
+
+        // Write the normal
+        vec3 normal = this->normal;
+        save_file << " " << normal.x << " " << normal.y << " " << normal.z;
+
+        // Write each Q values
+        for (int n = 0; n < GRID_RESOLUTION*GRID_RESOLUTION; n++){
+            save_file << " " << this->radiance_distribution[n];
+        }
+
+        save_file << "\n";
+
+        // Close the file
+        save_file.close();
+    }
+    else{
+        printf("Unable to save the Radiance Volume.\n");
+    }
+}

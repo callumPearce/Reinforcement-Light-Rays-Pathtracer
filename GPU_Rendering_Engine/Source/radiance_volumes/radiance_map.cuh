@@ -66,7 +66,7 @@ class RadianceMap{
         __device__
         vec3 get_voronoi_colour(const Intersection& intersection);
 
-        __device__
+        __host__ __device__
         RadianceVolume* find_closest_radiance_volume_iterative(float max_dist, vec4 pos, vec4 norm);
 
         // Save the radiance map's q-values out to a file
@@ -76,6 +76,10 @@ class RadianceMap{
         // Convert the radiance distributions from cumulative distribution to distribution
         __host__
         void convert_radiance_volumes_distributions();
+
+        // Save the selected radiance volumes out to a file
+        __host__
+        void save_selected_radiance_volumes_vals(std::string fpath);
 };
 
 #endif

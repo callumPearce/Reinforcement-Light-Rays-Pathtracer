@@ -3,10 +3,15 @@
 
 #include <glm/glm.hpp>
 #include "ray.cuh"
+
 //cuRand
 #include <curand.h>
 #include <curand_kernel.h>
 #include "radiance_volumes_settings.h"
+
+// File reading
+#include <iostream>
+#include <fstream>
 
 using glm::vec3;
 using glm::vec2;
@@ -51,5 +56,13 @@ vec3 convert_grid_pos_to_direction_random(curandState* d_rand_state, float x, fl
 */
 __host__ __device__
 void map(float x, float y, float& x_ret, float& y_ret, float& z_ret);
+
+// Read in hemisphere locations and normals
+__host__
+void read_hemisphere_locations_and_normals(
+    std::string fname, 
+    std::vector<vec3>& volume_locations, 
+    std::vector<vec3>& volume_normals
+);
 
 #endif 

@@ -108,6 +108,10 @@ class RadianceVolume{
         // Conver the radiance volumes cumulative distribution to a distribution
         __host__
         void convert_radiance_distribution();
+
+        // Write the radiance volumes Q-values out to a file
+        __host__
+        void write_volume_to_file(std::string filename);
 };
 
 #endif
