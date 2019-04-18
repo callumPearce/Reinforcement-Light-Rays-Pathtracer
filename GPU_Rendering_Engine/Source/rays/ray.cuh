@@ -83,7 +83,7 @@ class Ray {
 
         // Rotate a ray by "yaw"
         __device__
-        void rotate_ray(float yaw);
+        void rotate_ray(float yaw_y, float yaw_x);
 
 };
 

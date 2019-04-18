@@ -18,9 +18,11 @@
 #include "camera.cuh"
 #include <sys/stat.h>
 #include <unistd.h>
+#include "deep_learning_settings.h"
+#include <chrono>
+#include <stdint.h>
 
 /* Cuda */
-#include <stdint.h>
 #include "cuda_helpers.cuh"
 #include <curand_kernel.h>
 #include <curand.h>
@@ -32,7 +34,6 @@ using glm::mat3;
 using glm::vec4;
 using glm::mat4;
 
-
 // Randomly sample with the given grid index a 3D ray direction
 __device__
 void sample_ray_for_grid_index(
@@ -42,7 +43,7 @@ void sample_ray_for_grid_index(
     float* ray_normals_device,
     float* ray_locations_device,
     float* ray_throughputs_device,
-    bool* ray_terminated_device,
+    unsigned int* ray_states_device,
     int i
 );
 
@@ -56,6 +57,20 @@ vec3 sample_ray_for_grid_index(
     int i
 );
 
+// Importance sample a ray direction over distribution proportional to cos_theta * Q_values
+__global__
+void sample_batch_ray_directions_importance_sample(
+    curandState* d_rand_state,
+    float* q_values_device,
+    float* ray_directions_device,
+    float* ray_locations_device,
+    float* ray_normals_device,
+    float* ray_throughputs_device,
+    unsigned int* ray_states_device,
+    unsigned int* ray_direction_indices,
+    int batch_start_idx
+);
+
 // Sample random directions to further trace the rays in
 __global__
 void sample_next_ray_directions_randomly(
@@ -63,7 +78,22 @@ void sample_next_ray_directions_randomly(
         float* ray_normals, 
         float* ray_directions,
         float* ray_throughputs,
-        bool* ray_terminated
+        unsigned int* ray_states
+);
+
+// Importance sample a ray direction for the current batch elem
+__device__
+void importance_sample_direction(
+    curandState* d_rand_state,
+    unsigned int* ray_direction_indices,
+    float* current_qs_device,
+    float* ray_directions,
+    float* ray_locations,
+    float* ray_normals,
+    float* ray_throughputs,
+    unsigned int* ray_states,
+    int batch_start_idx,
+    int batch_elem
 );
 
 // Compute the TD targets for the current batch size
@@ -76,6 +106,7 @@ void compute_td_targets(
     float* ray_normals,
     float* ray_rewards,
     float* ray_discounts,
+    unsigned int* ray_states,
     int batch_start_idx
 );
 
@@ -104,24 +135,25 @@ void sum_path_lengths(
 );
 
 // Sample a random position on the scenes geometry and update the normal
-__device__
-void sample_random_scene_pos(
+__global__
+void sample_random_scene_pos_for_terminated_rays(
     Scene* scene,
     curandState* d_rand_state,
     float* ray_normals,
     float* ray_locations,
-    int i
+    unsigned int* ray_states
 );
 
 // Get all vertices in corrdinate system for the current point
-__host__
+__global__
 void convert_vertices_to_point_coord_system(
-    std::vector<float>& converted_vertices, 
-    vec3& pos, 
-    float* vertices, 
+    float* ray_vertices_device, 
+    float* ray_locations_device,
+    float* scene_vertices,
     int vertices_count
 );
 
+// Check if a given file exists
 inline bool file_exists (const std::string& name);
 
 // Read the scene data file and populate the list of vertices
@@ -138,8 +170,24 @@ void sample_batch_ray_directions_epsilon_greedy(
     float* ray_locations,
     float* ray_normals,
     float* ray_throughputs,
-    bool* ray_terminated,
+    unsigned int* ray_states,
     int batch_start_idx
+);
+
+__global__
+void sum_zero_contribution_light_paths(
+    int* total_zero_contribution_light_paths,
+    float* ray_throughputs
+);
+
+
+__device__
+void sample_random_scene_pos(
+    Scene* scene,
+    curandState* d_rand_state,
+    float* ray_normals,
+    float* ray_locations,
+    int i
 );
 
 #endif

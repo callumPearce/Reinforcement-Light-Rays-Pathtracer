@@ -23,6 +23,19 @@ RadianceVolume::RadianceVolume(Surface* surfaces, vec4 position, vec4 normal, un
     this->index = idx;
 }
 
+// Constructor for loading radiance volume to render
+__host__
+RadianceVolume::RadianceVolume(vec4 position, vec3 normal, std::vector<float>& q_vals){
+    this->position = position;
+    this->normal = normal;
+
+    // Create the transformation matrix for this hemisphere: local->world
+    this->transformation_matrix = create_transformation_matrix(normal, position);
+
+    // Set the q_vals read in
+    this->set_q_vals(q_vals);
+}
+
 // Updates the transformation matrix with the current set values of the normal and position
 __host__
 void RadianceVolume::update_transformation_matrix(){
@@ -41,16 +54,16 @@ void RadianceVolume::initialise_radiance_grid(Surface* surfaces){
     }
     // Compute the current irradiance estimate
     float temp_irradiance = 0.f;
+    float luminance = surfaces[this->surface_index].material.luminance;
     for (int x = 0; x < GRID_RESOLUTION; x++){
         for (int y = 0; y < GRID_RESOLUTION; y++){
-            vec3 dir = convert_grid_pos_to_direction((float)x,(float)y, vec3(this->position), this->transformation_matrix);
+            vec3 dir = convert_grid_pos_to_direction((float)x+0.5f,(float)y+0.5f, vec3(this->position), this->transformation_matrix);
             // Get the angle between the dir std::vector and the normal
             float cos_theta = dot(dir, this->normal); // No need to divide by lengths as they have been normalized
-            temp_irradiance += cos_theta * this->radiance_grid[ x*GRID_RESOLUTION + y ];
+            
+            temp_irradiance += cos_theta * (luminance / M_PI) * this->radiance_grid[ x*GRID_RESOLUTION + y ];
         }
     }
-    float luminance = surfaces[this->surface_index].material.luminance;
-    temp_irradiance *= luminance / (float)M_PI;
     this->irradiance_accum = temp_irradiance;
 }
 
@@ -72,30 +85,6 @@ void RadianceVolume::initialise_visits(){
             this->visits[ x*GRID_RESOLUTION + y ] = 0;
         }
     }
-}
-
-
-// Returns a list of vertices for the generated radiance volume
-__device__
-vec4* RadianceVolume::get_vertices(){
-    vec4* vertices = new vec4[ (GRID_RESOLUTION+1) * (GRID_RESOLUTION+1) ];
-    // For every grid coordinate, add the corresponding 3D world coordinate
-    for (int x = 0; x <= GRID_RESOLUTION; x++){
-        for (int y = 0; y <= GRID_RESOLUTION; y++){
-            // Get the coordinates on the unit hemisphere
-            float x_h, y_h, z_h;
-            map(x/(float)GRID_RESOLUTION, y/(float)GRID_RESOLUTION, x_h, y_h, z_h);
-            // Scale to the correct diameter desired of the hemisphere
-            x_h *= DIAMETER;
-            y_h *= DIAMETER;
-            z_h *= DIAMETER;
-            // Convert to world space
-            vec4 world_position = this->transformation_matrix * vec4(x_h, y_h, z_h, 1.f);
-            // Add the point to vertices_row
-            vertices[ x*GRID_RESOLUTION + y ] = world_position;
-        }
-    }
-    return vertices;
 }
 
 // Gets the irradiance for an intersection point by solving the rendering equations (summing up 
@@ -162,7 +151,16 @@ void RadianceVolume::update_radiance_distribution(){
     float total = 0.0000000001f;
     for (int x = 0; x < GRID_RESOLUTION; x++){
         for (int y = 0; y < GRID_RESOLUTION; y++){
-            total += this->radiance_grid[ x*GRID_RESOLUTION + y ]; 
+            // Get the direction
+            vec3 dir = convert_grid_pos_to_direction((float)x+0.5f, (float)y+0.5f, vec3(this->position), this->transformation_matrix);
+            // Get the angle between the dir std::vector and the normal
+            float cos_theta = dot(dir, this->normal);
+
+            float temp = this->radiance_grid[ x*GRID_RESOLUTION + y ]*cos_theta;
+            
+            temp = temp > DISTRIBUTION_THRESHOLD ? temp : DISTRIBUTION_THRESHOLD;
+            
+            total += temp;
         }
     }
     // Use this total to convert all radiance_grid values into probabilities
@@ -170,16 +168,27 @@ void RadianceVolume::update_radiance_distribution(){
     float prev_radiance = 0.f;
     for (int x = 0; x < GRID_RESOLUTION; x++){
         for (int y = 0; y < GRID_RESOLUTION; y++){
-            float radiance = this->radiance_grid[ x*GRID_RESOLUTION + y ]/total + prev_radiance;
+            // Get the direction
+            vec3 dir = convert_grid_pos_to_direction((float)x+0.5f, (float)y+0.5f, vec3(this->position), this->transformation_matrix);
+            // Get the angle between the dir std::vector and the normal
+            float cos_theta = dot(dir, this->normal);
+
+            float temp = this->radiance_grid[ x*GRID_RESOLUTION + y ]*cos_theta;
+            
+            temp = temp > DISTRIBUTION_THRESHOLD ? temp : DISTRIBUTION_THRESHOLD;
+
+            float radiance = (temp)/total + prev_radiance;
             this->radiance_distribution[ x*GRID_RESOLUTION + y ] = radiance;
             prev_radiance = radiance;
         }
     }
+    if (total < 0.f)
+        printf("%.3f\n",total);
 }
 
 // Samples a direction from the radiance volume using binary search for the sector
 __device__
-vec4 RadianceVolume::sample_direction_from_radiance_distribution(curandState* d_rand_state, int pixel_x, int pixel_y, int& sector_x, int& sector_y){
+vec4 RadianceVolume::sample_direction_from_radiance_distribution(curandState* d_rand_state, int pixel_x, int pixel_y, int& sector_x, int& sector_y, float& pdf){
     
     // Generate a random float uniformly 
     float r = curand_uniform(&d_rand_state[pixel_x*SCREEN_HEIGHT + pixel_y]);
@@ -192,6 +201,7 @@ vec4 RadianceVolume::sample_direction_from_radiance_distribution(curandState* d_
         // Randomly sample within the sector
         float rx = curand_uniform(&d_rand_state[pixel_x*SCREEN_HEIGHT + pixel_y]);
         float ry = curand_uniform(&d_rand_state[pixel_x*SCREEN_HEIGHT + pixel_y]);
+        pdf = RHO * (this->radiance_distribution[ 0 ] / GRID_RHO);
         return vec4(convert_grid_pos_to_direction(sector_x+rx, sector_y+ry, vec3(this->position), this->transformation_matrix), 1.f);
     }
 
@@ -214,6 +224,8 @@ vec4 RadianceVolume::sample_direction_from_radiance_distribution(curandState* d_
             // Randomly sample within the sector
             float rx = curand_uniform(&d_rand_state[pixel_x*SCREEN_HEIGHT + pixel_y]);
             float ry = curand_uniform(&d_rand_state[pixel_x*SCREEN_HEIGHT + pixel_y]);
+
+            pdf = RHO * ((mid_val-prev_mid_val) / GRID_RHO);
             return vec4(convert_grid_pos_to_direction(sector_x+rx, sector_y+ry, vec3(this->position), this->transformation_matrix), 1.f);
         }
 
@@ -266,7 +278,7 @@ void RadianceVolume::temporal_difference_update(float sector_irradiance, int sec
     // Calculate the new update value
     float radiance = this->radiance_grid[ sector_location ];
     float update = ((1.f - (alpha)) * radiance) + (alpha * sector_irradiance);
-    // update = update > (float)RADIANCE_THRESHOLD ? update : (float)RADIANCE_THRESHOLD;
+    update = update > (float)RADIANCE_THRESHOLD ? update : (float)RADIANCE_THRESHOLD;
 
     // Update the radiance grid value and the alpha value
     atomicInc(&(this->visits[ sector_location ]), vs+1);
@@ -278,7 +290,7 @@ void RadianceVolume::temporal_difference_update(float sector_irradiance, int sec
 // Gets the current irradiance estimate for the radiance volume
 __device__
 float RadianceVolume::get_irradiance_estimate(){
-    return this->irradiance_accum * (2.f * (float)M_PI) / ((float)(GRID_RESOLUTION * GRID_RESOLUTION));
+    return this->irradiance_accum * ((2.f * (float)M_PI) / ((float)(GRID_RESOLUTION * GRID_RESOLUTION)));
 }
 
 // Sets a voronoi colour for the radiance volume (random colour) in the first entry of its radiance grid
@@ -307,5 +319,184 @@ __host__
 void RadianceVolume::convert_radiance_distribution(){
     for (unsigned int i = 0; i < GRID_RESOLUTION*GRID_RESOLUTION; i++){
         this->radiance_distribution[ GRID_RESOLUTION*GRID_RESOLUTION - i] -= this->radiance_distribution[ GRID_RESOLUTION*GRID_RESOLUTION - (i + 1) ];
+    }
+}
+
+// Write the radiance volumes Q-values out to a file
+__host__
+void RadianceVolume::write_volume_to_file(std::string filename){
+    // Create the file 
+    std::ofstream save_file (filename, std::ios::app);
+    if (save_file.is_open()){
+        // Write the position
+        vec4 position = this->position;
+        save_file << position.x << " " << position.y << " " << position.z;
+
+        // Write the normal
+        vec3 normal = this->normal;
+        save_file << " " << normal.x << " " << normal.y << " " << normal.z;
+
+        // Write each Q values
+        for (int n = 0; n < GRID_RESOLUTION*GRID_RESOLUTION; n++){
+            save_file << " " << this->radiance_distribution[n];
+        }
+
+        save_file << "\n";
+
+        // Close the file
+        save_file.close();
+    }
+    else{
+        printf("Unable to save the Radiance Volume.\n");
+    }
+}
+
+// Set the radiance distribution of the radiance volume to the
+// supplied q_vals
+void RadianceVolume::set_q_vals(std::vector<float>& q_vals){
+    for (int n = 0; n < GRID_RESOLUTION*GRID_RESOLUTION; n++){
+        this->radiance_distribution[n] = q_vals[n];
+    }
+}
+
+// Read radiance Volumes from a file 
+__host__
+void RadianceVolume::read_radiance_volumes_from_file(
+    std::string fname, 
+    std::vector<RadianceVolume>& rvs
+){
+    
+    // Read each line of the file individually and build a radiance
+    // volume from the data
+    std::string line;
+    std::ifstream rvs_file(fname);
+    
+    if (rvs_file.is_open()){
+        while ( std::getline (rvs_file, line)){
+
+            // Data structures for radiance volume budiling
+            vec4 position(1.f);
+            vec3 normal(0.f);
+            std::vector<float> q_vals(GRID_RESOLUTION*GRID_RESOLUTION);
+            
+            // For each space
+            unsigned int idx = 0;
+            size_t pos = 0;
+            float data_elem;
+            while ((pos = line.find(" ")) != std::string::npos){
+                
+                // Get the next string
+                data_elem = std::stof(line.substr(0, pos));
+
+                // 0 - 2: Position
+                if (idx < 3){
+                    position[idx] = data_elem;
+                }
+
+                // 3 - 5: Normal
+                else if(idx < 6){
+                    normal[idx%3] = data_elem;
+                }
+
+                // 6 - GRID_RES*GRID_RES+6: Radiance Distribution
+                else{
+                    q_vals[idx-6] = data_elem;
+                }
+
+                // Increment the index for the current data_elem
+                idx++;
+
+                // Delete the part that we have read
+                line.erase(0, pos + 1);
+            }
+
+            // Add the final float in
+            q_vals[idx-6] = std::stof(line);
+
+            // Create the radiance volume and add it to the list
+            RadianceVolume rv = RadianceVolume(position, normal, q_vals);
+            rvs.push_back(rv);
+        }
+    }
+    else{
+        std::cout << "Could not read radiance volumes." << std::endl;
+    }
+}
+
+// Returns a list of vertices for the generated radiance volume
+__host__
+std::vector<std::vector<vec4>> RadianceVolume::get_vertices(){
+    std::vector<std::vector<vec4>> vertices;
+    // For every grid coordinate, add the corresponding 3D world coordinate
+    for (int x = 0; x <= GRID_RESOLUTION; x++){
+        std::vector<vec4> vecs;
+        for (int y = 0; y <= GRID_RESOLUTION; y++){
+            // Get the coordinates on the unit hemisphere
+            float x_h, y_h, z_h;
+            map(x/(float)GRID_RESOLUTION, y/(float)GRID_RESOLUTION, x_h, y_h, z_h);
+            // Scale to the correct diameter desired of the hemisphere
+            x_h *= DIAMETER;
+            y_h *= DIAMETER;
+            z_h *= DIAMETER;
+            // Convert to world space
+            vec4 world_position = this->transformation_matrix * vec4(x_h, y_h, z_h, 1.f);
+            // Add the point to vertices_row
+            vecs.push_back(world_position);
+        }
+        vertices.push_back(vecs);
+    }
+    return vertices;
+}
+
+// Build the radiance volumes surfaces and add it to the list based
+// on the radiance distribution values
+void RadianceVolume::build_surfaces(std::vector<Surface>& surfaces){
+    // Find the max q_val to determine colour
+    float max_q = 0.f;
+    for (int n = 0; n < GRID_RESOLUTION*GRID_RESOLUTION; n++){
+        if ( max_q < this->radiance_distribution[n] ) max_q = this->radiance_distribution[n];
+    }
+
+    // Get the vertices for the radiance volume
+    std::vector<std::vector<vec4>> vertices = this->get_vertices();
+    // Build the surfaces
+    for (int x = 0; x < GRID_RESOLUTION; x++){
+        for (int y = 0; y < GRID_RESOLUTION; y++){
+            // Get the square of vertices
+            vec4 v0 = vertices[x][y];
+            vec4 v1 = vertices[x+1][y];
+            vec4 v2 = vertices[x][y+1];
+            vec4 v3 = vertices[x+1][y+1];
+            vec4 mid_p = (v0 + v1 + v2 + v3)/4.f;
+
+            // Build two triangles using radiance_distribution for colour
+            float ratio = this->radiance_distribution[x*GRID_RESOLUTION + y]/max_q;
+            Surface s1 = Surface(v0, v2, v1, Material(vec3(ratio, 1.f-ratio, 0.f)));
+            Surface s2 = Surface(v1, v2, v3, Material(vec3(ratio, 1.f-ratio, 0.f)));
+            s1.normal = normalize(mid_p - this->position);
+            s2.normal = s1.normal;
+            // Add the surfaces to the list of surfaces
+            surfaces.push_back(s1);
+            surfaces.push_back(s2);
+        }
+    }
+}
+
+// Read the list of radiance volumes from a file and build surfaces of them
+__host__
+void RadianceVolume::read_radiance_volumes_to_surfaces(
+    std::string fname,
+    std::vector<Surface>& surfaces
+){
+    // Get the radiance volumes from the file
+    std::vector<RadianceVolume> rvs;
+    RadianceVolume::read_radiance_volumes_from_file(
+        fname, 
+        rvs
+    );
+
+    // For each RV, build its surfaces and add it to the list
+    for (int i = 0; i < rvs.size(); i++){
+        rvs[i].build_surfaces(surfaces);
     }
 }

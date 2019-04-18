@@ -45,7 +45,7 @@ void initialise_ray(
         Camera* device_camera, 
         float* ray_locations, 
         float* ray_directions,
-        bool* ray_terminated, 
+        unsigned int* ray_states, 
         float* ray_throughputs,
         unsigned int* ray_bounces
     );
@@ -58,25 +58,24 @@ void trace_ray(
     float* ray_locations, 
     float* ray_normals, 
     float* ray_directions,
-    bool* ray_terminated,  
+    unsigned int* ray_states,  
     float* ray_throughputs,
     unsigned int* ray_bounces,
     int bounces
 );
 
-// Importance samples rays directions from Q-values
+// Sample a batch of ray directions by importance sampling over q-vals
 __global__
-void importance_sample_ray_directions(
+void sample_batch_ray_directions_importance_sample(
     curandState* d_rand_state,
-    float* device_q_values,
-    float* ray_normals_device,
+    float* q_values_device,
     float* ray_directions_device,
     float* ray_locations_device,
+    float* ray_normals_device,
     float* ray_throughputs_device,
-    bool* ray_terminated_device,
+    unsigned int* ray_states_device,
     int batch_start_idx
 );
-
 
 class PretrainedPathtracer{
 
@@ -109,14 +108,15 @@ class PretrainedPathtracer{
             curandState* d_rand_state,
             Camera* device_camera,
             Scene* device_scene,
-            vec3* device_buffer, 
-            float* host_vertices,
+            vec3* device_buffer,
+            float* device_vertices,
             float* ray_locations_device,
             float* ray_normals_device,   
             float* ray_directions_device,
-            bool* ray_terminated_device,  
+            unsigned int* ray_states_device,  
             float* ray_throughputs_device,
-            unsigned int* ray_bounces_device
+            unsigned int* ray_bounces_device,
+            float* ray_vertices_device
         );
 };
 

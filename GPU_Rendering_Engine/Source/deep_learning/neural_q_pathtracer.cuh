@@ -18,6 +18,10 @@
 #include "radiance_volumes_settings.h"
 #include "camera.cuh"
 
+/* File writing */
+#include <iostream>
+#include <fstream>
+
 /* Cuda */
 #include <stdint.h>
 #include "cuda_helpers.cuh"
@@ -39,9 +43,10 @@ static void trace_ray(
     curandState* d_rand_state,
     int* rays_finished,
     float* ray_locations, 
+    float* prev_ray_locations,
     float* ray_normals, 
     float* ray_directions,
-    bool* ray_terminated, 
+    unsigned int* ray_states, 
     float* ray_rewards, 
     float* ray_discounts,
     float* ray_throughputs,
@@ -55,8 +60,9 @@ static void initialise_ray(
     curandState* d_rand_state,
     Camera* device_camera, 
     float* ray_locations, 
+    float* prev_ray_locations,
     float* ray_directions,
-    bool* ray_terminated, 
+    unsigned int* ray_states, 
     float* ray_rewards, 
     float* ray_discounts,
     float* ray_throughputs,
@@ -94,20 +100,21 @@ class NeuralQPathtracer{
         void render_frame(
             dynet::AdamTrainer trainer,
             curandState* d_rand_state,
-            float* host_vertices,
             Camera* device_camera,
             Scene* device_scene,
             vec3* device_buffer,
-            float* prev_location_host,   
+            float* device_vertices,
             unsigned int* directions_host,
-            float* ray_locations,   /* Ray intersection location (State)*/
+            float* ray_locations,   /* Ray intersection location (State) */
+            float* prev_ray_locations,
             float* ray_normals,     /* Intersection normal */
-            float* ray_directions,  /* Direction to next shoot the ray*/
-            bool* ray_terminated,  /* Has the ray intersected with a light/nothing*/
+            float* ray_directions,  /* Direction to next shoot the ray */
+            unsigned int* ray_states,  /* Has the ray intersected with a light/nothing */
             float* ray_rewards,    /* Reward recieved from Q(s,a) */
             float* ray_discounts,  /* Discount factor for current rays path */
-            float* ray_throughputs,  /* Throughput for calc pixel value*/
-            unsigned int* ray_bounces  /* Total number of bounces for each ray before intersection*/
+            float* ray_throughputs,  /* Throughput for calc pixel value */
+            unsigned int* ray_bounces, /* Total number of bounces for each ray before intersection*/
+            float* ray_vertices
         );
 };
 

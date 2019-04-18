@@ -88,19 +88,20 @@ void RadianceMap::uniformly_sample_radiance_volumes(Surface* surfaces, int surfa
 // Given an intersection point, importance sample a ray direction according to the
 // cumulative distribution formed by the closest RadianceVolume's radiance_map
 __device__
-void RadianceMap::importance_sample_ray_direction(curandState* d_rand_state, const Intersection& intersection, int& sector_x, int& sector_y, int x, int y, vec4& sampled_direction, RadianceVolume* closest_volume){
+void RadianceMap::importance_sample_ray_direction(curandState* d_rand_state, const Intersection& intersection, int& sector_x, int& sector_y, int x, int y, vec4& sampled_direction, RadianceVolume* closest_volume, float& pdf){
 
     // If a radiance volume is not found, just sample randomly 
     if (closest_volume == NULL){
         float cos_theta;
         sampled_direction = sample_random_direction_around_intersection(d_rand_state, intersection.normal, cos_theta); 
+        pdf = RHO;
     }
     else{
         // 2) Generate a random float uniformly between [0,1] and find which 
         //    part of the cumulative distribution this number falls in range
         //    of i.e. sample from the inverse of the cumulative distribution.
         //    This gives the location on the grid we sample our direction from
-        sampled_direction = closest_volume->sample_direction_from_radiance_distribution(d_rand_state, x, y, sector_x, sector_y);
+        sampled_direction = closest_volume->sample_direction_from_radiance_distribution(d_rand_state, x, y, sector_x, sector_y, pdf);
     }
 }
 
@@ -132,6 +133,10 @@ RadianceVolume* RadianceMap::temporal_difference_update_radiance_volume_sector(f
             else{
                 // Get the radiance incident from all directions for the next position and perform temporal diff update
                 float next_pos_irradiance = closest_volume->get_irradiance_estimate(); 
+
+                // if (closest_volume->irradiance_accum < 0.f)
+                    // printf("%.3f\n",next_pos_irradiance);
+
                 next_pos_irradiance *= current_BRDF;
                 current_radiance_volume->temporal_difference_update(next_pos_irradiance, current_sector_x, current_sector_y, scene->surfaces);
                 return closest_volume;
@@ -141,7 +146,7 @@ RadianceVolume* RadianceMap::temporal_difference_update_radiance_volume_sector(f
 }
 
 // Get the closest radiance volume iteratively
-__device__
+__host__ __device__
 RadianceVolume* RadianceMap::find_closest_radiance_volume_iterative(float max_dist, vec4 pos, vec4 norm){
 
     vec3 position = vec3(pos);
@@ -259,5 +264,39 @@ void RadianceMap::save_q_vals_to_file(){
     }
     else{
         printf("Unable to save the RadianceMap.\n");
+    }
+}
+
+// Save the selected radiance volumes out to a file
+__host__
+void RadianceMap::save_selected_radiance_volumes_vals(std::string fpath){
+
+    // file locations
+    std::string read_in = fpath + "to_select.txt";
+    std::string write_out = fpath + "selected_sarsa.txt";
+
+    // Delete the previous radiance volume data file
+    std::remove(write_out.c_str());
+
+    // Read in the file for the location of the closest rvs
+    std::vector<vec3> volume_locations;
+    std::vector<vec3> volume_normals;
+
+    read_hemisphere_locations_and_normals(
+        read_in, 
+        volume_locations, 
+        volume_normals
+    );
+
+    // Get the closest radiance volume and write its radiance distribution to a file
+    for (int i = 0; i < volume_locations.size(); i++){
+        
+        RadianceVolume* rv = find_closest_radiance_volume_iterative(
+            MAX_DIST, 
+            vec4(volume_locations[i],1.f), 
+            vec4(volume_normals[i],1.f)
+        );
+
+        rv->write_volume_to_file(write_out);
     }
 }

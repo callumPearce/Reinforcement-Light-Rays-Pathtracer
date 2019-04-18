@@ -52,7 +52,7 @@ class RadianceMap{
         // Given an intersection point, importance sample a ray direction according to the
         // cumulative distribution formed by the closest RadianceVolume's radiance_map
         __device__
-        void importance_sample_ray_direction(curandState* d_rand_state, const Intersection& intersection, int& sector_x, int& sector_y, int x, int y, vec4& sampled_direction, RadianceVolume* closest_volume);
+        void importance_sample_ray_direction(curandState* d_rand_state, const Intersection& intersection, int& sector_x, int& sector_y, int x, int y, vec4& sampled_direction, RadianceVolume* closest_volume, float& pdf);
 
         // Performs the temporal difference update for the radiance volume passed in given the sampled ray direction lead to the intersection
         __device__
@@ -66,7 +66,7 @@ class RadianceMap{
         __device__
         vec3 get_voronoi_colour(const Intersection& intersection);
 
-        __device__
+        __host__ __device__
         RadianceVolume* find_closest_radiance_volume_iterative(float max_dist, vec4 pos, vec4 norm);
 
         // Save the radiance map's q-values out to a file
@@ -76,6 +76,10 @@ class RadianceMap{
         // Convert the radiance distributions from cumulative distribution to distribution
         __host__
         void convert_radiance_volumes_distributions();
+
+        // Save the selected radiance volumes out to a file
+        __host__
+        void save_selected_radiance_volumes_vals(std::string fpath);
 };
 
 #endif

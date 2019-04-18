@@ -153,16 +153,20 @@ Ray Ray::sample_ray_through_pixel(curandState* d_rand_state, Camera& camera, int
     
     // Create a ray that we will change the direction for below
     Ray ray(camera.position, dir);
-    ray.rotate_ray(camera.yaw);
+    ray.rotate_ray(camera.yaw_y, camera.yaw_x);
 
     return ray;
 }
 
 // Rotate a ray by "yaw"
 __device__
-void Ray::rotate_ray(float yaw) {
+void Ray::rotate_ray(float yaw_y, float yaw_x) {
     mat4 R = mat4(1.0);
-    R[0] = vec4(cos(yaw), 0, sin(yaw), 0);
-    R[2] = vec4(-sin(yaw), 0, cos(yaw), 0);
+    R[0] = vec4(cos(yaw_y), 0, sin(yaw_y), 0);
+    R[2] = vec4(-sin(yaw_y), 0, cos(yaw_y), 0);
+    this->direction = (R * this->direction);
+    R[0] = vec4(1.f, 0, 0, 0);
+    R[1] = vec4(0, cos(yaw_x), -sin(yaw_x), 0);
+    R[2] = vec4(0, sin(yaw_x), cos(yaw_x), 0);
     this->direction = (R * this->direction);
 }

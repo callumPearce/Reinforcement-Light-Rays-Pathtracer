@@ -17,6 +17,7 @@
 #include "camera.cuh"
 #include "area_light.cuh"
 #include "radiance_map.cuh"
+#include "radiance_volume.cuh"
 #include "scene.cuh"
 #include "radiance_tree.cuh"
 
@@ -26,6 +27,7 @@
 #include "voronoi_trace.cuh"
 #include "neural_q_pathtracer.cuh"
 #include "pre_trained_pathtracer.cuh"
+#include "q_value_extractor.cuh"
 
 // Cuda
 #include "cuda_helpers.cuh"
@@ -61,11 +63,13 @@ bool Update(Camera& camera){
                 {
                     case SDLK_UP:
                         /* Move camera forwards*/
-                        camera.move_forwards(0.01f);
+                        // camera.move_forwards(0.01f);
+                        camera.rotate_up(0.008f);
                     break;
                     case SDLK_DOWN:
                         /* Move camera backwards */
-                        camera.move_backwards(0.01f);
+                        // camera.move_backwards(0.01f);
+                        camera.rotate_down(0.008f);
                     break;
                     case SDLK_LEFT:
                         /* Move camera left */
@@ -93,18 +97,20 @@ int main (int argc, char** argv) {
     memset(screen.buffer, 0, screen.height*screen.width*sizeof(uint32_t));
 
     // Create the camera
-    Camera camera = Camera(vec4(0.f, 0.5f, -0.9f, 1.f));
+    Camera camera = Camera(vec4(-0.7f, 0.1f, -0.6f, 1.f));
+    camera.rotate_right(0.25f);
+    camera.rotate_down(0.8f);
 
     // Initialise the scene
     Scene scene = Scene();
-    scene.load_custom_scene("/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Models/door_room.obj");
+    scene.load_custom_scene("../Models/simple_room_closed.obj");
     scene.save_vertices_to_file();
 
-    // SPECIAL CASE: Deep Reinforcement Learning
+    // CASE: Deep Reinforcement Learning
     if ( PATH_TRACING_METHOD == 3 ){
         NeuralQPathtracer(
-            2, 
-            256,
+            100, 
+            4096,
             screen, 
             scene,
             camera,
@@ -112,14 +118,24 @@ int main (int argc, char** argv) {
             argv
         );
     }
-    // SPECIAL CASE: Trained network inferece
+    // CASE: Trained network inferece
     else if( PATH_TRACING_METHOD == 4 ){
         PretrainedPathtracer(
             1, 
-            2048,
+            4096,
             screen, 
             scene,
             camera,
+            argc,
+            argv
+        );
+    }
+    // CASE: Save specified Q-values for pretrained network
+    else if( PATH_TRACING_METHOD == 5){
+        save_selected_radiance_volumes_vals_nn(
+            "../Radiance_Map_Data/selected_radiance_volumes/",
+            "../Radiance_Map_Data/deep_q_learning_12_12.model",
+            scene,
             argc,
             argv
         );
@@ -338,6 +354,30 @@ int main (int argc, char** argv) {
                 
                 // Save the radiance_maps q-values
                 radiance_map->save_q_vals_to_file();
+            }
+
+            // Save the selected radiance volumes q-values to a file
+            if (SAVE_REQUESTED_VOLUMES){
+                // Copy radiance map back to host
+                checkCudaErrors(cudaMemcpy(radiance_map, device_radiance_map, sizeof(RadianceMap), cudaMemcpyDeviceToHost));
+
+                // Copy radiance volumes back to host
+                checkCudaErrors(cudaMemcpy(&host_rvs[0], device_radiance_volumes, host_rvs.size() * sizeof(RadianceVolume), cudaMemcpyDeviceToHost));
+
+                // Copy the radiance array back to the host
+                checkCudaErrors(cudaMemcpy(&radiance_array_v[0], device_radiance_array, radiance_array_v.size() * sizeof(RadianceTreeElement), cudaMemcpyDeviceToHost));
+
+                // Set the radiance volumes pointer
+                radiance_map->radiance_volumes = &host_rvs[0];
+
+                // Set the radiance array pointer
+                radiance_map->radiance_array = &radiance_array_v[0];
+
+                // Conver the radiance cumulative distributions to regular distributions
+                radiance_map->convert_radiance_volumes_distributions();
+
+                // Save the selected radiance volumes q-values to a file
+                radiance_map->save_selected_radiance_volumes_vals("../Radiance_Map_Data/selected_radiance_volumes/");
             }
             
             // Delete radiance map variables

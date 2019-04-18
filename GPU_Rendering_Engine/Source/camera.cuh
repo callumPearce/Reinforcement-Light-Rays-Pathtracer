@@ -17,7 +17,8 @@ class Camera {
     public:
         vec4 position;
         mat4 R;
-        float yaw;
+        float yaw_y;
+        float yaw_x;
 
         // Constructor
         Camera(vec4 position);
@@ -25,6 +26,8 @@ class Camera {
         // Camera rotation
         void rotate_left(float y);
         void rotate_right(float y);
+        void rotate_up(float x);
+        void rotate_down(float x);
 
         // Camera translation
         void move_forwards(float distance);

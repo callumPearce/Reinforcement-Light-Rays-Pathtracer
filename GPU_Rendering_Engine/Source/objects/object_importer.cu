@@ -199,12 +199,22 @@ void build_area_lights(std::vector<AreaLight>& area_lights, std::vector<float>& 
 
     // Define the area light vectors
     float l = 2.f;
-    vec4 I((6.3f*l)/8, (l*6.f)/8, 1.499f*l, 1);
-    vec4 J((6.3f*l)/8, 0, 1.499f*l, 1);
-    vec4 K((2.58f*l)/8, (l*6.f)/8, 1.499f*l, 1);
-    vec4 L((2.58f*l)/8, 0, 1.499f*l, 1);
+    // vec4 I((6.3f*l)/8, (l*6.f)/8, 1.499f*l, 1);
+    // vec4 J((6.3f*l)/8, 0, 1.499f*l, 1);
+    // vec4 K((2.58f*l)/8, (l*6.f)/8, 1.499f*l, 1);
+    // vec4 L((2.58f*l)/8, 0, 1.499f*l, 1);
 
-    vec3 diffuse_p = 1.f * vec3(1.f, 1.f, 1.f);
+    vec4 I(l - 0.001f, (l*4.f)/8, 1.f*l, 1.f);
+    vec4 J(l - 0.001f, (l*1.f)/8, 1.f*l, 1.f);
+    vec4 K(l - 0.001f, (l*4.f)/8, 0.5f*l, 1.f);
+    vec4 L(l - 0.001f, (l*1.f)/8, 0.5f*l, 1.f);
+
+    // vec4 I(0, l*0.1f, l, 1.f);
+    // vec4 J(l, l*0.1f, l, 1.f);
+    // vec4 K(0, 0,l, 1.f);
+    // vec4 L(l, 0, l, 1.f);
+
+    vec3 diffuse_p = 3.f * vec3(1.f, 1.f, 1.f);
     AreaLight a1 = AreaLight(K, I, J, diffuse_p);
     area_lights.push_back(a1);
 

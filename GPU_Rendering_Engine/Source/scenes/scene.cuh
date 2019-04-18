@@ -7,6 +7,7 @@
 #include "cornell_box_scene.cuh"
 #include "ray.cuh"
 #include "object_importer.cuh"
+#include "radiance_volume.cuh"
 
 // File writing
 #include <iostream>
@@ -17,7 +18,6 @@ using glm::vec2;
 using glm::mat3;
 using glm::vec4;
 using glm::mat4;
-
 
 /*
     Defines a scene of geometry. This makes it easier to

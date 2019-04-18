@@ -2,12 +2,21 @@
 
 Camera::Camera(vec4 position) {
     this->position = position;
-    this->yaw = 0.f;
+    this->yaw_y = 0.f;
     this->R = mat4(1.0);
 }
 
 void Camera::rotate_left(float y) {
-    this->yaw = this->yaw - y;
+    this->yaw_y = this->yaw_y + y;
+    mat4 newR = this->R;
+    newR[0] = vec4(cos(y), 0, sin(y), 0);
+    newR[2] = vec4(-sin(y), 0, cos(y), 0);
+    this->R = newR;
+    this->position = this->R * this->position;
+}
+
+void Camera::rotate_right(float y) {
+    this->yaw_y = this->yaw_y - y;
     mat4 newR = this->R;
     newR[0] = vec4(cos(-y), 0, sin(-y), 0);
     newR[2] = vec4(-sin(-y), 0, cos(-y), 0);
@@ -15,34 +24,45 @@ void Camera::rotate_left(float y) {
     this->position = this->R * this->position;
 }
 
-void Camera::rotate_right(float y) {
-    this->yaw = this->yaw + y;
+void Camera::rotate_up(float x) {
+    this->yaw_x = this->yaw_x - x;
     mat4 newR = this->R;
-    newR[0] = vec4(cos(y), 0, sin(y), 0);
-    newR[2] = vec4(-sin(y), 0, cos(y), 0);
+    newR[0] = vec4(1.f, 0, 0, 0);
+    newR[1] = vec4(0, cos(-x), -sin(-x), 0);
+    newR[2] = vec4(0, sin(-x), cos(-x), 0);
     this->R = newR;
     this->position = this->R * this->position;
-}   
+}
+
+void Camera::rotate_down(float x) {
+    this->yaw_x = this->yaw_x + x;
+    mat4 newR = this->R;
+    newR[0] = vec4(1.f, 0, 0, 0);
+    newR[1] = vec4(0, cos(x), -sin(x), 0);
+    newR[2] = vec4(0, sin(x), cos(x), 0);
+    this->R = newR;
+    this->position = this->R * this->position;
+}
 
 void Camera::move_forwards(float distance) {
     vec4 pos = this->position;
     vec3 new_camera_pos(
-        pos[0] - distance * sin(this->yaw),
+        pos[0] - distance * sin(this->yaw_y),
         pos[1],
-        pos[2] + distance * cos(this->yaw)
+        pos[2] + distance * cos(this->yaw_y)
         );
-    mat4 cam_to_world = look_at(new_camera_pos, vec3(0, 0, 0));
+    mat4 cam_to_world = look_at(new_camera_pos, vec3(0, 1.f, 0));
     this->position = cam_to_world * vec4(0, 0, 0, 1);
 }
 
 void Camera::move_backwards(float distance) {
     vec4 pos = this->position;
     vec3 new_camera_pos(
-        pos[0] + distance * sin(this->yaw),
+        pos[0] + distance * sin(this->yaw_y),
         pos[1],
-        pos[2] - distance * cos(this->yaw)
+        pos[2] - distance * cos(this->yaw_y)
         );
-    mat4 cam_to_world = look_at(new_camera_pos, vec3(0, 0, 0));
+    mat4 cam_to_world = look_at(new_camera_pos, vec3(0, 1.f, 0));
     this->position = cam_to_world * vec4(0, 0, 0, 1);
 }
 
