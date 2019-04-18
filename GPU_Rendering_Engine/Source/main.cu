@@ -97,8 +97,9 @@ int main (int argc, char** argv) {
     memset(screen.buffer, 0, screen.height*screen.width*sizeof(uint32_t));
 
     // Create the camera
-    Camera camera = Camera(vec4(-0.7f, -0.5f, -0.2f, 1.f));
-    camera.rotate_down(0.032f);
+    Camera camera = Camera(vec4(-0.7f, 0.1f, -0.6f, 1.f));
+    camera.rotate_right(0.25f);
+    camera.rotate_down(0.8f);
 
     // Initialise the scene
     Scene scene = Scene();
