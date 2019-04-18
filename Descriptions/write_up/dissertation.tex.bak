@@ -164,7 +164,7 @@ to the rendered image. The paths formed by sampling rays in these
 directions are known as zero contribution light paths. By not sampling 
 zero contribution light paths, it is possible to significantly reduce 
 the noise in rendered images using the same number of sampled rays per 
-pixel.\\
+pixel in path tracing\\
 
 Recently a Temporal Difference learning method was used by Nvidia to
 achieve impressive results in Importance sampling within a Path tracer.
@@ -175,35 +175,18 @@ sampled. With this success, there is plenty of potential to experiment with
 other Temporal Difference learning methods, particularly Deep Q-Learning.
 It is also important to assess both of these methods on their ability to 
 accurately approximate Global Illumination to produce photo-realistic images.
-
-\noindent
-My goals are as follows:
-
-\begin{enumerate}
-\item Reimplement Nvidia's state of the art on-line Temporal 
-Difference learning Path Tracer in order to further investigate its ability
-to reduce the number of zero contribution light paths.
-
-\item Design and implement an on-line Deep Q-Learning variant of the
-Path tracing algorithm and investigate its ability to reduce the number of zero contribution light paths sampled.
-
-\item Assess both Nvidia's state of the art on-line Temporal Difference 
-learning Path tracer, and the Deep Q-Learning Path tracer' on their ability 
-to accurately simulate Global Illumination.
-
-\end{enumerate}
-
-\noindent
-The goals above were used to confirm the following hypothesis for simple
-diffuse scene rendering:
+From this, my goal is to investigate the ability of two different temporal
+difference learning algorithms ability to reduce the number of zero contribution
+light paths in path tracing, whilst still accurately approximating global illumination.
+More specifically, the first temporal difference learning method will be that proposed
+by Nvidia, and the second will be my designed Neural-Q path tracing algorithm.
+I will be comparing these two methods in order to test the following hypothesis:
 
 \begin{quote}
-A Deep Q-learning Path tracer is better able to reduce
+The Neural-Q  path tracer is further able to reduce
 the number of zero contribution light paths than an Expected SARSA
-Path tracer with the same memory budget, whilst still accurately
-simulating Global Illumination.
+Path tracer proposed by Nvidia, whilst still accurately simulating Global Illumination.
 \end{quote}
-
 
 \noindent
 \textbf{Outcomes}
@@ -357,18 +340,34 @@ advice or time), and so on.
 \chapter{Contextual Background}
 \label{chap:context}
 
+% I don't like this, needs to be more like the opening of a book chapter 
+
+This chapter explains on a high level what path tracing is and how it accurately 
+simulates light transport. Then importance sampling ray directions in light
+transport simulation is discussed, and how it can potentially reduce the number 
+of zero contribution light paths and the associated benefits with this. Temporal 
+difference learning as a branch of reinforcement learning is then introduced, 
+along with how it can be used in importance sampling ray directions towards 
+light sources. With a conceptual overview of theory my work is based on, I take 
+a look at recent work which contributes to real-time accurate light transport 
+simulation which my work aims to contribute to. Finally, an overview of the 
+objectives and significant challenges of my investigation are described.
+
+
 \section{Path Tracing for Light Transport Simulation}
 Path Tracing is a Monte Carlo method for rendering photo-realistic images of 3D 
 scenes by accurately approximating global illumination \cite{christensen2016path}.
-Figure \ref{} summarises on a high level how a forward Path tracing produces a 
+Figure \ref{} summarises on a high level how forward Path tracing produces a 
 2D image of a 3D scene. For each pixel multiple rays are shot from the camera through the 
 pixel and into the scene. Any ray which intersects with an area light terminates, 
 otherwise a new direction is sampled for the ray and it is fired again. This process 
 is repeated until all rays have intersected with an area light, at which point the pixel 
 colour value can  be found by averaging the colour estimate of each ray fired 
 through that pixel. Each rays colour estimate is calculated based on the material 
-surface properties it intersects with before intersecting with the light, as well as the
-intersected lights colour and power.\\
+surface properties it intersects with before intersecting with the light and the
+intersected area lights properties. The more rays shot through each pixel (also 
+known as samples per pixel), the more visually accurate the rendered image 
+becomes, but at a higher computational cost.\\
 
 % Figure of path tracing, needs to clearly label what a light transport path is
 
@@ -424,7 +423,7 @@ methods. Therefore, I will also be assessing the accuracy of the global
 illumination approximation made by the Importance sampling algorithms compared
 to that of the naive forward Path tracing algorithm.
 
-\section{Temporal Difference Learning for Ray Direction Importance Sampling}
+\section{Temporal Difference Learning for Importance Sampling Ray Directions}
 
 There are three important unanswered questions up to this point; a) what is temporal
 difference learning?  b) How can temporal difference learning methods be 
@@ -527,21 +526,112 @@ hence it is unlikely the AI agent will sample rays in these directions.\\
 
 \section{Motivation}
 
-Rendering time of my graphics engine is not something I have tried to heavily optimise. I instead focus on producing higher quality images using the same number of samples per pixel in light transport simulation in hope that future work will find ways of optimising my methods for speed. Therefore, my work still aims to contribute to the wider goal seen in computer graphics to use accurate light transport simulation in the rendering of photo-realistic images for complex scenes in real-time.  Speeding up the methods I use is a large topic in itself, requiring a deep investigation into the best software, hardware, and parallel programming paradigms to use.\\
+Rendering time of my graphics engine is not something I have tried to heavily 
+optimise. I instead focus on producing higher quality images using the same 
+number of samples per pixel in light transport simulation in hope that future 
+work will find ways of optimising my methods for speed. Therefore, my work 
+still aims to contribute to the wider goal seen in computer graphics to use 
+accurate light transport simulation in the rendering of photo-realistic images 
+for complex scenes in real-time.  Speeding up the methods I use is a large 
+topic in itself, requiring a deep investigation into the best software, hardware, 
+and parallel programming paradigms to use.\\
 
 \subsection{Real time Rendering using Accurate Light Transport Simulation}
-The motivation for using accurate light transport simulation in real-time comes from the clear superior visual quality of images rendered using this techniques, compared to that of scanline methods which are currently used. Where scanline rendering, also known as rasterizing, is the current computer graphics industry standard method for real-time rendering. Not only are renders for a wide range of scenes clearly superior from methods which accurately simulate light transport, but they also scale far better with the number of polygons used to build the scenes surfaces. Therefore, scanline rendering for scenes with extremely complex geometry in real-time is currently not and option. Accurate light transport simulation methods therefore have great potential to be used in ultra realistic simulations for applications such as scenario planning and virtual reality learning environments \cite{pan2006virtual}. Also, many games sell realism as one of their most important features, therefore developing photo-realistic graphics in real-time has clear economic incentive for the video games industry which was valued at over \$$136$ by the end of 2018 \cite{bloomberg.com}. An economic incentive can also be seen for the film industry, where reductions in render times lead to a direct saving on compute time, as well as the hardware required to render full length films.
+The motivation for using accurate light transport simulation in real-time 
+comes from the clear superior visual quality of images rendered using this 
+techniques, compared to that of scanline methods which are currently used. 
+Where scanline rendering, also known as rasterizing, is the current computer 
+graphics industry standard method for real-time rendering. Not only are 
+renders for a wide range of scenes clearly superior from methods which 
+accurately simulate light transport, but they also scale far better with the 
+number of polygons used to build the scenes surfaces. Therefore, scanline 
+rendering for scenes with extremely complex geometry in real-time is currently 
+not and option. Accurate light transport simulation methods therefore have 
+great potential to be used in ultra realistic simulations for applications such 
+as scenario planning and virtual reality learning environments \cite{pan2006virtual}. 
+Also, many games sell realism as one of their most important features, therefore 
+developing photo-realistic graphics in real-time has clear economic incentive for 
+the video games industry which was valued at over \$$136$ by the end of 2018 
+\cite{bloomberg.com}. An economic incentive can also be seen for the film
+industry, where reductions in render times lead to a direct saving on compute 
+time, as well as the hardware required to render full length films.
 
 \subsection{Recent Developments}
-Due to the incentives, a large amount of research and investment has been focused on purpose built hardware and Deep learning  post-processing methods in an attempt to bring accurate light transport simulation into real-time. NVIDIA's Turing Ray Tracing Technology \cite{nvidia_turing_architecture_whitepaper_2018} represents a significant leap in the hardware to support light transport simulation. It allows for real-time graphics engines to be a hybrid of both scanline rendering, and ray-tracing. The 20 series Turing GPU architecture has significantly improved the speed of ray-casting for light transport simulation, and has the capacity for  simulating 10 Giga Rays per second. However, using this hardware alone with current rendering methods is not enough to perform accurate light transport simulation for complex scenes in real-time.\\
+Due to the incentives, a large amount of research and investment has been focused 
+on purpose built hardware and Deep learning  post-processing methods in an 
+attempt to bring accurate light transport simulation into real-time. NVIDIA's 
+Turing Ray Tracing Technology \cite{nvidia_turing_architecture_whitepaper_2018} 
+represents a significant leap in the hardware to support light transport simulation. 
+It allows for real-time graphics engines to be a hybrid of both scanline rendering, 
+and ray-tracing. The 20 series Turing GPU architecture has significantly improved 
+the speed of ray-casting for light transport simulation, and has the capacity for  
+simulating 10 Giga Rays per second. However, using this hardware alone with 
+current rendering methods is not enough to perform accurate light transport 
+simulation for complex scenes in real-time.\\
 
-Post-processing methods are designed to take a noisy input image produced by a render which simulates light transport, and then reconstruct the image to remove the noise present in the image. Generally these methods rely on pre-trained deep neural networks to reconstruct the image far quicker then it would take for the renderer to produce an image of the same visual quality \cite{bako2017kernel}. Once again NVIDIA has made significant advancements in this area with NVIDIA OptiX AI Accelerated Denoiser, which is based on their newly designed recurrent denoising autoencoder \cite{chaitanya2017interactive}. OptiX has been successfully integrated in to many of the top rendering engines which accurately simulate light transport, such as RenderMan \cite{christensen2018renderman} and Arnold \cite{georgiev2018arnold}. Whilst post-processing has significantly reduced the number of samples required to render photo-realistic images, there is still more work to be done to produce these images in real-time.\\
+Post-processing methods are designed to take a noisy input image produced by a 
+render which simulates light transport, and then reconstruct the image to remove 
+the noise present in the image. Generally these methods rely on pre-trained deep 
+neural networks to reconstruct the image far quicker then it would take for the 
+renderer to produce an image of the same visual quality \cite{bako2017kernel}. 
+Once again NVIDIA has made significant advancements in this area with NVIDIA 
+OptiX AI Accelerated Denoiser, which is based on their newly designed recurrent 
+denoising autoencoder \cite{chaitanya2017interactive}. OptiX has been successfully 
+integrated in to many of the top rendering engines which accurately simulate light
+transport, such as RenderMan \cite{christensen2018renderman} and Arnold 
+\cite{georgiev2018arnold}. Whilst post-processing has significantly reduced the 
+number of samples required to render photo-realistic images, there is still more 
+work to be done to produce these images in real-time.\\
 
-By using importance sampling by TD learning to reduce the number of samples required for accurate light transport simulation, the same standard of noisy image can be fed into an AI accelerated denoiser with fewer samples per pixel in light transport simulation. Running a rendering engine optimised in this way on purpose built hardware could make accurate light transport simulation for rendering photo-realistic images closer than it ever has been to real-time.
+By using importance sampling by TD learning to reduce the number of samples 
+required for accurate light transport simulation, the same standard of noisy 
+image can be fed into an AI accelerated denoiser with fewer samples per pixel 
+in light transport simulation. Running a rendering engine optimised in this way on 
+purpose built hardware could make accurate light transport simulation for 
+rendering photo-realistic images closer than it ever has been to real-time.
 
 \section{Challenges and Objectives}
 
-As previously mentioned, there already exists an example of TD learning used for importance sampling ray directions in a forward Path tracer \cite{dahm2017learning}. However, further methods of analysis need to be conducted upon this new method to determine its performance for reducing the number of zero contribution light paths for different scenes with different settings. It is difficult to assess this as there are infinitely many scenes the method can be used to render, so coming to a clear conclusion is difficult. Another difficult task is that of designing an algorithm for an AI agent to learn what are the favourable directions to sample in a scene are using the deep Q-learning method. This includes some important unanswered questions, such as; is it possible for a deep neural network to model all Q values for a continuous scene space? If so, what is a suitable network architecture? All of which I will describe in more depth in Chapter \ref{chap:deep-q}. Then the actual task of implementing such an algorithm which
+% Needs work
+
+As previously mentioned, there already exists an example of TD learning used 
+for importance sampling ray directions in a forward Path tracer \cite{dahm2017learning}. 
+However, further methods of analysis need to be conducted upon this new 
+method to determine its performance for reducing the number of zero contribution l
+ight paths for different scenes with different settings. It is difficult to assess this as 
+there are infinitely many scenes the method can be used to render, so coming to a 
+clear conclusion is difficult. Another difficult task is that of designing an algorithm 
+for an AI agent to learn what are the favourable directions to sample in a scene are 
+using the deep Q-learning method. This includes some important unanswered 
+questions, such as; is it possible for a deep neural network to model all Q values for 
+a continuous scene space? If so, what is a suitable network architecture? All of 
+which I will describe in more depth in Chapter \ref{chap:deep-q}. Then the actual 
+task of implementing such an algorithm in a graphics engine written from scratch 
+is non-trivial due to the technologies which will need to be combined together. 
+The algorithm must also run fast enough to collect large amounts of data from, 
+otherwise a justified conclusion on its performance cannot be made. Therefore, 
+the algorithm will have to be parallelized and run on a GPU.\\
+
+As previously mentioned, my main goal is to investigate the ability of two 
+different temporal difference learning algorithms ability to reduce the number 
+of zero contribution light paths in path tracing, whilst still accurately 
+approximating global illumination. Which can be broken down in to the 
+following objectives:
+
+\begin{enumerate}
+\item Reimplement Nvidia's state of the art on-line Temporal 
+Difference learning Path Tracer in order to further investigate its ability
+to reduce the number of zero contribution light paths.
+
+\item Design and implement an on-line Deep Q-Learning variant of the
+Path tracing algorithm and investigate its ability to reduce the number of zero contribution light paths sampled.
+
+\item Assess both Nvidia's state of the art on-line Temporal Difference 
+learning Path tracer, and the Deep Q-Learning Path tracer' on their ability 
+to accurately simulate Global Illumination.
+
+\end{enumerate}
+
 
 \begin{comment}
 {\bf A compulsory chapter,     of roughly $5$ pages}
@@ -586,24 +676,7 @@ More specifically, the concrete aims are:
       are worthwhile.
 \end{enumerate}
 \end{quote}
-\end{comment}
 
-\subsection{Plan}
-\textbf{Breakdown}
-\begin{itemize}
-
-\item \textbf{What is it}: What is path tracing in computer graphics, related to ray-tracing. What is global illumination? Other methods of global illumination. A conceptual description of the path tracing algorithm and where importance sampling comes in and why it reduces image noise. This will definitely require an image of sampling on a diffuse surface and how we can benefit from importance sampling.  NEEDS IMAGES
-
-
-\item How reinforcement learning links in with on-line learning in a path tracer and how what it learns can be used to reduce the number of zero-contribution light paths. A picture now relating to the one above but there is a blocker in the way of the light and the agent is able to learn that is not a favourable direction to shoot the ray in. Discuss how this work builds on top of Nvidias and on the topic of efficient light path sampling itself. NEEDS IMAGES
-
-\item \textbf{Why is it important}: Where is it used in industry. It's current position and potential future usage in other industries. Why speed is becoming more valuable. While the goal of my thesis is not directly improve the speed of path tracing, it is to reduce the number of samples required in the algorithm to accurately approximate global illumination in hope that these more efficient sampling technique can be refined and optimised in future path tracing engines. Nvidia already showed it is possible to get their method to be only 20\% slower than a standard path-tracer yet the superior results in image quality outweigh the time penalty. Reduces path length over time, so there is potential for the method to not only produce better images but be faster in doing so as well.
-
-\item \textbf{Who and why will they benefit from the project}: Film \& Media industry from potentially improved render times. More targeted towards reaching real-time ray-tracing. Opens up more avenues to explore further deep reinforcement learning methods as part of the rendering pipeline e.g. actor-critic algorithm.
-
-\item \textbf{Challenges involved with the project}: Assessing the costs which the method proposed by Nvidia brings. Researching in how deep reinforcement learning applies to rendering equation. Designing an on-line algorithm for learning and a suitable network architecture. Accelerating the algorithms on a GPU in order to get results in a reasonable amount of time. Accelerating Nvidias algorithm on a GPU to find it's shortcomings.
-
-\end{itemize}
 
 \textbf{Preliminary}
 \begin{enumerate}
@@ -656,11 +729,45 @@ rendering pipeline for a path-tracer
 \end{enumerate}
 
 \end{enumerate}
+\end{comment}
 
 % -----------------------------------------------------------------------------
 
 \chapter{Technical Background}
 \label{chap:technical}
+
+Up to this point, I have discussed  what path tracing is and how it approximates global illumination via light transport simulation. As well as, how importance sampling using TD-learning can improve the efficiency of this approximation by avoiding zero contribution light paths. However all descriptions have been at a high a level to make my motivation clear. In this section I describe in detail the rendering equation which path tracing and other Monte Carlo rendering algorithms are based on. I then present the Markov Decision Process and how TD-learning uses this to solve a general class of problems. The derivation of how the rendering equation can be linked to a TD-learning rule is then given, showing how TD-learning is used for importance sampling ray directions in light transport simulation. Finally, the details of my implementation of the expected SARSA path tracer introduced by NVIDIA \cite{dahm2017learning} in 2017 are given.
+
+\section{Monte Carlo Path Tracing}
+Monte Carlo path tracing was originally introduced by Jim Kajiya's original paper on the Rendering Equation \cite{kajiya1986rendering}, but before I get to the rendering equation I must first introduce Monte Carlo Integration. Monte Carlo Integration is a technique to estimate the value of an integral, Equation \ref{eq:integral} represents this integral for the one-dimensional case.
+
+\begin{equation}
+\label{eq:integral}
+F = \int_a^b f(x) dx
+\end{equation}
+
+The idea behind Monte Carlo integration is to approximate the integral by randomly sampling points to evaluate the integral at, and then averaging the solution to the integral for all the sampled points. More formally, basic Monte Carlo integration approximates a solution to this integral using the numerical solution in Equation \ref{eq:monte_carlo}. Where $\langle F^N \rangle$ is the approximation of $F$ using $N$ samples. However, basic Monte Carlo integration only produce a non-bias estimate when sample points $x^i$ are chosen from a uniform random distribution.
+
+\begin{equation}
+\label{eq:monte_carlo}
+\langle F^N \rangle = (b - a) \frac{1}{N} \sum^{N-1}_{i=0} f(x^i)
+\end{equation}
+
+\begin{equation}
+\label{eq:generalized_mc}
+\langle F^N \rangle = \frac{1}{N} \sum^{N-1}_{i=0} \frac{f(x^i)}{\frac{1}{(b-a)}} 
+ = \frac{1}{N} \sum^{N-1}_{i=0} \frac{f(x^i)}{pdf(x_i)}
+\end{equation}
+
+To extend to Generalized Monte Carlo integration where sample point may be sampled from any distribution, the function must be divided by the probability density function evaluated at that sample point as shown in Equation \ref{eq:generalized_mc}. This approach ensures that the Monte Carlo estimate $\langle F^N \rangle$ is unbiased, as areas samples with high probability of being chosen will have a lower weighting in their contribution to the estimate, and areas of lower probability will have a higher contribution weighting \cite{}.
+
+Now Generalized Monte Carlo integration can be used to reduce the variance in the integrals estimated value by sampling from a probability density function which more closely matches the function being integrated $f$ (mb appendix). As samples which highly contribute to the integrals value will be sampled more than those which are not. This is known as imp
+
+\section{Markov Decision Processes and TD-Learning}
+
+\section{Linking TD-Learning and Light Transport Simulation}
+
+\section{The expected SARSA Path tracer}
 
 \begin{comment}
 {\bf A compulsory chapter,     of roughly $10$ pages} 
@@ -693,7 +800,7 @@ communicate highly technical material.
 
 \item Path tracings use of the rendering equation. How monte carlo comes into play. The iterative version of the path tracing algorithm. Concept of a light path.
 
-\item Importance sampling in terms of BRDF and relating this to reducing variance in pixel colours leading to less noise. Give examples of classical importance sampling techniques and their performance. Critic them and clearly present where their shortcomings are and how they are unavoidable.
+\item Importance sampling in terms of BRDF and relating this to reducing variance in pixel colours leading to less noise via a reduction in variance, but incorrect importance sampling can do the opposite. Give examples of classical importance sampling techniques and their performance. Critic them and clearly present where their shortcomings are and how they are unavoidable.
 
 \item Introduce reinforcement learning: Markov Decision Process, Bellman 
 Equation, Temporal Difference Learning and its strong points and weaknesses,
@@ -914,6 +1021,37 @@ such, both positive {\em and} negative outcomes are valid {\em if} presented
 in a suitable manner.
 
 \subsection{Plan}
+
+\textbf{Data to collect}
+\begin{itemize}
+
+\item Build 4 different scenes:
+
+\begin{itemize}
+\item Simple geometry, Indirectly illuminated scene: Here both reinforcement learning methods should perform excellently
+
+\item Simple geometry, Directly illuminated scene: Here all methods should perform well
+
+\item Complex geometry, Indirectly illuminated scene: Can both methods do this - will take a lot of training, deeper NN potentially
+
+\item Complex geometry, Directly illuminated scene: Can both methods do this - will take a lot of training, deeper NN potentially
+\end{itemize}
+
+\item Number zero-contribution light paths/ light paths that do not intersect with a with a light after $n$ bounces therefore they become irrelevant for all methods with accumulated frames on the x-axis
+
+\item Variance in points around the room to train network in order to make training batches as varied as possible (this is a weird one, essentially assessing the fact that we do not need a replay buffer).
+
+\item eta-greedy constant for loss curve for training the network \& decaying eta-greedy policy graph for the loss as well
+
+\item Visual representation of Q-values being higher in directions near light source: Map q-values to hemispheres in the scene and get a close up, clearly indicating its ability to sample in the correct direction
+
+\item 1 SPP, 16 SPP, 32 SPP, 64 SPP, 128 SPP, 256 SPP for all three methods on 4 different scenes to evaluate their effectiveness: Assessing accuracy of global illumination approximation
+
+\item Limitations: Number of angles which can accurately be learned by the network, accuracy  needs to be compared with expected SARSA approach for a single radiance volume at a given point in the scene. Size of the scene which can be learnt accurately.
+
+\end{itemize}
+
+\textbf{Preliminary}
 \begin{enumerate}
 \item Exploration vs Exploitation for both techniques, exploration can yield to better results plus exploitation does not accurately simulate light, relate to the rendering equation and how light works in the physical world.
 

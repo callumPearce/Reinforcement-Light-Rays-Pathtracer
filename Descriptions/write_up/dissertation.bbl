@@ -48,6 +48,12 @@ Henrik~Wann Jensen.
 \newblock Global illumination using photon maps.
 \newblock In {\em Rendering Techniques’ 96}, pages 21--30. Springer, 1996.
 
+\bibitem{kajiya1986rendering}
+James~T Kajiya.
+\newblock The rendering equation.
+\newblock In {\em ACM SIGGRAPH computer graphics}, volume~20, pages 143--150.
+  ACM, 1986.
+
 \bibitem{keller2016path}
 Alexander Keller, Ken Dahm, and Nikolaus Binder.
 \newblock Path space filtering.

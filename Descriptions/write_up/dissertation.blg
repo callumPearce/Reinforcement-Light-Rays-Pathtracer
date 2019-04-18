@@ -5,46 +5,47 @@ The style file: plain.bst
 Database file #1: dissertation.bib
 Warning--I didn't find a database entry for "latexbook1"
 Warning--I didn't find a database entry for "latexbook2"
+Warning--can't use both volume and number fields in kajiya1986rendering
 Warning--empty title in nvidia_turing_architecture_whitepaper_2018
-You've used 14 entries,
+You've used 15 entries,
             2118 wiz_defined-function locations,
-            577 strings with 6745 characters,
-and the built_in function-call counts, 5589 in all, are:
-= -- 509
-> -- 384
-< -- 3
-+ -- 154
-- -- 138
-* -- 443
-:= -- 967
-add.period$ -- 42
-call.type$ -- 14
-change.case$ -- 106
+            584 strings with 6845 characters,
+and the built_in function-call counts, 6036 in all, are:
+= -- 559
+> -- 391
+< -- 5
++ -- 158
+- -- 140
+* -- 470
+:= -- 1026
+add.period$ -- 46
+call.type$ -- 15
+change.case$ -- 110
 chr.to.int$ -- 0
-cite$ -- 15
-duplicate$ -- 183
-empty$ -- 360
-format.name$ -- 138
-if$ -- 1122
+cite$ -- 17
+duplicate$ -- 206
+empty$ -- 401
+format.name$ -- 140
+if$ -- 1228
 int.to.chr$ -- 0
-int.to.str$ -- 14
-missing$ -- 14
-newline$ -- 71
-num.names$ -- 28
-pop$ -- 113
+int.to.str$ -- 15
+missing$ -- 15
+newline$ -- 76
+num.names$ -- 30
+pop$ -- 118
 preamble$ -- 1
-purify$ -- 94
+purify$ -- 97
 quote$ -- 0
-skip$ -- 132
+skip$ -- 151
 stack$ -- 0
-substring$ -- 236
-swap$ -- 38
-text.length$ -- 3
+substring$ -- 274
+swap$ -- 51
+text.length$ -- 5
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 54
-warning$ -- 1
-while$ -- 47
-width$ -- 16
-write$ -- 149
-(There were 3 warnings)
+type$ -- 58
+warning$ -- 2
+while$ -- 52
+width$ -- 17
+write$ -- 162
+(There were 4 warnings)
