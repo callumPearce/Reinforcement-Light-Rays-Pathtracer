@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.10.2)  19 APR 2019 19:14
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.10.2)  19 APR 2019 22:51
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -917,11 +917,11 @@ Package: subcaption 2016/05/22 v1.1-161 Sub-captions (AR)
 \c@subfigure=\count186
 \c@subtable=\count187
 )
-Package hyperref Info: Option `colorlinks' set `true' on input line 90.
+Package hyperref Info: Option `colorlinks' set `true' on input line 93.
 
 
 Package hyperref Warning: Option `bookmarks' has already been used,
-(hyperref)                setting the option has no effect on input line 90.
+(hyperref)                setting the option has no effect on input line 93.
 
 ) (./dissertation.aux)
 \openout1 = `dissertation.aux'.
@@ -1064,24 +1064,19 @@ File: logo/logo_uob_color.pdf Graphic file (type pdf)
 <use logo/logo_uob_color.pdf>
 Package pdftex.def Info: logo/logo_uob_color.pdf used on input line 77.
 (pdftex.def)             Requested size: 163.81326pt x 47.57811pt.
-
-Overfull \hbox (834.51297pt too wide) in paragraph at lines 77--77
- [][] 
- []
-
-[2 <./logo/logo_uob_color.pdf>] [1
+ [2 <./logo/logo_uob_color.pdf>] [1
 
 
 ] [2
 
-] (./dissertation.toc)
+]
+(./dissertation.toc)
 \tf@toc=\write6
 \openout6 = `dissertation.toc'.
 
  [3] [4
 
-]
-(./dissertation.lof)
+] (./dissertation.lof)
 \tf@lof=\write7
 \openout7 = `dissertation.lof'.
 
@@ -1091,14 +1086,14 @@ Overfull \hbox (834.51297pt too wide) in paragraph at lines 77--77
 \tf@lot=\write8
 \openout8 = `dissertation.lot'.
 
- [7] [8
+
+[7] [8
 
 ] (./dissertation.loa)
 \tf@loa=\write9
 \openout9 = `dissertation.loa'.
 
-
-[9] [10
+ [9] [10
 
 ] (./dissertation.lol)
 \tf@lol=\write10
@@ -1222,7 +1217,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 767--768
 [7]
 
 Package pgfplots Warning: Axis range for axis y is approximately empty; enlargi
-ng it (it is [0.1:0.1]) on input line 815.
+ng it (it is [0.1:0.1]) on input line 822.
 
  [warning /pgfplots/warning/approx empty range enlarged]
 Missing character: There is no . in font nullfont!
@@ -1230,23 +1225,7 @@ Missing character: There is no 0 in font nullfont!
 Missing character: There is no 1 in font nullfont!
 Missing character: There is no p in font nullfont!
 Missing character: There is no t in font nullfont!
-[8]
-Missing character: There is no . in font nullfont!
-Missing character: There is no 0 in font nullfont!
-Missing character: There is no 1 in font nullfont!
-Missing character: There is no p in font nullfont!
-Missing character: There is no t in font nullfont!
-Missing character: There is no . in font nullfont!
-Missing character: There is no 0 in font nullfont!
-Missing character: There is no 1 in font nullfont!
-Missing character: There is no p in font nullfont!
-Missing character: There is no t in font nullfont!
-Missing character: There is no . in font nullfont!
-Missing character: There is no 0 in font nullfont!
-Missing character: There is no 1 in font nullfont!
-Missing character: There is no p in font nullfont!
-Missing character: There is no t in font nullfont!
- [9] [10]
+[8] [9] [10]
 Chapter 3.
 [11
 
@@ -1273,11 +1252,11 @@ Missing character: There is no ™ in font cmti10!
 ]
 Appendix A.
 [19]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1347.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 1347.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1365.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 1365.
  (./dissertation.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1347.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1347.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1365.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1365.
 
 Package rerunfilecheck Info: File `dissertation.out' has not changed.
 (rerunfilecheck)             Checksum: 1CB2E78024E68FAE5FD3F7B893317B2C;1013.
@@ -1291,13 +1270,13 @@ LaTeX Warning: There were undefined references.
 ### simple group (level 1) entered at line 1061 ({)
 ### bottom level 
 Here is how much of TeX's memory you used:
- 32497 strings out of 492995
- 739889 string characters out of 6132704
- 1092463 words of memory out of 5000000
- 35355 multiletter control sequences out of 15000+600000
- 9235 words of font info for 35 fonts, out of 8000000 for 9000
+ 32573 strings out of 492995
+ 741517 string characters out of 6132704
+ 1100206 words of memory out of 5000000
+ 35428 multiletter control sequences out of 15000+600000
+ 12028 words of font info for 46 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 69i,14n,98p,1092b,25108s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 69i,14n,98p,1092b,25117s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts
 /cm/cmbx10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/
 cm/cmbx12.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/c
@@ -1307,15 +1286,17 @@ cmmi7.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cm
 r10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr1
 2.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.
 pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb
-></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsl10.pfb>
-</usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb><
-/usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></u
-sr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></us
-r/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
-Output written on dissertation.pdf (41 pages, 264511 bytes).
+></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></
+usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsl10.pfb></u
+sr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></us
+r/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/
+local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/l
+ocal/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/lo
+cal/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
+Output written on dissertation.pdf (41 pages, 285820 bytes).
 PDF statistics:
- 487 PDF objects out of 1000 (max. 8388607)
- 424 compressed objects within 5 object streams
- 150 named destinations out of 1000 (max. 500000)
+ 498 PDF objects out of 1000 (max. 8388607)
+ 433 compressed objects within 5 object streams
+ 151 named destinations out of 1000 (max. 500000)
  130 words of extra memory for PDF output out of 10000 (max. 10000000)
 

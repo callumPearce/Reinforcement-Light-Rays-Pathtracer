@@ -789,7 +789,14 @@ The standard error of the Monte Carlo integration approximation decreases accord
 
 % If pdf is proportional to f(x), then the division of f(x)/pdf(x) in monte carlo creates a uniform distribution, or the closer the shape of pdf(x) is to f(x) the closer f(x)/pdf(x) comes to a uniform distribution. The variance from samples of a uniform distribution are zero, as every sample will have the same value, therefore the closer we make f(x)/pdf(x) to a uniform distribution,  the lower are variance will be in the preduction of F
 
-Currently I have only discussed Monte Carlo integration by sampling points $x_i$ to solve the integral using a uniform distribution. However the purpose of introducing Equation \ref{eq:generalized_mc} was to create a custom $pdf$ which can be used for importance sampling to reduce the variance of the Monte Carlo integration approximation. To understand how and why importance sampling works, first observe Figure \ref{fig:constant_function} where a constant function is given with a single sample point evaluated for $f(x)$. This single sample is enough to find the true value for the area beneath the curve i.e. integrate the function with respect to $x$. However, Figure \ref{fig:non_lin_function} requires many more samples to accurately calculate the area beneath the curve, as with only a few evaluated sample points the variance of the estimated area beneath the curve will be high. Therefore, it requires fewer samples to approximate a function which is closer to being constant for all possible input values.
+Currently I have only discussed Monte Carlo integration by sampling points $x_i$ to solve the integral using a uniform distribution. However the purpose of introducing Equation \ref{eq:generalized_mc} was to create a custom $pdf$ which can be used for importance sampling to reduce the variance of the Monte Carlo integration approximation. To understand how and why importance sampling works, first observe Figure \ref{fig:constant_function} where a constant function is given with a single sample point evaluated for $f(x)$. This single sample is enough to find the true value for the area beneath the curve i.e. integrate the function with respect to $x$. This is shown in Equation \ref{eq:constant_monte_carlo}, where $p$ is the constant value of $f(x)$ $ \forall x \in \mathbb{R}$.
+
+\begin{equation}
+\label{eq:constant_monte_carlo}
+\langle F^N \rangle = (b - a) \frac{1}{N} \sum^{N-1}_{i=0} f(x_i) = (b - a)  \frac{1}{N} \sum^{N-1}_{i=0} p = pb - pa
+\end{equation}
+
+However, Figure \ref{fig:non_lin_function} requires many more samples to accurately approximate the area beneath the curve when sampling from a uniform distribution. This is due to the functions complex shape, meaning the Monte Carlo integral approximation with a low number of samples is likely to have a high variance. Therefore, it requires fewer samples to approximate a function which is closer to being constant for all possible input values.
 
 \begin{figure}[h]
 \captionsetup{justification=centering}
@@ -863,74 +870,83 @@ For most cases it is not possible to know the correct probability distribution f
 
 \begin{figure}[!htb]
 \captionsetup{justification=centering}
+\centering
 \minipage{0.32\textwidth}
-    \begin{tikzpicture}
-	\begin{axis}[
-	    axis lines = left,
-	    tick style={draw=none},
-	    xticklabels={},
-	    yticklabels={},
-	    xlabel = $x$,
-	    ylabel = {$f(x)$},
-	]
-	%Below the red parabola is defined
-	\addplot [
-	    color=red,
-	    samples=100,
-	]
-	{sin(deg(x+5))^2};
-    \addplot[mark=*] coordinates {(0,0.93)} node[]{} ;
+\begin{tikzpicture}
+	\begin{axis}[every axis plot post/.append style={
+	  mark=none,domain=-2:3,samples=50,smooth},
+	  axis lines = left,
+	  tick style={draw=none},
+	  xticklabels={},
+	  yticklabels={},
+	    % All plots: from -2:2, 50 samples, smooth, no marks
+	  axis x line*=bottom, % no box around the plot, only x and y axis
+	  axis y line*=left, % the * suppresses the arrow tips
+	  enlargelimits=upper,
+	  xlabel = $x$,
+	  ] % extend the axes a bit to the right and top
+	  \addplot [
+	  color=red,
+	  ]{gauss(0.5,0.8)};
+	  \addplot [
+	  color=blue,
+	  ]{gauss(0.5,1.2)};
 	\end{axis}
-	\end{tikzpicture}  
-  \caption{A really Awesome Image}\label{fig:improtance_correct}
+\end{tikzpicture}
+  \subcaption{Importance sampling reducing variance}\label{fig:improtance_correct}
 \endminipage\hfill
 \minipage{0.32\textwidth}
     \begin{tikzpicture}
-	\begin{axis}[
-	    axis lines = left,
-	    tick style={draw=none},
-	    xticklabels={},
-	    yticklabels={},
-	    xlabel = $x$,
-	    ylabel = {$f(x)$},
-	]
-	%Below the red parabola is defined
-	\addplot [
-	    color=red,
-	    samples=100,
-	]
-	{sin(deg(x+5))^2};
-    \addplot[mark=*] coordinates {(0,0.93)} node[]{} ;
+	\begin{axis}[every axis plot post/.append style={
+	  mark=none,domain=-2:3,samples=50,smooth},
+	  axis lines = left,
+	  tick style={draw=none},
+	  xticklabels={},
+	  yticklabels={},
+	    % All plots: from -2:2, 50 samples, smooth, no marks
+	  axis x line*=bottom, % no box around the plot, only x and y axis
+	  axis y line*=left, % the * suppresses the arrow tips
+	  enlargelimits=upper,
+	  xlabel = $x$,
+	  ] % extend the axes a bit to the right and top
+	  \addplot [
+	  color=red,
+	  ]{gauss(0.5,0.8)};
+	  \addplot [
+	  color=blue,
+	  ]{0.2};
 	\end{axis}
 	\end{tikzpicture}  
-  \caption{A really Awesome Image}\label{fig:improtance_uniform}
+   \subcaption{Uniform\\ sampling}\label{fig:improtance_uniform}
 \endminipage\hfill
 \minipage{0.32\textwidth}%
     \begin{tikzpicture}
-	\begin{axis}[
-	    axis lines = left,
-	    tick style={draw=none},
-	    xticklabels={},
-	    yticklabels={},
-	    xlabel = $x$,
-	    ylabel = {$f(x)$},
-	]
-	%Below the red parabola is defined
-	\addplot [
-	    color=red,
-	    samples=100,
-	]
-	{sin(deg(x+5))^2};
-    \addplot[mark=*] coordinates {(0,0.93)} node[]{} ;
+	\begin{axis}[every axis plot post/.append style={
+	  mark=none,domain=-2:3,samples=50,smooth},
+	  axis lines = left,
+	  tick style={draw=none},
+	  xticklabels={},
+	  yticklabels={},
+	    % All plots: from -2:2, 50 samples, smooth, no marks
+	  axis x line*=bottom, % no box around the plot, only x and y axis
+	  axis y line*=left, % the * suppresses the arrow tips
+	  enlargelimits=upper,
+	  xlabel = $x$,
+       ] % extend the axes a bit to the right and top
+	  \addplot [
+	  color=red,
+	  ] {gauss(0.5,0.8)};
+	  \addplot [
+	  color=blue,
+	  ]{-gauss(0.5,1.2) + 0.3};
 	\end{axis}
 	\end{tikzpicture}  
-  \caption{A really Awesome Image}\label{fig:improtance_incorrect}
+  \subcaption{Importance sampling increasing variance}\label{fig:improtance_incorrect}
 \endminipage
+\caption{Graphical representation of a function $f(x)$ (red) and the corresponding probability density function $pdf(x)$ (blue) used in the Monte Carlo integration approximation for the integral of $f(x)$.}
 \end{figure}
 
-As previously explained, Figure\ref{fig:improtance_correct} represents a probability density function which has a similar shape to the function which is being integrated. Therefore the variance in the Monte Carlo integration approximation will be lower then that of the uniform distribution shown in Figure \ref{fig:improtance_uniform}. Figure \ref{fig:improtance_incorrect} presents an example where the created probability density function does not resemble the shape of the function which is being integrated. Using this $pdf$ in Monte Carlo integration in this case will actually increase the variance in the output compared to that from a uniform $pdf$ shown in Figure \ref{fig:improtance_uniform}, as regions which have high importance according to the $pdf$ are actually less important regions for the function $f$ giving them a 
-
-%Reducing the variance of the Monte Carlo estimate for a function which we have no prior knowledge about should not be attempted, and sample points to approximate the solution of the integral with should be uniformly randomly sampled. As creating a probability density function to sample points from may actually increase the variance compared to the uniform approach if the created $pdf$ is vastly different to the function $f$.
+As previously explained, Figure \ref{fig:improtance_correct} represents a probability density function which has a similar shape to the function which is being integrated. Therefore the variance in the Monte Carlo integration approximation will be lower then that of the uniform distribution shown in Figure \ref{fig:improtance_uniform}. Figure \ref{fig:improtance_incorrect} presents an example where the created probability density function does not resemble the shape of the function which is being integrated. Using this $pdf$ in Monte Carlo integration in this case will actually increase the variance in the output compared to that from a uniform $pdf$ shown in Figure \ref{fig:improtance_uniform}.  This is due to regions which have high importance according to the $pdf$ are actually less important regions for the function $f$, meaning areas of the input space receive incorrect contribution weighting, causing the variance in the Monte Carlo integration approximation to rise.
 
 
 \section{Markov Decision Processes and TD-Learning}

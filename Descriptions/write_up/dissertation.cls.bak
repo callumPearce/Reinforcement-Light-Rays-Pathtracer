@@ -78,6 +78,9 @@
 \usepackage{caption}
 \usepackage{subcaption}
 
+\pgfmathdeclarefunction{gauss}{2}{%
+  \pgfmathparse{1/(#2*sqrt(2*pi))*exp(-((x-#1)^2)/(2*#2^2))}%
+}
 
 % =============================================================================
 
@@ -153,8 +156,7 @@
                               \vspace*{1.0cm}
                           DEPARTMENT OF COMPUTER SCIENCE                        \\
                               \vspace*{2.0cm}
-  \mbox{\IfEq{\dissertation@title@major}{}{}{\LARGE \dissertation@title@major}} \\
-                              \vspace*{0.5cm}
+   \LARGE \dissertation@title@major \\
   \mbox{\IfEq{\dissertation@title@minor}{}{}{\Large \dissertation@title@minor}} \\
                               \vspace*{1.0cm}
                           {\Large \dissertation@author}                         \\
