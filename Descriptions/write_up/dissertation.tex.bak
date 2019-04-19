@@ -736,32 +736,202 @@ rendering pipeline for a path-tracer
 \chapter{Technical Background}
 \label{chap:technical}
 
+\begin{comment}
 Up to this point, I have discussed  what path tracing is and how it approximates global illumination via light transport simulation. As well as, how importance sampling using TD-learning can improve the efficiency of this approximation by avoiding zero contribution light paths. However all descriptions have been at a high a level to make my motivation clear. In this section I describe in detail the rendering equation which path tracing and other Monte Carlo rendering algorithms are based on. I then present the Markov Decision Process and how TD-learning uses this to solve a general class of problems. The derivation of how the rendering equation can be linked to a TD-learning rule is then given, showing how TD-learning is used for importance sampling ray directions in light transport simulation. Finally, the details of my implementation of the expected SARSA path tracer introduced by NVIDIA \cite{dahm2017learning} in 2017 are given.
+\end{comment}
 
-\section{Monte Carlo Path Tracing}
-Monte Carlo path tracing was originally introduced by Jim Kajiya's original paper on the Rendering Equation \cite{kajiya1986rendering}, but before I get to the rendering equation I must first introduce Monte Carlo Integration. Monte Carlo Integration is a technique to estimate the value of an integral, Equation \ref{eq:integral} represents this integral for the one-dimensional case.
+\section{Monte Carlo Integration and Importance Sampling}
+The theory of Monte Carlo integration and importance sampling underpins how the noise in images rendered by path tracing can be reduced when using the same number of sampled rays per pixel. Therefore, it is necessary to have a good understanding of Monte Carlo integration and its properties, as well as importance sampling before applying it to path tracing.
+
+\subsection{Monte Carlo Integration}
+ Monte Carlo Integration is a technique to estimate the value of an integral, Equation \ref{eq:integral} represents this integral for a one-dimensional function $f$.
 
 \begin{equation}
 \label{eq:integral}
 F = \int_a^b f(x) dx
 \end{equation}
 
-The idea behind Monte Carlo integration is to approximate the integral by randomly sampling points to evaluate the integral at, and then averaging the solution to the integral for all the sampled points. More formally, basic Monte Carlo integration approximates a solution to this integral using the numerical solution in Equation \ref{eq:monte_carlo}. Where $\langle F^N \rangle$ is the approximation of $F$ using $N$ samples. However, basic Monte Carlo integration only produce a non-bias estimate when sample points $x^i$ are chosen from a uniform random distribution.
+The idea behind Monte Carlo integration is to approximate the integral by randomly sampling points ($x_i$) to evaluate the integral at, and then averaging the solution to the integral for all the sampled points. More formally, basic Monte Carlo integration approximates a solution to this integral using the numerical solution in Equation \ref{eq:monte_carlo}. Where $\langle F^N \rangle$ is the approximation of $F$ using $N$ samples.
 
 \begin{equation}
 \label{eq:monte_carlo}
-\langle F^N \rangle = (b - a) \frac{1}{N} \sum^{N-1}_{i=0} f(x^i)
+\langle F^N \rangle = (b - a) \frac{1}{N} \sum^{N-1}_{i=0} f(x_i)
 \end{equation}
 
 \begin{equation}
 \label{eq:generalized_mc}
-\langle F^N \rangle = \frac{1}{N} \sum^{N-1}_{i=0} \frac{f(x^i)}{\frac{1}{(b-a)}} 
- = \frac{1}{N} \sum^{N-1}_{i=0} \frac{f(x^i)}{pdf(x_i)}
+\langle F^N \rangle = \frac{1}{N} \sum^{N-1}_{i=0} \frac{f(x_i)}{\frac{1}{(b-a)}} 
+ = \frac{1}{N} \sum^{N-1}_{i=0} \frac{f(x_i)}{pdf(x_i)}
 \end{equation}
 
-To extend to Generalized Monte Carlo integration where sample point may be sampled from any distribution, the function must be divided by the probability density function evaluated at that sample point as shown in Equation \ref{eq:generalized_mc}. This approach ensures that the Monte Carlo estimate $\langle F^N \rangle$ is unbiased, as areas samples with high probability of being chosen will have a lower weighting in their contribution to the estimate, and areas of lower probability will have a higher contribution weighting \cite{}.
+An important property of Monte Carlo Integration is that it produces an unbiased estimate of an integral. A bias estimate would not converge on the true solution to the integral. Basic Monte Carlo integration only produces a non-bias estimate when sample points $x_i$ are randomly sampled from a uniform distribution. To extend this to Generalized Monte Carlo integration where sample points may be sampled from any distribution, the function evaluated at point $x_i$ must be divided by the probability density function ($pdf$) evaluated at $x_i$. Generalized Monte Carlo integration is shown in Equation \ref{eq:generalized_mc}, which from here onwards I will refer to as Monte Carlo integration. Dividing by the $pdf$ ensures the estimate $\langle F^N \rangle$ is unbiased, as areas with a high $pdf$ will be sampled far more, but their contribution weighting ($\frac{1}{pdf}$) to final estimate will be lower. Whereas areas with a low $pdf$ will be sampled less, but their contribution weighting to the final estimate will be higher to offset this.\\
 
-Now Generalized Monte Carlo integration can be used to reduce the variance in the integrals estimated value by sampling from a probability density function which more closely matches the function being integrated $f$ (mb appendix). As samples which highly contribute to the integrals value will be sampled more than those which are not. This is known as imp
+Another important property of Monte Carlo integration is that by the law of large numbers, as the number of samples ($N$) approaches infinity, the probability of the Monte Carlo approximation ($\langle F^N \rangle$) being equal to the true value of the integral ($F$) converges to $1$. This law is stated in Equation \ref{eq:law_large_numbers}. By this property Monte Carlo Integration works well for multidimensional functions, as convergence rate of the approximation is independent of the number of dimensions, it is just based on the number of samples using in the approximation. Whereas this is not the case for deterministic approximation methods, meaning they  suffer from what is known as the curse of dimensionality. For path tracing, the integral which is approximated is a 2 dimensional function, hence Monte Carlo integration is used. 
+
+\begin{equation}
+\label{eq:law_large_numbers}
+Pr( \lim_{N \rightarrow \infty} \langle F^N \rangle = F ) = 1
+\end{equation}
+
+The standard error of the Monte Carlo integration approximation decreases according to Equation \ref{eq:mc_error}. Where the standard error describes the statistical accuracy of the Monte Carlo approximation. Where $\sigma_N^2$ is the variance of the solutions for the samples  taken, and is calculated by Equation \ref{eq:sample_variance} using the mean of the solutions for the samples taken ($\mu$). Due to Equation \ref{eq:mc_error}, in practice four times as many samples are required to reduce the error of the Monte Carlo integration approximation by a half. Also, the square root of the variance  is equal to the error of the approximation, so from here on when I refer to reducing the variance I am also implying a reduction in the error of the approximation.
+
+\begin{equation}
+\label{eq:sample_variance}
+\sigma_N^2 = Var(f) = \frac{1}{N-1} \sum_{i=0}^N (f(x_i) - \mu)^2
+\end{equation}
+
+\begin{equation}
+\label{eq:mc_error}
+\text{Standard Error} = \sqrt{Var(\langle F^N \rangle)} = \sqrt{\frac{\sigma_N^2}{N}} = \frac{\sigma_N}{\sqrt{N}}
+\end{equation}
+
+\subsection{Importance Sampling for Reducing Approximation Variance}
+
+% If pdf is proportional to f(x), then the division of f(x)/pdf(x) in monte carlo creates a uniform distribution, or the closer the shape of pdf(x) is to f(x) the closer f(x)/pdf(x) comes to a uniform distribution. The variance from samples of a uniform distribution are zero, as every sample will have the same value, therefore the closer we make f(x)/pdf(x) to a uniform distribution,  the lower are variance will be in the preduction of F
+
+Currently I have only discussed Monte Carlo integration by sampling points $x_i$ to solve the integral using a uniform distribution. However the purpose of introducing Equation \ref{eq:generalized_mc} was to create a custom $pdf$ which can be used for importance sampling to reduce the variance of the Monte Carlo integration approximation. To understand how and why importance sampling works, first observe Figure \ref{fig:constant_function} where a constant function is given with a single sample point evaluated for $f(x)$. This single sample is enough to find the true value for the area beneath the curve i.e. integrate the function with respect to $x$. However, Figure \ref{fig:non_lin_function} requires many more samples to accurately calculate the area beneath the curve, as with only a few evaluated sample points the variance of the estimated area beneath the curve will be high. Therefore, it requires fewer samples to approximate a function which is closer to being constant for all possible input values.
+
+\begin{figure}[h]
+\captionsetup{justification=centering}
+\centering
+\begin{minipage}{.33\textwidth}
+    \hspace*{\fill}%
+      \begin{tikzpicture}
+	    \begin{axis}[
+		    axis lines = left,
+		    tick style={draw=none},
+		    xticklabels={},
+		    yticklabels={},
+		    xlabel = $x$,
+		    ylabel = {$f(x)$},
+		]
+		%Below the red parabola is defined
+		\addplot [
+		    color=red,
+		]
+		{0.1};
+		\addplot[mark=*] coordinates {(0,0.1)} node[]{} ;
+		
+		\end{axis}
+	\end{tikzpicture}
+     \caption{Constant Function\\ with a sample point}
+  \label{fig:constant_function}
+\end{minipage}
+\hspace{8em}
+\begin{minipage}{.33\textwidth}
+    
+  \hspace*{\fill}%
+
+    \begin{tikzpicture}
+	\begin{axis}[
+	    axis lines = left,
+	    tick style={draw=none},
+	    xticklabels={},
+	    yticklabels={},
+	    xlabel = $x$,
+	    ylabel = {$f(x)$},
+	]
+	%Below the red parabola is defined
+	\addplot [
+	    color=red,
+	    samples=100,
+	]
+	{sin(deg(x+5))^2};
+    \addplot[mark=*] coordinates {(0,0.93)} node[]{} ;
+	\end{axis}
+	\end{tikzpicture}  
+  \caption{ Non-linear Function\\ with a sample point}
+  \label{fig:non_lin_function}
+\end{minipage}
+\end{figure}
+
+Now, most functions are not constant however it is possible to turn a function into a constant function, and this is exactly what can be done within Monte Carlo integration. To convert a function $f$ to a constant function, a function $f'$ can be introduced which produces the same output as $f$ for every input, but scaled by a constant $c$. The function $f$ is then divided by $f'$ to produce a constant function, as shown in Equation \ref{eq:constant_conversion}.
+
+\begin{equation}
+\label{eq:constant_conversion}
+\frac{f(x)}{f'(x)} = \frac{1}{c}
+\end{equation}
+
+This can be applied to Monte Carlo integration stated in Equation \ref{eq:generalized_mc}, by choosing a probability density function ($pdf$) which produces the same output as $f$ for all inputs, but divided by some normlazing constant factor $c$, keeping $pdf$ as a probability distribution. Therefore, we are able to calculate the true value of the integral thought Monte Carlo integration as shown in Equation \ref{eq:solve_mc_integration}. Where $\frac{1}{c}$ is true value for the integral in Equation \ref{eq:integral}.
+
+\begin{equation}
+\label{eq:solve_mc_integration}
+\langle F^N \rangle = \frac{1}{N} \sum^{N-1}_{i=0} \frac{f(x)}{pdf(x)} = \frac{1}{N} \sum^{N-1}_{i=0} \frac{f(x)}{cf(x)} =  \frac{1}{N} \sum^{N-1}_{i=0} \frac{1}{c} = \frac{1}{c}
+\end{equation}
+
+For most cases it is not possible to know the correct probability distribution function which can convert the Monte Carlo integration problem into integrating a constant function. However, if one has prior knowledge regarding 'important' regions of the functions input space, it is possible to create a probability density function whose shape matches $f$ more closely then a uniform probability distribution. By Important areas of the function input space, I mean areas where when given an input produce a large contribution to the function integral. For example in Figure \ref{fig:improtance_correct}, the most important regions are around the top of the functions peak. 
+
+\begin{figure}[!htb]
+\captionsetup{justification=centering}
+\minipage{0.32\textwidth}
+    \begin{tikzpicture}
+	\begin{axis}[
+	    axis lines = left,
+	    tick style={draw=none},
+	    xticklabels={},
+	    yticklabels={},
+	    xlabel = $x$,
+	    ylabel = {$f(x)$},
+	]
+	%Below the red parabola is defined
+	\addplot [
+	    color=red,
+	    samples=100,
+	]
+	{sin(deg(x+5))^2};
+    \addplot[mark=*] coordinates {(0,0.93)} node[]{} ;
+	\end{axis}
+	\end{tikzpicture}  
+  \caption{A really Awesome Image}\label{fig:improtance_correct}
+\endminipage\hfill
+\minipage{0.32\textwidth}
+    \begin{tikzpicture}
+	\begin{axis}[
+	    axis lines = left,
+	    tick style={draw=none},
+	    xticklabels={},
+	    yticklabels={},
+	    xlabel = $x$,
+	    ylabel = {$f(x)$},
+	]
+	%Below the red parabola is defined
+	\addplot [
+	    color=red,
+	    samples=100,
+	]
+	{sin(deg(x+5))^2};
+    \addplot[mark=*] coordinates {(0,0.93)} node[]{} ;
+	\end{axis}
+	\end{tikzpicture}  
+  \caption{A really Awesome Image}\label{fig:improtance_uniform}
+\endminipage\hfill
+\minipage{0.32\textwidth}%
+    \begin{tikzpicture}
+	\begin{axis}[
+	    axis lines = left,
+	    tick style={draw=none},
+	    xticklabels={},
+	    yticklabels={},
+	    xlabel = $x$,
+	    ylabel = {$f(x)$},
+	]
+	%Below the red parabola is defined
+	\addplot [
+	    color=red,
+	    samples=100,
+	]
+	{sin(deg(x+5))^2};
+    \addplot[mark=*] coordinates {(0,0.93)} node[]{} ;
+	\end{axis}
+	\end{tikzpicture}  
+  \caption{A really Awesome Image}\label{fig:improtance_incorrect}
+\endminipage
+\end{figure}
+
+As previously explained, Figure\ref{fig:improtance_correct} represents a probability density function which has a similar shape to the function which is being integrated. Therefore the variance in the Monte Carlo integration approximation will be lower then that of the uniform distribution shown in Figure \ref{fig:improtance_uniform}. Figure \ref{fig:improtance_incorrect} presents an example where the created probability density function does not resemble the shape of the function which is being integrated. Using this $pdf$ in Monte Carlo integration in this case will actually increase the variance in the output compared to that from a uniform $pdf$ shown in Figure \ref{fig:improtance_uniform}, as regions which have high importance according to the $pdf$ are actually less important regions for the function $f$ giving them a 
+
+%Reducing the variance of the Monte Carlo estimate for a function which we have no prior knowledge about should not be attempted, and sample points to approximate the solution of the integral with should be uniformly randomly sampled. As creating a probability density function to sample points from may actually increase the variance compared to the uniform approach if the created $pdf$ is vastly different to the function $f$.
+
 
 \section{Markov Decision Processes and TD-Learning}
 
