@@ -73,14 +73,22 @@
 
 \usepackage{tikz}
 \usepackage{pgfplots}
-\pgfplotsset{width=\linewidth,compat=1.9}
-
+\usepackage{array}
 \usepackage{caption}
 \usepackage{subcaption}
 
+% Pgfplots fig size
+\pgfplotsset{width=\linewidth,compat=1.9}
+
+% Definition of Gaussian distribution to plot
 \pgfmathdeclarefunction{gauss}{2}{%
   \pgfmathparse{1/(#2*sqrt(2*pi))*exp(-((x-#1)^2)/(2*#2^2))}%
 }
+
+% Define environment to list parameters of function
+\newenvironment{conditions}
+  {\par\vspace{\abovedisplayskip}\noindent\begin{tabular}{>{$}l<{$} @{${}={}$} l}}
+  {\end{tabular}\par\vspace{\belowdisplayskip}}
 
 % =============================================================================
 

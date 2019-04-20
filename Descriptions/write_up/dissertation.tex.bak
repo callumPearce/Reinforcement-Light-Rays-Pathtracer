@@ -741,9 +741,11 @@ Up to this point, I have discussed  what path tracing is and how it approximates
 \end{comment}
 
 \section{Monte Carlo Integration and Importance Sampling}
+\label{sec:monte_carlo}
 The theory of Monte Carlo integration and importance sampling underpins how the noise in images rendered by path tracing can be reduced when using the same number of sampled rays per pixel. Therefore, it is necessary to have a good understanding of Monte Carlo integration and its properties, as well as importance sampling before applying it to path tracing.
 
 \subsection{Monte Carlo Integration}
+\label{sec:monte_carlo_approx}
  Monte Carlo Integration is a technique to estimate the value of an integral, Equation \ref{eq:integral} represents this integral for a one-dimensional function $f$.
 
 \begin{equation}
@@ -791,8 +793,7 @@ The standard error of the Monte Carlo integration approximation decreases accord
 \end{equation}
 
 \subsection{Importance Sampling for Reducing Approximation Variance}
-
-% If pdf is proportional to f(x), then the division of f(x)/pdf(x) in monte carlo creates a uniform distribution, or the closer the shape of pdf(x) is to f(x) the closer f(x)/pdf(x) comes to a uniform distribution. The variance from samples of a uniform distribution are zero, as every sample will have the same value, therefore the closer we make f(x)/pdf(x) to a uniform distribution,  the lower are variance will be in the preduction of F
+\label{sec:importance_smapling}
 
 Currently I have only discussed Monte Carlo integration by sampling points $x_i$ to solve the integral using a uniform distribution. However the purpose of introducing Equation \ref{eq:generalized_mc} was to create a custom $pdf$ which can be used for importance sampling to reduce the variance of the Monte Carlo integration approximation. To understand how and why importance sampling works, first observe Figure \ref{fig:constant_function} where a constant function is given with a single sample point evaluated for $f(x)$. This single sample is enough to find the true value for the area beneath the curve i.e. integrate the function with respect to $x$. This is shown in Equation \ref{eq:constant_monte_carlo}, where $p = f(x)$ $ \forall x \in \mathbb{R}$.
 
@@ -954,8 +955,62 @@ For most cases it is not possible to know the correct probability density functi
 As previously explained, Figure \ref{fig:improtance_correct} represents a probability density function which has a similar shape to the function which is being integrated. Therefore the variance in the Monte Carlo integration approximation will be lower then that of the uniform distribution shown in Figure \ref{fig:improtance_uniform}. Figure \ref{fig:improtance_incorrect} presents an example where the created probability density function does not resemble the shape of the function which is being integrated. Using this $pdf$ in Monte Carlo integration would significantly increase the variance in the approximation compared to that from a uniform $pdf$ shown in Figure \ref{fig:improtance_uniform}.  This is due to regions which have high importance according to the $pdf$ contribute a low amount to the integral of the function $f$, causing the variance in the Monte Carlo integration approximation to rise.
 
 \section{Monte Carlo Path Tracing}
+\label{sec:mc_pathtracing}
+In 1986 James Kajiya introduced the rendering equation and with a it a Monte Carlo integral approximation to the equation \cite{kajiya1986rendering}. This Monte Carlo approximation is essentially what is known as today as Monte Carlo Path Tracing. Here, I will give a detailed explanation of the rendering equation and how Monte Carlo Path Tracing approximates the equation by accurately simulating light transport. As Path tracing is a involves a Monte Carlo integral approximation, importance sampling can be used to reduce the variance in its approximation as described in Section \ref{sec:importance_smapling}.
 
+\subsection{The Rendering Equation}
+\label{sec:rendering_equation}
 
+Equation \ref{eq:rendering_equation} is the rendering equation. It calculates the radiance incident from a point $x$ at a given viewing angle $\omega$. Radiance indicates the power of light emitted, transmitted, reflected or received by a surface from a given viewing angle, with units watts per steradian per square metre $(W \cdot sr^{-1} \cdot m^{-2})$. Therefore, by placing a camera in a scene, the radiance incident on the lens from a given surface determines the cameras perceived colour and power of light incident from the surface. These values are used to calculate pixel values in computer image generation. The equation states how to correctly perform  light transport simulation for rendering. Therefore, methods which can accurately approximate the rendering equation for any given scene can convert the incident radiance into pixel values to produce realistic rendered images of any given scene. The exact details of how this is done will be described in the next section on the forward path tracing algorithm.
+
+\begin{equation}
+\label{eq:rendering_equation}
+L_o(x, \omega) = L_e(x,\omega) + \int_\Omega L_i(h(x, \omega_i), -\omega_i) f_r(\omega_i, x, \omega) cos(\theta_i) d\omega_i
+\end{equation}
+Where:
+\begin{conditions}
+ L_o(x, \omega)   &  The total outgoing radiance from a 3D point $x$, in the direction $\omega$  \\
+ L_e(x,\omega)     &  The emitted radiance from the point $x$\\   
+\Omega   &  Hemisphere centred around the normal $n$ of the surface, containing all possible angles $\omega_i$ \\
+L_i(y, -\omega_i) & The radiance incident from the intersected position $y$ in direction $\omega_i$\\
+h(x, \omega_i)   &  Returns the closest intersected position by firing a ray from $x$ in direction $\omega_i$ \\
+f_r(\omega_i, x, \omega)   & The BRDF, describing the proportion of light reflected from $\omega_i$ in direction $\omega$\\
+cos(\theta_i)   &  Cosine of the angle between surface normal at point $x$ and the direction $\omega_i$\\
+\end{conditions}
+
+The rendering equation is based on the physical law of the conservation of energy, where the outgoing radiance in a given direction ($L_o$) from a point is equal to the emitted light ($L_e$) from the point in the direction, plus the reflected light (the integral) from that point in the direction. The emittance term $L_e$ is simple, it is the light emitted the point $x$ which has been intersected, if this is non-zero a light source has been intersected with. However, the reflected light which is represented by the integral is generally analytically intractable, as it involves summing the contribution of incoming radiance from infinitely many directions in the hemisphere $\Omega$ around the point $x$ ($L_i$). Also, the term $L_i$ is recursive, as to calculate the radiance incident in the direction $\omega_i$ from some hit-point say $y = h(x,\omega_i)$, a solution is required for $L_o(y, \omega)$. This concept is represented Figure \ref{fig:recursive_rendering}.
+
+\begin{figure}[h]
+\begin{center}
+\includegraphics[width=0.7\textwidth]{images/rendering_equation.png}    
+\end{center}
+\caption{A diagrammatic representation of the recursive nature of the rendering equation. The outgoing radiance ($L_o$) in a given direction $\omega$ from a point $x$ requires an estimation of the incident radiance coming from all angles in the hemisphere around the point, that is $L_i(h(x, \omega_i),-\omega_i) = L_i(y_i, -\omega_i)$ $\forall \omega_i \in \Omega$. To calculate $L_i(y_i, -\omega_i)$ is identical to calculating the outgoing radiance $L_o(y_i, -\omega_i)$, hence the $L_o$ is a recursive function. }
+\label{fig:recursive_rendering}
+\end{figure}
+
+The $f_r$ term in Equation \ref{eq:rendering_equation} is known as the bidirectional reflectance distribution function (BRDF). Every surface has a BRDF which determines when a ray intersects with that surface at a given incident direction, the probability distribution over the set of angles the ray can be reflected in. Therefore, querying the BRDF for a surface at point $x$ with incident ray direction $\omega'$ and given reflected direction $\omega$, that is $f_r(\omega', x , \omega)$,  a single scalar probability value is returned. This probability represents how likely a ray is to be reflected in direction $\omega$. A diffuse and specular surface's are depicted in \ref{fig:brdfs}. An example of a diffuse material is paper, as it reflects light almost equally in all directions for any angle of incidence. Whilst for specular materials, many metals exhibit specular reflections, where incident rays are reflected in a narrow area around the ray if it were perfectly reflected. Another way to think about diffuse and specular materials is do they change in appearance depending on the viewing angle? For example, surface of paper appears to be identical no matter the viewing angle, however a shiny metal ball would appear to reflect what was in front it which changes depending on the viewing angle. 
+
+\begin{figure}[!h]
+\label{fig:brdfs}
+\centering.
+\minipage{0.32\textwidth}
+  \includegraphics[width=\textwidth]{images/diffuse_brdf.png}   
+  \subcaption{Diffuse BRDF}\label{fig:diffuse_brdf}
+\endminipage\hspace{5em}
+\minipage{0.32\textwidth}
+  \includegraphics[width=\textwidth]{images/specular_brdf.png}
+  \subcaption{Specular BRDF}\label{fig:specular_brdf}
+\endminipage
+\caption{A representation of both a diffuse surface and specular surface BRDF for a given angle of incidence $\omega'$. The surface point is located where all end of the arrows converge. The arrows indicate a subset of direction possible for the incident ray to be reflected in. All possible directions reflected directions for a ray are defined between the surface point and the line , for an incident direction $\omega'$. The further away a point is on the line, the more likely a ray is to reflected in a direction from the surface point to that point on the line. The diffuse surface is equally likely to reflect a ray in any direction. Whereas, the specular surface favour a small subset are of direction in the hemisphere surrounding the surface point.}
+\end{figure}
+
+A scene comprising of only diffuse materials is generally more computationally expensive to simulate, as one has to simulate rays reflecting in all directions around intersections points with surfaces, compared to a specular scene where only a small subset of directions need to be sampled for each intersection. So, from here on whenever a surface or BRDF is mentioned, assume it is diffuse as my descriptions can be extended to specular materials by restricting ray reflections to a limited set of angles.\\
+
+Finally, as mentioned $cos(\theta)$ is the cosine of the angle between the surface normal and the angle of incidence. The normal of a surface is the normalized vector that is perpendicular to the surface at the given point of intersection \cite{}. 
+
+\begin{itemize}
+\item Example specular and diffuse BRDFs and explain we focus on diffuse BRDF
+\end{itemize}
 
 \section{Markov Decision Processes and TD-Learning}
 

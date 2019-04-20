@@ -59,7 +59,9 @@
 \@writefile{loa}{\addvspace {10\p@ }}
 \newlabel{chap:technical}{{2}{7}{Technical Background}{chapter.2}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {2.1}Monte Carlo Integration and Importance Sampling}{7}{section.2.1}}
+\newlabel{sec:monte_carlo}{{2.1}{7}{Monte Carlo Integration and Importance Sampling}{section.2.1}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.1.1}Monte Carlo Integration}{7}{subsection.2.1.1}}
+\newlabel{sec:monte_carlo_approx}{{2.1.1}{7}{Monte Carlo Integration}{subsection.2.1.1}{}}
 \newlabel{eq:integral}{{2.1}{7}{Monte Carlo Integration}{equation.2.1.1}{}}
 \newlabel{eq:monte_carlo}{{2.2}{7}{Monte Carlo Integration}{equation.2.1.2}{}}
 \newlabel{eq:generalized_mc}{{2.3}{7}{Monte Carlo Integration}{equation.2.1.3}{}}
@@ -70,12 +72,14 @@
 \newlabel{eq:sample_variance}{{2.6}{8}{Monte Carlo Integration}{equation.2.1.6}{}}
 \newlabel{eq:mc_error}{{2.7}{8}{Monte Carlo Integration}{equation.2.1.7}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.1.2}Importance Sampling for Reducing Approximation Variance}{8}{subsection.2.1.2}}
+\newlabel{sec:importance_smapling}{{2.1.2}{8}{Importance Sampling for Reducing Approximation Variance}{subsection.2.1.2}{}}
 \newlabel{eq:constant_monte_carlo}{{2.8}{8}{Importance Sampling for Reducing Approximation Variance}{equation.2.1.8}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {2.1}{\ignorespaces Constant Function  with a sample point\relax }}{8}{figure.caption.12}}
 \providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
 \newlabel{fig:constant_function}{{2.1}{8}{Constant Function\\ with a sample point\relax }{figure.caption.12}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {2.2}{\ignorespaces  Non-linear Function  with a sample point\relax }}{8}{figure.caption.12}}
 \newlabel{fig:non_lin_function}{{2.2}{8}{Non-linear Function\\ with a sample point\relax }{figure.caption.12}{}}
+\citation{kajiya1986rendering}
 \newlabel{eq:constant_conversion}{{2.9}{9}{Importance Sampling for Reducing Approximation Variance}{equation.2.1.9}{}}
 \newlabel{eq:solve_mc_integration}{{2.10}{9}{Importance Sampling for Reducing Approximation Variance}{equation.2.1.10}{}}
 \newlabel{fig:improtance_correct}{{2.3a}{9}{Importance sampling reducing variance\relax }{figure.caption.13}{}}
@@ -86,47 +90,63 @@
 \newlabel{sub@fig:improtance_incorrect}{{c}{9}{Importance sampling increasing variance\relax }{figure.caption.13}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {2.3}{\ignorespaces Graphical representation of a function $f(x)$ (red) and the corresponding probability density function $pdf(x)$ (blue) used in the Monte Carlo integration approximation for the integral of $f(x)$.\relax }}{9}{figure.caption.13}}
 \@writefile{toc}{\contentsline {section}{\numberline {2.2}Monte Carlo Path Tracing}{9}{section.2.2}}
-\@writefile{toc}{\contentsline {section}{\numberline {2.3}Markov Decision Processes and TD-Learning}{9}{section.2.3}}
-\@writefile{toc}{\contentsline {section}{\numberline {2.4}Linking TD-Learning and Light Transport Simulation}{9}{section.2.4}}
-\@writefile{toc}{\contentsline {section}{\numberline {2.5}The expected SARSA Path tracer}{9}{section.2.5}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.5.1}Plan}{9}{subsection.2.5.1}}
-\@writefile{toc}{\contentsline {chapter}{\numberline {3}Deep Q-Learning Path tracer}{11}{chapter.3}}
+\newlabel{sec:mc_pathtracing}{{2.2}{9}{Monte Carlo Path Tracing}{section.2.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2.1}The Rendering Equation}{9}{subsection.2.2.1}}
+\newlabel{sec:rendering_equation}{{2.2.1}{9}{The Rendering Equation}{subsection.2.2.1}{}}
+\newlabel{eq:rendering_equation}{{2.11}{10}{The Rendering Equation}{equation.2.2.11}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.4}{\ignorespaces A diagrammatic representation of the recursive nature of the rendering equation. The outgoing radiance ($L_o$) in a given direction $\omega $ from a point $x$ requires an estimation of the incident radiance coming from all angles in the hemisphere around the point, that is $L_i(h(x, \omega _i),-\omega _i) = L_i(y_i, -\omega _i)$ $\forall \omega _i \in \Omega $. To calculate $L_i(y_i, -\omega _i)$ is identical to calculating the outgoing radiance $L_o(y_i, -\omega _i)$, hence the $L_o$ is a recursive function. \relax }}{10}{figure.caption.14}}
+\newlabel{fig:recursive_rendering}{{2.4}{10}{A diagrammatic representation of the recursive nature of the rendering equation. The outgoing radiance ($L_o$) in a given direction $\omega $ from a point $x$ requires an estimation of the incident radiance coming from all angles in the hemisphere around the point, that is $L_i(h(x, \omega _i),-\omega _i) = L_i(y_i, -\omega _i)$ $\forall \omega _i \in \Omega $. To calculate $L_i(y_i, -\omega _i)$ is identical to calculating the outgoing radiance $L_o(y_i, -\omega _i)$, hence the $L_o$ is a recursive function. \relax }{figure.caption.14}{}}
+\citation{normals}
+\newlabel{fig:brdfs}{{\caption@xref {fig:brdfs}{ on input line 994}}{11}{The Rendering Equation}{figure.caption.15}{}}
+\newlabel{fig:diffuse_brdf}{{2.5a}{11}{Diffuse BRDF\relax }{figure.caption.15}{}}
+\newlabel{sub@fig:diffuse_brdf}{{a}{11}{Diffuse BRDF\relax }{figure.caption.15}{}}
+\newlabel{fig:specular_brdf}{{2.5b}{11}{Specular BRDF\relax }{figure.caption.15}{}}
+\newlabel{sub@fig:specular_brdf}{{b}{11}{Specular BRDF\relax }{figure.caption.15}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.5}{\ignorespaces A representation of both a diffuse surface and specular surface BRDF for a given angle of incidence $\omega '$. The surface point is located where all end of the arrows converge. The arrows indicate a subset of direction possible for the incident ray to be reflected in. All possible directions reflected directions for a ray are defined between the surface point and the line , for an incident direction $\omega '$. The further away a point is on the line, the more likely a ray is to reflected in a direction from the surface point to that point on the line. The diffuse surface is equally likely to reflect a ray in any direction. Whereas, the specular surface favour a small subset are of direction in the hemisphere surrounding the surface point.\relax }}{11}{figure.caption.15}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2.2}Path Tracing}{11}{subsection.2.2.2}}
+\@writefile{toc}{\contentsline {section}{\numberline {2.3}Markov Decision Processes and TD-Learning}{11}{section.2.3}}
+\@writefile{toc}{\contentsline {section}{\numberline {2.4}Linking TD-Learning and Light Transport Simulation}{11}{section.2.4}}
+\@writefile{toc}{\contentsline {section}{\numberline {2.5}The expected SARSA Path tracer}{11}{section.2.5}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.5.1}Plan}{11}{subsection.2.5.1}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {3}Deep Q-Learning Path tracer}{13}{chapter.3}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
 \@writefile{loa}{\addvspace {10\p@ }}
-\newlabel{chap:deep-q}{{3}{11}{Deep Q-Learning Path tracer}{chapter.3}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.0.1}Plan}{11}{subsection.3.0.1}}
-\@writefile{toc}{\contentsline {chapter}{\numberline {4}Critical Evaluation}{13}{chapter.4}}
+\newlabel{chap:deep-q}{{3}{13}{Deep Q-Learning Path tracer}{chapter.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.0.1}Plan}{13}{subsection.3.0.1}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {4}Critical Evaluation}{15}{chapter.4}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
 \@writefile{loa}{\addvspace {10\p@ }}
-\newlabel{chap:evaluation}{{4}{13}{Critical Evaluation}{chapter.4}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.0.1}Plan}{13}{subsection.4.0.1}}
-\@writefile{toc}{\contentsline {chapter}{\numberline {5}Conclusion}{15}{chapter.5}}
+\newlabel{chap:evaluation}{{4}{15}{Critical Evaluation}{chapter.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.0.1}Plan}{15}{subsection.4.0.1}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {5}Conclusion}{17}{chapter.5}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
 \@writefile{loa}{\addvspace {10\p@ }}
-\newlabel{chap:conclusion}{{5}{15}{Conclusion}{chapter.5}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.0.1}Plan}{15}{subsection.5.0.1}}
+\newlabel{chap:conclusion}{{5}{17}{Conclusion}{chapter.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.0.1}Plan}{17}{subsection.5.0.1}}
 \bibdata{dissertation}
-\bibcite{bako2017kernel}{1}
-\bibcite{bloomberg.com}{2}
-\bibcite{chaitanya2017interactive}{3}
-\bibcite{christensen2018renderman}{4}
-\bibcite{christensen2016path}{5}
-\bibcite{dahm2017learning}{6}
-\bibcite{georgiev2018arnold}{7}
-\bibcite{jensen1996global}{8}
-\bibcite{keller2016path}{9}
-\bibcite{krivanek2014recent}{10}
-\bibcite{morokoff1995quasi}{11}
-\bibcite{nvidia_turing_architecture_whitepaper_2018}{12}
-\bibcite{pan2006virtual}{13}
-\bibcite{ramamoorthi2012theory}{14}
-\bibcite{scratchapixel_2015}{15}
-\bibcite{sutton2011reinforcement}{16}
-\@writefile{toc}{\contentsline {chapter}{\numberline {A}An Example Appendix}{19}{appendix.A}}
+\bibcite{normals}{1}
+\bibcite{bako2017kernel}{2}
+\bibcite{bloomberg.com}{3}
+\bibcite{chaitanya2017interactive}{4}
+\bibcite{christensen2018renderman}{5}
+\bibcite{christensen2016path}{6}
+\bibcite{dahm2017learning}{7}
+\bibcite{georgiev2018arnold}{8}
+\bibcite{jensen1996global}{9}
+\bibcite{kajiya1986rendering}{10}
+\bibcite{keller2016path}{11}
+\bibcite{krivanek2014recent}{12}
+\bibcite{morokoff1995quasi}{13}
+\bibcite{nvidia_turing_architecture_whitepaper_2018}{14}
+\bibcite{pan2006virtual}{15}
+\bibcite{ramamoorthi2012theory}{16}
+\bibcite{scratchapixel_2015}{17}
+\bibcite{sutton2011reinforcement}{18}
+\@writefile{toc}{\contentsline {chapter}{\numberline {A}An Example Appendix}{21}{appendix.A}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
 \@writefile{loa}{\addvspace {10\p@ }}
-\newlabel{appx:example}{{A}{19}{An Example Appendix}{appendix.A}{}}
+\newlabel{appx:example}{{A}{21}{An Example Appendix}{appendix.A}{}}
