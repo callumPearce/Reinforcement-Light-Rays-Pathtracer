@@ -54,7 +54,7 @@
 % http://www.ctan.org/tex-archive/macros/latex/contrib/datetime
 \RequirePackage{datetime}
 % http://www.ctan.org/tex-archive/macros/latex/contrib/algorithm2e
-\RequirePackage[algochapter]{algorithm2e}
+\RequirePackage[ruled,vlined]{algorithm2e}
 % http://www.ctan.org/tex-archive/macros/latex/contrib/listings
 \RequirePackage{listings}
 % http://www.ctan.org/tex-archive/macros/latex/contrib/xstring
@@ -76,6 +76,7 @@
 \usepackage{array}
 \usepackage{caption}
 \usepackage{subcaption}
+\usepackage{mathtools}
 
 % Pgfplots fig size
 \pgfplotsset{width=\linewidth,compat=1.9}

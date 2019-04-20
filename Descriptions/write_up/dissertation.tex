@@ -355,6 +355,7 @@ objectives and significant challenges of my investigation are described.
 
 
 \section{Path Tracing for Light Transport Simulation}
+\label{sec:conceptual_path_trace}
 Path Tracing is a Monte Carlo method for rendering photo-realistic images of 3D 
 scenes by accurately approximating global illumination \cite{christensen2016path}.
 Figure \ref{} summarises on a high level how forward Path tracing produces a 
@@ -961,11 +962,11 @@ In 1986 James Kajiya introduced the rendering equation and with a it a Monte Car
 \subsection{The Rendering Equation}
 \label{sec:rendering_equation}
 
-Equation \ref{eq:rendering_equation} is the rendering equation. It calculates the radiance incident from a point $x$ at a given viewing angle $\omega$. Radiance indicates the power of light emitted, transmitted, reflected or received by a surface from a given viewing angle, with units watts per steradian per square metre $(W \cdot sr^{-1} \cdot m^{-2})$. Therefore, by placing a camera in a scene, the radiance incident on the lens from a given surface determines the cameras perceived colour and power of light incident from the surface. These values are used to calculate pixel values in computer image generation. The equation states how to correctly perform  light transport simulation for rendering. Therefore, methods which can accurately approximate the rendering equation for any given scene can convert the incident radiance into pixel values to produce realistic rendered images of any given scene. The exact details of how this is done will be described in the next section on the forward path tracing algorithm.
+Equation \ref{eq:rendering_equation} is the rendering equation. It calculates the radiance incident from a point $x$ at a given viewing angle $\omega$. Radiance indicates the power of light emitted, transmitted, reflected or received by a surface from a given viewing angle, with units watts per steradian per square metre $(W \cdot sr^{-1} \cdot m^{-2})$. Therefore, by placing a camera in a scene, the radiance incident on the lens from a given surface determines the cameras perceived colour and power of light incident from the surface. These values are used to calculate pixel values in computer image generation. The equation states how to correctly perform  light transport simulation for rendering, and in turn how to accurately simulate global illumination. Therefore, methods which can accurately approximate the rendering equation for any given scene can convert the incident radiance into pixel values to produce realistic rendered images of any given scene. The exact details of how this is done will be described in the next section on the forward path tracing algorithm.
 
 \begin{equation}
 \label{eq:rendering_equation}
-L_o(x, \omega) = L_e(x,\omega) + \int_\Omega L_i(h(x, \omega_i), -\omega_i) f_r(\omega_i, x, \omega) cos(\theta_i) d\omega_i
+\underbrace{L_o(x, \omega)}_{\text{Outgoing}} =\underbrace{ L_e(x,\omega)}_{\text{Emitted}} + \underbrace{\int_\Omega L_i(h(x, \omega_i), -\omega_i) f_r(\omega_i, x, \omega) cos(\theta_i) d\omega_i}_{\text{Reflected}}
 \end{equation}
 Where:
 \begin{conditions}
@@ -1010,6 +1011,35 @@ Finally, as mentioned $cos(\theta)$ is the cosine of the angle between the norma
 
 \subsection{Path Tracing}
 
+In section \ref{sec:conceptual_path_trace} I already gave a high level overview of the how the path tracing algorithm where many rays are sampled from the camera, through a pixel and into the scene to calculate each rays colour estimate. A pixels colour is then determined by averaging all rays colour estimates. However I did not detail how to get the colour estimate of a sampled ray. This is exactly what the solution to the rendering equation gives, as $L_o(x,\omega)$ gives the outgoing radiance for each sampled rays initial direction $\omega$ and intersection point $x$. The radiance is then converted into a pixel colour value. Put another way, $L_o(x,\omega)$ is a pixels colour value where $\omega$ is the direction of the ray when shot from the camera, through the pixel and into the scene. Then $x$ is the position in the scene the ray first intersects with. \\
+
+% Image to show different number of samples used in forward path tracing and improvements in image quality
+
+But how does one solve the rendering equation, as often it cannot be done analytically? The answer is to take a Monte Carlo integration approximation of the reflected radiance integral, then an approximation for each pixel value in an image can be calculated using $N$ sampled rays. By the law of large number in Equation \ref{eq:law_large_numbers}, the larger the value of $N$, the closer each pixels approximation will be to the pixels true value as a result of solving the rendering equation. As known from section \ref{sec:rendering_equation}, the rendering equation follows the physical law of energy conservation, and due to this it accurately models light transport simulation for global illumination. Therefore, the more samples used in the Monte Carlo approximation to the rendering equation, the more realistic the rendered image \cite{christensen2016path}. Algorithm \ref{alg:forward_path_tracing} gives the pseudo code for a forward path tracer for tracing a single sampled ray for a for a pixel to retrieve its colour estimate. To render an entire image, this algorithm would be called for each pixel $N$ times (where $N$ is the number of samples per pixel) and the colour estimates of all sampled rays would be average to find the colour estimate of the pixel.
+
+\begin{algorithm}[H]
+\label{alg:forward_path_tracing}
+\SetKwProg{Fn}{Function}{ }{end}
+\SetAlgoLined
+ \Fn{pathTrace(camera, scene, pixel)}{  
+   $throughput \leftarrow 1$\\
+   $ray \leftarrow initialiseRayForPixel(pixel, camera)$\\
+    \For{$i = 0$ \KwTo $\infty$}{
+        $(y, norm) = closestIntersection(ray, scene)$\\
+        \If{$noIntersection(y)$}{
+            \Return $throughput \cdot \text{environmentLightRadiance}(ray,y)$
+        }
+        \ElseIf{$areaLightIntersection(y)$}{
+            \Return $throughput \cdot \text{areaLightRadiance}(ray, y)$
+        }
+        $(\omega, \rho_\omega, f_s) \leftarrow \text{sampleRayDirRandomly(y)}$\\
+        $throughput \leftarrow throughput \cdot f_s \cdot cos(norm, \omega) / \rho_\omega$\\
+        $ray \leftarrow (y,\omega)$
+    }
+ }
+ 
+ \caption{Forward path tracer}
+\end{algorithm}
 \section{Markov Decision Processes and TD-Learning}
 
 \section{Linking TD-Learning and Light Transport Simulation}

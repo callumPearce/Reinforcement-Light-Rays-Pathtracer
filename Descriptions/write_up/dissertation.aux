@@ -32,6 +32,7 @@
 \@writefile{loa}{\addvspace {10\p@ }}
 \newlabel{chap:context}{{1}{1}{Contextual Background}{chapter.1}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {1.1}Path Tracing for Light Transport Simulation}{1}{section.1.1}}
+\newlabel{sec:conceptual_path_trace}{{1.1}{1}{Path Tracing for Light Transport Simulation}{section.1.1}{}}
 \citation{sutton2011reinforcement}
 \citation{sutton2011reinforcement}
 \@writefile{toc}{\contentsline {section}{\numberline {1.2}Temporal Difference Learning for Importance Sampling Ray Directions}{2}{section.1.2}}
@@ -97,35 +98,38 @@
 \@writefile{lof}{\contentsline {figure}{\numberline {2.4}{\ignorespaces A diagrammatic representation of the recursive nature of the rendering equation. The outgoing radiance ($L_o$) in a given direction $\omega $ from a point $x$ requires an estimation of the incident radiance coming from all angles in the hemisphere around the point, that is $L_i(h(x, \omega _i),-\omega _i) = L_i(y_i, -\omega _i)$ $\forall \omega _i \in \Omega $. To calculate $L_i(y_i, -\omega _i)$ is identical to calculating the outgoing radiance $L_o(y_i, -\omega _i)$, hence the $L_o$ is a recursive function. \relax }}{10}{figure.caption.14}}
 \newlabel{fig:recursive_rendering}{{2.4}{10}{A diagrammatic representation of the recursive nature of the rendering equation. The outgoing radiance ($L_o$) in a given direction $\omega $ from a point $x$ requires an estimation of the incident radiance coming from all angles in the hemisphere around the point, that is $L_i(h(x, \omega _i),-\omega _i) = L_i(y_i, -\omega _i)$ $\forall \omega _i \in \Omega $. To calculate $L_i(y_i, -\omega _i)$ is identical to calculating the outgoing radiance $L_o(y_i, -\omega _i)$, hence the $L_o$ is a recursive function. \relax }{figure.caption.14}{}}
 \citation{normals}
-\newlabel{fig:brdfs}{{\caption@xref {fig:brdfs}{ on input line 994}}{11}{The Rendering Equation}{figure.caption.15}{}}
+\citation{christensen2016path}
+\newlabel{fig:brdfs}{{\caption@xref {fig:brdfs}{ on input line 995}}{11}{The Rendering Equation}{figure.caption.15}{}}
 \newlabel{fig:diffuse_brdf}{{2.5a}{11}{Diffuse BRDF\relax }{figure.caption.15}{}}
 \newlabel{sub@fig:diffuse_brdf}{{a}{11}{Diffuse BRDF\relax }{figure.caption.15}{}}
 \newlabel{fig:specular_brdf}{{2.5b}{11}{Specular BRDF\relax }{figure.caption.15}{}}
 \newlabel{sub@fig:specular_brdf}{{b}{11}{Specular BRDF\relax }{figure.caption.15}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {2.5}{\ignorespaces A representation of both a diffuse surface and specular surface BRDF for a given angle of incidence $\omega '$. The surface point is located where all end of the arrows converge. The arrows indicate a subset of direction possible for the incident ray to be reflected in. All possible directions reflected directions for a ray are defined between the surface point and the line , for an incident direction $\omega '$. The further away a point is on the line, the more likely a ray is to reflected in a direction from the surface point to that point on the line. The diffuse surface is equally likely to reflect a ray in any direction. Whereas, the specular surface favour a small subset are of direction in the hemisphere surrounding the surface point.\relax }}{11}{figure.caption.15}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.2.2}Path Tracing}{11}{subsection.2.2.2}}
-\@writefile{toc}{\contentsline {section}{\numberline {2.3}Markov Decision Processes and TD-Learning}{11}{section.2.3}}
-\@writefile{toc}{\contentsline {section}{\numberline {2.4}Linking TD-Learning and Light Transport Simulation}{11}{section.2.4}}
-\@writefile{toc}{\contentsline {section}{\numberline {2.5}The expected SARSA Path tracer}{11}{section.2.5}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.5.1}Plan}{11}{subsection.2.5.1}}
-\@writefile{toc}{\contentsline {chapter}{\numberline {3}Deep Q-Learning Path tracer}{13}{chapter.3}}
+\newlabel{alg:forward_path_tracing}{{1}{12}{Path Tracing}{algocfline.1}{}}
+\@writefile{loa}{\contentsline {algocf}{\numberline {1}{\ignorespaces Forward path tracer\relax }}{12}{algocf.1}}
+\@writefile{toc}{\contentsline {section}{\numberline {2.3}Markov Decision Processes and TD-Learning}{12}{section.2.3}}
+\@writefile{toc}{\contentsline {section}{\numberline {2.4}Linking TD-Learning and Light Transport Simulation}{12}{section.2.4}}
+\@writefile{toc}{\contentsline {section}{\numberline {2.5}The expected SARSA Path tracer}{12}{section.2.5}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.5.1}Plan}{12}{subsection.2.5.1}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {3}Deep Q-Learning Path tracer}{15}{chapter.3}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
 \@writefile{loa}{\addvspace {10\p@ }}
-\newlabel{chap:deep-q}{{3}{13}{Deep Q-Learning Path tracer}{chapter.3}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.0.1}Plan}{13}{subsection.3.0.1}}
-\@writefile{toc}{\contentsline {chapter}{\numberline {4}Critical Evaluation}{15}{chapter.4}}
+\newlabel{chap:deep-q}{{3}{15}{Deep Q-Learning Path tracer}{chapter.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.0.1}Plan}{15}{subsection.3.0.1}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {4}Critical Evaluation}{17}{chapter.4}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
 \@writefile{loa}{\addvspace {10\p@ }}
-\newlabel{chap:evaluation}{{4}{15}{Critical Evaluation}{chapter.4}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.0.1}Plan}{15}{subsection.4.0.1}}
-\@writefile{toc}{\contentsline {chapter}{\numberline {5}Conclusion}{17}{chapter.5}}
+\newlabel{chap:evaluation}{{4}{17}{Critical Evaluation}{chapter.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.0.1}Plan}{17}{subsection.4.0.1}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {5}Conclusion}{19}{chapter.5}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
 \@writefile{loa}{\addvspace {10\p@ }}
-\newlabel{chap:conclusion}{{5}{17}{Conclusion}{chapter.5}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.0.1}Plan}{17}{subsection.5.0.1}}
+\newlabel{chap:conclusion}{{5}{19}{Conclusion}{chapter.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.0.1}Plan}{19}{subsection.5.0.1}}
 \bibdata{dissertation}
 \bibcite{normals}{1}
 \bibcite{bako2017kernel}{2}
@@ -145,8 +149,8 @@
 \bibcite{ramamoorthi2012theory}{16}
 \bibcite{scratchapixel_2015}{17}
 \bibcite{sutton2011reinforcement}{18}
-\@writefile{toc}{\contentsline {chapter}{\numberline {A}An Example Appendix}{21}{appendix.A}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {A}An Example Appendix}{23}{appendix.A}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
 \@writefile{loa}{\addvspace {10\p@ }}
-\newlabel{appx:example}{{A}{21}{An Example Appendix}{appendix.A}{}}
+\newlabel{appx:example}{{A}{23}{An Example Appendix}{appendix.A}{}}
