@@ -48,12 +48,6 @@ Henrik~Wann Jensen.
 \newblock Global illumination using photon maps.
 \newblock In {\em Rendering Techniques’ 96}, pages 21--30. Springer, 1996.
 
-\bibitem{kajiya1986rendering}
-James~T Kajiya.
-\newblock The rendering equation.
-\newblock In {\em ACM SIGGRAPH computer graphics}, volume~20, pages 143--150.
-  ACM, 1986.
-
 \bibitem{keller2016path}
 Alexander Keller, Ken Dahm, and Nikolaus Binder.
 \newblock Path space filtering.
@@ -68,6 +62,11 @@ Jaroslav Kriv{\'a}nek, Alexander Keller, Iliyan Georgiev, Anton~S Kaplanyan,
   of practice.
 \newblock In {\em SIGGRAPH Courses}, pages 17--1, 2014.
 
+\bibitem{morokoff1995quasi}
+William~J Morokoff and Russel~E Caflisch.
+\newblock Quasi-monte carlo integration.
+\newblock {\em Journal of computational physics}, 122(2):218--230, 1995.
+
 \bibitem{nvidia_turing_architecture_whitepaper_2018}
 NVIDIA.
 \newblock {\em NVIDIA Turing Architecture Whitepaper}, 2018.
@@ -81,6 +80,10 @@ Zhigeng Pan, Adrian~David Cheok, Hongwei Yang, Jiejie Zhu, and Jiaoying Shi.
 Ravi Ramamoorthi, John Anderson, Mark Meyer, and Derek Nowrouzezahrai.
 \newblock A theory of monte carlo visibility sampling.
 \newblock {\em ACM Transactions on Graphics (TOG)}, 31(5):121, 2012.
+
+\bibitem{scratchapixel_2015}
+Scratchapixel.
+\newblock Monte carlo methods in practice, Apr 2015.
 
 \bibitem{sutton2011reinforcement}
 Richard~S Sutton and Andrew~G Barto.

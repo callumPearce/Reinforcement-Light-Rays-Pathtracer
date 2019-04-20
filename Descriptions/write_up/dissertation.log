@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.10.2)  19 APR 2019 22:51
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.10.2)  20 APR 2019 11:05
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1058,7 +1058,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 77--77
 
  []
 
-<logo/logo_uob_color.pdf, id=76, 546.04pt x 158.5925pt>
+<logo/logo_uob_color.pdf, id=80, 546.04pt x 158.5925pt>
 File: logo/logo_uob_color.pdf Graphic file (type pdf)
 
 <use logo/logo_uob_color.pdf>
@@ -1209,15 +1209,10 @@ Underfull \hbox (badness 10000) in paragraph at lines 597--614
 
 ]
 Chapter 2.
-
-Underfull \hbox (badness 10000) in paragraph at lines 767--768
-
- []
-
 [7]
 
 Package pgfplots Warning: Axis range for axis y is approximately empty; enlargi
-ng it (it is [0.1:0.1]) on input line 822.
+ng it (it is [0.1:0.1]) on input line 827.
 
  [warning /pgfplots/warning/approx empty range enlarged]
 Missing character: There is no . in font nullfont!
@@ -1252,14 +1247,14 @@ Missing character: There is no ™ in font cmti10!
 ]
 Appendix A.
 [19]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1365.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 1365.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1372.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 1372.
  (./dissertation.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1365.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1365.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1372.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1372.
 
 Package rerunfilecheck Info: File `dissertation.out' has not changed.
-(rerunfilecheck)             Checksum: 1CB2E78024E68FAE5FD3F7B893317B2C;1013.
+(rerunfilecheck)             Checksum: 8C537B68FBACDFF0409A77024FD4468E;1084.
 
 
 LaTeX Warning: There were undefined references.
@@ -1270,13 +1265,13 @@ LaTeX Warning: There were undefined references.
 ### simple group (level 1) entered at line 1061 ({)
 ### bottom level 
 Here is how much of TeX's memory you used:
- 32573 strings out of 492995
- 741517 string characters out of 6132704
- 1100206 words of memory out of 5000000
- 35428 multiletter control sequences out of 15000+600000
- 12028 words of font info for 46 fonts, out of 8000000 for 9000
+ 32583 strings out of 492995
+ 741646 string characters out of 6132704
+ 1100485 words of memory out of 5000000
+ 35433 multiletter control sequences out of 15000+600000
+ 12647 words of font info for 48 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 69i,14n,98p,1092b,25117s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 69i,14n,98p,1302b,25117s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts
 /cm/cmbx10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/
 cm/cmbx12.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/c
@@ -1293,10 +1288,10 @@ r/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/
 local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/l
 ocal/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/lo
 cal/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on dissertation.pdf (41 pages, 285820 bytes).
+Output written on dissertation.pdf (41 pages, 287617 bytes).
 PDF statistics:
- 498 PDF objects out of 1000 (max. 8388607)
- 433 compressed objects within 5 object streams
- 151 named destinations out of 1000 (max. 500000)
- 130 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 509 PDF objects out of 1000 (max. 8388607)
+ 444 compressed objects within 5 object streams
+ 154 named destinations out of 1000 (max. 500000)
+ 138 words of extra memory for PDF output out of 10000 (max. 10000000)
 

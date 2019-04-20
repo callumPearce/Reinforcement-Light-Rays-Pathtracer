@@ -13,10 +13,11 @@
 \contentsline {section}{\numberline {2.1}Monte Carlo Integration and Importance Sampling}{7}{section.2.1}
 \contentsline {subsection}{\numberline {2.1.1}Monte Carlo Integration}{7}{subsection.2.1.1}
 \contentsline {subsection}{\numberline {2.1.2}Importance Sampling for Reducing Approximation Variance}{8}{subsection.2.1.2}
-\contentsline {section}{\numberline {2.2}Markov Decision Processes and TD-Learning}{9}{section.2.2}
-\contentsline {section}{\numberline {2.3}Linking TD-Learning and Light Transport Simulation}{9}{section.2.3}
-\contentsline {section}{\numberline {2.4}The expected SARSA Path tracer}{9}{section.2.4}
-\contentsline {subsection}{\numberline {2.4.1}Plan}{9}{subsection.2.4.1}
+\contentsline {section}{\numberline {2.2}Monte Carlo Path Tracing}{9}{section.2.2}
+\contentsline {section}{\numberline {2.3}Markov Decision Processes and TD-Learning}{9}{section.2.3}
+\contentsline {section}{\numberline {2.4}Linking TD-Learning and Light Transport Simulation}{9}{section.2.4}
+\contentsline {section}{\numberline {2.5}The expected SARSA Path tracer}{9}{section.2.5}
+\contentsline {subsection}{\numberline {2.5.1}Plan}{9}{subsection.2.5.1}
 \contentsline {chapter}{\numberline {3}Deep Q-Learning Path tracer}{11}{chapter.3}
 \contentsline {subsection}{\numberline {3.0.1}Plan}{11}{subsection.3.0.1}
 \contentsline {chapter}{\numberline {4}Critical Evaluation}{13}{chapter.4}
