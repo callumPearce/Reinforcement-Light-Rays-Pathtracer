@@ -1084,9 +1084,65 @@ Algorithm \ref{alg:forward_path_tracing} describes a forward path tracer which c
 
 As path tracing is a Monte Carlo method for solving the rendering equation, Importance sampling can be applied in order to reduce the variance pixel colour estimates. In section \ref{sec:importance_smapling} it was shown that by using a probability density function ($pdf$) which closely matches the shape of the function being integrated, the variance in the Monte Carlo estimate is significantly reduced. Applying this to Equation \ref{eq:rendering_eq_monte_carlo}, the term $\rho_i$ which represents the probability density function for sampling the next ray direction at intersection location $x_i$ with angle of incidence $\omega_i$. Currently you can assume that the probability density function $\rho_i$ is uniform. But this can be modified with prior knowledge regarding which directions are more important for continuing a light path in, where an important direction is one which leads to a high contribution of radiance to the pixel estimate.\\
 
-The question now is can one have any knowledge for which directions contribute the most radiance the pixels colours value? Yes, the simplest example lies within the rendering equation itself, $cos(\theta_i)$. As previously discussed this term acts as a weighting for an outgoing light paths radiance contribution. So, by multiplying the  $cos(\theta_i)$ and $\rho_i$ then normalizing to a probability distribution, the variance in the approximation may be reduced. There exists many methods of retrieving knowledge from the scene being rendering to use in importance sampling, such as irradiance cahcing \cite{bashford2012significance}, table-driven adaptive importance sampling \cite{cline2008table}, and sequential Monte Carlo adaptation \cite{pegoraro2008towards}. However as discussed in section \ref{sec:motivation}, these previous methods do effectively reduce the number of zero contribution light paths, which cause a large increase in variance. Instead, reinforcement learning can be used for this,  specifically temporal difference learning which will be discussed in the proceeding sections. 
+The question now is, can one have any knowledge for which directions contribute the most radiance to the pixels colours value? The answer is yes, and there has been a large amount of research in this which resides in the topic of light transport simulation. The simplest example lies within the rendering equation itself, $cos(\theta_i)$. As previously discussed, this term acts as a weighting for the radiance contribution of outgoing light paths. So, the probability density function $\rho_i$ can also be weighted by $cos(\theta_i)$, which is likely to reduce the pixel value variance. There exists many other methods of retrieving knowledge from the scene to use in importance sampling during rendering. For example, irradiance cahcing \cite{bashford2012significance}, table-driven adaptive importance sampling \cite{cline2008table}, and sequential Monte Carlo adaptation \cite{pegoraro2008towards}. However as discussed in section \ref{sec:motivation}, these previous methods do not effectively reduce the number of zero contribution light paths, meaning their ability to image noise for certain scenes is very limited. Instead, reinforcement learning can be used for this,  specifically temporal difference learning which will be discussed in detail in the proceeding sections. 
 
-\section{Markov Decision Processes and TD-Learning}
+\section{Reinforcement Learning and TD-Learning}
+
+\subsection{Markov Decision Processes}
+Reinforcement learning is one of the three archetypes of machine learning and it is concerned with finding what action should be taken in a given situation, in order to maximise a numerical reward \cite{sutton2011reinforcement}. This problem is formalized by a finite Markov Decision Process (MDP), which is designed to capture the most important aspects of the problem a learning agent faces when interacting over time with its environment to achieve a goal. A MDP is summarised in \ref{fig:mdp} and can be described in terms of the following:
+
+\begin{itemize}
+\item \textbf{Agent} - The learner and decision maker which takes an action $A_t$ in an observed state $S_t$ (where $t$ is the current time step), receiving an immediate numerical reward $R_{t_+1}$ and the next observed state $S_{t+1}$
+\item \textbf{Environment} - What the agent interacts with when taking an action $A_t$ in state $S_t$ and produces both $R_{t+1}$ \& $S_{t+1}$ 
+\end{itemize}
+
+\begin{figure}[h]
+\begin{center}
+\includegraphics[width=0.5\textwidth]{images/MDP.png}    
+\end{center}
+\caption{Markov Decision Process \cite{sutton2011reinforcement}}
+\label{fig:mdp}
+\end{figure}
+
+\noindent
+An MDP comprises of the following the following tuple:
+
+$$(\mathcal{S}, \mathcal{A}, p,\gamma)$$
+Where:
+\begin{conditions}
+\mathcal{S}   &  The set of all states\\
+\mathcal{A}   &  The set of all actions\\
+p   & Probability of receiving reward $r$ and state $s'$ when in the previous state $s$ and action $a$ was taken\\
+\gamma   & The discount factor which makes the agent value immediate rewards higher than later ones \\
+\end{conditions}
+
+\noindent
+An important detail of an MDP which makes it far easier to implement in practice is that any problem modelled by an MDP assumes the Markov property.
+
+\begin{quote}
+"The future is independent of the past, given the present." - \textit{Hado van Hassalt, Senior Research Scientist at DeepMind}
+\end{quote}
+
+This is expressed mathematically for an MDP in equation \ref{eq:markov_property}. Put simply, the Markov property means the current state captures all relevant information from the history of all previous states the agent has experienced, meaning the history is not needed.
+
+\begin{equation}
+\label{eq:markov_property}
+p(R_{t+1} = r, S_{t+1} = s' | S_t = s) = p(R_{t+1} = r, S_{t+1} = s' | S_1, .. , S_{t-1}, S_{t})
+\end{equation}
+
+\subsection{Goals and Rewards}
+The goal of a reinforcement learning agent can conceptually be different things in different settings, for example in the case of a game it may be to maximise the total score in play-through. Or for a robotic space rover it may be to explore the most amount of unseen areas. However, in terms of a MDP the agents goal is to maximise the total amount of cumulative reward it receives. This is more formally described by the reward hypothesis \cite{sutton2011reinforcement}
+
+\begin{quote}
+Any goals can be formalized as the maximisation of the expected value of the cumulative sum of a received scalar reward signal.
+\end{quote}
+
+Once again in the case of an AI learning the best possible action to take for any state in the game (known as the optimal policy), a reward signal could be the points gained by making a certain move. Therefore, to maximise the expected return would be to maximise the number of points received in a play-through.  The return is formally defined in Equation \ref{eq:return} in terms of a reward sequence combined with the discount factor, which as previously mentioned trades of later rewards for more immediate ones. If a discount factor ($\gamma$) is closer to 1, the agent is said to be far sighted as it gives future rewards a high weighting. Whereas a myopic agent is one which has a discount factor closer closer to 0, as it gives a lower weighting to future rewards for their contribution toward the return $G_t$.
+
+\begin{equation}
+\label{eq:return}
+G_t = R_{t+1} + \gamma R_{t+2} + \gamma^2 R_{t+3} + ... = \sum^\infty_{k=0} \gamma^k R_{t+k+1}
+\end{equation}
 
 \section{Linking TD-Learning and Light Transport Simulation}
 
