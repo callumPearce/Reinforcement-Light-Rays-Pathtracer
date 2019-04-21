@@ -425,6 +425,7 @@ illumination approximation made by the Importance sampling algorithms compared
 to that of the naive forward Path tracing algorithm.
 
 \section{Temporal Difference Learning for Importance Sampling Ray Directions}
+\label{sec:td_learn_for_importance}
 
 There are three important unanswered questions up to this point; a) what is temporal
 difference learning?  b) How can temporal difference learning methods be 
@@ -519,13 +520,14 @@ and can even benefit more from an uniform sampling scheme
 
 % vector art to display the concept of a light blocker
 
-Temporal difference learning methods are able to solve this problem 
+Temporal difference learning methods are better equipped to tackle this problem 
 \cite{dahm2017learning}. As the AI agent described in the previous section learns 
 which directions light is coming from in the scene and concentrates its sampling 
 towards these directions. Directions leading to blockers will have a low value, 
 hence it is unlikely the AI agent will sample rays in these directions.\\
 
 \section{Motivation}
+\label{sec:motivation}
 
 Rendering time of my graphics engine is not something I have tried to heavily 
 optimise. I instead focus on producing higher quality images using the same 
@@ -966,7 +968,7 @@ Equation \ref{eq:rendering_equation} is the rendering equation. It calculates th
 
 \begin{equation}
 \label{eq:rendering_equation}
-\underbrace{L_o(x, \omega)}_{\text{Outgoing}} =\underbrace{ L_e(x,\omega)}_{\text{Emitted}} + \underbrace{\int_\Omega L_i(h(x, \omega_i), -\omega_i) f_r(\omega_i, x, \omega) cos(\theta_i) d\omega_i}_{\text{Reflected}}
+\underbrace{L_o(x, \omega)}_{\text{Outgoing}} =\underbrace{ L_e(x,\omega)}_{\text{Emitted}} + \underbrace{\int_\Omega L_i(h(x, \omega_i), -\omega_i)  \cdot f_r(\omega_i, x, \omega) \cdot \cos(\theta_i) d\omega_i}_{\text{Reflected}}
 \end{equation}
 Where:
 \begin{conditions}
@@ -979,21 +981,20 @@ f_r(\omega_i, x, \omega)   & The BRDF, describing the proportion of light reflec
 cos(\theta_i)   &  Cosine of the angle between surface normal at point $x$ and the direction $\omega_i$\\
 \end{conditions}
 
-The rendering equation is based on the physical law of the conservation of energy, where the outgoing radiance in a given direction ($L_o$) from a point is equal to the emitted light ($L_e$) from the point in the direction, plus the reflected light (the integral) from that point in the direction. The emittance term $L_e$ is simple, it is the light emitted the point $x$ which has been intersected, if this is non-zero a light source has been intersected with. However, the reflected light which is represented by the integral is generally analytically intractable, as it involves summing the contribution of incoming radiance from infinitely many directions in the hemisphere $\Omega$ around the point $x$ ($L_i$). Also, the term $L_i$ is recursive, as to calculate the radiance incident in the direction $\omega_i$ from some hit-point say $y = h(x,\omega_i)$, a solution is required for $L_o(y, \omega)$. This concept is represented Figure \ref{fig:recursive_rendering}.
+The rendering equation is based on the physical law of the conservation of energy, where the outgoing radiance in a given direction ($L_o$) from a point is equal to the emitted light ($L_e$) from the point in the direction, plus the reflected light (the integral) from that point in the direction. The emittance term $L_e$ is simple, it is the light emitted the point $x$ which has been intersected, if this is non-zero a light source has been intersected with. However, the reflected light which is represented by the integral is generally analytically intractable, as it involves summing the contribution of incoming radiance from infinitely many directions in the hemisphere $\Omega$ around the point $x$ ($L_i$). Also, the term $L_i$ is recursive \cite{dutre2004state}, as to calculate the radiance incident in the direction $\omega_i$ from some hit-point say $y = h(x,\omega_i)$, a solution is required for $L_o(y, \omega)$. This concept is represented Figure \ref{fig:recursive_rendering}.
 
 \begin{figure}[h]
 \begin{center}
 \includegraphics[width=0.7\textwidth]{images/rendering_equation.png}    
 \end{center}
-\caption{A diagrammatic representation of the recursive nature of the rendering equation. The outgoing radiance ($L_o$) in a given direction $\omega$ from a point $x$ requires an estimation of the incident radiance coming from all angles in the hemisphere around the point, that is $L_i(h(x, \omega_i),-\omega_i) = L_i(y_i, -\omega_i)$ $\forall \omega_i \in \Omega$. To calculate $L_i(y_i, -\omega_i)$ is identical to calculating the outgoing radiance $L_o(y_i, -\omega_i)$, hence the $L_o$ is a recursive function. }
+\caption{A diagrammatic representation of the recursive nature of the rendering equation. The outgoing radiance ($L_o$) in a given direction $\omega$ from a point $x$ requires an estimation of the incident radiance coming from all angles in the hemisphere around the point, that is $L_i(h(x, \omega_i),-\omega_i) = L_i(y_i, -\omega_i)$ $\forall \omega_i \in \Omega$. To calculate $L_i(y_i, -\omega_i)$ is identical to calculating the outgoing radiance $L_o(y_i, -\omega_i)$ as we assume no radiance is lost along a ray line, hence the $L_o$ is a recursive function. }
 \label{fig:recursive_rendering}
 \end{figure}
 
-The $f_r$ term in Equation \ref{eq:rendering_equation} is known as the bidirectional reflectance distribution function (BRDF). Every surface has a BRDF which determines when a ray intersects with that surface at a given incident direction, the probability distribution over the set of angles the ray can be reflected in. Therefore, querying the BRDF for a surface at point $x$ with incident ray direction $\omega'$ and given reflected direction $\omega$, that is $f_r(\omega', x , \omega)$,  a single scalar probability value is returned. This probability represents how likely a ray is to be reflected in direction $\omega$. A diffuse and specular surface's are depicted in \ref{fig:brdfs}. An example of a diffuse material is paper, as it reflects light almost equally in all directions for any angle of incidence. Whilst for specular materials, many metals exhibit specular reflections, where incident rays are reflected in a narrow area around the ray if it were perfectly reflected. Another way to think about diffuse and specular materials is do they change in appearance depending on the viewing angle? For example, surface of paper appears to be identical no matter the viewing angle, however a shiny metal ball would appear to reflect what was in front it which changes depending on the viewing angle. 
+The $f_r$ term in Equation \ref{eq:rendering_equation} is known as the bidirectional reflectance distribution function (BRDF). On a high level, the BRDF describes how a surface interacts with light and upholds the law of conservation of energy \cite{glassner2014principles}. Every surface has a BRDF which determines when a ray intersects with that surface at a given incident direction, the probability distribution over the set of angles the ray can be reflected in. Therefore, querying the BRDF for a surface at point $x$ with incident ray direction $\omega'$ and given reflected direction $\omega$, that is $f_r(\omega', x , \omega)$,  a single scalar probability value is returned. This probability represents how likely a ray is to be reflected in direction $\omega$. A diffuse and specular surfaces BRDF's are depicted in \ref{fig:brdfs}. An example of a diffuse material is paper, as it reflects light almost equally in all directions for any angle of incidence. Whilst for specular materials, many metals exhibit specular reflections, where incident rays are reflected in a narrow area around the perfect reflection direction.
 
-\begin{figure}[!h]
-\label{fig:brdfs}
-\centering.
+\begin{figure}[h]
+\centering
 \minipage{0.32\textwidth}
   \includegraphics[width=\textwidth]{images/diffuse_brdf.png}   
   \subcaption{Diffuse BRDF}\label{fig:diffuse_brdf}
@@ -1003,19 +1004,60 @@ The $f_r$ term in Equation \ref{eq:rendering_equation} is known as the bidirecti
   \subcaption{Specular BRDF}\label{fig:specular_brdf}
 \endminipage
 \caption{A representation of both a diffuse surface and specular surface BRDF for a given angle of incidence $\omega'$. The surface point is located where all end of the arrows converge. The arrows indicate a subset of direction possible for the incident ray to be reflected in. All possible directions reflected directions for a ray are defined between the surface point and the line , for an incident direction $\omega'$. The further away a point is on the line, the more likely a ray is to reflected in a direction from the surface point to that point on the line. The diffuse surface is equally likely to reflect a ray in any direction. Whereas, the specular surface favour a small subset are of direction in the hemisphere surrounding the surface point.}
+\label{fig:brdfs}
 \end{figure}
+
+Another way to think about diffuse and specular materials is do they change in appearance depending on the viewing angle? For example, surface of paper appears to be identical no matter the viewing angle, however a shiny metal ball would appear to reflect what was in front of it which changes depending on the viewing angle, just like a mirror. These differences can be scene in Figure \ref{fig:material_pics}.
+
+\begin{figure}[h]
+\centering
+\minipage{0.32\textwidth}
+  \includegraphics[width=\textwidth]{images/diffuse_sculpture.jpeg}   
+  \subcaption{La Table aux Amours, Marble Sculpture}
+\endminipage\hspace{5em}
+\minipage{0.32\textwidth}
+  \includegraphics[width=\textwidth]{images/specular_sculpture.jpg}
+  \subcaption{Cloud Gate, Stainless Steel Sculpture}
+\endminipage
+\caption{Two sculptures, one made from a diffuse material (left) and the other from a specular material.}
+\label{fig:material_pics}
+\end{figure}
+
 
 A scene comprising of only diffuse materials is generally more computationally expensive to simulate, as one has to simulate rays reflecting in all directions around intersections points with surfaces, compared to a specular scene where only a small subset of directions need to be sampled for each intersection. So, from here on whenever a surface or BRDF is mentioned, assume it is diffuse as my descriptions can be extended to specular materials by restricting ray reflections to a limited set of angles.\\
 
-Finally, as mentioned $cos(\theta)$ is the cosine of the angle between the normal of the point of the surface intersected with and the angle of incidence. The normal of a surface is the normalized vector that is perpendicular to the surface \cite{normals}. 
+Finally, as mentioned $cos(\theta_i)$ is the cosine of the angle $\omega_i$ between the normal of the point of the surface intersected with and the angle of incidence. The normal of a surface is the normalized vector that is perpendicular to the surface \cite{normals}. The $cos(\theta_i)$ is a weighting for reflected radiance from a point, where the larger the angle from the normal the smaller the reflected radiance. This simulates how light is spread across the surface, causing less light to be reflected in a direction which is further away from being perpendicular to the surface.
 
 \subsection{Path Tracing}
 
-In section \ref{sec:conceptual_path_trace} I already gave a high level overview of the how the path tracing algorithm where many rays are sampled from the camera, through a pixel and into the scene to calculate each rays colour estimate. A pixels colour is then determined by averaging all rays colour estimates. However I did not detail how to get the colour estimate of a sampled ray. This is exactly what the solution to the rendering equation gives, as $L_o(x,\omega)$ gives the outgoing radiance for each sampled rays initial direction $\omega$ and intersection point $x$. The radiance is then converted into a pixel colour value. Put another way, $L_o(x,\omega)$ is a pixels colour value where $\omega$ is the direction of the ray when shot from the camera, through the pixel and into the scene. Then $x$ is the position in the scene the ray first intersects with. \\
+In section \ref{sec:conceptual_path_trace} I already gave a high level overview of the how the path tracing algorithm where many light paths are sampled which consist of shooting a ray from the camera, through a pixel and into the scene to calculate a colour estimate. A pixels colour is then determined by averaging all light paths colour estimates. However I did not detail how to get the colour estimate of a light path. This is exactly what the solution to the rendering equation gives, as $L_o(x,\omega)$ gives the outgoing radiance for each sampled light paths initial direction $\omega$ and intersection point $x$. The radiance is then converted into a pixel colour value. Put another way, $L_o(x,\omega)$ is a pixels colour value where $\omega$ is the direction of the ray when shot from the camera, through the pixel and into the scene. Then $x$ is the position in the scene the ray first intersects with. \\
 
 % Image to show different number of samples used in forward path tracing and improvements in image quality
 
-But how does one solve the rendering equation, as often it cannot be done analytically? The answer is to take a Monte Carlo integration approximation of the reflected radiance integral, then an approximation for each pixel value in an image can be calculated using $N$ sampled rays. By the law of large number in Equation \ref{eq:law_large_numbers}, the larger the value of $N$, the closer each pixels approximation will be to the pixels true value as a result of solving the rendering equation. As known from section \ref{sec:rendering_equation}, the rendering equation follows the physical law of energy conservation, and due to this it accurately models light transport simulation for global illumination. Therefore, the more samples used in the Monte Carlo approximation to the rendering equation, the more realistic the rendered image \cite{christensen2016path}. Algorithm \ref{alg:forward_path_tracing} gives the pseudo code for a forward path tracer for tracing a single sampled ray for a for a pixel to retrieve its colour estimate. To render an entire image, this algorithm would be called for each pixel $N$ times (where $N$ is the number of samples per pixel) and the colour estimates of all sampled rays would be average to find the colour estimate of the pixel.
+But how does one solve the rendering equation, as often it cannot be done analytically? This is what Monte Carlo integrating in path tracing is used for. Path tracing solves a slightly different form of the rendering equation to that in \ref{eq:rendering_equation}. To calculate the reflected radiance at point $x$ in the scene for the angle of incidence $\omega$, it is possible to instead calcualte the integral of all light paths which start at the intersection $x$ and reflect round the scene until a light source is intersected with. The proof behind this is detailed in \cite{stanford_graphics}, but conceptually it is simple. Previously the reflected radiance for $(x, \omega)$ was given by the integral of the incident radiance on $x$ with respect to the angle of incidence. To calculate this integral one can trace infinitely rays from the intersection point $x$ in all possible directions $\Omega$ until they high with a light source, the sum of which gives the total amount of incident light on point $x$. Therefore, path tracing solves a variant of the rendering equation to estimate $L_o(x, \omega)$ by integrating over all possible light paths starting from $x$ with respect to the surfaces intersected with. It is this integral which is solved via Monte Carlo integration, the details of which are given in Equation \ref{eq:rendering_eq_monte_carlo}.
+
+\begin{equation}
+\label{eq:rendering_eq_monte_carlo}
+\begin{array}{l}
+    L_o^N(x, \omega) = \frac{1}{N} \sum_{k = 0}^{N-1} L_e(x_0, \omega_0) + (L_i(x_1, -\omega_1) \cdot f_s(\omega_1, x_1, \omega_0) \cdot cos(\theta_{\omega_1})) / \rho_1\\ 
+    \\
+   \text{Such that}\\
+   \\
+    L_i(x_i, -\omega_i) = \begin{cases}L_e(x_i, \omega_i) + (L_i(x_{i+1}, -\omega_{i+1}) \cdot f_s(\omega_{i+1}, x_{i+1}, \omega_i) \cdot cos(\theta_{\omega_{i+1}})) / \rho_i & \mbox{if } x_i = \mbox{Light Source}\\ L_e(x_i, \omega_i) & \mbox{otherwise} \end{cases} 
+\end{array}
+\end{equation}
+Where:
+\begin{conditions}
+ x_i   & Intersection location of the light path after $i$ reflections in the scene\\
+ \omega_i   & Direction of the light path after $i$ reflections in the scene\\
+ \rho_i   & Probability density function over reflected ray directions for position $x_i$ and $\omega_i$ angle of incidence
+\end{conditions}
+
+In Equation \ref{eq:rendering_eq_monte_carlo} recursive $L_i$ is still present, but the recursion is terminated when the light path intersects with a light source. By the law of large numbers in Equation \ref{eq:law_large_numbers}, the larger the number of sampled light paths ($N$), the closer each pixels approximation will be to the pixels true value as a result of solving the rendering equation. As known from section \ref{sec:rendering_equation}, the rendering equation follows the physical law of energy conservation, and due to this it accurately models light transport simulation for global illumination. Therefore, the more samples used in the Monte Carlo approximation in Equation \ref{eq:rendering_eq_monte_carlo}, the more realistic the rendered image \cite{christensen2016path}.
+
+% Include figure of increasing sampling count leading to a reduction in variance which corresponds to a reduction in image noise from things like fireflies
+
+Algorithm \ref{alg:forward_path_tracing} describes a forward path tracer which computes one sample inside the summation of Equation \ref{eq:rendering_eq_monte_carlo} to find a sampled light paths colour estimate for a given pixel. To render an entire image, this algorithm would be called for each pixel $N$ times (where $N$ is the number of samples per pixel) and the colour estimates of all $N$ rays would be average to find the colour estimate of the pixel.\\
 
 \begin{algorithm}[H]
 \label{alg:forward_path_tracing}
@@ -1032,14 +1074,18 @@ But how does one solve the rendering equation, as often it cannot be done analyt
         \ElseIf{$areaLightIntersection(y)$}{
             \Return $throughput \cdot \text{areaLightRadiance}(ray, y)$
         }
-        $(\omega, \rho_\omega, f_s) \leftarrow \text{sampleRayDirRandomly(y)}$\\
-        $throughput \leftarrow throughput \cdot f_s \cdot cos(norm, \omega) / \rho_\omega$\\
+        $(\omega, \rho_i, f_s) \leftarrow \text{sampleRayDirRandomly(y)}$\\
+        $throughput \leftarrow throughput \cdot f_s \cdot cos(norm, \omega) / \rho_i$\\
         $ray \leftarrow (y,\omega)$
     }
  }
- 
  \caption{Forward path tracer}
 \end{algorithm}
+
+As path tracing is a Monte Carlo method for solving the rendering equation, Importance sampling can be applied in order to reduce the variance pixel colour estimates. In section \ref{sec:importance_smapling} it was shown that by using a probability density function ($pdf$) which closely matches the shape of the function being integrated, the variance in the Monte Carlo estimate is significantly reduced. Applying this to Equation \ref{eq:rendering_eq_monte_carlo}, the term $\rho_i$ which represents the probability density function for sampling the next ray direction at intersection location $x_i$ with angle of incidence $\omega_i$. Currently you can assume that the probability density function $\rho_i$ is uniform. But this can be modified with prior knowledge regarding which directions are more important for continuing a light path in, where an important direction is one which leads to a high contribution of radiance to the pixel estimate.\\
+
+The question now is can one have any knowledge for which directions contribute the most radiance the pixels colours value? Yes, the simplest example lies within the rendering equation itself, $cos(\theta_i)$. As previously discussed this term acts as a weighting for an outgoing light paths radiance contribution. So, by multiplying the  $cos(\theta_i)$ and $\rho_i$ then normalizing to a probability distribution, the variance in the approximation may be reduced. There exists many methods of retrieving knowledge from the scene being rendering to use in importance sampling, such as irradiance cahcing \cite{bashford2012significance}, table-driven adaptive importance sampling \cite{cline2008table}, and sequential Monte Carlo adaptation \cite{pegoraro2008towards}. However as discussed in section \ref{sec:motivation}, these previous methods do effectively reduce the number of zero contribution light paths, which cause a large increase in variance. Instead, reinforcement learning can be used for this,  specifically temporal difference learning which will be discussed in the proceeding sections. 
+
 \section{Markov Decision Processes and TD-Learning}
 
 \section{Linking TD-Learning and Light Transport Simulation}

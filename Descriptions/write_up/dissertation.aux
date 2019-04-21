@@ -36,6 +36,7 @@
 \citation{sutton2011reinforcement}
 \citation{sutton2011reinforcement}
 \@writefile{toc}{\contentsline {section}{\numberline {1.2}Temporal Difference Learning for Importance Sampling Ray Directions}{2}{section.1.2}}
+\newlabel{sec:td_learn_for_importance}{{1.2}{2}{Temporal Difference Learning for Importance Sampling Ray Directions}{section.1.2}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {1.2.1}What is Temporal Difference learning?}{2}{subsection.1.2.1}}
 \citation{ramamoorthi2012theory}
 \citation{dahm2017learning}
@@ -44,6 +45,7 @@
 \@writefile{toc}{\contentsline {subsection}{\numberline {1.2.2}Temporal Difference learning methods for Efficient Light Transport Simulation}{3}{subsection.1.2.2}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {1.2.3}Why use Temporal Difference Learning for Importance Sampling?}{3}{subsection.1.2.3}}
 \@writefile{toc}{\contentsline {section}{\numberline {1.3}Motivation}{3}{section.1.3}}
+\newlabel{sec:motivation}{{1.3}{3}{Motivation}{section.1.3}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {1.3.1}Real time Rendering using Accurate Light Transport Simulation}{3}{subsection.1.3.1}}
 \citation{nvidia_turing_architecture_whitepaper_2018}
 \citation{bako2017kernel}
@@ -94,24 +96,33 @@
 \newlabel{sec:mc_pathtracing}{{2.2}{9}{Monte Carlo Path Tracing}{section.2.2}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.2.1}The Rendering Equation}{9}{subsection.2.2.1}}
 \newlabel{sec:rendering_equation}{{2.2.1}{9}{The Rendering Equation}{subsection.2.2.1}{}}
+\citation{dutre2004state}
+\citation{glassner2014principles}
 \newlabel{eq:rendering_equation}{{2.11}{10}{The Rendering Equation}{equation.2.2.11}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {2.4}{\ignorespaces A diagrammatic representation of the recursive nature of the rendering equation. The outgoing radiance ($L_o$) in a given direction $\omega $ from a point $x$ requires an estimation of the incident radiance coming from all angles in the hemisphere around the point, that is $L_i(h(x, \omega _i),-\omega _i) = L_i(y_i, -\omega _i)$ $\forall \omega _i \in \Omega $. To calculate $L_i(y_i, -\omega _i)$ is identical to calculating the outgoing radiance $L_o(y_i, -\omega _i)$, hence the $L_o$ is a recursive function. \relax }}{10}{figure.caption.14}}
-\newlabel{fig:recursive_rendering}{{2.4}{10}{A diagrammatic representation of the recursive nature of the rendering equation. The outgoing radiance ($L_o$) in a given direction $\omega $ from a point $x$ requires an estimation of the incident radiance coming from all angles in the hemisphere around the point, that is $L_i(h(x, \omega _i),-\omega _i) = L_i(y_i, -\omega _i)$ $\forall \omega _i \in \Omega $. To calculate $L_i(y_i, -\omega _i)$ is identical to calculating the outgoing radiance $L_o(y_i, -\omega _i)$, hence the $L_o$ is a recursive function. \relax }{figure.caption.14}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.4}{\ignorespaces A diagrammatic representation of the recursive nature of the rendering equation. The outgoing radiance ($L_o$) in a given direction $\omega $ from a point $x$ requires an estimation of the incident radiance coming from all angles in the hemisphere around the point, that is $L_i(h(x, \omega _i),-\omega _i) = L_i(y_i, -\omega _i)$ $\forall \omega _i \in \Omega $. To calculate $L_i(y_i, -\omega _i)$ is identical to calculating the outgoing radiance $L_o(y_i, -\omega _i)$ as we assume no radiance is lost along a ray line, hence the $L_o$ is a recursive function. \relax }}{10}{figure.caption.14}}
+\newlabel{fig:recursive_rendering}{{2.4}{10}{A diagrammatic representation of the recursive nature of the rendering equation. The outgoing radiance ($L_o$) in a given direction $\omega $ from a point $x$ requires an estimation of the incident radiance coming from all angles in the hemisphere around the point, that is $L_i(h(x, \omega _i),-\omega _i) = L_i(y_i, -\omega _i)$ $\forall \omega _i \in \Omega $. To calculate $L_i(y_i, -\omega _i)$ is identical to calculating the outgoing radiance $L_o(y_i, -\omega _i)$ as we assume no radiance is lost along a ray line, hence the $L_o$ is a recursive function. \relax }{figure.caption.14}{}}
 \citation{normals}
-\citation{christensen2016path}
-\newlabel{fig:brdfs}{{\caption@xref {fig:brdfs}{ on input line 995}}{11}{The Rendering Equation}{figure.caption.15}{}}
+\citation{stanford_graphics}
 \newlabel{fig:diffuse_brdf}{{2.5a}{11}{Diffuse BRDF\relax }{figure.caption.15}{}}
 \newlabel{sub@fig:diffuse_brdf}{{a}{11}{Diffuse BRDF\relax }{figure.caption.15}{}}
 \newlabel{fig:specular_brdf}{{2.5b}{11}{Specular BRDF\relax }{figure.caption.15}{}}
 \newlabel{sub@fig:specular_brdf}{{b}{11}{Specular BRDF\relax }{figure.caption.15}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {2.5}{\ignorespaces A representation of both a diffuse surface and specular surface BRDF for a given angle of incidence $\omega '$. The surface point is located where all end of the arrows converge. The arrows indicate a subset of direction possible for the incident ray to be reflected in. All possible directions reflected directions for a ray are defined between the surface point and the line , for an incident direction $\omega '$. The further away a point is on the line, the more likely a ray is to reflected in a direction from the surface point to that point on the line. The diffuse surface is equally likely to reflect a ray in any direction. Whereas, the specular surface favour a small subset are of direction in the hemisphere surrounding the surface point.\relax }}{11}{figure.caption.15}}
+\newlabel{fig:brdfs}{{2.5}{11}{A representation of both a diffuse surface and specular surface BRDF for a given angle of incidence $\omega '$. The surface point is located where all end of the arrows converge. The arrows indicate a subset of direction possible for the incident ray to be reflected in. All possible directions reflected directions for a ray are defined between the surface point and the line , for an incident direction $\omega '$. The further away a point is on the line, the more likely a ray is to reflected in a direction from the surface point to that point on the line. The diffuse surface is equally likely to reflect a ray in any direction. Whereas, the specular surface favour a small subset are of direction in the hemisphere surrounding the surface point.\relax }{figure.caption.15}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.6}{\ignorespaces Two sculptures, one made from a diffuse material (left) and the other from a specular material.\relax }}{11}{figure.caption.16}}
+\newlabel{fig:material_pics}{{2.6}{11}{Two sculptures, one made from a diffuse material (left) and the other from a specular material.\relax }{figure.caption.16}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.2.2}Path Tracing}{11}{subsection.2.2.2}}
+\citation{christensen2016path}
+\newlabel{eq:rendering_eq_monte_carlo}{{2.12}{12}{Path Tracing}{equation.2.2.12}{}}
 \newlabel{alg:forward_path_tracing}{{1}{12}{Path Tracing}{algocfline.1}{}}
 \@writefile{loa}{\contentsline {algocf}{\numberline {1}{\ignorespaces Forward path tracer\relax }}{12}{algocf.1}}
-\@writefile{toc}{\contentsline {section}{\numberline {2.3}Markov Decision Processes and TD-Learning}{12}{section.2.3}}
-\@writefile{toc}{\contentsline {section}{\numberline {2.4}Linking TD-Learning and Light Transport Simulation}{12}{section.2.4}}
-\@writefile{toc}{\contentsline {section}{\numberline {2.5}The expected SARSA Path tracer}{12}{section.2.5}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.5.1}Plan}{12}{subsection.2.5.1}}
+\citation{bashford2012significance}
+\citation{cline2008table}
+\citation{pegoraro2008towards}
+\@writefile{toc}{\contentsline {section}{\numberline {2.3}Markov Decision Processes and TD-Learning}{13}{section.2.3}}
+\@writefile{toc}{\contentsline {section}{\numberline {2.4}Linking TD-Learning and Light Transport Simulation}{13}{section.2.4}}
+\@writefile{toc}{\contentsline {section}{\numberline {2.5}The expected SARSA Path tracer}{13}{section.2.5}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.5.1}Plan}{13}{subsection.2.5.1}}
 \@writefile{toc}{\contentsline {chapter}{\numberline {3}Deep Q-Learning Path tracer}{15}{chapter.3}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
@@ -131,24 +142,30 @@
 \newlabel{chap:conclusion}{{5}{19}{Conclusion}{chapter.5}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {5.0.1}Plan}{19}{subsection.5.0.1}}
 \bibdata{dissertation}
-\bibcite{normals}{1}
-\bibcite{bako2017kernel}{2}
+\bibcite{bako2017kernel}{1}
+\bibcite{bashford2012significance}{2}
 \bibcite{bloomberg.com}{3}
 \bibcite{chaitanya2017interactive}{4}
 \bibcite{christensen2018renderman}{5}
 \bibcite{christensen2016path}{6}
-\bibcite{dahm2017learning}{7}
-\bibcite{georgiev2018arnold}{8}
-\bibcite{jensen1996global}{9}
-\bibcite{kajiya1986rendering}{10}
-\bibcite{keller2016path}{11}
-\bibcite{krivanek2014recent}{12}
-\bibcite{morokoff1995quasi}{13}
-\bibcite{nvidia_turing_architecture_whitepaper_2018}{14}
-\bibcite{pan2006virtual}{15}
-\bibcite{ramamoorthi2012theory}{16}
-\bibcite{scratchapixel_2015}{17}
-\bibcite{sutton2011reinforcement}{18}
+\bibcite{cline2008table}{7}
+\bibcite{dahm2017learning}{8}
+\bibcite{dutre2004state}{9}
+\bibcite{georgiev2018arnold}{10}
+\bibcite{glassner2014principles}{11}
+\bibcite{stanford_graphics}{12}
+\bibcite{jensen1996global}{13}
+\bibcite{kajiya1986rendering}{14}
+\bibcite{keller2016path}{15}
+\bibcite{krivanek2014recent}{16}
+\bibcite{morokoff1995quasi}{17}
+\bibcite{nvidia_turing_architecture_whitepaper_2018}{18}
+\bibcite{pan2006virtual}{19}
+\bibcite{pegoraro2008towards}{20}
+\bibcite{ramamoorthi2012theory}{21}
+\bibcite{scratchapixel_2015}{22}
+\bibcite{sutton2011reinforcement}{23}
+\bibcite{normals}{24}
 \@writefile{toc}{\contentsline {chapter}{\numberline {A}An Example Appendix}{23}{appendix.A}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}

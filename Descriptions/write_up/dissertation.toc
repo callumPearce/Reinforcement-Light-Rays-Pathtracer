@@ -16,10 +16,10 @@
 \contentsline {section}{\numberline {2.2}Monte Carlo Path Tracing}{9}{section.2.2}
 \contentsline {subsection}{\numberline {2.2.1}The Rendering Equation}{9}{subsection.2.2.1}
 \contentsline {subsection}{\numberline {2.2.2}Path Tracing}{11}{subsection.2.2.2}
-\contentsline {section}{\numberline {2.3}Markov Decision Processes and TD-Learning}{12}{section.2.3}
-\contentsline {section}{\numberline {2.4}Linking TD-Learning and Light Transport Simulation}{12}{section.2.4}
-\contentsline {section}{\numberline {2.5}The expected SARSA Path tracer}{12}{section.2.5}
-\contentsline {subsection}{\numberline {2.5.1}Plan}{12}{subsection.2.5.1}
+\contentsline {section}{\numberline {2.3}Markov Decision Processes and TD-Learning}{13}{section.2.3}
+\contentsline {section}{\numberline {2.4}Linking TD-Learning and Light Transport Simulation}{13}{section.2.4}
+\contentsline {section}{\numberline {2.5}The expected SARSA Path tracer}{13}{section.2.5}
+\contentsline {subsection}{\numberline {2.5.1}Plan}{13}{subsection.2.5.1}
 \contentsline {chapter}{\numberline {3}Deep Q-Learning Path tracer}{15}{chapter.3}
 \contentsline {subsection}{\numberline {3.0.1}Plan}{15}{subsection.3.0.1}
 \contentsline {chapter}{\numberline {4}Critical Evaluation}{17}{chapter.4}

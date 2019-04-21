@@ -3,50 +3,57 @@ Capacity: max_strings=100000, hash_size=100000, hash_prime=85009
 The top-level auxiliary file: dissertation.aux
 The style file: plain.bst
 Database file #1: dissertation.bib
+I was expecting a `,' or a `}'---line 286 of file dissertation.bib
+ :   
+ :   publisher={Elsevier}
+(Error may have been on previous line)
+I'm skipping whatever remains of this entry
 Warning--I didn't find a database entry for "latexbook1"
 Warning--I didn't find a database entry for "latexbook2"
-Warning--to sort, need author or key in normals
+Warning--can't use both volume and number fields in bashford2012significance
+Warning--can't use both volume and number fields in cline2008table
+Warning--empty publisher in glassner2014principles
 Warning--can't use both volume and number fields in kajiya1986rendering
 Warning--empty title in nvidia_turing_architecture_whitepaper_2018
-You've used 18 entries,
+You've used 24 entries,
             2118 wiz_defined-function locations,
-            599 strings with 7091 characters,
-and the built_in function-call counts, 6716 in all, are:
-= -- 623
-> -- 412
-< -- 5
-+ -- 167
-- -- 146
-* -- 509
-:= -- 1127
-add.period$ -- 52
-call.type$ -- 18
-change.case$ -- 122
+            633 strings with 8086 characters,
+and the built_in function-call counts, 9298 in all, are:
+= -- 883
+> -- 529
+< -- 11
++ -- 214
+- -- 186
+* -- 672
+:= -- 1522
+add.period$ -- 76
+call.type$ -- 24
+change.case$ -- 159
 chr.to.int$ -- 0
-cite$ -- 21
-duplicate$ -- 231
-empty$ -- 473
-format.name$ -- 146
-if$ -- 1376
+cite$ -- 29
+duplicate$ -- 340
+empty$ -- 675
+format.name$ -- 186
+if$ -- 1950
 int.to.chr$ -- 0
-int.to.str$ -- 18
-missing$ -- 16
-newline$ -- 88
-num.names$ -- 34
-pop$ -- 138
+int.to.str$ -- 24
+missing$ -- 22
+newline$ -- 120
+num.names$ -- 48
+pop$ -- 199
 preamble$ -- 1
-purify$ -- 106
+purify$ -- 138
 quote$ -- 0
-skip$ -- 177
+skip$ -- 255
 stack$ -- 0
-substring$ -- 314
-swap$ -- 54
-text.length$ -- 5
+substring$ -- 459
+swap$ -- 102
+text.length$ -- 11
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 70
-warning$ -- 3
-while$ -- 58
-width$ -- 20
-write$ -- 186
-(There were 5 warnings)
+type$ -- 92
+warning$ -- 5
+while$ -- 82
+width$ -- 26
+write$ -- 258
+(There was 1 error message)

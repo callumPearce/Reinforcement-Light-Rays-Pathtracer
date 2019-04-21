@@ -1,14 +1,17 @@
 \begin{thebibliography}{10}
 
-\bibitem{normals}
-Normal vector.
-
 \bibitem{bako2017kernel}
 Steve Bako, Thijs Vogels, Brian McWilliams, Mark Meyer, Jan Nov{\'a}k, Alex
   Harvill, Pradeep Sen, Tony Derose, and Fabrice Rousselle.
 \newblock Kernel-predicting convolutional networks for denoising monte carlo
   renderings.
 \newblock {\em ACM Trans. Graph.}, 36(4):97--1, 2017.
+
+\bibitem{bashford2012significance}
+Thomas Bashford-Rogers, Kurt Debattista, and Alan Chalmers.
+\newblock A significance cache for accelerating global illumination.
+\newblock In {\em Computer Graphics Forum}, volume~31, pages 1837--1851. Wiley
+  Online Library, 2012.
 
 \bibitem{bloomberg.com}
 Bloomberg.
@@ -34,10 +37,22 @@ Per~H Christensen, Wojciech Jarosz, et~al.
 \newblock {\em Foundations and Trends{\textregistered} in Computer Graphics and
   Vision}, 10(2):103--175, 2016.
 
+\bibitem{cline2008table}
+David Cline, Daniel Adams, and Parris Egbert.
+\newblock Table-driven adaptive importance sampling.
+\newblock In {\em Computer Graphics Forum}, volume~27, pages 1115--1123. Wiley
+  Online Library, 2008.
+
 \bibitem{dahm2017learning}
 Ken Dahm and Alexander Keller.
 \newblock Learning light transport the reinforced way.
 \newblock {\em arXiv preprint arXiv:1701.07403}, 2017.
+
+\bibitem{dutre2004state}
+Philip Dutr{\'e}, Henrik~Wann Jensen, Jim Arvo, Kavita Bala, Philippe Bekaert,
+  Steve Marschner, and Matt Pharr.
+\newblock State of the art in monte carlo global illumination.
+\newblock In {\em ACM SIGGRAPH 2004 Course Notes}, page~5. ACM, 2004.
 
 \bibitem{georgiev2018arnold}
 Iliyan Georgiev, Thiago Ize, Mike Farnsworth, Ram{\'o}n Montoya-Vozmediano,
@@ -45,6 +60,16 @@ Iliyan Georgiev, Thiago Ize, Mike Farnsworth, Ram{\'o}n Montoya-Vozmediano,
   Johnston, et~al.
 \newblock Arnold: A brute-force production path tracer.
 \newblock {\em ACM Transactions on Graphics (TOG)}, 37(3):32, 2018.
+
+\bibitem{glassner2014principles}
+Andrew~S Glassner.
+\newblock {\em Principles of digital image synthesis}.
+\newblock 2014.
+
+\bibitem{stanford_graphics}
+Pat Hanrahan.
+\newblock Monte carlo path tracing.
+\newblock Stanford Graphics.
 
 \bibitem{jensen1996global}
 Henrik~Wann Jensen.
@@ -85,6 +110,13 @@ Zhigeng Pan, Adrian~David Cheok, Hongwei Yang, Jiejie Zhu, and Jiaoying Shi.
 \newblock Virtual reality and mixed reality for virtual learning environments.
 \newblock {\em Computers \& graphics}, 30(1):20--28, 2006.
 
+\bibitem{pegoraro2008towards}
+Vincent Pegoraro, Carson Brownlee, Peter~S Shirley, and Steven~G Parker.
+\newblock Towards interactive global illumination effects via sequential monte
+  carlo adaptation.
+\newblock In {\em 2008 IEEE Symposium on Interactive Ray Tracing}, pages
+  107--114. IEEE, 2008.
+
 \bibitem{ramamoorthi2012theory}
 Ravi Ramamoorthi, John Anderson, Mark Meyer, and Derek Nowrouzezahrai.
 \newblock A theory of monte carlo visibility sampling.
@@ -98,5 +130,10 @@ Scratchapixel.
 Richard~S Sutton and Andrew~G Barto.
 \newblock {\em Reinforcement learning: An introduction}.
 \newblock Cambridge, MA: MIT Press, 2011.
+
+\bibitem{normals}
+Eric~W Weisstein.
+\newblock Normal vector.
+\newblock MathWolrd--A Wolfram Web Resource.
 
 \end{thebibliography}
