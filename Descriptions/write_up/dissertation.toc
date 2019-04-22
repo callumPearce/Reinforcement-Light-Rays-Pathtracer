@@ -23,14 +23,14 @@
 \contentsline {subsection}{\numberline {2.3.4}Temporal Difference Learning}{15}{subsection.2.3.4}
 \contentsline {subsubsection}{Q-Learning}{16}{section*.19}
 \contentsline {subsubsection}{Expected Sarsa}{16}{section*.20}
-\contentsline {subsection}{\numberline {2.3.5}Exploration vs Exploitation}{17}{subsection.2.3.5}
+\contentsline {subsection}{\numberline {2.3.5}Exploration vs Exploitation}{16}{subsection.2.3.5}
 \contentsline {section}{\numberline {2.4}Linking TD-Learning and Light Transport Simulation}{17}{section.2.4}
-\contentsline {section}{\numberline {2.5}The expected SARSA Path tracer}{17}{section.2.5}
-\contentsline {subsection}{\numberline {2.5.1}Plan}{17}{subsection.2.5.1}
-\contentsline {chapter}{\numberline {3}Deep Q-Learning Path tracer}{19}{chapter.3}
-\contentsline {subsection}{\numberline {3.0.1}Plan}{19}{subsection.3.0.1}
-\contentsline {chapter}{\numberline {4}Critical Evaluation}{21}{chapter.4}
-\contentsline {subsection}{\numberline {4.0.1}Plan}{21}{subsection.4.0.1}
-\contentsline {chapter}{\numberline {5}Conclusion}{23}{chapter.5}
-\contentsline {subsection}{\numberline {5.0.1}Plan}{23}{subsection.5.0.1}
-\contentsline {chapter}{\numberline {A}An Example Appendix}{27}{appendix.A}
+\contentsline {section}{\numberline {2.5}The expected SARSA Path tracer}{18}{section.2.5}
+\contentsline {subsection}{\numberline {2.5.1}Plan}{18}{subsection.2.5.1}
+\contentsline {chapter}{\numberline {3}Deep Q-Learning Path tracer}{21}{chapter.3}
+\contentsline {subsection}{\numberline {3.0.1}Plan}{21}{subsection.3.0.1}
+\contentsline {chapter}{\numberline {4}Critical Evaluation}{23}{chapter.4}
+\contentsline {subsection}{\numberline {4.0.1}Plan}{23}{subsection.4.0.1}
+\contentsline {chapter}{\numberline {5}Conclusion}{25}{chapter.5}
+\contentsline {subsection}{\numberline {5.0.1}Plan}{25}{subsection.5.0.1}
+\contentsline {chapter}{\numberline {A}An Example Appendix}{29}{appendix.A}

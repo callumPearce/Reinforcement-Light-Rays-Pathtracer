@@ -131,6 +131,11 @@ Richard~S Sutton and Andrew~G Barto.
 \newblock {\em Reinforcement learning: An introduction}.
 \newblock Cambridge, MA: MIT Press, 2011.
 
+\bibitem{exploration_vs_exploitation}
+Hado van Hasselt.
+\newblock Exploration and exploitation.
+\newblock DeepMind: Advanced Deep Learning \& Reinforcement Learning.
+
 \bibitem{introToRL}
 Hado van Hasselt.
 \newblock Introduction to reinforcement learning.
