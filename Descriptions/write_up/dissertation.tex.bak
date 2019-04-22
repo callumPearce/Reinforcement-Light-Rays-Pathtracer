@@ -1166,11 +1166,47 @@ q_*(s,a) & = \max_\pi q_\pi(s,a) \label{eq:optimal_value} \\
  & = \mathbf{E}[R_{t+1} + \gamma \max_{a'} q_* (S_{t+1}, a') | S_t = s, A_t = a]  \label{eq:bellman_optimal}
 \end{align}
 
-Equation \ref{eq:bellman_optimal} defines the Bellman optimality equation, which states that the value of a state-action pair under an optimal policy must be equal to the expected return of the immediate reward plus the highest valued state-action pair available from the next state. Intuitively, if the optimal policy is available which is essentially a cheat sheet of what action is most valuable to take in each state. Then the value of a given state-action pair should be equal the immediate reward received by taking the action in the current state, plus the value of the best action to take in the next state given by the cheat sheet/optimal policy. Therefore, if one has the optimal value function, the optimal policy can easily be found by maximising the choice of action $a$ for $q_*(s,a)$  in state $s$ \cite{sutton2011reinforcement}. Clearly the aim from here on is to build an agent which is able to learn the optimal value function, but whilst this is provably possible, it rarely happens in practice. However, the learning methods I will discuss in the next section on TD-learning perform well in finding a good value function for light path direction sampling.
+Equation \ref{eq:bellman_optimal} defines the Bellman optimality equation, which states that the value of a state-action pair under an optimal policy must be equal to the expected return of the immediate reward plus the highest valued state-action pair available from the next state. Intuitively, if the optimal policy is available which is essentially a cheat sheet of what action is most valuable to take in each state. Then the value of a given state-action pair should be equal the immediate reward received by taking the action in the current state, plus the value of the best action to take in the next state given by the cheat sheet/optimal policy. Therefore, if one has the optimal value function, the optimal policy can easily be found by maximising the choice of action $a$ for $q_*(s,a)$  in state $s$ \cite{sutton2011reinforcement}. \\ 
+
+To summarize, the aim from here on is to build an agent which is able to learn the optimal value function, but whilst this is provably possible, it rarely happens in practice. However, the learning methods I will discuss in the next section on TD-learning are able to find a good value function for light path direction sampling.
 
 \subsection{Temporal Difference Learning}
 
+TD-Learning is combination of Monte Carlo and Dynamic Programming reinforcement learning methods for learning the optimal value function from equation \ref{eq:optimal_value}. I will not discuss the details of Monte Carlo and Dynamic Programming methods as they are not investigated as part of my work. However, the reasoning for choosing to study  TD-learning approaches over these two alternative approaches are as follows; TD-learning can perform learning updates of the value function throughout an episode, unlike Monte Carlo approaches which wait until the end \cite{model_free_prediction}. This means TD-learning algorithms can be written in an online learning algorithm \cite{sutton2011reinforcement}. TD-learning can learn directly from experience, as it does not require a true model of the environment in order to learn, unlike Dynamic Programming methods \cite{mdp_dynamic_prog}. This means TD-learning is model-free, avoiding the expense of building the true model of the environment. I will now introduce
 
+I will now introduce three different temporal difference learning methods which are required knowledge for the rest of my work.
+
+\subsubsection*{Sarsa}
+
+Sarsa is a on-policy TD method which learns a good state-action pair valuation function $q_\pi(s,a)$. The Sarsa learning rule is presented in Equation \ref{eq:sarsa}, and I have chosen to present this method first to explain some key concepts TD-learning methods share. Firstly, $Q$ denotes the current value function under policy $\pi$, $q_\pi$. Therefore the left arrow indicates an update in the value of the current estimate $Q$. Also notice, how the current estimate is update upon every time step $t$, this means Sarsa like other TD-learning methods can learn during an episode as previously mentioned. Finally, Sarsa perform what is known as bootstrapping in the context of reinforcement learning \cite{sutton2011reinforcement}. Bootstrapping is where the  estimate of the valuation function ($Q$), is updated based on some new data by experience, which is the immediate reward $R_{t+1}$. As well as, the current estimate of the valuation function $Q$. Sarsa therefore learns from experience, whereby an action is $A_t$ is taken in state $S_{t}$, leading to an immediate reward $R_{t+1}$ which is used to update the current estimate $Q$.
+
+\begin{equation}
+Q(S_t, A_t) \leftarrow Q(S_t, A_t) + \alpha[R_{t+1} + \gamma Q(S_{t+1}, A_{t+1}) - Q(S_t, A_t)]
+\label{eq:sarsa}
+\end{equation}
+
+The reasoning behind the name Sarsa is that the method uses every element in the quintuple of events, $Q(S_t, A_t, R_{t+1}, S_{t+1}, A_{t_1})$, which makes up a transition between each time step of state-action pairs. Sarsa is an on-policy TD-learning method, as to choose the next action to take in the next state ($Q(S_{t+1}, A_{t+1}$) the policy is used. \\
+
+To make Sarsa learning and TD-learning in general more concrete, imagine a robot with a camera whose goal it is to manoeuvre to the end of a corridor. Each time step is the point when a new frame is rendered on the camera, and the state is the image displayed by the camera. The robots actions consist of moving a short distance in a set of four different direction. If the robot were to learn using Sarsa, the robot would have a large table storing the value of each state-action pair $Q(S_t, A_t)$, which represents the current value function. The robot would then select an action at each time step according to the policy $\pi$ to receive a reward signal based on its distance to the end of the corridor. The robot would then perform a lookup on the large table indexing with the action it took in the state it was in and perform the update rule in \ref{eq:sarsa}. This large table representing the current estimate of the optimal value function is also know as a Q-table, where each value in the table is known as a Q-value, $Q(S_t, A_t)$. By following a suitable policy, the robot will over time will keep updating its Q-values to improve
+its estimate of $q_\pi(s,a)$.
+
+\subsubsection{Q-Learning}
+
+Q-learning is very similar to Sarsa except it is an off-policy TD-learning algorithm. Also, if all state-action pairs are visited infinitely many times, it is proven that Q-learning can converge on the optimal policy $q_\pi(s,a)$, therefore it is generally a preferred method. The learning rule is displayed in Equation \ref{eq:q_learning}, where rather then following a policy $\pi$ to select the action to update with, the maximum value of the highest valued action in the next state is selected ($\max_a Q(S_{t+1}, a$). This means the agent following policy $\pi$ will still choose its actions in a state based on $\pi$, however when it update its valuation function $Q$, the action chosen to update with may not necessarily be the same as the action chosen. Hence, Q-learning is an off-policy TD-learning algorithm.
+
+\begin{equation}
+Q(S_t, A_t) \leftarrow Q(S_t, A_t) + \alpha[R_{t+1} + \gamma \max_aQ(S_{t+1}, a) - Q(S_t, A_t)]
+\end{equation}
+
+\subsubsection{Expected Sarsa}
+
+Expected Sarsa is a TD-learning algorithm which is generally found to be superior to both Q-learning and Sarsa in practice \cite{sutton2011reinforcement}. It is very similar to Q-learning, but instead of using the maximum value of the next state-action pairs it takes the expected value over them. This means Expected Sarsa takes into account how likely each action is under the current policy as shown in Equation \ref{eq:expected_sarsa}. Where $\pi(a | S_{t+1})$ returns the probability of selecting action $a$ in state $S_{t+1}$, while following the policy $\pi$. Note, Expected Sarsa may be used as either an on-policy of off-policy algorithm, for example if the policy $\pi$ was set to the greedy-policy used in Q-learning, the learning rule would become identical to that of Q-learning. Therefore, Expected Sarsa generalizes over Q-learning while reli
+
+\begin{align}
+Q(S_t, A_t) &  \leftarrow Q(S_t, A_t) + \alpha [R_{t+1} + \gamma \mathbf{E}[Q(S_{t+1}, A_{t+1}) | S_{t+1}] - Q(S_t, A_t)]\\
+ & \leftarrow Q(S_t, A_t) + \alpha [R_{t+1} + \gamma \sum_a \pi(a| S_{t+1}) Q(S_{t+1}, a) - Q(S_t, A_t)]
+ \label{eq:expected_sarsa}
+\end{align}
 
 \section{Linking TD-Learning and Light Transport Simulation}
 \label{sec:td_light_transport}

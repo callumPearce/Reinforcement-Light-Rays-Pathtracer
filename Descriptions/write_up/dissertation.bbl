@@ -136,6 +136,16 @@ Hado van Hasselt.
 \newblock Introduction to reinforcement learning.
 \newblock DeepMind: Advanced Deep Learning \& Reinforcement Learning.
 
+\bibitem{mdp_dynamic_prog}
+Hado van Hasselt.
+\newblock Markov decision processes and dynamic programming.
+\newblock DeepMind: Advanced Deep Learning \& Reinforcement Learning.
+
+\bibitem{model_free_prediction}
+Hado van Hasselt.
+\newblock Model-free prediction and control.
+\newblock DeepMind: Advanced Deep Learning \& Reinforcement Learning.
+
 \bibitem{normals}
 Eric~W Weisstein.
 \newblock Normal vector.
