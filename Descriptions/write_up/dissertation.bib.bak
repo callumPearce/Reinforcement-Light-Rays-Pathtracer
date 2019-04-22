@@ -328,3 +328,10 @@ journal={from Wolfram MathWorld}
   year={2008},
   organization={IEEE}
 }
+
+@misc{introToRL,
+    title={Introduction to Reinforcement Learning},
+    author={Hado van Hasselt},
+    note={DeepMind: Advanced Deep Learning \& Reinforcement Learning},
+    url={https://www.youtube.com/watch?v=ISk80iLhdfU&list=PLqYmG7hTraZDNJre23vqCGIVpfZ_K2RZs&index=4}
+}

@@ -1087,6 +1087,7 @@ As path tracing is a Monte Carlo method for solving the rendering equation, Impo
 The question now is, can one have any knowledge for which directions contribute the most radiance to the pixels colours value? The answer is yes, and there has been a large amount of research in this which resides in the topic of light transport simulation. The simplest example lies within the rendering equation itself, $cos(\theta_i)$. As previously discussed, this term acts as a weighting for the radiance contribution of outgoing light paths. So, the probability density function $\rho_i$ can also be weighted by $cos(\theta_i)$, which is likely to reduce the pixel value variance. There exists many other methods of retrieving knowledge from the scene to use in importance sampling during rendering. For example, irradiance cahcing \cite{bashford2012significance}, table-driven adaptive importance sampling \cite{cline2008table}, and sequential Monte Carlo adaptation \cite{pegoraro2008towards}. However as discussed in section \ref{sec:motivation}, these previous methods do not effectively reduce the number of zero contribution light paths, meaning their ability to image noise for certain scenes is very limited. Instead, reinforcement learning can be used for this,  specifically temporal difference learning which will be discussed in detail in the proceeding sections. 
 
 \section{Reinforcement Learning and TD-Learning}
+Now that it is clear how Importance sampling light paths can be used to reduce variance in Monte Carlo path tracing, it is time to introduce the concept of reinforcement learning as I will be using this to gain knowledge for this Importance sampling. This section aims to give a quick introduction to reinforcement learning and TD-learning to cover all of the background material of the learning methods I will be using, before describing how they are applied to path tracing in the next section.
 
 \subsection{Markov Decision Processes}
 Reinforcement learning is one of the three archetypes of machine learning and it is concerned with finding what action should be taken in a given situation, in order to maximise a numerical reward \cite{sutton2011reinforcement}. This problem is formalized by a finite Markov Decision Process (MDP), which is designed to capture the most important aspects of the problem a learning agent faces when interacting over time with its environment to achieve a goal. A MDP is summarised in \ref{fig:mdp} and can be described in terms of the following:
@@ -1120,7 +1121,7 @@ p   & Probability of receiving reward $r$ and state $s'$ when in the previous st
 An important detail of an MDP which makes it far easier to implement in practice is that any problem modelled by an MDP assumes the Markov property.
 
 \begin{quote}
-"The future is independent of the past, given the present." - \textit{Hado van Hassalt, Senior Research Scientist at DeepMind}
+"The future is independent of the past, given the present." - \textit{Hado van Hasselt, Senior Research Scientist at DeepMind} \cite{introToRL}
 \end{quote}
 
 This is expressed mathematically for an MDP in equation \ref{eq:markov_property}. Put simply, the Markov property means the current state captures all relevant information from the history of all previous states the agent has experienced, meaning the history is not needed.
@@ -1131,20 +1132,48 @@ p(R_{t+1} = r, S_{t+1} = s' | S_t = s) = p(R_{t+1} = r, S_{t+1} = s' | S_1, .. ,
 \end{equation}
 
 \subsection{Goals and Rewards}
-The goal of a reinforcement learning agent can conceptually be different things in different settings, for example in the case of a game it may be to maximise the total score in play-through. Or for a robotic space rover it may be to explore the most amount of unseen areas. However, in terms of a MDP the agents goal is to maximise the total amount of cumulative reward it receives. This is more formally described by the reward hypothesis \cite{sutton2011reinforcement}
+The goal thought of for a reinforcement learning agent can change significantly depending on the problem, for example in the case of a game it may be to maximise the total score in one play-through. Or for a robotic space rover it may be to discover the most amount of unseen terrain. However, in terms of an MDP all AI agents goals a described as maximising the total amount of cumulative reward received. This is more formally described by the reward hypothesis \cite{sutton2011reinforcement}
 
 \begin{quote}
-Any goals can be formalized as the maximisation of the expected value of the cumulative sum of a received scalar reward signal.
+Any goal can be formalized as the maximisation of the expected value of the cumulative sum of a received scalar reward signal.
 \end{quote}
 
-Once again in the case of an AI learning the best possible action to take for any state in the game (known as the optimal policy), a reward signal could be the points gained by making a certain move. Therefore, to maximise the expected return would be to maximise the number of points received in a play-through.  The return is formally defined in Equation \ref{eq:return} in terms of a reward sequence combined with the discount factor, which as previously mentioned trades of later rewards for more immediate ones. If a discount factor ($\gamma$) is closer to 1, the agent is said to be far sighted as it gives future rewards a high weighting. Whereas a myopic agent is one which has a discount factor closer closer to 0, as it gives a lower weighting to future rewards for their contribution toward the return $G_t$.
+Once again in the case of an agent learning the best possible action to take for any state in the game (known as the optimal policy), a reward signal could be the points gained by making a certain move. Therefore, to maximise the expected return would be to maximise the number of points received in a play-through.  The return is formally defined in Equation \ref{eq:return} in terms of a reward sequence combined with the discount factor, which as previously mentioned trades off later rewards for more immediate ones. If a discount factor ($\gamma$) is closer to 1 the agent is said to be far sighted, as it gives future rewards a high weighting. Whereas a myopic agent is one which has a discount factor closer closer to 0, as it gives a lower weighting to future rewards for their contribution towards the return $G_t$ \cite{introToRL}. 
 
 \begin{equation}
 \label{eq:return}
 G_t = R_{t+1} + \gamma R_{t+2} + \gamma^2 R_{t+3} + ... = \sum^\infty_{k=0} \gamma^k R_{t+k+1}
 \end{equation}
 
+This formulation works well if the agents interactions with the environment break down easily into sub-sequences \cite{sutton2011reinforcement}, where an agent starts in one of a given set of starting states and takes a series of actions to reach a terminal state. From the terminal state the agent can be reset to one of the starting states to begin learning once again. This applies to path tracing, where the terminal state is one in which the light path has intersected with a light, but this will be discussed in detail in Section \ref{sec:td_light_transport}.
+
+\subsection{Value Function and Optimality}
+All reinforcement learning algorithms I will be considering involve the concept of a value function. There are two kinds of value functions, one which determines the value of being in a given state, the other determines the value of being in a certain state and taking a certain action, known as a state-action pair. The methods I consider are those which use state-action pair value functions, where the value of a state-action pair is defined in terms of the expected return from that state-action pair.
+
+An agent follows a policy $\pi$, which determines how the agent will act in a given state. Formally, a policy is a mapping from states to probabilities of selecting a particular action. When an agent is following policy $\pi$ at time $t$, then $\pi(a|s)$ is the probability that $A_t = a$ if $S_t = s$. Reinforcement learning algorithms state how an agents policy changes from experience. 
+
+The value of a state-action pair $(s,a)$ under a policy $\pi$, is given in Equation \ref{eq:value_function} denoted as $q_\pi(s,a)$,. This value function is commonly known as the action value function for policy $\pi$. Stating 'under policy $\pi$' is important as the value of a given state-action pair depends upon the actions we take onwards from taking action $a$ in state $s$ due to $\pi$. $\mathbf{E}_\pi$ denotes the expected value of a random variable, given that the agent follows policy $\pi$. From this, if one were to keep track of the actual returns received for taking a state-action pair, then as the number of times the state-action pair is chosen tends to infinity, the average of the returns will converge on the true expected value of the return for the state-action pair $q_\pi(s,a)$.
+
+\begin{equation}
+\label{eq:value_function}
+q_\pi(s, a) = \mathbf{E}_\pi[G_t | S_t = s, A_t = a] = \mathbf{E}_\pi [\sum_{k=0}^{\infty} \gamma^k R_{t+k+1} | S_t = s, A_t = a]
+\end{equation}
+
+Now, if you had an AI agent the best way it could perform would be to maximise the expected reward it receives in an episode. In terms of a policies, this is know as the optimal policy which is said to be better then all other policies and agent can follow. Formally, the optimal policy is $\pi$ if $\pi \geq \pi'$ for al possible policies $\pi'$. Where, $\pi \geq \pi'$ if and only if $q_\pi(s,a) \geq q_{\pi'}(s,a)$ for all $s \in \mathcal{S}$ and $a \in \mathcal{A}$. The optimal policy is denoted as $\pi_*$ and the value function following the optimal policy, which is the optimal value function, is denoted $q_*(s,a)$. The optimal value function is defined in Equation \ref{eq:optimal_value}.
+
+\begin{align}
+q_*(s,a) & = \max_\pi q_\pi(s,a) \label{eq:optimal_value} \\
+ & = \mathbf{E}[R_{t+1} + \gamma \max_{a'} q_* (S_{t+1}, a') | S_t = s, A_t = a]  \label{eq:bellman_optimal}
+\end{align}
+
+Equation \ref{eq:bellman_optimal} defines the Bellman optimality equation, which states that the value of a state-action pair under an optimal policy must be equal to the expected return of the immediate reward plus the highest valued state-action pair available from the next state. Intuitively, if the optimal policy is available which is essentially a cheat sheet of what action is most valuable to take in each state. Then the value of a given state-action pair should be equal the immediate reward received by taking the action in the current state, plus the value of the best action to take in the next state given by the cheat sheet/optimal policy. Therefore, if one has the optimal value function, the optimal policy can easily be found by maximising the choice of action $a$ for $q_*(s,a)$  in state $s$ \cite{sutton2011reinforcement}. Clearly the aim from here on is to build an agent which is able to learn the optimal value function, but whilst this is provably possible, it rarely happens in practice. However, the learning methods I will discuss in the next section on TD-learning perform well in finding a good value function for light path direction sampling.
+
+\subsection{Temporal Difference Learning}
+
+
+
 \section{Linking TD-Learning and Light Transport Simulation}
+\label{sec:td_light_transport}
 
 \section{The expected SARSA Path tracer}
 

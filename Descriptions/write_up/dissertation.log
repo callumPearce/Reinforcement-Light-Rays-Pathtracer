@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.10.2)  21 APR 2019 23:23
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.10.2)  22 APR 2019 12:24
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1341,18 +1341,18 @@ Underfull \hbox (badness 10000) in paragraph at lines 1085--1086
 [12] <images/MDP.png, id=424, 615.29875pt x 242.9075pt>
 File: images/MDP.png Graphic file (type png)
  <use images/MDP.png>
-Package pdftex.def Info: images/MDP.png used on input line 1101.
+Package pdftex.def Info: images/MDP.png used on input line 1102.
 (pdftex.def)             Requested size: 227.62206pt x 89.85953pt.
 
-Overfull \hbox (8.33034pt too wide) in paragraph at lines 1112--1117
+Overfull \hbox (8.33034pt too wide) in paragraph at lines 1113--1118
 [] 
  []
 
-[13 <./images/MDP.png>] [14] [15] [16
-
-]
+[13 <./images/MDP.png>] [14] [15] [16]
 Chapter 3.
-[17] [18
+[17
+
+] [18
 
 ]
 Chapter 4.
@@ -1375,11 +1375,11 @@ Appendix A.
 [25
 
 ]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1558.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 1558.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1585.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 1585.
  (./dissertation.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1558.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1558.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1585.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1585.
 
 Package rerunfilecheck Info: File `dissertation.out' has not changed.
 (rerunfilecheck)             Checksum: F423844C6A90839ACC5C3EB3D5ABA9BE;1081.
@@ -1393,10 +1393,10 @@ LaTeX Warning: There were undefined references.
 ### simple group (level 1) entered at line 1061 ({)
 ### bottom level 
 Here is how much of TeX's memory you used:
- 33260 strings out of 492995
- 753584 string characters out of 6132704
- 1119608 words of memory out of 5000000
- 36061 multiletter control sequences out of 15000+600000
+ 33271 strings out of 492995
+ 753767 string characters out of 6132704
+ 1119904 words of memory out of 5000000
+ 36066 multiletter control sequences out of 15000+600000
  12647 words of font info for 48 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  69i,19n,98p,1414b,25789s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -1414,14 +1414,15 @@ b></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr5.pfb><
 r/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/l
 ocal/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsl10.pfb></usr/lo
 cal/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/loc
-al/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local
-/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/
-texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/t
-exlive/2017/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on dissertation.pdf (47 pages, 641074 bytes).
+al/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy5.pfb></usr/local
+/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/t
+exlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/te
+xlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/tex
+live/2017/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
+Output written on dissertation.pdf (47 pages, 654127 bytes).
 PDF statistics:
- 636 PDF objects out of 1000 (max. 8388607)
- 551 compressed objects within 6 object streams
- 182 named destinations out of 1000 (max. 500000)
+ 655 PDF objects out of 1000 (max. 8388607)
+ 569 compressed objects within 6 object streams
+ 188 named destinations out of 1000 (max. 500000)
  168 words of extra memory for PDF output out of 10000 (max. 10000000)
 
