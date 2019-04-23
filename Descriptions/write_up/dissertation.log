@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.10.2)  23 APR 2019 17:29
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.10.2)  23 APR 2019 19:07
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1164,35 +1164,21 @@ LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
 
 ]
 Chapter 1.
+<images/path_tracing.png, id=262, 1927.2pt x 1084.05pt>
+File: images/path_tracing.png Graphic file (type png)
 
-LaTeX Warning: Reference `' on page 1 undefined on input line 361.
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 359--372
-
- []
-
-
-LaTeX Warning: Reference `' on page 1 undefined on input line 379.
+<use images/path_tracing.png>
+Package pdftex.def Info: images/path_tracing.png used on input line 375.
+(pdftex.def)             Requested size: 364.19667pt x 204.84683pt.
 
 
-LaTeX Warning: Reference `' on page 1 undefined on input line 384.
+LaTeX Warning: Reference `' on page 1 undefined on input line 385.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 375--387
-
- []
+LaTeX Warning: Reference `' on page 1 undefined on input line 390.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 390--396
-
- []
-
-
-LaTeX Warning: Reference `' on page 1 undefined on input line 410.
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 397--417
+Underfull \hbox (badness 10000) in paragraph at lines 381--393
 
  []
 
@@ -1200,59 +1186,75 @@ pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has
 been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.417 
+l.393 
        [1
 
-]
-Underfull \vbox (badness 4328) has occurred while \output is active []
+ <./images/path_tracing.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 396--402
+
+ []
+
+
+LaTeX Warning: Reference `' on page 2 undefined on input line 416.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 403--423
+
+ []
 
 pdfTeX warning (ext4): destination with the same identifier (name{page.2}) has 
 been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.480 
+l.461 
        [2]
+Underfull \hbox (badness 10000) in paragraph at lines 518--526
 
-LaTeX Warning: Reference `' on page 3 undefined on input line 513.
+ []
+
+<images/light_blocker.png, id=286, 1053.9375pt x 1005.7575pt>
+File: images/light_blocker.png Graphic file (type png)
+
+<use images/light_blocker.png>
+Package pdftex.def Info: images/light_blocker.png used on input line 529.
+(pdftex.def)             Requested size: 136.57462pt x 130.32335pt.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 512--520
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 535--540
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 523--528
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 532--541
+Underfull \hbox (badness 10000) in paragraph at lines 544--553
 
  []
 
 [3]
-Underfull \hbox (badness 10000) in paragraph at lines 563--574
+Underfull \hbox (badness 10000) in paragraph at lines 575--586
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 575--588
+Underfull \hbox (badness 10000) in paragraph at lines 587--600
 
  []
 
-
-Underfull \hbox (badness 10000) in paragraph at lines 600--617
+[4 <./images/light_blocker.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 612--629
 
  []
 
-[4] [5] [6
+[5] [6
 
 ]
 Chapter 2.
 [7]
 
 Package pgfplots Warning: Axis range for axis y is approximately empty; enlargi
-ng it (it is [0.1:0.1]) on input line 833.
+ng it (it is [0.1:0.1]) on input line 845.
 
  [warning /pgfplots/warning/approx empty range enlarged]
 Missing character: There is no . in font nullfont!
@@ -1264,58 +1266,59 @@ Missing character: There is no t in font nullfont!
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 [8] [9]
-Overfull \hbox (6.68353pt too wide) in paragraph at lines 976--984
+Overfull \hbox (6.68353pt too wide) in paragraph at lines 988--996
 [] 
  []
 
-<images/rendering_equation.png, id=376, 516.93124pt x 142.5325pt>
+<images/rendering_equation.png, id=392, 516.93124pt x 142.5325pt>
 File: images/rendering_equation.png Graphic file (type png)
 
 <use images/rendering_equation.png>
-Package pdftex.def Info: images/rendering_equation.png used on input line 990.
+Package pdftex.def Info: images/rendering_equation.png used on input line 1002.
+
 (pdftex.def)             Requested size: 318.66948pt x 87.869pt.
  [10 <./images/rendering_equation.png>]
-<images/diffuse_brdf.png, id=390, 284.06125pt x 142.5325pt>
+<images/diffuse_brdf.png, id=405, 284.06125pt x 142.5325pt>
 File: images/diffuse_brdf.png Graphic file (type png)
 
 <use images/diffuse_brdf.png>
-Package pdftex.def Info: images/diffuse_brdf.png used on input line 1001.
+Package pdftex.def Info: images/diffuse_brdf.png used on input line 1013.
 (pdftex.def)             Requested size: 145.68144pt x 73.09947pt.
 
-<images/specular_brdf.png, id=391, 284.06125pt x 142.5325pt>
+<images/specular_brdf.png, id=406, 284.06125pt x 142.5325pt>
 File: images/specular_brdf.png Graphic file (type png)
 
 <use images/specular_brdf.png>
-Package pdftex.def Info: images/specular_brdf.png used on input line 1005.
+Package pdftex.def Info: images/specular_brdf.png used on input line 1017.
 (pdftex.def)             Requested size: 145.68144pt x 73.09947pt.
 
-<images/diffuse_sculpture.jpeg, id=393, 642.4pt x 481.8pt>
+<images/diffuse_sculpture.jpeg, id=408, 642.4pt x 481.8pt>
 File: images/diffuse_sculpture.jpeg Graphic file (type jpg)
 
 <use images/diffuse_sculpture.jpeg>
-Package pdftex.def Info: images/diffuse_sculpture.jpeg used on input line 1017.
+Package pdftex.def Info: images/diffuse_sculpture.jpeg used on input line 1029.
 
 (pdftex.def)             Requested size: 145.68144pt x 109.26045pt.
 
-<images/specular_sculpture.jpg, id=394, 90.8193pt x 60.225pt>
+<images/specular_sculpture.jpg, id=409, 90.8193pt x 60.225pt>
 File: images/specular_sculpture.jpg Graphic file (type jpg)
 
 <use images/specular_sculpture.jpg>
-Package pdftex.def Info: images/specular_sculpture.jpg used on input line 1021.
+Package pdftex.def Info: images/specular_sculpture.jpg used on input line 1033.
 
 (pdftex.def)             Requested size: 145.68144pt x 96.6119pt.
 
-Underfull \hbox (badness 2884) in paragraph at lines 1022--1022
+Underfull \hbox (badness 2884) in paragraph at lines 1034--1034
 []\OT1/cmr/m/n/9 (b) |Cloud Gate, Stain-less Steel
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1029--1030
+Underfull \hbox (badness 10000) in paragraph at lines 1041--1042
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1035--1036
+Underfull \hbox (badness 10000) in paragraph at lines 1047--1048
 
  []
 
@@ -1324,12 +1327,12 @@ Underfull \vbox (badness 2245) has occurred while \output is active []
 
  [11 <./images/diffuse_brdf.png> <./images/specular_brdf.png> <./images/diffuse
 _sculpture.jpeg> <./images/specular_sculpture.jpg>]
-Overfull \hbox (5.65875pt too wide) in paragraph at lines 1052--1056
+Overfull \hbox (5.65875pt too wide) in paragraph at lines 1064--1068
 [] 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1062--1063
+Underfull \hbox (badness 10000) in paragraph at lines 1074--1075
 
  []
 
@@ -1337,36 +1340,36 @@ Underfull \hbox (badness 10000) in paragraph at lines 1062--1063
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [12]
-Underfull \hbox (badness 10000) in paragraph at lines 1087--1088
+Underfull \hbox (badness 10000) in paragraph at lines 1099--1100
 
  []
 
-[13] <images/MDP.png, id=442, 615.29875pt x 242.9075pt>
+[13] <images/MDP.png, id=457, 615.29875pt x 242.9075pt>
 File: images/MDP.png Graphic file (type png)
  <use images/MDP.png>
-Package pdftex.def Info: images/MDP.png used on input line 1104.
+Package pdftex.def Info: images/MDP.png used on input line 1116.
 (pdftex.def)             Requested size: 227.62206pt x 89.85953pt.
 
-Overfull \hbox (8.33034pt too wide) in paragraph at lines 1115--1120
+Overfull \hbox (8.33034pt too wide) in paragraph at lines 1127--1132
 [] 
  []
 
 [14 <./images/MDP.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 1171--1172
+Underfull \hbox (badness 10000) in paragraph at lines 1183--1184
 
  []
 
 [15]
-Underfull \hbox (badness 10000) in paragraph at lines 1190--1191
+Underfull \hbox (badness 10000) in paragraph at lines 1202--1203
 
  []
 
 
-LaTeX Warning: Reference `eq:q_learning' on page 16 undefined on input line 119
-7.
+LaTeX Warning: Reference `eq:q_learning' on page 16 undefined on input line 120
+9.
 
 [16] [17]
-Underfull \hbox (badness 10000) in paragraph at lines 1282--1283
+Underfull \hbox (badness 10000) in paragraph at lines 1294--1295
 
  []
 
@@ -1375,29 +1378,29 @@ Underfull \hbox (badness 10000) in paragraph at lines 1282--1283
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.1283 
+l.1295 
        ]
 
 LaTeX Warning: Reference `fig:irradiance_volume' on page 19 undefined on input 
-line 1286.
+line 1298.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1286--1287
+Underfull \hbox (badness 10000) in paragraph at lines 1298--1299
 
  []
 
-[19] <images/uniform_pdf.png, id=554, 284.06125pt x 147.55125pt>
+[19] <images/uniform_pdf.png, id=569, 284.06125pt x 147.55125pt>
 File: images/uniform_pdf.png Graphic file (type png)
 
 <use images/uniform_pdf.png>
-Package pdftex.def Info: images/uniform_pdf.png used on input line 1363.
+Package pdftex.def Info: images/uniform_pdf.png used on input line 1375.
 (pdftex.def)             Requested size: 145.68144pt x 75.6734pt.
 
-<images/not_uniform_pdf.png, id=555, 284.06125pt x 147.55125pt>
+<images/not_uniform_pdf.png, id=570, 284.06125pt x 147.55125pt>
 File: images/not_uniform_pdf.png Graphic file (type png)
 
 <use images/not_uniform_pdf.png>
-Package pdftex.def Info: images/not_uniform_pdf.png used on input line 1367.
+Package pdftex.def Info: images/not_uniform_pdf.png used on input line 1379.
 (pdftex.def)             Requested size: 145.68144pt x 75.6734pt.
 
 
@@ -1434,11 +1437,11 @@ Appendix A.
 [31
 
 ]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1722.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 1722.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1734.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 1734.
  (./dissertation.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1722.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1722.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1734.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1734.
 
 Package rerunfilecheck Info: File `dissertation.out' has not changed.
 (rerunfilecheck)             Checksum: 85DC65730094E494327EA04B5FFB05AD;1078.
@@ -1455,10 +1458,10 @@ LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
 ### simple group (level 1) entered at line 1061 ({)
 ### bottom level 
 Here is how much of TeX's memory you used:
- 33359 strings out of 492995
- 755276 string characters out of 6132704
- 1132100 words of memory out of 5000000
- 36113 multiletter control sequences out of 15000+600000
+ 33373 strings out of 492995
+ 755609 string characters out of 6132704
+ 1134240 words of memory out of 5000000
+ 36123 multiletter control sequences out of 15000+600000
  16537 words of font info for 63 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  69i,19n,98p,1466b,25790s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -1483,10 +1486,10 @@ live/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texl
 ive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texli
 ve/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt8.pfb></usr/local/texlive
 /2017/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on dissertation.pdf (53 pages, 704922 bytes).
+Output written on dissertation.pdf (53 pages, 887504 bytes).
 PDF statistics:
- 768 PDF objects out of 1000 (max. 8388607)
- 669 compressed objects within 7 object streams
- 217 named destinations out of 1000 (max. 500000)
- 178 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 783 PDF objects out of 1000 (max. 8388607)
+ 680 compressed objects within 7 object streams
+ 219 named destinations out of 1000 (max. 500000)
+ 188 words of extra memory for PDF output out of 10000 (max. 10000000)
 

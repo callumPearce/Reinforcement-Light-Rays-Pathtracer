@@ -358,7 +358,7 @@ objectives and significant challenges of my investigation are described.
 \label{sec:conceptual_path_trace}
 Path Tracing is a Monte Carlo method for rendering photo-realistic images of 3D 
 scenes by accurately approximating global illumination \cite{christensen2016path}.
-Figure \ref{} summarises on a high level how forward Path tracing produces a 
+Figure \ref{fig:path_tracing_overview} summarises on a high level how forward Path tracing produces a 
 2D image of a 3D scene. For each pixel multiple rays are shot from the camera through the 
 pixel and into the scene. Any ray which intersects with an area light terminates, 
 otherwise a new direction is sampled for the ray and it is fired again. This process 
@@ -368,9 +368,15 @@ through that pixel. Each rays colour estimate is calculated based on the materia
 surface properties it intersects with before intersecting with the light and the
 intersected area lights properties. The more rays shot through each pixel (also 
 known as samples per pixel), the more visually accurate the rendered image 
-becomes, but at a higher computational cost.\\
+becomes, but at a higher computational cost.
 
-% Figure of path tracing, needs to clearly label what a light transport path is
+\begin{figure}[h!]
+\begin{center}
+\includegraphics[width=0.8\textwidth]{images/path_tracing.png}    
+\end{center}
+\caption{An illustration of path tracing, where three light paths are traced from from the camera through a pixel, to the light source in a simple 3D scene.}
+\label{fig:path_tracing_overview}
+\end{figure}
 
 Path tracing simulates global illumination, meaning it accounts for both direct and 
 indirect illumination. Direct illumination being rays of light emitted from a light 
@@ -385,7 +391,7 @@ camera to light sources \cite{keller2016path}, such as those displayed in \ref{}
 example, effects such as (a) colour bleeding, (b) soft shadows, and (c) indirect diffuse lighting
 are a product of accurate light transport simulation. \\
 
-% Put and image of the scene with a big light on the write, 4096 spp and 1 bounce on the left and 4096 spp 1000 bounces on the right
+% Put and image of the scene with a big light on the right, 4096 spp and 1 bounce on the left and 4096 spp 1000 bounces on the right
 
 Light transport simulation methods are able to produce 
 many complex light transport effects by a simple single pass of a rendering algorithm.
@@ -509,8 +515,8 @@ determine how well the AI agent is performing.
 
 \subsection{Why use Temporal Difference Learning for Importance Sampling?}
 
-Traditional Importance sampling techniques for Path tracing do not take into account 
-the visibility of the object from light. A light blocker is shown in \ref{}, where the 
+Traditional Importance sampling techniques for path tracing do not take into account 
+the visibility of the object from light source. A light blocker is shown in \ref{}, where the 
 blocking object stops rays from directly reaching the light. Due to the unknown 
 presence of blockers, traditional importance sampling methods can fail to avoid 
 sampling zero contribution light paths. Therefore, scenes which are significantly 
@@ -1367,7 +1373,7 @@ However, the approximated radiance may vary across sectors, causing the associat
   \includegraphics[width=\textwidth]{images/not_uniform_pdf.png}
   \subcaption{Irradiance Volume with a non-uniform $pdf$}\label{fig:not_uniform_pdf}
 \endminipage
-\caption{A 2 dimension view of a subset of values from two probability density functions ($pdf$). One for a unit hemisphere (left) with a uniform $pdf$. One for an Irradiance Volume (right) with non-uniform pdf. Where the arrows represent sampled directions and the values at the end are the evaluated $pdf$ }
+\caption{A 2 dimension view of a subset of values from two probability density functions ($pdf$). One for a unit hemisphere (left) with a uniform $pdf$. One for an Irradiance Volume (right) with non-uniform pdf. Where the arrows represent sampled directions and the values at the end are the evaluated $pdf$ values for each direction.}
 \label{fig:pdfs}
 \end{figure}
 
