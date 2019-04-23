@@ -1084,7 +1084,7 @@ Algorithm \ref{alg:forward_path_tracing} describes a forward path tracer which c
 
 As path tracing is a Monte Carlo method for solving the rendering equation, Importance sampling can be applied in order to reduce the variance pixel colour estimates. In section \ref{sec:importance_smapling} it was shown that by using a probability density function ($pdf$) which closely matches the shape of the function being integrated, the variance in the Monte Carlo estimate is significantly reduced. Applying this to Equation \ref{eq:rendering_eq_monte_carlo}, the term $\rho_i$ which represents the probability density function for sampling the next ray direction at intersection location $x_i$ with angle of incidence $\omega_i$. Currently you can assume that the probability density function $\rho_i$ is uniform. But this can be modified with prior knowledge regarding which directions are more important for continuing a light path in, where an important direction is one which leads to a high contribution of radiance to the pixel estimate.\\
 
-The question now is, can one have any knowledge for which directions contribute the most radiance to the pixels colours value? The answer is yes, and there has been a large amount of research in this which resides in the topic of light transport simulation. The simplest example lies within the rendering equation itself, $cos(\theta_i)$. As previously discussed, this term acts as a weighting for the radiance contribution of outgoing light paths. So, the probability density function $\rho_i$ can also be weighted by $cos(\theta_i)$, which is likely to reduce the pixel value variance. There exists many other methods of retrieving knowledge from the scene to use in importance sampling during rendering. For example, irradiance cahcing \cite{bashford2012significance}, table-driven adaptive importance sampling \cite{cline2008table}, and sequential Monte Carlo adaptation \cite{pegoraro2008towards}. However as discussed in section \ref{sec:motivation}, these previous methods do not effectively reduce the number of zero contribution light paths, meaning their ability to image noise for certain scenes is very limited. Instead, reinforcement learning can be used for this,  specifically temporal difference learning which will be discussed in detail in the proceeding sections. 
+The question now is, can one have any knowledge for which directions contribute the most radiance to the pixels colours value? The answer is yes, and there has been a large amount of research in this which resides in the topic of light transport simulation. The simplest example lies within the rendering equation itself, $cos(\theta_i)$. As previously discussed, this term acts as a weighting for the radiance contribution of outgoing light paths. So, the probability density function $\rho_i$ can also be weighted by $cos(\theta_i)$, which is likely to reduce the pixel value variance. There exists many other methods of retrieving knowledge from the scene to use in importance sampling during rendering. For example, irradiance cahcing \cite{bashford2012significance}, table-driven adaptive importance sampling \cite{cline2008table}, and sequential Monte Carlo adaptation \cite{pegoraro2008towards}. However as discussed in section \ref{sec:motivation}, these previous methods do not effectively reduce the number of zero contribution light paths, meaning their ability to image noise for certain scenes is very limited. Instead, Nvidiai proposed that reinforcement learning can be used for this \cite{dahm2017learning} which is the main inspiration for my work. In the proceeding sections I will discuss in detail how it is possible to apply reinforcement learning for importance sampling in light path construction.
 
 \section{Reinforcement Learning and TD-Learning}
 Now that it is clear how Importance sampling light paths can be used to reduce variance in Monte Carlo path tracing, it is time to introduce the concept of reinforcement learning as I will be using this to gain knowledge for this Importance sampling. This section aims to give a quick introduction to reinforcement learning and TD-learning to cover all of the background material of the learning methods I will be using, before describing how they are applied to path tracing in the next section.
@@ -1221,7 +1221,9 @@ This means a good learning strategy for an agent may be to sacrifice short-term 
 
 \section{Linking TD-Learning and Light Transport Simulation}
 \label{sec:td_light_transport}
-With reinforcement learning introduced and with it TD-learning, I will now link TD-learning to light transport simulation for importance sampling light path directions. Specifically, due to the benefits discussed of Expected Sarsa over Q-learning and Sarsa, I will represent the rendering equation as an Expected Sarsa learning rule by following the details outlined by Nvidia's work \cite{dahm2017learning}. First, the Expected Sarsa learning rule's summation over the set of all actions $\mathcal{A}$ can be represented as an integral with respect to an action $a$, as shown in Equation \ref{eq:sarsa_integral}, implying the action space is continuous:
+With TD-learning learning introduced, I will now link TD-learning to light transport simulation for importance sampling light path directions. Specifically, due to the benefits discussed of Expected Sarsa over Q-learning and Sarsa, I will represent the rendering equation as an Expected Sarsa learning rule. This was orginally introduce by Nvidia in 2017 \cite{dahm2017learning}. 
+
+First, the Expected Sarsa learning rule's summation over the set of all actions $\mathcal{A}$ can be represented as an integral with respect to an action $a$, as shown in Equation \ref{eq:sarsa_integral}. This implies the action space is continuous:
 
 \begin{align}
 Q(S_t, A_t) & \leftarrow Q(S_t, A_t) + \alpha [R_{t+1} + \gamma \sum_a \pi(a| S_{t+1}) Q(S_{t+1}, a) - Q(S_t, A_t)]\\
@@ -1237,34 +1239,53 @@ L_o(x, \omega) = L_e(x,\omega)  + \int_\Omega L_i(h(x, \omega_i), -\omega_i)  \c
 \end{equation}
 
 \noindent
-Then, by matching the following terms from the Expected Sarsa learning rule, Equation \ref{eq:match_q_terms} is formed:
+Now, by matching  terms from the rendering equation to the Expected Sarsa learning rule in Equation \ref{eq:sarsa_integral}, Equation \ref{eq:expected_sarsa_td_learning} is formed. Where this new learning rule is designed to approximate the outgoing radiance in direction $\omega$ from point $x$. Therefore, the value of the state-action pair $Q(x = S_t, \omega = A_t)$ is determined by the amount of radiance incident in direction $\omega$ from point $x$. An important detail which may be overlooked is that the substitution of $\gamma \cdot \pi(a|S_{t+1})$ for $f_s(\omega_k, y, -\omega) \cdot \cos(\theta_i)$ ensures that a trade off of long term rewards for more immediate rewards is made as $f_s(\omega_k, y, -\omega) \cdot \cos(\theta_i) \leq 1$. Meaning, the learning rule accurately accounts for a light paths loss of energy as reflects off surfaces in the scene.
+
+The following lists what each term in the Expected Sarsa learning rule is matched to:
 \begin{conditions}
- S_t &  3D position in the scene, $x$  \\
+ S_t &  3D position in the scene, $x \in \mathbb{R}^3$  \\
  
  A_t & Sampling a direction to continue the light path from location $x$, in direction $\omega$ \\   
  
-S_{t+1}   &  Corresponds to the result of the closest intersection of a light ray function, $y = h(x, \omega)$ \\
+S_{t+1}   &  3D position of a light ray from reflected from $x$ in direction $\omega$, $y = h(x, \omega)$ \\
 
-R_{t+1} & Is now the emitted radiance from point $y$ in direction $-\omega$, $L_e(y, -\omega)$\\
+R_{t+1} & Emitted radiance from point $y$ in direction $-\omega$, $L_e(y, -\omega)$\\
 
-\gamma \cdot \pi(a|S_{t+1}) & Corresponds to the BRDF ($f_s$) and cosine term $cos(\theta_i)$, $f_r(\omega_i, y, \omega) \cdot \cos(\theta_i)$\\
+\mathcal{A} & All direction in the hemisphere at $x$, oriented to the surface normal at $x$, $\Omega$\\
+
+\gamma \cdot \pi(a|S_{t+1}) & BRDF and the cosine of the angle $y, \omega_i$, $f_r(\omega_i, y, \omega) \cdot \cos(\theta_i)$\\
     
-Q(S_t, A_t) & Radiance incident on $x$ from direction $\omega$ ($L_i(x, \omega)$), $Q(x, \omega)$\\
+Q(S_t, A_t) & Radiance incident on $x$ from direction $\omega$, $-L_i(x, \omega) = Q(x, \omega)$\\
 \end{conditions}
 
 \begin{equation}
-Q(x, \omega) = L_e(y, -\omega)  + \int_\Omega Q(y, \omega_i) \cdot f_r(\omega_i, y, \omega) \cdot \cos(\theta_i) d\omega_i 
-\label{eq:match_q_terms}
-\end{equation}
-
-To turn Equation \ref{eq:match_q_terms} into a learning rule for path tracing, a simple update rules suffices with learning rate $\alpha$ shown in \ref{eq:expected_sarsa_td_learning}.
-
-\begin{equation}
-Q(x, \omega) \leftarrow (1 - \alpha) \cdot Q(x, \omega) + \alpha \cdot \left( L_e(y, -\omega) + \int_\Omega Q(y, \omega_i) f_s(\omega_i, y, -\omega) cos(\theta_i) d\omega_i \right)
+Q(x, \omega) \leftarrow (1 - \alpha) \cdot Q(x, \omega) + \alpha \cdot \left( L_e(y, -\omega) + \int_\Omega Q(y, \omega_i) f_s(\omega_i, y, -\omega) \cos(\theta_i) d\omega_i \right)
 \label{eq:expected_sarsa_td_learning}
 \end{equation}
 
+Finally, Monte Carlo integration with a uniform distribution for the probability density function can be used to approximate the integral in Equation \ref{eq:expected_sarsa_td_learning}. This converts the action space from continuous to $n$ discrete angles and provides a numerical solution for approximating the outgoing radiance from $x$ in direction $\omega$, which is presented in Equation \ref{eq:mc_expected_sarsa_td_learning}.
+
+\begin{equation}
+Q(x, \omega) \leftarrow (1 - \alpha) \cdot Q(x, \omega) + \alpha \cdot \left( L_e(y, -\omega) +\frac{2 \pi}{n} \sum_{k=1}^{n-1} Q(y, \omega_k) f_s(\omega_k, y, -\omega) \cos(\theta_k)  \right)
+\label{eq:mc_expected_sarsa_td_learning}
+\end{equation}
+
+To summarize, I have derived a learning rule for determining the outgoing radiance from a position in a given direction $Q(x, \omega)$. In the context of reinforcement learning this is an approximate value function $Q$, which attempts to approximate the true value function $q_*(s,a)$. So, in the context of light transport the optimal value function $q_*(x, \omega)$ would be the true value of radiance outgoing from point $x$ in direction $\omega$. The purpose of approximating the radiance $Q(x, \omega)$ is to use this as knowledge for importance sampling ray directions in path tracing. Exactly how this is done is specified in the next section \ref{sec:expecte_sarsa_path_tracer}.
+
 \section{The expected SARSA Path tracer}
+\label{sec:expecte_sarsa_path_tracer}
+Monte Carlo Integration, importance sampling, Monte Carlo path tracing, reinforcement learning and the link between temporal difference learning and light transport have all been introduced. Therefore, I will introduce Nvidia's method for a path tracer which uses the learning rule derived in \ref{eq:mc_expected_sarsa_td_learning} for Importance sampling. This method progressively reduces the number of zero-contribution light paths sampled during rendering, reducing the variance in the Monte Carlo approximation of a pixels colour, reducing the noise in rendered images. 
+
+\subsection{The Irradiance Volume}
+The learning rule introduced in \ref{sec:td_light_transport} requires some sort of data-structure for looking up and updating the outgoing radiance at point $x$ in direction $\omega$, which from here on I will refer to as a Q-value. Therefore, the main requirement of the data structure is that it has some was of representing a discrete set of angles ($\omega_k$) in a hemisphere located at a position $x$ and oriented to the surface normal at $x$. The Irradiance Volume data structure \cite{greger1998irradiance} meets this requirement.\\
+
+% Put a figure of the irradiance volume
+
+Originally designed to be used for pre-computation of radiance values which are looked up at runtime to approximate global illumination, the Irradiance Volume data structure is essentially a discretized version of a hemisphere which is visually represented in Figure \ref{fig:irradiance_volume}. The image shows the discrete sectors which make up a hemisphere, this was implemented by converting a 2D square grid into the 3D hemisphere shown, which is known as an adaptive quadrature. Where all sectors in the 2D grid have an equal area and a mapping introduced in \cite{shirley1994notes} converts the 2D grid coordinates into a regular discretized hemisphere in 3D space. The mapping ensures the hemisphere sectors remain equal to one another, meaning the discrete set of direction represented by the hemisphere are of equal angles apart from one another.\\
+
+%Put figure of voronoi plot for scene discretization
+
+Each sector of the Irradiance Volume is then used to store the current approximation of radiance from the centre of the hemispheres location $x$, in the outgoing direction formed by the unit vector from $x$ to the centre of the sector. Therefore, an Irradiance Volume stores the radiance (Q-value) for a given position $x$ (state) in each direction $\omega_k$ (action), for all sectors $k$ in the hemisphere located at $x$. In order to store Q-values across the scene, Irradiance Volumes can be uniformly sampled over the scene geometry. Then to lookup a radiance/Q-value for a given position $x$ in direction $\omega_k$, a nearest neighbour search is performed to find the closest Irradianc volume to position $x$, then retrieve the Q-value from the sector at index $k$. Giving a lookup and update time of $O(\log n) + O(1) = O(\log n)$ when using a data structure such as a KD-Tree \cite{}.
 
 \begin{comment}
 {\bf A compulsory chapter,     of roughly $10$ pages} 
