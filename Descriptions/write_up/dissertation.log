@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.10.2)  23 APR 2019 15:53
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.10.2)  23 APR 2019 17:29
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1252,7 +1252,7 @@ Chapter 2.
 [7]
 
 Package pgfplots Warning: Axis range for axis y is approximately empty; enlargi
-ng it (it is [0.1:0.1]) on input line 831.
+ng it (it is [0.1:0.1]) on input line 833.
 
  [warning /pgfplots/warning/approx empty range enlarged]
 Missing character: There is no . in font nullfont!
@@ -1260,119 +1260,113 @@ Missing character: There is no 0 in font nullfont!
 Missing character: There is no 1 in font nullfont!
 Missing character: There is no p in font nullfont!
 Missing character: There is no t in font nullfont!
-[8] [9]
-Overfull \hbox (6.68353pt too wide) in paragraph at lines 974--982
-[] 
- []
-
-<images/rendering_equation.png, id=373, 516.93124pt x 142.5325pt>
-File: images/rendering_equation.png Graphic file (type png)
-
-<use images/rendering_equation.png>
-Package pdftex.def Info: images/rendering_equation.png used on input line 988.
-(pdftex.def)             Requested size: 318.66948pt x 87.869pt.
-
-<images/diffuse_brdf.png, id=378, 284.06125pt x 142.5325pt>
-File: images/diffuse_brdf.png Graphic file (type png)
-
-<use images/diffuse_brdf.png>
-Package pdftex.def Info: images/diffuse_brdf.png used on input line 999.
-(pdftex.def)             Requested size: 145.68144pt x 73.09947pt.
-
-<images/specular_brdf.png, id=379, 284.06125pt x 142.5325pt>
-File: images/specular_brdf.png Graphic file (type png)
-
-<use images/specular_brdf.png>
-Package pdftex.def Info: images/specular_brdf.png used on input line 1003.
-(pdftex.def)             Requested size: 145.68144pt x 73.09947pt.
-
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-<images/diffuse_sculpture.jpeg, id=381, 642.4pt x 481.8pt>
+[8] [9]
+Overfull \hbox (6.68353pt too wide) in paragraph at lines 976--984
+[] 
+ []
+
+<images/rendering_equation.png, id=376, 516.93124pt x 142.5325pt>
+File: images/rendering_equation.png Graphic file (type png)
+
+<use images/rendering_equation.png>
+Package pdftex.def Info: images/rendering_equation.png used on input line 990.
+(pdftex.def)             Requested size: 318.66948pt x 87.869pt.
+ [10 <./images/rendering_equation.png>]
+<images/diffuse_brdf.png, id=390, 284.06125pt x 142.5325pt>
+File: images/diffuse_brdf.png Graphic file (type png)
+
+<use images/diffuse_brdf.png>
+Package pdftex.def Info: images/diffuse_brdf.png used on input line 1001.
+(pdftex.def)             Requested size: 145.68144pt x 73.09947pt.
+
+<images/specular_brdf.png, id=391, 284.06125pt x 142.5325pt>
+File: images/specular_brdf.png Graphic file (type png)
+
+<use images/specular_brdf.png>
+Package pdftex.def Info: images/specular_brdf.png used on input line 1005.
+(pdftex.def)             Requested size: 145.68144pt x 73.09947pt.
+
+<images/diffuse_sculpture.jpeg, id=393, 642.4pt x 481.8pt>
 File: images/diffuse_sculpture.jpeg Graphic file (type jpg)
 
 <use images/diffuse_sculpture.jpeg>
-Package pdftex.def Info: images/diffuse_sculpture.jpeg used on input line 1015.
+Package pdftex.def Info: images/diffuse_sculpture.jpeg used on input line 1017.
 
 (pdftex.def)             Requested size: 145.68144pt x 109.26045pt.
 
-<images/specular_sculpture.jpg, id=382, 90.8193pt x 60.225pt>
+<images/specular_sculpture.jpg, id=394, 90.8193pt x 60.225pt>
 File: images/specular_sculpture.jpg Graphic file (type jpg)
 
 <use images/specular_sculpture.jpg>
-Package pdftex.def Info: images/specular_sculpture.jpg used on input line 1019.
+Package pdftex.def Info: images/specular_sculpture.jpg used on input line 1021.
 
 (pdftex.def)             Requested size: 145.68144pt x 96.6119pt.
 
-Underfull \hbox (badness 2884) in paragraph at lines 1020--1020
+Underfull \hbox (badness 2884) in paragraph at lines 1022--1022
 []\OT1/cmr/m/n/9 (b) |Cloud Gate, Stain-less Steel
  []
 
 
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 1027--1028
+Underfull \hbox (badness 10000) in paragraph at lines 1029--1030
 
  []
 
-[10 <./images/rendering_equation.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 1033--1034
+
+Underfull \hbox (badness 10000) in paragraph at lines 1035--1036
 
  []
 
-[11 <./images/diffuse_brdf.png> <./images/specular_brdf.png> <./images/diffuse_
-sculpture.jpeg> <./images/specular_sculpture.jpg>]
-Overfull \hbox (5.65875pt too wide) in paragraph at lines 1050--1054
+
+Underfull \vbox (badness 2245) has occurred while \output is active []
+
+ [11 <./images/diffuse_brdf.png> <./images/specular_brdf.png> <./images/diffuse
+_sculpture.jpeg> <./images/specular_sculpture.jpg>]
+Overfull \hbox (5.65875pt too wide) in paragraph at lines 1052--1056
 [] 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1060--1061
+Underfull \hbox (badness 10000) in paragraph at lines 1062--1063
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1085--1086
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [12]
+Underfull \hbox (badness 10000) in paragraph at lines 1087--1088
 
  []
 
-[12] <images/MDP.png, id=429, 615.29875pt x 242.9075pt>
+[13] <images/MDP.png, id=442, 615.29875pt x 242.9075pt>
 File: images/MDP.png Graphic file (type png)
  <use images/MDP.png>
-Package pdftex.def Info: images/MDP.png used on input line 1102.
+Package pdftex.def Info: images/MDP.png used on input line 1104.
 (pdftex.def)             Requested size: 227.62206pt x 89.85953pt.
 
-Overfull \hbox (8.33034pt too wide) in paragraph at lines 1113--1118
+Overfull \hbox (8.33034pt too wide) in paragraph at lines 1115--1120
 [] 
  []
 
-[13 <./images/MDP.png>] [14]
-Underfull \hbox (badness 10000) in paragraph at lines 1169--1170
+[14 <./images/MDP.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 1171--1172
 
  []
 
 [15]
-Underfull \hbox (badness 10000) in paragraph at lines 1188--1189
+Underfull \hbox (badness 10000) in paragraph at lines 1190--1191
 
  []
 
 
 LaTeX Warning: Reference `eq:q_learning' on page 16 undefined on input line 119
-5.
+7.
 
 [16] [17]
-Underfull \hbox (badness 10000) in paragraph at lines 1280--1281
-
- []
-
-
-LaTeX Warning: Reference `fig:irradiance_volume' on page 18 undefined on input 
-line 1284.
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 1284--1285
+Underfull \hbox (badness 10000) in paragraph at lines 1282--1283
 
  []
 
@@ -1381,20 +1375,47 @@ Underfull \hbox (badness 10000) in paragraph at lines 1284--1285
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.1294 
-       ] [19] [20]
-Chapter 3.
-[21
+l.1283 
+       ]
 
-] [22
+LaTeX Warning: Reference `fig:irradiance_volume' on page 19 undefined on input 
+line 1286.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1286--1287
+
+ []
+
+[19] <images/uniform_pdf.png, id=554, 284.06125pt x 147.55125pt>
+File: images/uniform_pdf.png Graphic file (type png)
+
+<use images/uniform_pdf.png>
+Package pdftex.def Info: images/uniform_pdf.png used on input line 1363.
+(pdftex.def)             Requested size: 145.68144pt x 75.6734pt.
+
+<images/not_uniform_pdf.png, id=555, 284.06125pt x 147.55125pt>
+File: images/not_uniform_pdf.png Graphic file (type png)
+
+<use images/not_uniform_pdf.png>
+Package pdftex.def Info: images/not_uniform_pdf.png used on input line 1367.
+(pdftex.def)             Requested size: 145.68144pt x 75.6734pt.
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[20] [21 <./images/uniform_pdf.png> <./images/not_uniform_pdf.png>] [22
+
+]
+Chapter 3.
+[23] [24
 
 ]
 Chapter 4.
-[23] [24]
+[25] [26]
 Chapter 5.
-[25
+[27
 
-] [26
+] [28
 
 ] (./dissertation.bbl
 LaTeX Font Info:    Font shape `OMS/cmr/m/it' in size <10> not available
@@ -1402,34 +1423,31 @@ LaTeX Font Info:    Font shape `OMS/cmr/m/it' in size <10> not available
 Missing character: There is no â in font cmti10!
 Missing character: There is no € in font cmti10!
 Missing character: There is no ™ in font cmti10!
- [27
+ [29
 
 ]
 Missing character: There is no â in font cmr10!
 Missing character: There is no € in font cmr10!
 Missing character: There is no ¦ in font cmr10!
-) [28]
+) [30]
 Appendix A.
-[29
+[31
 
 ]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1711.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 1711.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1722.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 1722.
  (./dissertation.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1711.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1711.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1722.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1722.
 
+Package rerunfilecheck Info: File `dissertation.out' has not changed.
+(rerunfilecheck)             Checksum: 85DC65730094E494327EA04B5FFB05AD;1078.
 
-
-Package rerunfilecheck Warning: File `dissertation.out' has changed.
-(rerunfilecheck)                Rerun to get outlines right
-(rerunfilecheck)                or use package `bookmark'.
-
-Package rerunfilecheck Info: Checksums for `dissertation.out':
-(rerunfilecheck)             Before: 85DC65730094E494327EA04B5FFB05AD;1078
-(rerunfilecheck)             After:  E717CBBBBEAF3A30E8CBB9362E0BEB18;1132.
 
 LaTeX Warning: There were undefined references.
+
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
 
  )
 (\end occurred inside a group at level 1)
@@ -1437,11 +1455,11 @@ LaTeX Warning: There were undefined references.
 ### simple group (level 1) entered at line 1061 ({)
 ### bottom level 
 Here is how much of TeX's memory you used:
- 33321 strings out of 492995
- 754690 string characters out of 6132704
- 1120776 words of memory out of 5000000
- 36087 multiletter control sequences out of 15000+600000
- 13114 words of font info for 50 fonts, out of 8000000 for 9000
+ 33359 strings out of 492995
+ 755276 string characters out of 6132704
+ 1132100 words of memory out of 5000000
+ 36113 multiletter control sequences out of 15000+600000
+ 16537 words of font info for 63 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  69i,19n,98p,1466b,25790s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts
@@ -1450,24 +1468,25 @@ cm/cmbx12.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/c
 m/cmex10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm
 /cmmi10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/
 cmmi5.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cm
-mi7.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr1
-0.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.
-pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pf
-b></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr5.pfb><
-/usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></us
-r/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/l
-ocal/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsl10.pfb></usr/lo
-cal/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/loc
-al/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy5.pfb></usr/local
-/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/t
-exlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/te
-xlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/tex
-live/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt8.pfb></usr/local/texli
-ve/2017/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on dissertation.pdf (51 pages, 686028 bytes).
+mi7.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi
+9.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.
+pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pf
+b></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb>
+</usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr5.pfb></u
+sr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/
+local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/loc
+al/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsl10.pfb></usr/loca
+l/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local
+/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy5.pfb></usr/local/t
+exlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/tex
+live/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texl
+ive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texli
+ve/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt8.pfb></usr/local/texlive
+/2017/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
+Output written on dissertation.pdf (53 pages, 704922 bytes).
 PDF statistics:
- 743 PDF objects out of 1000 (max. 8388607)
- 651 compressed objects within 7 object streams
- 215 named destinations out of 1000 (max. 500000)
- 168 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 768 PDF objects out of 1000 (max. 8388607)
+ 669 compressed objects within 7 object streams
+ 217 named destinations out of 1000 (max. 500000)
+ 178 words of extra memory for PDF output out of 10000 (max. 10000000)
 

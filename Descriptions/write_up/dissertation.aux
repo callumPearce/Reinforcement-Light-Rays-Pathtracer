@@ -57,6 +57,7 @@
 \citation{dahm2017learning}
 \@writefile{toc}{\contentsline {subsection}{\numberline {1.3.2}Recent Developments}{4}{subsection.1.3.2}}
 \@writefile{toc}{\contentsline {section}{\numberline {1.4}Challenges and Objectives}{4}{section.1.4}}
+\citation{dahm2017learning}
 \citation{morokoff1995quasi}
 \@writefile{toc}{\contentsline {chapter}{\numberline {2}Technical Background}{7}{chapter.2}}
 \@writefile{lof}{\addvspace {10\p@ }}
@@ -70,22 +71,22 @@
 \newlabel{eq:integral}{{2.1}{7}{Monte Carlo Integration}{equation.2.1.1}{}}
 \newlabel{eq:monte_carlo}{{2.2}{7}{Monte Carlo Integration}{equation.2.1.2}{}}
 \newlabel{eq:generalized_mc}{{2.3}{7}{Monte Carlo Integration}{equation.2.1.3}{}}
-\newlabel{eq:unbiased}{{2.4}{7}{Monte Carlo Integration}{equation.2.1.4}{}}
 \citation{morokoff1995quasi}
 \citation{scratchapixel_2015}
+\newlabel{eq:unbiased}{{2.4}{8}{Monte Carlo Integration}{equation.2.1.4}{}}
 \newlabel{eq:law_large_numbers}{{2.5}{8}{Monte Carlo Integration}{equation.2.1.5}{}}
 \newlabel{eq:sample_variance}{{2.6}{8}{Monte Carlo Integration}{equation.2.1.6}{}}
 \newlabel{eq:mc_error}{{2.7}{8}{Monte Carlo Integration}{equation.2.1.7}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.1.2}Importance Sampling for Reducing Approximation Variance}{8}{subsection.2.1.2}}
 \newlabel{sec:importance_smapling}{{2.1.2}{8}{Importance Sampling for Reducing Approximation Variance}{subsection.2.1.2}{}}
 \newlabel{eq:constant_monte_carlo}{{2.8}{8}{Importance Sampling for Reducing Approximation Variance}{equation.2.1.8}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {2.1}{\ignorespaces Constant Function  with a sample point\relax }}{8}{figure.caption.12}}
-\providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
-\newlabel{fig:constant_function}{{2.1}{8}{Constant Function\\ with a sample point\relax }{figure.caption.12}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {2.2}{\ignorespaces  Non-linear Function  with a sample point\relax }}{8}{figure.caption.12}}
-\newlabel{fig:non_lin_function}{{2.2}{8}{Non-linear Function\\ with a sample point\relax }{figure.caption.12}{}}
+\newlabel{eq:constant_conversion}{{2.9}{8}{Importance Sampling for Reducing Approximation Variance}{equation.2.1.9}{}}
 \citation{kajiya1986rendering}
-\newlabel{eq:constant_conversion}{{2.9}{9}{Importance Sampling for Reducing Approximation Variance}{equation.2.1.9}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.1}{\ignorespaces Constant Function  with a sample point\relax }}{9}{figure.caption.12}}
+\providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
+\newlabel{fig:constant_function}{{2.1}{9}{Constant Function\\ with a sample point\relax }{figure.caption.12}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.2}{\ignorespaces  Non-linear Function  with a sample point\relax }}{9}{figure.caption.12}}
+\newlabel{fig:non_lin_function}{{2.2}{9}{Non-linear Function\\ with a sample point\relax }{figure.caption.12}{}}
 \newlabel{eq:solve_mc_integration}{{2.10}{9}{Importance Sampling for Reducing Approximation Variance}{equation.2.1.10}{}}
 \newlabel{fig:improtance_correct}{{2.3a}{9}{Importance sampling reducing variance\relax }{figure.caption.13}{}}
 \newlabel{sub@fig:improtance_correct}{{a}{9}{Importance sampling reducing variance\relax }{figure.caption.13}{}}
@@ -96,15 +97,14 @@
 \@writefile{lof}{\contentsline {figure}{\numberline {2.3}{\ignorespaces Graphical representation of a function $f(x)$ (red) and the corresponding probability density function $pdf(x)$ (blue) used in the Monte Carlo integration approximation for the integral of $f(x)$.\relax }}{9}{figure.caption.13}}
 \@writefile{toc}{\contentsline {section}{\numberline {2.2}Monte Carlo Path Tracing}{9}{section.2.2}}
 \newlabel{sec:mc_pathtracing}{{2.2}{9}{Monte Carlo Path Tracing}{section.2.2}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.2.1}The Rendering Equation}{9}{subsection.2.2.1}}
-\newlabel{sec:rendering_equation}{{2.2.1}{9}{The Rendering Equation}{subsection.2.2.1}{}}
 \citation{dutre2004state}
 \citation{glassner2014principles}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2.1}The Rendering Equation}{10}{subsection.2.2.1}}
+\newlabel{sec:rendering_equation}{{2.2.1}{10}{The Rendering Equation}{subsection.2.2.1}{}}
 \newlabel{eq:rendering_equation}{{2.11}{10}{The Rendering Equation}{equation.2.2.11}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {2.4}{\ignorespaces A diagrammatic representation of the recursive nature of the rendering equation. The outgoing radiance ($L_o$) in a given direction $\omega $ from a point $x$ requires an estimation of the incident radiance coming from all angles in the hemisphere around the point, that is $L_i(h(x, \omega _i),-\omega _i) = L_i(y_i, -\omega _i)$ $\forall \omega _i \in \Omega $. To calculate $L_i(y_i, -\omega _i)$ is identical to calculating the outgoing radiance $L_o(y_i, -\omega _i)$ as we assume no radiance is lost along a ray line, hence the $L_o$ is a recursive function. \relax }}{10}{figure.caption.14}}
 \newlabel{fig:recursive_rendering}{{2.4}{10}{A diagrammatic representation of the recursive nature of the rendering equation. The outgoing radiance ($L_o$) in a given direction $\omega $ from a point $x$ requires an estimation of the incident radiance coming from all angles in the hemisphere around the point, that is $L_i(h(x, \omega _i),-\omega _i) = L_i(y_i, -\omega _i)$ $\forall \omega _i \in \Omega $. To calculate $L_i(y_i, -\omega _i)$ is identical to calculating the outgoing radiance $L_o(y_i, -\omega _i)$ as we assume no radiance is lost along a ray line, hence the $L_o$ is a recursive function. \relax }{figure.caption.14}{}}
 \citation{normals}
-\citation{stanford_graphics}
 \newlabel{fig:diffuse_brdf}{{2.5a}{11}{Diffuse BRDF\relax }{figure.caption.15}{}}
 \newlabel{sub@fig:diffuse_brdf}{{a}{11}{Diffuse BRDF\relax }{figure.caption.15}{}}
 \newlabel{fig:specular_brdf}{{2.5b}{11}{Specular BRDF\relax }{figure.caption.15}{}}
@@ -113,89 +113,95 @@
 \newlabel{fig:brdfs}{{2.5}{11}{A representation of both a diffuse surface and specular surface BRDF for a given angle of incidence $\omega '$. The surface point is located where all end of the arrows converge. The arrows indicate a subset of direction possible for the incident ray to be reflected in. All possible directions reflected directions for a ray are defined between the surface point and the line , for an incident direction $\omega '$. The further away a point is on the line, the more likely a ray is to reflected in a direction from the surface point to that point on the line. The diffuse surface is equally likely to reflect a ray in any direction. Whereas, the specular surface favour a small subset are of direction in the hemisphere surrounding the surface point.\relax }{figure.caption.15}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {2.6}{\ignorespaces Two sculptures, one made from a diffuse material (left) and the other from a specular material.\relax }}{11}{figure.caption.16}}
 \newlabel{fig:material_pics}{{2.6}{11}{Two sculptures, one made from a diffuse material (left) and the other from a specular material.\relax }{figure.caption.16}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.2.2}Path Tracing}{11}{subsection.2.2.2}}
+\citation{stanford_graphics}
 \citation{christensen2016path}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2.2}Path Tracing}{12}{subsection.2.2.2}}
 \newlabel{eq:rendering_eq_monte_carlo}{{2.12}{12}{Path Tracing}{equation.2.2.12}{}}
-\newlabel{alg:forward_path_tracing}{{1}{12}{Path Tracing}{algocfline.1}{}}
-\@writefile{loa}{\contentsline {algocf}{\numberline {1}{\ignorespaces Forward path tracer\relax }}{12}{algocf.1}}
 \citation{bashford2012significance}
 \citation{cline2008table}
 \citation{pegoraro2008towards}
 \citation{dahm2017learning}
 \citation{sutton2011reinforcement}
-\citation{sutton2011reinforcement}
-\citation{sutton2011reinforcement}
+\newlabel{alg:forward_path_tracing}{{1}{13}{Path Tracing}{algocfline.1}{}}
+\@writefile{loa}{\contentsline {algocf}{\numberline {1}{\ignorespaces Forward path tracer\relax }}{13}{algocf.1}}
 \@writefile{toc}{\contentsline {section}{\numberline {2.3}Reinforcement Learning and TD-Learning}{13}{section.2.3}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.3.1}Markov Decision Processes}{13}{subsection.2.3.1}}
-\@writefile{lof}{\contentsline {figure}{\numberline {2.7}{\ignorespaces Markov Decision Process \cite  {sutton2011reinforcement}\relax }}{13}{figure.caption.17}}
-\newlabel{fig:mdp}{{2.7}{13}{Markov Decision Process \cite {sutton2011reinforcement}\relax }{figure.caption.17}{}}
-\citation{introToRL}
+\citation{sutton2011reinforcement}
 \citation{sutton2011reinforcement}
 \citation{introToRL}
 \citation{sutton2011reinforcement}
+\citation{introToRL}
+\citation{sutton2011reinforcement}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.7}{\ignorespaces Markov Decision Process \cite  {sutton2011reinforcement}\relax }}{14}{figure.caption.17}}
+\newlabel{fig:mdp}{{2.7}{14}{Markov Decision Process \cite {sutton2011reinforcement}\relax }{figure.caption.17}{}}
 \newlabel{eq:markov_property}{{2.13}{14}{Markov Decision Processes}{equation.2.3.13}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.3.2}Goals and Rewards}{14}{subsection.2.3.2}}
-\newlabel{eq:return}{{2.14}{14}{Goals and Rewards}{equation.2.3.14}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.3.3}Value Function and Optimality}{14}{subsection.2.3.3}}
 \citation{sutton2011reinforcement}
 \citation{model_free_prediction}
 \citation{sutton2011reinforcement}
 \citation{mdp_dynamic_prog}
-\citation{sutton2011reinforcement}
+\newlabel{eq:return}{{2.14}{15}{Goals and Rewards}{equation.2.3.14}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.3.3}Value Function and Optimality}{15}{subsection.2.3.3}}
 \newlabel{eq:value_function}{{2.15}{15}{Value Function and Optimality}{equation.2.3.15}{}}
 \newlabel{eq:optimal_value}{{2.16}{15}{Value Function and Optimality}{equation.2.3.16}{}}
 \newlabel{eq:bellman_optimal}{{2.17}{15}{Value Function and Optimality}{equation.2.3.17}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.3.4}Temporal Difference Learning}{15}{subsection.2.3.4}}
 \citation{sutton2011reinforcement}
-\citation{exploration_vs_exploitation}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.3.4}Temporal Difference Learning}{16}{subsection.2.3.4}}
 \newlabel{eq:sarsa}{{2.18}{16}{Sarsa}{equation.2.3.18}{}}
 \@writefile{toc}{\contentsline {subsubsection}{Q-Learning}{16}{section*.19}}
-\@writefile{toc}{\contentsline {subsubsection}{Expected Sarsa}{16}{section*.20}}
-\newlabel{eq:expected_sarsa}{{2.21}{16}{Expected Sarsa}{equation.2.3.21}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.3.5}Exploration vs Exploitation}{16}{subsection.2.3.5}}
+\citation{sutton2011reinforcement}
+\citation{exploration_vs_exploitation}
 \citation{sutton2011reinforcement}
 \citation{dahm2017learning}
+\@writefile{toc}{\contentsline {subsubsection}{Expected Sarsa}{17}{section*.20}}
+\newlabel{eq:expected_sarsa}{{2.21}{17}{Expected Sarsa}{equation.2.3.21}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.3.5}Exploration vs Exploitation}{17}{subsection.2.3.5}}
 \@writefile{toc}{\contentsline {section}{\numberline {2.4}Linking TD-Learning and Light Transport Simulation}{17}{section.2.4}}
 \newlabel{sec:td_light_transport}{{2.4}{17}{Linking TD-Learning and Light Transport Simulation}{section.2.4}{}}
-\newlabel{eq:sarsa_integral}{{2.24}{17}{Linking TD-Learning and Light Transport Simulation}{equation.2.4.24}{}}
 \citation{greger1998irradiance}
-\citation{shirley1994notes}
-\citation{bentley1975multidimensional}
+\newlabel{eq:sarsa_integral}{{2.24}{18}{Linking TD-Learning and Light Transport Simulation}{equation.2.4.24}{}}
 \newlabel{eq:expected_sarsa_td_learning}{{2.25}{18}{Linking TD-Learning and Light Transport Simulation}{equation.2.4.25}{}}
 \newlabel{eq:mc_expected_sarsa_td_learning}{{2.26}{18}{Linking TD-Learning and Light Transport Simulation}{equation.2.4.26}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {2.5}The expected Sarsa Path tracer}{18}{section.2.5}}
 \newlabel{sec:expecte_sarsa_path_tracer}{{2.5}{18}{The expected Sarsa Path tracer}{section.2.5}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.5.1}The Irradiance Volume}{18}{subsection.2.5.1}}
+\citation{shirley1994notes}
+\citation{bentley1975multidimensional}
 \citation{devroye2006nonuniform}
 \citation{dahm2017learning}
-\citation{dahm2017learning}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.5.1}The Irradiance Volume}{19}{subsection.2.5.1}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.5.2}Expected Sarsa Path Tracing}{19}{subsection.2.5.2}}
 \@writefile{toc}{\contentsline {subsubsection}{Algorithm}{19}{section*.21}}
-\newlabel{alg:expected_sarsa_pathtracer}{{2}{19}{Algorithm}{algocfline.2}{}}
-\@writefile{loa}{\contentsline {algocf}{\numberline {2}{\ignorespaces Expected Sarsa forward path tracer \cite  {dahm2017learning}\relax }}{19}{algocf.2}}
-\@writefile{toc}{\contentsline {subsubsection}{Monte Carlo Integration}{19}{section*.22}}
+\citation{dahm2017learning}
+\newlabel{alg:expected_sarsa_pathtracer}{{2}{20}{Algorithm}{algocfline.2}{}}
+\@writefile{loa}{\contentsline {algocf}{\numberline {2}{\ignorespaces Expected Sarsa forward path tracer \cite  {dahm2017learning}\relax }}{20}{algocf.2}}
+\@writefile{toc}{\contentsline {subsubsection}{Monte Carlo Integration}{20}{section*.22}}
 \newlabel{eq:decay_lr}{{2.27}{20}{Monte Carlo Integration}{equation.2.5.27}{}}
 \newlabel{eq:mc_expected_sarsa_pdf}{{2.28}{20}{Monte Carlo Integration}{equation.2.5.28}{}}
-\@writefile{toc}{\contentsline {subsubsection}{Consistency}{20}{section*.23}}
-\@writefile{toc}{\contentsline {section}{\numberline {2.6}Summary}{20}{section.2.6}}
-\@writefile{toc}{\contentsline {chapter}{\numberline {3}The Neural-Q Path tracer}{21}{chapter.3}}
+\newlabel{fig:uniform_pdf}{{2.8a}{21}{Hemisphere with a uniform $pdf$\relax }{figure.caption.23}{}}
+\newlabel{sub@fig:uniform_pdf}{{a}{21}{Hemisphere with a uniform $pdf$\relax }{figure.caption.23}{}}
+\newlabel{fig:not_uniform_pdf}{{2.8b}{21}{Irradiance Volume with a non-uniform $pdf$\relax }{figure.caption.23}{}}
+\newlabel{sub@fig:not_uniform_pdf}{{b}{21}{Irradiance Volume with a non-uniform $pdf$\relax }{figure.caption.23}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.8}{\ignorespaces A 2 dimension view of a subset of values from two probability density functions ($pdf$). One for a unit hemisphere (left) with a uniform $pdf$. One for an Irradiance Volume (right) with non-uniform pdf. Where the arrows represent sampled directions and the values at the end are the evaluated $pdf$ values for each direction.\relax }}{21}{figure.caption.23}}
+\newlabel{fig:pdfs}{{2.8}{21}{A 2 dimension view of a subset of values from two probability density functions ($pdf$). One for a unit hemisphere (left) with a uniform $pdf$. One for an Irradiance Volume (right) with non-uniform pdf. Where the arrows represent sampled directions and the values at the end are the evaluated $pdf$ values for each direction.\relax }{figure.caption.23}{}}
+\@writefile{toc}{\contentsline {subsubsection}{Consistency}{21}{section*.24}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {3}The Neural-Q Path tracer}{23}{chapter.3}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
 \@writefile{loa}{\addvspace {10\p@ }}
-\newlabel{chap:deep-q}{{3}{21}{The Neural-Q Path tracer}{chapter.3}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.0.1}Plan}{21}{subsection.3.0.1}}
-\@writefile{toc}{\contentsline {chapter}{\numberline {4}Critical Evaluation}{23}{chapter.4}}
+\newlabel{chap:deep-q}{{3}{23}{The Neural-Q Path tracer}{chapter.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.0.1}Plan}{23}{subsection.3.0.1}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {4}Critical Evaluation}{25}{chapter.4}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
 \@writefile{loa}{\addvspace {10\p@ }}
-\newlabel{chap:evaluation}{{4}{23}{Critical Evaluation}{chapter.4}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.0.1}Plan}{23}{subsection.4.0.1}}
-\@writefile{toc}{\contentsline {chapter}{\numberline {5}Conclusion}{25}{chapter.5}}
+\newlabel{chap:evaluation}{{4}{25}{Critical Evaluation}{chapter.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.0.1}Plan}{25}{subsection.4.0.1}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {5}Conclusion}{27}{chapter.5}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
 \@writefile{loa}{\addvspace {10\p@ }}
-\newlabel{chap:conclusion}{{5}{25}{Conclusion}{chapter.5}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.0.1}Plan}{25}{subsection.5.0.1}}
+\newlabel{chap:conclusion}{{5}{27}{Conclusion}{chapter.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.0.1}Plan}{27}{subsection.5.0.1}}
 \bibdata{dissertation}
 \bibcite{bako2017kernel}{1}
 \bibcite{bashford2012significance}{2}
@@ -229,8 +235,8 @@
 \bibcite{mdp_dynamic_prog}{30}
 \bibcite{model_free_prediction}{31}
 \bibcite{normals}{32}
-\@writefile{toc}{\contentsline {chapter}{\numberline {A}An Example Appendix}{29}{appendix.A}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {A}An Example Appendix}{31}{appendix.A}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
 \@writefile{loa}{\addvspace {10\p@ }}
-\newlabel{appx:example}{{A}{29}{An Example Appendix}{appendix.A}{}}
+\newlabel{appx:example}{{A}{31}{An Example Appendix}{appendix.A}{}}

@@ -739,6 +739,8 @@ rendering pipeline for a path-tracer
 \chapter{Technical Background}
 \label{chap:technical}
 
+The goal of this section is to give you as the reader a deep understanding of the technical concepts which build on top of one another to reduce the number of zero contribution light paths in path tracing, whilst still accurately approximating global illumination. Initially I introduce Monte Carlo integration to approximate and integral, as well as importance sampling and how it reduces variance in the approximation. Monte Carlo integration is the fundamental method which path tracing relies on, I describe this in detail within the section on Monte Carlo path tracing and physical laws path tracing relies on. With the method of path tracing for rendering images clear, I move on to an introduction on reinforcement learning, as this is what I will be using for importance sampling in path tracing. Here the important concept of a learning the optimal value function is introduced and methods in doing so. In the next section a temporal difference learning rule is applied to the context of light transport simulation. Finally, the Expected Sarsa path tracer introduced by Nvidia \cite{dahm2017learning} is presented, tying in all what has been learnt so far for reducing the number of zero-contribution light paths in path tracing. 
+
 \begin{comment}
 Up to this point, I have discussed  what path tracing is and how it approximates global illumination via light transport simulation. As well as, how importance sampling using TD-learning can improve the efficiency of this approximation by avoiding zero contribution light paths. However all descriptions have been at a high a level to make my motivation clear. In this section I describe in detail the rendering equation which path tracing and other Monte Carlo rendering algorithms are based on. I then present the Markov Decision Process and how TD-learning uses this to solve a general class of problems. The derivation of how the rendering equation can be linked to a TD-learning rule is then given, showing how TD-learning is used for importance sampling ray directions in light transport simulation. Finally, the details of my implementation of the expected SARSA path tracer introduced by NVIDIA \cite{dahm2017learning} in 2017 are given.
 \end{comment}
@@ -1270,11 +1272,11 @@ Q(x, \omega) \leftarrow (1 - \alpha) \cdot Q(x, \omega) + \alpha \cdot \left( L_
 \label{eq:mc_expected_sarsa_td_learning}
 \end{equation}
 
-To summarize, I have derived a learning rule for determining the outgoing radiance from a position in a given direction $Q(x, \omega)$. In the context of reinforcement learning this is an approximate value function $Q$, which attempts to approximate the true value function $q_*(s,a)$. So, in the context of light transport the optimal value function $q_*(x, \omega)$ would be the true value of radiance outgoing from point $x$ in direction $\omega$. The purpose of approximating the radiance $Q(x, \omega)$ is to use this as knowledge for importance sampling ray directions in path tracing. Exactly how this is done is specified in the next section \ref{sec:expecte_sarsa_path_tracer}.
+To summarize, I have derived a learning rule for determining the outgoing radiance from a position in a given direction $Q(x, \omega)$. In the context of reinforcement learning this is an approximate value function $Q$, which attempts to approximate the true value function $q_*(s,a)$. So for light transport, the optimal value function $q_*(x, \omega)$ would be the true value of radiance outgoing from point $x$ in direction $\omega$. The purpose of approximating the radiance $Q(x, \omega)$ is to use this as knowledge for importance sampling ray directions in path tracing to avoid zero-contribution light paths. Exactly how this is done is specified in the next section \ref{sec:expecte_sarsa_path_tracer}.
 
 \section{The expected Sarsa Path tracer}
 \label{sec:expecte_sarsa_path_tracer}
-Monte Carlo Integration, importance sampling, Monte Carlo path tracing, reinforcement learning and the link between temporal difference learning and light transport have all been introduced. Therefore, I will introduce Nvidia's method for a path tracer which uses the learning rule derived in \ref{eq:mc_expected_sarsa_td_learning} for Importance sampling. This method progressively reduces the number of zero-contribution light paths sampled during rendering, reducing the variance in the Monte Carlo approximation of a pixels colour, reducing the noise in rendered images. 
+Monte Carlo Integration, importance sampling, Monte Carlo path tracing, reinforcement learning and the link between temporal difference learning and light transport have all been introduced. So now it is finally time to combine all of these concepts by introducing Nvidia's Expected Sarsa path tracer which uses the learning rule derived in \ref{eq:mc_expected_sarsa_td_learning} for Importance sampling. This method progressively reduces the number of zero-contribution light paths sampled during rendering, reducing the variance in the Monte Carlo approximation of a pixels colour, reducing the noise in rendered images. 
 
 \subsection{The Irradiance Volume}
 The learning rule introduced in \ref{sec:td_light_transport} requires some sort of data-structure for looking up and updating the outgoing radiance at point $x$ in direction $\omega$, which from here on I will refer to as a Q-value. Therefore, the main requirement of the data structure is that it has some was of representing a discrete set of angles ($\omega_k$) in a hemisphere located at a position $x$ and oriented to the surface normal at $x$. The Irradiance Volume data structure \cite{greger1998irradiance} meets this requirement.\\
@@ -1349,13 +1351,28 @@ Where:
  n   & Total number of sectors in an Irradiance Volume \\
 \end{conditions}
 
-The reasoning behind this value $\rho_i$ is that $\frac{1}{2\pi}$ represents the probability density function evaluated at any point when directions are randomly sampled in the hemisphere $\Omega$. However, the Irradiance Volume splits the hemisphere into discrete sectors, but each sector represents a continuous set of angles. Therefore if the probability of sampling a ray in each sector were constant $c$, $Q_p(x,\omega_k) = c$ $\forall k < n$, the pdf would be for all :
+The reasoning behind this value $\rho_i$ is that $\frac{1}{2\pi}$ represents the probability density function ($pdf$) evaluated at any point when directions are randomly sampled in the hemisphere $\Omega$. However, the Irradiance Volume splits the hemisphere into discrete sectors, but each sector represents a continuous set of angles. Therefore if the probability of sampling a ray in each sector were constant $c$, $Q_p(x,\omega_k) = c$ $\forall k < n$, the $pdf$ would remain constant:
 
 $$ \frac{Q_p(x, \omega_k) * n}{2\pi} = \frac{1}{2\pi}$$
 
-\subsubsection{Consistency}
-While $Q(x, \omega_k)$ does converge, it does not necessarily converge on the true radiance $q_*(x, \omega_k)$. This is due to the discretization of the action/direction into sectors which make up a hemisphere. If the number of sectors was infinite then the algorithm would converge on the true radiance by the law of large number applied to Equation \ref{eq:mc_expected_sarsa_td_learning}. Clearly this is not possible, but later I discuss how increasing the number of  sectors on the Irradiance Volume affects the number of zero-contribution light paths. Another issue is Q-values will not be visited the same number of times during rendering. For example Irradiance Volumes located in places which are in the cameras view will be visited far more, so images rendered of the scene which have been in the cameras view for the longest are likely to have the lowest variance in pixel colours. This is a problem,as parts of the scene may look particularly noisy compared to others as the camera begins to move round the scene.
+However, the approximated radiance may vary across sectors, causing the associated $pdf$ to vary across sector due to $Q_p(x, \omega_k)$. This was not the case previously prior to importance sampling, where direction were sampled randomly over a unit hemisphere making a the $pdf$ is uniform. The diagram in Figure \ref{fig:pdfs} highlights these differences.
 
+\begin{figure}[h]
+\centering
+\minipage{0.32\textwidth}
+  \includegraphics[width=\textwidth]{images/uniform_pdf.png}   
+  \subcaption{Hemisphere with a uniform $pdf$}\label{fig:uniform_pdf}
+\endminipage\hspace{5em}
+\minipage{0.32\textwidth}
+  \includegraphics[width=\textwidth]{images/not_uniform_pdf.png}
+  \subcaption{Irradiance Volume with a non-uniform $pdf$}\label{fig:not_uniform_pdf}
+\endminipage
+\caption{A 2 dimension view of a subset of values from two probability density functions ($pdf$). One for a unit hemisphere (left) with a uniform $pdf$. One for an Irradiance Volume (right) with non-uniform pdf. Where the arrows represent sampled directions and the values at the end are the evaluated $pdf$ }
+\label{fig:pdfs}
+\end{figure}
+
+\subsubsection{Consistency}
+While $Q(x, \omega_k)$ does converge, it does not necessarily converge on the true radiance $q_*(x, \omega_k)$. This is due to the discretization of the action/direction into sectors which make up a hemisphere. If the number of sectors was infinite then the algorithm would converge on the true radiance by the law of large number applied to Equation \ref{eq:mc_expected_sarsa_td_learning}. Clearly this is not possible, but later I discuss how increasing the number of  sectors on the Irradiance Volume affects the number of zero-contribution light paths. Another issue is Q-values will not be visited the same number of times during rendering. For example Irradiance Volumes located in places which are in the cameras view will be visited far more, so images rendered of the scene which have been in the cameras view for the longest are likely to have the lowest variance in pixel colours. This is a problem, as parts of the scene may look particularly noisy compared to others as the camera begins to move round the scene.
 
 \begin{comment}
 {\bf A compulsory chapter,     of roughly $10$ pages} 
