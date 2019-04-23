@@ -53,6 +53,12 @@ Ken Dahm and Alexander Keller.
 \newblock Learning light transport the reinforced way.
 \newblock {\em arXiv preprint arXiv:1701.07403}, 2017.
 
+\bibitem{devroye2006nonuniform}
+Luc Devroye.
+\newblock Nonuniform random variate generation.
+\newblock {\em Handbooks in operations research and management science},
+  13:83--121, 2006.
+
 \bibitem{dutre2004state}
 Philip Dutr{\'e}, Henrik~Wann Jensen, Jim Arvo, Kavita Bala, Philippe Bekaert,
   Steve Marschner, and Matt Pharr.

@@ -1272,7 +1272,7 @@ Q(x, \omega) \leftarrow (1 - \alpha) \cdot Q(x, \omega) + \alpha \cdot \left( L_
 
 To summarize, I have derived a learning rule for determining the outgoing radiance from a position in a given direction $Q(x, \omega)$. In the context of reinforcement learning this is an approximate value function $Q$, which attempts to approximate the true value function $q_*(s,a)$. So, in the context of light transport the optimal value function $q_*(x, \omega)$ would be the true value of radiance outgoing from point $x$ in direction $\omega$. The purpose of approximating the radiance $Q(x, \omega)$ is to use this as knowledge for importance sampling ray directions in path tracing. Exactly how this is done is specified in the next section \ref{sec:expecte_sarsa_path_tracer}.
 
-\section{The expected SARSA Path tracer}
+\section{The expected Sarsa Path tracer}
 \label{sec:expecte_sarsa_path_tracer}
 Monte Carlo Integration, importance sampling, Monte Carlo path tracing, reinforcement learning and the link between temporal difference learning and light transport have all been introduced. Therefore, I will introduce Nvidia's method for a path tracer which uses the learning rule derived in \ref{eq:mc_expected_sarsa_td_learning} for Importance sampling. This method progressively reduces the number of zero-contribution light paths sampled during rendering, reducing the variance in the Monte Carlo approximation of a pixels colour, reducing the noise in rendered images. 
 
@@ -1287,6 +1287,80 @@ Originally designed to be used for pre-computation of radiance values which are 
 
 Each sector of the Irradiance Volume is then used to store the current approximation of radiance from the centre of the hemispheres location $x$, in the outgoing direction formed by the unit vector from $x$ to the centre of the sector. Therefore, an Irradiance Volume stores the radiance (Q-value) for a given position $x$ (state) in each direction $\omega_k$ (action), for all sectors $k$ in the hemisphere located at $x$. In order to store Q-values across the scene, Irradiance Volumes can be uniformly sampled over the scene geometry. Then to lookup a radiance/Q-value for a given position $x$ in direction $\omega_k$, a nearest neighbour search is performed to find the closest Irradianc volume to position $x$, then retrieve the Q-value from the sector at index $k$. Giving a lookup and update time of $O(\log n) + O(1) = O(\log n)$ when using a data structure such as a KD-Tree for nearest neighbour search \cite{bentley1975multidimensional}. Lookup and update procedures from the Irradiance volumes in the scene is all that is needed to apply the Expected Sarsa learning rule in Equation \ref{eq:mc_expected_sarsa_td_learning}.
 
+\subsection{Expected Sarsa Path Tracing}
+
+\subsubsection{Algorithm}
+The Expected Sarsa based path tracing algorithm is very similar to the original forward path tracer introduced in Algorithm \ref{alg:forward_path_tracing}. The algorithm learns online, meaning after every rendered frame pixel values are likely to have a lower variance due to a reduction in the number of zero contribution light paths. Initially radiance volumes are sampled uniformly across the room with all Q-values initialised to a small constant proportional to the number of sectors on each hemisphere $k$. This encodes the assumption that initially the radiance in all direction from any given point in the room is equal, as initially there is no prior knowledge of any radiance values $Q(x, \omega)$. With the radiance volumes set up, $n$ sampled light paths are traced through each pixel from the camera and into the scene. The average colour estimate of the $n$ sampled light paths per pixel is averaged to find the colour of each pixel, every rendered frame. The colour estimate of each sampled light path is found by Algorithm \ref{alg:expected_sarsa_pathtracer}. The two additions to this algorithm from the forward path tracer in Algorithm \ref{alg:forward_path_tracing}, are as follows:
+
+\begin{enumerate}
+\item Once the ray has intersected with a position in the scene $y$ from a position $x$, update the radiance estimate $Q(x, \omega)$ using the Expected Sarsa learning rule derived in Equation \ref{eq:mc_expected_sarsa_td_learning}. This is based on the light emitted from $y$ in direction $-\omega$ and the outgoing radiance estimate in direction $-\omega$ from point $y$ described by the summation. The summation involves summing all Q-values for the closest radiance volume to position $y$. Each of which are multiplied by BRDF of the surface at $y$, as well as the cosine of the angle between the sector direction for the Q-value ($\omega_k$) and the surface normal $y$.
+
+\item The direction to continue the light path in is sampled proportional to the Q-values stored in the closest hemisphere to position $y$. This is achieved by normalizing the Q-values for the radiance volumes, converting them into a distribution which is appropriately known as the radiance distribution. Then inverse transform sampling \cite{devroye2006nonuniform} is performed to get a direction in the hemisphere to sample a ray in. Inverse transform sampling is where a random number $r \in [0,1]$ is sampled, then the largest number $x$ from the domain of the cumulative distribution $P(X)$ is returned where $ P(-\infty < X < x) \leq r$. 
+\end{enumerate}
+
+\begin{algorithm}[H]
+\label{alg:expected_sarsa_pathtracer}
+\SetKwProg{Fn}{Function}{ }{end}
+\SetAlgoLined
+ \Fn{pathTrace(camera, scene, pixel)}{  
+   $throughput \leftarrow 1$\\
+   $ray \leftarrow initialiseRayForPixel(pixel, camera)$\\
+    \For{$i = 0$ \KwTo $\infty$}{
+        $(y, norm) = closestIntersection(ray, scene)$\\
+        \tcc{Addition (1)}
+        \If{$i > 0$}{
+            $Q(x, \omega) \leftarrow (1 - \alpha) \cdot Q(x, \omega) + \alpha \cdot \left( L_e(y, -\omega) +\frac{2 \pi}{n} \sum_{k=1}^{n-1} Q(y, \omega_k) f_s(\omega_k, y, -\omega) \cos(\theta_k)  \right)$
+        }    
+            
+        \If{$noIntersection(y)$}{
+            \Return $throughput \cdot \text{environmentLightRadiance}(ray,y)$
+        }
+        \ElseIf{$areaLightIntersection(y)$}{
+            \Return $throughput \cdot \text{areaLightRadiance}(ray, y)$
+        }
+        \tcc{Addition (2)}
+        $(\omega, \rho_i, f_s) \leftarrow \text{sampleRayDirProportionalToQ(y)}$\\
+        $throughput \leftarrow throughput \cdot f_s \cdot cos(norm, \omega) / \rho_i$\\
+        $ray \leftarrow (y,\omega)$
+    }
+ }
+ \caption{Expected Sarsa forward path tracer \cite{dahm2017learning}}
+\end{algorithm}
+
+\subsubsection{Monte Carlo Integration}
+It is important for the modified path tracing algorithm to converge to ensure consistency, meaning all introduced artefacts such as image noise are guarenteed to vanish over time \cite{dahm2017learning}. A decaying learning rate for $\alpha$ can be used to do so, see Equation \ref{eq:decay_lr}. Where $\text{i}(rv, \omega_k)$ is the number of times the rendering algorithm has updated the Q-value of the Irradiance Volume $i$ for sector $k$ representing angle $\omega_k$.
+
+\begin{equation}
+\label{eq:decay_lr}
+\alpha(x, \omega) = \frac{1}{1 + \text{visits}(x, \omega_k)}
+\end{equation}
+
+Due to the importance sampling from addition (2), the probability density function over sampled directions $\omega$ at location $x$ is no longer uniform. Instead it is equal to the normalized Q-values for the closest Irradiance Volume to the point $x$. Therefore the evaluated probability density function $\rho_i$ must also take the shape of the probability distribution to correctly apply Monte Carlo Integration. To do so I have derived an Equation \ref{eq:mc_expected_sarsa_pdf} to determine the value $\rho_i$.
+
+\begin{equation}
+\label{eq:mc_expected_sarsa_pdf}
+\rho_i = Q_p(x, \omega_k) \cdot n \cdot \frac{1}{2 \pi} = \frac{Q_p(x, \omega_k) \cdot n}{2 \pi}
+\end{equation}
+
+\noindent
+Where:
+\begin{conditions}
+ Q_p(x, \omega_k)   & Normalized Q-value from the Irradiance Volume closest to $x$ at sector $k$\\
+ n   & Total number of sectors in an Irradiance Volume \\
+\end{conditions}
+
+The reasoning behind this value $\rho_i$ is that $\frac{1}{2\pi}$ represents the probability density function ($pdf$) evaluated at any point when directions are randomly sampled in the hemisphere $\Omega$. However, the Irradiance Volume splits the hemisphere into discrete sectors, but each sector represents a continuous set of angles. Therefore if the probability of sampling a ray in each sector were constant $c$, $Q_p(x,\omega_k) = c$ $\forall k < n$, the $pdf$ would remain constant:
+
+$$ \frac{Q_p(x, \omega_k) * n}{2\pi} = \frac{1}{2\pi}$$
+
+However, the approximated radiance may vary across sectors, meaning $Q_p(x, \omega_k)$  acts as a weighting term, where areas of the $pdf$ represented by the sector have a larger value due to the higher weighting.
+
+% image of pdf changing across discrete hemispehere values
+
+\subsubsection{Consistency}
+While $Q(x, \omega_k)$ does converge, it does not necessarily converge on the true radiance $q_*(x, \omega_k)$. This is due to the discretization of the action/direction into sectors which make up a hemisphere. If the number of sectors was infinite then the algorithm would converge on the true radiance by the law of large number applied to Equation \ref{eq:mc_expected_sarsa_td_learning}. Clearly this is not possible, but later I discuss how increasing the number of  sectors on the Irradiance Volume affects the number of zero-contribution light paths. Another issue is Q-values will not be visited the same number of times during rendering. For example Irradiance Volumes located in places which are in the cameras view will be visited far more, so images rendered of the scene which have been in the cameras view for the longest are likely to have the lowest variance in pixel colours. This is a problem,as parts of the scene may look particularly noisy compared to others as the camera begins to move round the scene.
+
+\section{Summary}
 
 
 \begin{comment}
@@ -1312,78 +1386,10 @@ the reader confidence that you are able to absorb, understand and clearly
 communicate highly technical material.
 \end{comment}
 
-\subsection{Plan}
-\textbf{Breakdown}
-
-\begin{itemize}
-\item The rendering equation and what each component is, how this relates to global illumination
-
-\item Path tracings use of the rendering equation. How monte carlo comes into play. The iterative version of the path tracing algorithm. Concept of a light path.
-
-\item Importance sampling in terms of BRDF and relating this to reducing variance in pixel colours leading to less noise via a reduction in variance, but incorrect importance sampling can do the opposite. Give examples of classical importance sampling techniques and their performance. Critic them and clearly present where their shortcomings are and how they are unavoidable.
-
-\item Introduce reinforcement learning: Markov Decision Process, Bellman 
-Equation, Temporal Difference Learning and its strong points and weaknesses,
- how does it differ to traditional monte-carlo (might not be relevant). Proved 
- to converge on the true valuation function for a given state-action pair when 
- run infinitely
- 
- \item Give Nvidia's derivation of their learning rule. How does the Markov Decision Process relate to a rendered scene, i.e. what is the AI doing for us here. Provide a justification of parameter matching. Essentially cover all reinforcement learning theory of the paper here, with a justification (mathematical) and visual examples of why it works. 
- 
- \item Discretizing the state space is required for Q-learning to be applied, shortcoming is that it may not work very well with infinite state spaces. Introduce the Irradiance volume and how it can be used to rather store actual irradiance values to instead store Q-values. The irradiance distribution for a given point in the scene. Sampling the irradiance volumes around the scene onto geometry. 
- 
- \item Present the full algorithm proposed by Nvidia, displaying irradiance volumes learned Q-values (as an image of hemispheres) throughout the process and stating how these update a cumulative distribution to sample from.
- 
- \item Introduce concept of Deep Q-learning and how it no longer needs a discretized state space. However it still requires action space to be discretized (unlike an actor-critic setup). What is the role of the network and what other function approximators can be trialled. Explain in quite some detail the DeepMind Atari paper which introduced Deep Reinforcement learning.
- 
-\end{itemize}
-
-\textbf{Preliminary}
-\begin{enumerate}
-\item Define what a ray-tracing rendering algorithm consists of and the difference 
-between global and direct illumination. Acknowledge other ray-tracing algorithm l
-ike bi-directional path-tracers, Rendermans algorithm, photon mapping. 
-
-\item Define terms like BRDF, radiance, irradiance and the rendering equation
-
-\item Explain the details of the path-tracing algorithm in depth. It should be 
-completely clear the relation between path-tracing and the rendering equation. 
-It should be clear where the Monte Carlo approach comes in and why 
-importance sampling within path-tracing can yield less noisy and more accurate
- results, potentially in the same fixed time-budget
-
-\item Introduce the concept of importance sampling in computing global 
-illumination with some early examples of its success, use in industry and recent 
-papers on efficient light transport simulation. State the reasoning behind why
-it still continues to accurately simulate global illumination, in other words, why
-zero-contribution light paths do not contribute to the image.
-
-\item Introduce reinforcement learning: Markov Decision Process, Bellman 
-Equation, Temporal Difference Learning and its strong points and weaknesses,
- how does it differ to traditional monte-carlo (might not be relevant). Proved 
- to converge on the true valuation function for a given state-action pair when 
- run infinitely
-
-\item State the derived learning rule supplied by Ken Dahm and visualize the 
-matching terms as well as a justification why each parameter matches. What 
-is the value and the incentive, diminishing return for rewards far in the future etc
-
-\item State new on-line algorithm proposed by Ken Dahm and details for 
-discretizing the state and action space into the Irradiance Volume data-structure
- which was previously introduced 
-
-\item Introduce the concept of deep reinforcement learning, describing how
- DeepMind used the technique for playing Atari games. Given a state give me 
- the state-action values for all actions possible in that state.  Then how we 
- can apply this to our scene to model the state space and continuous.
- 
- 
-
-\end{enumerate}
 
 % -----------------------------------------------------------------------------
 
-\chapter{Deep Q-Learning Path tracer}
+\chapter{The Neural-Q Path tracer}
 \label{chap:deep-q}
 
 \begin{comment}
@@ -1511,6 +1517,12 @@ which is intended to ensure it does not run into the text.
 
 \chapter{Critical Evaluation}
 \label{chap:evaluation}
+
+\begin{itemize}
+\item Here I roughly outline some important implantation details I had to consider which I found should be considered when building a path tracing engine using Algorithm \ref{alg:expected_sarsa_pathtracer}.
+
+\item Firstly, no details regarding how this algorithm is parallelized were given. This is a very important to take into consideration as nearly all computer graphics algorithms leverage the power of Graphical Processing Units (GPUs) for superior speeds in practice. Therefore if the algorithm cannot be parallelized to high degree, it will never be able to perform as well as other existing rendering algorithms.  Every pixel % TODO go in analysis
+\end{itemize}
 
 {\bf A topic-specific chapter, of roughly $15$ pages} 
 \vspace{1cm} 

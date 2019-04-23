@@ -8,8 +8,9 @@
 \BOOKMARK [1][-]{section.2.2}{Monte Carlo Path Tracing}{chapter.2}% 8
 \BOOKMARK [1][-]{section.2.3}{Reinforcement Learning and TD-Learning}{chapter.2}% 9
 \BOOKMARK [1][-]{section.2.4}{Linking TD-Learning and Light Transport Simulation}{chapter.2}% 10
-\BOOKMARK [1][-]{section.2.5}{The expected SARSA Path tracer}{chapter.2}% 11
-\BOOKMARK [0][-]{chapter.3}{Deep Q-Learning Path tracer}{}% 12
-\BOOKMARK [0][-]{chapter.4}{Critical Evaluation}{}% 13
-\BOOKMARK [0][-]{chapter.5}{Conclusion}{}% 14
-\BOOKMARK [0][-]{appendix.A}{An Example Appendix}{}% 15
+\BOOKMARK [1][-]{section.2.5}{The expected Sarsa Path tracer}{chapter.2}% 11
+\BOOKMARK [1][-]{section.2.6}{Summary}{chapter.2}% 12
+\BOOKMARK [0][-]{chapter.3}{The Neural-Q Path tracer}{}% 13
+\BOOKMARK [0][-]{chapter.4}{Critical Evaluation}{}% 14
+\BOOKMARK [0][-]{chapter.5}{Conclusion}{}% 15
+\BOOKMARK [0][-]{appendix.A}{An Example Appendix}{}% 16

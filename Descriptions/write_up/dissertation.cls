@@ -78,6 +78,10 @@
 \usepackage{subcaption}
 \usepackage{mathtools}
 
+% Algorithm2e setuo
+\newcommand\mycommfont[1]{\footnotesize\ttfamily\textcolor{blue}{#1}}
+\SetCommentSty{mycommfont}
+
 % Pgfplots fig size
 \pgfplotsset{width=\linewidth,compat=1.9}
 

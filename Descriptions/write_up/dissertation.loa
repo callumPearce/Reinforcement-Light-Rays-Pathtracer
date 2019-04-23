@@ -1,6 +1,7 @@
 \addvspace {10\p@ }
 \addvspace {10\p@ }
 \contentsline {algocf}{\numberline {1}{\ignorespaces Forward path tracer\relax }}{12}{algocf.1}
+\contentsline {algocf}{\numberline {2}{\ignorespaces Expected Sarsa forward path tracer \cite {dahm2017learning}\relax }}{19}{algocf.2}
 \addvspace {10\p@ }
 \addvspace {10\p@ }
 \addvspace {10\p@ }

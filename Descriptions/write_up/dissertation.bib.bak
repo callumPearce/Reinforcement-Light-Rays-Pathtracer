@@ -368,3 +368,14 @@ journal={from Wolfram MathWorld}
   year={1975},
   publisher={ACM}
 }
+
+% inverse transform sampling
+@article{devroye2006nonuniform,
+  title={Nonuniform random variate generation},
+  author={Devroye, Luc},
+  journal={Handbooks in operations research and management science},
+  volume={13},
+  pages={83--121},
+  year={2006},
+  publisher={Elsevier}
+}
