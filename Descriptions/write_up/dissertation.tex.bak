@@ -27,7 +27,7 @@
                 % the degree programme
                     degree={MEng},
                 % the dissertation    title (which cannot be blank)
-                     title={How effective are Temporal difference learning methods for reducing the number of zero contribution light paths while still accurately approximating Global Illumination in Path tracing?},
+                     title={How effective are Temporal difference learning methods for reducing the number of zero contribution light paths, while still accurately approximating Global Illumination in Path tracing?},
                 % the dissertation subtitle (which can be blank)
                   subtitle={},
                 % the dissertation     type
@@ -367,7 +367,7 @@ colour value can  be found by averaging the colour estimate of each ray fired
 through that pixel. Each rays colour estimate is calculated based on the material 
 surface properties it intersects with before intersecting with the light and the
 intersected area lights properties. The more rays shot through each pixel (also 
-known as samples per pixel), the more visually accurate the rendered image 
+known as samples per pixel), the higher the quality of the rendered image 
 becomes, but at a higher computational cost.
 
 \begin{figure}[h!]
@@ -379,19 +379,31 @@ becomes, but at a higher computational cost.
 \end{figure}
 
 Path tracing simulates global illumination, meaning it accounts for both direct and 
-indirect illumination. Direct illumination being rays of light emitted from a light 
+indirect illumination. Direct illumination being light paths emitted from a light 
 source, which reflect off exactly one surface before reaching the camera in the 
-scene. Whereas indirect illumination are ray of light which reflect 2 or times before
-reaching the camera. In \ref{}, an identical scene is shown with only direct illumination
+scene . Whereas in indirect illumination, light paths reflect 2 or times before
+reaching the camera. In Figure \ref{fig:direct_and_global}, an identical scene is shown with only direct illumination
 (left) and the other with global illumination (right). The globally illuminated scene displays
 a range of effects due to Path tracings ability to accurately simulate light transport, 
 which is not the case for the directly illuminated scene. Where light transport simulation
 refers to firing and summing up the contributions of light transport paths that connect from the
-camera to light sources \cite{keller2016path}, such as those displayed in \ref{}. For 
-example, effects such as (a) colour bleeding, (b) soft shadows, and (c) indirect diffuse lighting
-are a product of accurate light transport simulation. \\
+camera to light sources \cite{keller2016path}, such as those displayed in Figure \ref{fig:direct_and_global}. For 
+example, effects such as; (a) colour bleeding which is clear on the white walls by the boxes. (b) Soft shadows of the boxes silhouette. (c) Indirect diffuse lighting
+from light transport simulation causes the shadow of the box to not be pitch black.\\
 
-% Put and image of the scene with a big light on the right, 4096 spp and 1 bounce on the left and 4096 spp 1000 bounces on the right
+\begin{figure}[h]
+\centering
+\begin{minipage}{.45\textwidth}
+\includegraphics[width=0.99\textwidth]{images/renders/cornell/direct_light.png}    
+\subcaption{Direct Illumination}
+\end{minipage}\hspace{2em}
+\begin{minipage}{.45\textwidth}
+\includegraphics[width=0.99\textwidth]{images/renders/cornell/2048_300_default.png}    
+\subcaption{Global Illumination}
+\end{minipage}
+\caption{Two renders of the Cornell Box, where the left is directly illuminated and the right is globally illuminated.}
+\label{fig:direct_and_global}
+\end{figure}
 
 Light transport simulation methods are able to produce 
 many complex light transport effects by a simple single pass of a rendering algorithm.
@@ -413,15 +425,27 @@ reducing the noise in pixel values and bringing them closer to their true
 values for the same number of sampled rays per pixel. Meaning, Importance 
 sampling can reduce the number of rays needed to be sampled per pixel in 
 order to receive a photo-realistic (also known as converged) image from Path 
-tracing. An example of this reduction in noise can be see in \ref{}, where the 
-naive forward Path tracing algorithms output is compared to Nvidia's on-line
-reinforcement learning Path tracer using Importance sampling. Note, any 
-light transport simulation algorithm can benefit from the Temporal DIfference learning
-schemes which will be described \cite{jensen1996global, keller2016path}, 
+tracing. An example of this reduction in noise can be see in \ref{fig:noise_reduction_simple_room}, where the 
+default forward path tracers output is compared to Nvidia's on-line
+reinforcement learning Path tracer which uses Importance sampling. Note, any 
+light transport simulation algorithm \cite{jensen1996global, keller2016path} can benefit from the Temporal DIfference learning
+schemes which will be described, 
 as they are all derived from what is known as the rendering equation. This equation
 is used as a mathematical basis of modelling light transport.\\
 
-% Comparison between importance sampling and path tracing with the same number of samples
+\begin{figure}[h]
+\centering
+\begin{minipage}{.45\textwidth}
+\includegraphics[width=0.99\textwidth]{images/renders/simple_room/default_16.png}    
+\subcaption{Default Forward Path Tracer}
+\end{minipage}\hspace{2em}
+\begin{minipage}{.45\textwidth}
+\includegraphics[width=0.99\textwidth]{images/renders/simple_room/reinforcement_16.png}    
+\subcaption{Expected Sarsa Path Tracer}
+\end{minipage}
+\caption{Two renders of a simple room using 16 sampled light paths per pixel. Where one does not use importance sampling in the construction of light paths (left), and the other does so based on a reinforcement learning rule (right). A clear reduction in image noise can be seen.}
+\label{fig:noise_reduction_simple_room}
+\end{figure}
 
 It is paramount that Importance sampling Path tracing algorithms continue to accurately
 simulates global illumination in order to produce photo-realistic images in a single
@@ -441,7 +465,7 @@ sampling methods to do so?
 
 \subsection{What is Temporal Difference learning?}
 Temporal difference learning, which I will refer to from 
-here on as TD learning, are a set of model free Reinforcement learning methods. 
+here on as TD-learning, are a set of model free Reinforcement learning methods. 
 Firstly, Reinforcement learning is the process of an AI agent learning what is the 
 best action to take in any given state of the system it exists within, in order to 
 maximise a numerical reward signal \cite{sutton2011reinforcement}.
@@ -459,6 +483,7 @@ subsequent reward signals are limited to what can be received from exploration
 of the canyon, compared to not entering the canyon and exploring areas which 
 can be returned from first.
 
+\begin{comment} %Might need to remove all
 As mentioned TD learning methods are model free methods, meaning the methods 
 do not require a model of the system dynamics they are placed in, instead they
  learn over time by interacting with the system. In other words, they learn from 
@@ -474,6 +499,7 @@ another set of Reinforcement learning methods known as Monte Carlo methods,
 you would have to wait until you got home to update your current estimate of how 
 long it takes to get home from work. Meaning you have to wait for the final outcome
 before learning can begin, which is not the case for TD learning.
+\end{comment}
 
 \subsection{Temporal Difference learning methods for Efficient Light Transport Simulation}
 
@@ -516,7 +542,7 @@ determine how well the AI agent is performing.
 \subsection{Why use Temporal Difference Learning for Importance Sampling?}
 
 Traditional Importance sampling techniques for path tracing do not take into account 
-the visibility of the object from light source. A light blocker is shown in \ref{}, where the 
+the visibility of the object from light source. A light blocker is shown in \ref{fig:blocker}, where the 
 blocking object stops rays from directly reaching the light. Due to the unknown 
 presence of blockers, traditional importance sampling methods can fail to avoid 
 sampling zero contribution light paths. Therefore, scenes which are significantly 
@@ -524,7 +550,13 @@ affected by blockers will not receive the benefits from traditional Importance s
 and can even benefit more from an uniform sampling scheme 
 \cite{ramamoorthi2012theory}.\\
 
-% vector art to display the concept of a light blocker
+\begin{figure}[h!]
+\begin{center}
+\includegraphics[width=0.3\textwidth]{images/light_blocker.png}    
+\end{center}
+\caption{An illustration of a light blocker for an importance sampling scheme which does not consider visibility. Each arrow represents a possible direction the light path will be reflected in. Clearly the reflected light path is likely to hit the blocker increasing the likelihood of it becoming a zero-contribution light path.}
+\label{fig:blocker}
+\end{figure}
 
 Temporal difference learning methods are better equipped to tackle this problem 
 \cite{dahm2017learning}. As the AI agent described in the previous section learns 
@@ -1040,8 +1072,6 @@ Finally, as mentioned $cos(\theta_i)$ is the cosine of the angle $\omega_i$ betw
 
 In section \ref{sec:conceptual_path_trace} I already gave a high level overview of the how the path tracing algorithm where many light paths are sampled which consist of shooting a ray from the camera, through a pixel and into the scene to calculate a colour estimate. A pixels colour is then determined by averaging all light paths colour estimates. However I did not detail how to get the colour estimate of a light path. This is exactly what the solution to the rendering equation gives, as $L_o(x,\omega)$ gives the outgoing radiance for each sampled light paths initial direction $\omega$ and intersection point $x$. The radiance is then converted into a pixel colour value. Put another way, $L_o(x,\omega)$ is a pixels colour value where $\omega$ is the direction of the ray when shot from the camera, through the pixel and into the scene. Then $x$ is the position in the scene the ray first intersects with. \\
 
-% Image to show different number of samples used in forward path tracing and improvements in image quality
-
 But how does one solve the rendering equation, as often it cannot be done analytically? This is what Monte Carlo integrating in path tracing is used for. Path tracing solves a slightly different form of the rendering equation to that in \ref{eq:rendering_equation}. To calculate the reflected radiance at point $x$ in the scene for the angle of incidence $\omega$, it is possible to instead calcualte the integral of all light paths which start at the intersection $x$ and reflect round the scene until a light source is intersected with. The proof behind this is detailed in \cite{stanford_graphics}, but conceptually it is simple. Previously the reflected radiance for $(x, \omega)$ was given by the integral of the incident radiance on $x$ with respect to the angle of incidence. To calculate this integral one can trace infinitely rays from the intersection point $x$ in all possible directions $\Omega$ until they high with a light source, the sum of which gives the total amount of incident light on point $x$. Therefore, path tracing solves a variant of the rendering equation to estimate $L_o(x, \omega)$ by integrating over all possible light paths starting from $x$ with respect to the surfaces intersected with. It is this integral which is solved via Monte Carlo integration, the details of which are given in Equation \ref{eq:rendering_eq_monte_carlo}.
 
 \begin{equation}
@@ -1061,9 +1091,16 @@ Where:
  \rho_i   & Probability density function over reflected ray directions for position $x_i$ and $\omega_i$ angle of incidence
 \end{conditions}
 
-In Equation \ref{eq:rendering_eq_monte_carlo} recursive $L_i$ is still present, but the recursion is terminated when the light path intersects with a light source. By the law of large numbers in Equation \ref{eq:law_large_numbers}, the larger the number of sampled light paths ($N$), the closer each pixels approximation will be to the pixels true value as a result of solving the rendering equation. As known from section \ref{sec:rendering_equation}, the rendering equation follows the physical law of energy conservation, and due to this it accurately models light transport simulation for global illumination. Therefore, the more samples used in the Monte Carlo approximation in Equation \ref{eq:rendering_eq_monte_carlo}, the more realistic the rendered image \cite{christensen2016path}.
+In Equation \ref{eq:rendering_eq_monte_carlo} recursive $L_i$ is still present, but the recursion is terminated when the light path intersects with a light source. By the law of large numbers in Equation \ref{eq:law_large_numbers}, the larger the number of sampled light paths ($N$), the closer each pixels approximation will be to the pixels true value as a result of solving the rendering equation. As known from section \ref{sec:rendering_equation}, the rendering equation follows the physical law of energy conservation, and due to this it accurately models light transport simulation for global illumination. Therefore, the more samples used in the Monte Carlo approximation in Equation \ref{eq:rendering_eq_monte_carlo}, the lower the amount of noise in the image \cite{christensen2016path}. An example of this concept applied to a simple forward path tracer is shown in Figure \ref{fig:reduce_noise_spp_example}.
 
 % Include figure of increasing sampling count leading to a reduction in variance which corresponds to a reduction in image noise from things like fireflies
+\begin{figure}[h]
+\begin{center}
+\includegraphics[width=0.99\textwidth]{images/renders/noise_reduction_default/increasing_samples.png}    
+\end{center}
+\caption{An indirectly illuminated scene from a default path tracer. The grid of image sections represent an increasing number of samples per pixel (SPP), beginning in the top left with 16 SPP, to the bottom right with 512 SPP. The full image on the right is a reference image with 4096 SPP where the Monte Carlo approximation has almost converged for pixel values.}
+\label{fig:reduce_noise_spp_example}
+\end{figure}
 
 Algorithm \ref{alg:forward_path_tracing} describes a forward path tracer which computes one sample inside the summation of Equation \ref{eq:rendering_eq_monte_carlo} to find a sampled light paths colour estimate for a given pixel. To render an entire image, this algorithm would be called for each pixel $N$ times (where $N$ is the number of samples per pixel) and the colour estimates of all $N$ rays would be average to find the colour estimate of the pixel.\\
 
@@ -1287,13 +1324,35 @@ Monte Carlo Integration, importance sampling, Monte Carlo path tracing, reinforc
 \subsection{The Irradiance Volume}
 The learning rule introduced in \ref{sec:td_light_transport} requires some sort of data-structure for looking up and updating the outgoing radiance at point $x$ in direction $\omega$, which from here on I will refer to as a Q-value. Therefore, the main requirement of the data structure is that it has some was of representing a discrete set of angles ($\omega_k$) in a hemisphere located at a position $x$ and oriented to the surface normal at $x$. The Irradiance Volume data structure \cite{greger1998irradiance} meets this requirement.\\
 
-% Put a figure of the irradiance volume
+\begin{figure}[h]
+\begin{center}
+\includegraphics[width=0.3\textwidth]{images/renders/hemispheres/irradiance_volume.png}    
+\end{center}
+\caption{An Irradiance Volume. Each sector holds the incoming radiance $L_i(x,\omega_k)$, the more green a sector is the lower the stored radiance in that sector, the more red a sector is the higher the stored radiance in that sector. }
+\label{fig:irradiance_volume}
+\end{figure}
 
 Originally designed to be used for pre-computation of radiance values which are looked up at runtime to approximate global illumination, the Irradiance Volume data structure is essentially a discretized version of a hemisphere which is visually represented in Figure \ref{fig:irradiance_volume}. The image shows the discrete sectors which make up a hemisphere, this was implemented by converting a 2D square grid into the 3D hemisphere shown, which is known as an adaptive quadrature. Where all sectors in the 2D grid have an equal area and a mapping introduced in \cite{shirley1994notes} converts the 2D grid coordinates into a regular discretized hemisphere in 3D space. The mapping ensures the hemisphere sectors remain equal to one another, meaning the discrete set of direction represented by the hemisphere are of equal angles apart from one another.\\
 
-%Put figure of voronoi plot for scene discretization
+\begin{figure}[!htb]
+\centering
+\minipage{0.32\textwidth}
+\includegraphics[width=1\textwidth]{images/renders/simple_room/geometry.png}
+  \subcaption{Representation of the scenes geometry meshes}
+\endminipage\hfill
+\minipage{0.32\textwidth}
+\includegraphics[width=1\textwidth]{images/renders/simple_room/voronoi.png}
+   \subcaption{Voronoi Plot of Irradiance Volume locations}
+\endminipage\hfill
+\minipage{0.32\textwidth}
+\includegraphics[width=1\textwidth]{images/renders/simple_room/reinforcement_16.png}
+  \subcaption{Expected Sarsa path tracer with 16 SPP}
+\endminipage
+\caption{An example of discretizing location in the scene into Irradiance Volume locations. The geometry mesh (a) is used to uniformly sample Irradiance volume positions. Image (b) shows a voronoi plot for the Irradiance Volumes in the scene, where each pixel is coloured to the represent its closest Irradiance Volume, so each sector of colour in (b) represents a different Irradiance Volume location. Finally (c) gives a render using the Expected Sarsa path tracer based on Algorithm \ref{alg:expected_sarsa_pathtracer}.}
+\label{fig:scene_discretization_example}
+\end{figure}
 
-Each sector of the Irradiance Volume is then used to store the current approximation of radiance from the centre of the hemispheres location $x$, in the outgoing direction formed by the unit vector from $x$ to the centre of the sector. Therefore, an Irradiance Volume stores the radiance (Q-value) for a given position $x$ (state) in each direction $\omega_k$ (action), for all sectors $k$ in the hemisphere located at $x$. In order to store Q-values across the scene, Irradiance Volumes can be uniformly sampled over the scene geometry. Then to lookup a radiance/Q-value for a given position $x$ in direction $\omega_k$, a nearest neighbour search is performed to find the closest Irradianc volume to position $x$, then retrieve the Q-value from the sector at index $k$. Giving a lookup and update time of $O(\log n) + O(1) = O(\log n)$ when using a data structure such as a KD-Tree for nearest neighbour search \cite{bentley1975multidimensional}. Lookup and update procedures from the Irradiance volumes in the scene is all that is needed to apply the Expected Sarsa learning rule in Equation \ref{eq:mc_expected_sarsa_td_learning}.
+Each sector of the Irradiance Volume is then used to store the current approximation of radiance from the centre of the hemispheres location $x$, in the outgoing direction formed by the unit vector from $x$ to the centre of the sector. Therefore, an Irradiance Volume stores the radiance (Q-value) for a given position $x$ (state) in each direction $\omega_k$ (action), for all sectors $k$ in the hemisphere located at $x$. In order to store Q-values across the scene, Irradiance Volumes can be uniformly sampled over the scenes geometry as shown in Figure \ref{fig:scene_discretization_example}. Then to lookup a radiance/Q-value for a given position $x$ in direction $\omega_k$, a nearest neighbour search is performed to find the closest Irradianc volume to position $x$, then retrieve the Q-value from the sector at index $k$. Giving a lookup and update time of $O(\log n) + O(1) = O(\log n)$ when using a data structure such as a KD-Tree for nearest neighbour search \cite{bentley1975multidimensional}. Lookup and update procedures from the Irradiance volumes in the scene is all that is needed to apply the Expected Sarsa learning rule in Equation \ref{eq:mc_expected_sarsa_td_learning}.
 
 \subsection{Expected Sarsa Path Tracing}
 
@@ -1408,6 +1467,15 @@ communicate highly technical material.
 
 \chapter{The Neural-Q Path tracer}
 \label{chap:deep-q}
+
+Deep Learning for denoising light transport simulation rendering methods:
+\begin{itemize}
+\item \cite{zheng2018learning} - Uses a DNN to pre-train on a scene to figure out which pixels require more samples rather then just uniformly sampling the same amount of light rays for every pixel.
+
+\item \cite{muller2018neural} - Uses a DNN for both online learning in light path construction and also introduces i for Primary Sample Space importance sampling. Performs well, not usable currently due to bottleneck of inference
+
+\item \cite{keller2019integral} - Introduces a range of methods for NN, most related to mine is using NN to output Q-value of the light source.
+\end{itemize}
 
 \begin{comment}
 {\bf A topic-specific chapter, of roughly $15$ pages} 

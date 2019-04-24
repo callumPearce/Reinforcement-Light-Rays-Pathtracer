@@ -379,3 +379,38 @@ journal={from Wolfram MathWorld}
   year={2006},
   publisher={Elsevier}
 }
+
+% DEEP LEARNING LIGHT TRANSPORT PAPERS
+
+% Latent space of light transport learning 
+@article{hermosilla2018deep,
+  title={Deep-learning the Latent Space of Light Transport},
+  author={Hermosilla, Pedro and Maisch, Sebastian and Ritschel, Tobias and Ropinski, Timo},
+  journal={arXiv preprint arXiv:1811.04756},
+  year={2018}
+}
+
+% Nvidias paper of deep reinorcement learning
+@article{keller2019integral,
+  title={Integral equations and machine learning},
+  author={Keller, Alexander and Dahm, Ken},
+  journal={Mathematics and Computers in Simulation},
+  year={2019},
+  publisher={Elsevier}
+}
+
+% Disneys neural importance sampling
+@article{muller2018neural,
+  title={Neural importance sampling},
+  author={M{\"u}ller, Thomas and McWilliams, Brian and Rousselle, Fabrice and Gross, Markus and Nov{\'a}k, Jan},
+  journal={arXiv preprint arXiv:1808.03856},
+  year={2018}
+}
+
+% Learning to importance sample in primiary sample space
+@article{zheng2018learning,
+  title={Learning to importance sample in primary sample space},
+  author={Zheng, Quan and Zwicker, Matthias},
+  journal={arXiv preprint arXiv:1808.07840},
+  year={2018}
+}

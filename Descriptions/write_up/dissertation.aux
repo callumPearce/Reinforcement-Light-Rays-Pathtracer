@@ -38,15 +38,20 @@
 \citation{krivanek2014recent}
 \citation{jensen1996global}
 \citation{keller2016path}
+\@writefile{lof}{\contentsline {figure}{\numberline {1.2}{\ignorespaces Two renders of the Cornell Box, where the left is directly illuminated and the right is globally illuminated.\relax }}{2}{figure.caption.13}}
+\newlabel{fig:direct_and_global}{{1.2}{2}{Two renders of the Cornell Box, where the left is directly illuminated and the right is globally illuminated.\relax }{figure.caption.13}{}}
 \citation{sutton2011reinforcement}
-\@writefile{toc}{\contentsline {section}{\numberline {1.2}Temporal Difference Learning for Importance Sampling Ray Directions}{2}{section.1.2}}
-\newlabel{sec:td_learn_for_importance}{{1.2}{2}{Temporal Difference Learning for Importance Sampling Ray Directions}{section.1.2}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {1.2.1}What is Temporal Difference learning?}{2}{subsection.1.2.1}}
-\citation{sutton2011reinforcement}
+\@writefile{lof}{\contentsline {figure}{\numberline {1.3}{\ignorespaces Two renders of a simple room using 16 sampled light paths per pixel. Where one does not use importance sampling in the construction of light paths (left), and the other does so based on a reinforcement learning rule (right). A clear reduction in image noise can be seen.\relax }}{3}{figure.caption.14}}
+\newlabel{fig:noise_reduction_simple_room}{{1.3}{3}{Two renders of a simple room using 16 sampled light paths per pixel. Where one does not use importance sampling in the construction of light paths (left), and the other does so based on a reinforcement learning rule (right). A clear reduction in image noise can be seen.\relax }{figure.caption.14}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {1.2}Temporal Difference Learning for Importance Sampling Ray Directions}{3}{section.1.2}}
+\newlabel{sec:td_learn_for_importance}{{1.2}{3}{Temporal Difference Learning for Importance Sampling Ray Directions}{section.1.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.2.1}What is Temporal Difference learning?}{3}{subsection.1.2.1}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.2.2}Temporal Difference learning methods for Efficient Light Transport Simulation}{3}{subsection.1.2.2}}
 \citation{ramamoorthi2012theory}
 \citation{dahm2017learning}
-\@writefile{toc}{\contentsline {subsection}{\numberline {1.2.2}Temporal Difference learning methods for Efficient Light Transport Simulation}{3}{subsection.1.2.2}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {1.2.3}Why use Temporal Difference Learning for Importance Sampling?}{3}{subsection.1.2.3}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.2.3}Why use Temporal Difference Learning for Importance Sampling?}{4}{subsection.1.2.3}}
+\@writefile{lof}{\contentsline {figure}{\numberline {1.4}{\ignorespaces An illustration of a light blocker for an importance sampling scheme which does not consider visibility. Each arrow represents a possible direction the light path will be reflected in. Clearly the reflected light path is likely to hit the blocker increasing the likelihood of it becoming a zero-contribution light path.\relax }}{4}{figure.caption.15}}
+\newlabel{fig:blocker}{{1.4}{4}{An illustration of a light blocker for an importance sampling scheme which does not consider visibility. Each arrow represents a possible direction the light path will be reflected in. Clearly the reflected light path is likely to hit the blocker increasing the likelihood of it becoming a zero-contribution light path.\relax }{figure.caption.15}{}}
 \citation{pan2006virtual}
 \citation{bloomberg.com}
 \citation{nvidia_turing_architecture_whitepaper_2018}
@@ -54,13 +59,11 @@
 \citation{chaitanya2017interactive}
 \citation{christensen2018renderman}
 \citation{georgiev2018arnold}
-\@writefile{lof}{\contentsline {figure}{\numberline {1.2}{\ignorespaces An illustration of a light blocker for an importance sampling scheme which does not consider visibility. Each arrow represents a possible direction the light path will be reflected in. Clearly the reflected light path is likely to hit the blocker increasing the likelihood of it becoming a zero-contribution light path.\relax }}{4}{figure.caption.13}}
-\newlabel{fig:blocker}{{1.2}{4}{An illustration of a light blocker for an importance sampling scheme which does not consider visibility. Each arrow represents a possible direction the light path will be reflected in. Clearly the reflected light path is likely to hit the blocker increasing the likelihood of it becoming a zero-contribution light path.\relax }{figure.caption.13}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {1.3}Motivation}{4}{section.1.3}}
-\newlabel{sec:motivation}{{1.3}{4}{Motivation}{section.1.3}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {1.3.1}Real time Rendering using Accurate Light Transport Simulation}{4}{subsection.1.3.1}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {1.3.2}Recent Developments}{4}{subsection.1.3.2}}
 \citation{dahm2017learning}
+\@writefile{toc}{\contentsline {section}{\numberline {1.3}Motivation}{5}{section.1.3}}
+\newlabel{sec:motivation}{{1.3}{5}{Motivation}{section.1.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.3.1}Real time Rendering using Accurate Light Transport Simulation}{5}{subsection.1.3.1}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.3.2}Recent Developments}{5}{subsection.1.3.2}}
 \@writefile{toc}{\contentsline {section}{\numberline {1.4}Challenges and Objectives}{5}{section.1.4}}
 \citation{dahm2017learning}
 \citation{morokoff1995quasi}
@@ -87,18 +90,18 @@
 \newlabel{eq:constant_monte_carlo}{{2.8}{8}{Importance Sampling for Reducing Approximation Variance}{equation.2.1.8}{}}
 \newlabel{eq:constant_conversion}{{2.9}{8}{Importance Sampling for Reducing Approximation Variance}{equation.2.1.9}{}}
 \citation{kajiya1986rendering}
-\@writefile{lof}{\contentsline {figure}{\numberline {2.1}{\ignorespaces Constant Function  with a sample point\relax }}{9}{figure.caption.14}}
-\newlabel{fig:constant_function}{{2.1}{9}{Constant Function\\ with a sample point\relax }{figure.caption.14}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {2.2}{\ignorespaces  Non-linear Function  with a sample point\relax }}{9}{figure.caption.14}}
-\newlabel{fig:non_lin_function}{{2.2}{9}{Non-linear Function\\ with a sample point\relax }{figure.caption.14}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.1}{\ignorespaces Constant Function  with a sample point\relax }}{9}{figure.caption.16}}
+\newlabel{fig:constant_function}{{2.1}{9}{Constant Function\\ with a sample point\relax }{figure.caption.16}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.2}{\ignorespaces  Non-linear Function  with a sample point\relax }}{9}{figure.caption.16}}
+\newlabel{fig:non_lin_function}{{2.2}{9}{Non-linear Function\\ with a sample point\relax }{figure.caption.16}{}}
 \newlabel{eq:solve_mc_integration}{{2.10}{9}{Importance Sampling for Reducing Approximation Variance}{equation.2.1.10}{}}
-\newlabel{fig:improtance_correct}{{2.3a}{9}{Importance sampling reducing variance\relax }{figure.caption.15}{}}
-\newlabel{sub@fig:improtance_correct}{{a}{9}{Importance sampling reducing variance\relax }{figure.caption.15}{}}
-\newlabel{fig:improtance_uniform}{{2.3b}{9}{Uniform\\ sampling\relax }{figure.caption.15}{}}
-\newlabel{sub@fig:improtance_uniform}{{b}{9}{Uniform\\ sampling\relax }{figure.caption.15}{}}
-\newlabel{fig:improtance_incorrect}{{2.3c}{9}{Importance sampling increasing variance\relax }{figure.caption.15}{}}
-\newlabel{sub@fig:improtance_incorrect}{{c}{9}{Importance sampling increasing variance\relax }{figure.caption.15}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {2.3}{\ignorespaces Graphical representation of a function $f(x)$ (red) and the corresponding probability density function $pdf(x)$ (blue) used in the Monte Carlo integration approximation for the integral of $f(x)$.\relax }}{9}{figure.caption.15}}
+\newlabel{fig:improtance_correct}{{2.3a}{9}{Importance sampling reducing variance\relax }{figure.caption.17}{}}
+\newlabel{sub@fig:improtance_correct}{{a}{9}{Importance sampling reducing variance\relax }{figure.caption.17}{}}
+\newlabel{fig:improtance_uniform}{{2.3b}{9}{Uniform\\ sampling\relax }{figure.caption.17}{}}
+\newlabel{sub@fig:improtance_uniform}{{b}{9}{Uniform\\ sampling\relax }{figure.caption.17}{}}
+\newlabel{fig:improtance_incorrect}{{2.3c}{9}{Importance sampling increasing variance\relax }{figure.caption.17}{}}
+\newlabel{sub@fig:improtance_incorrect}{{c}{9}{Importance sampling increasing variance\relax }{figure.caption.17}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.3}{\ignorespaces Graphical representation of a function $f(x)$ (red) and the corresponding probability density function $pdf(x)$ (blue) used in the Monte Carlo integration approximation for the integral of $f(x)$.\relax }}{9}{figure.caption.17}}
 \@writefile{toc}{\contentsline {section}{\numberline {2.2}Monte Carlo Path Tracing}{9}{section.2.2}}
 \newlabel{sec:mc_pathtracing}{{2.2}{9}{Monte Carlo Path Tracing}{section.2.2}{}}
 \citation{dutre2004state}
@@ -106,17 +109,17 @@
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.2.1}The Rendering Equation}{10}{subsection.2.2.1}}
 \newlabel{sec:rendering_equation}{{2.2.1}{10}{The Rendering Equation}{subsection.2.2.1}{}}
 \newlabel{eq:rendering_equation}{{2.11}{10}{The Rendering Equation}{equation.2.2.11}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {2.4}{\ignorespaces A diagrammatic representation of the recursive nature of the rendering equation. The outgoing radiance ($L_o$) in a given direction $\omega $ from a point $x$ requires an estimation of the incident radiance coming from all angles in the hemisphere around the point, that is $L_i(h(x, \omega _i),-\omega _i) = L_i(y_i, -\omega _i)$ $\forall \omega _i \in \Omega $. To calculate $L_i(y_i, -\omega _i)$ is identical to calculating the outgoing radiance $L_o(y_i, -\omega _i)$ as we assume no radiance is lost along a ray line, hence the $L_o$ is a recursive function. \relax }}{10}{figure.caption.16}}
-\newlabel{fig:recursive_rendering}{{2.4}{10}{A diagrammatic representation of the recursive nature of the rendering equation. The outgoing radiance ($L_o$) in a given direction $\omega $ from a point $x$ requires an estimation of the incident radiance coming from all angles in the hemisphere around the point, that is $L_i(h(x, \omega _i),-\omega _i) = L_i(y_i, -\omega _i)$ $\forall \omega _i \in \Omega $. To calculate $L_i(y_i, -\omega _i)$ is identical to calculating the outgoing radiance $L_o(y_i, -\omega _i)$ as we assume no radiance is lost along a ray line, hence the $L_o$ is a recursive function. \relax }{figure.caption.16}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.4}{\ignorespaces A diagrammatic representation of the recursive nature of the rendering equation. The outgoing radiance ($L_o$) in a given direction $\omega $ from a point $x$ requires an estimation of the incident radiance coming from all angles in the hemisphere around the point, that is $L_i(h(x, \omega _i),-\omega _i) = L_i(y_i, -\omega _i)$ $\forall \omega _i \in \Omega $. To calculate $L_i(y_i, -\omega _i)$ is identical to calculating the outgoing radiance $L_o(y_i, -\omega _i)$ as we assume no radiance is lost along a ray line, hence the $L_o$ is a recursive function. \relax }}{10}{figure.caption.18}}
+\newlabel{fig:recursive_rendering}{{2.4}{10}{A diagrammatic representation of the recursive nature of the rendering equation. The outgoing radiance ($L_o$) in a given direction $\omega $ from a point $x$ requires an estimation of the incident radiance coming from all angles in the hemisphere around the point, that is $L_i(h(x, \omega _i),-\omega _i) = L_i(y_i, -\omega _i)$ $\forall \omega _i \in \Omega $. To calculate $L_i(y_i, -\omega _i)$ is identical to calculating the outgoing radiance $L_o(y_i, -\omega _i)$ as we assume no radiance is lost along a ray line, hence the $L_o$ is a recursive function. \relax }{figure.caption.18}{}}
 \citation{normals}
-\newlabel{fig:diffuse_brdf}{{2.5a}{11}{Diffuse BRDF\relax }{figure.caption.17}{}}
-\newlabel{sub@fig:diffuse_brdf}{{a}{11}{Diffuse BRDF\relax }{figure.caption.17}{}}
-\newlabel{fig:specular_brdf}{{2.5b}{11}{Specular BRDF\relax }{figure.caption.17}{}}
-\newlabel{sub@fig:specular_brdf}{{b}{11}{Specular BRDF\relax }{figure.caption.17}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {2.5}{\ignorespaces A representation of both a diffuse surface and specular surface BRDF for a given angle of incidence $\omega '$. The surface point is located where all end of the arrows converge. The arrows indicate a subset of direction possible for the incident ray to be reflected in. All possible directions reflected directions for a ray are defined between the surface point and the line , for an incident direction $\omega '$. The further away a point is on the line, the more likely a ray is to reflected in a direction from the surface point to that point on the line. The diffuse surface is equally likely to reflect a ray in any direction. Whereas, the specular surface favour a small subset are of direction in the hemisphere surrounding the surface point.\relax }}{11}{figure.caption.17}}
-\newlabel{fig:brdfs}{{2.5}{11}{A representation of both a diffuse surface and specular surface BRDF for a given angle of incidence $\omega '$. The surface point is located where all end of the arrows converge. The arrows indicate a subset of direction possible for the incident ray to be reflected in. All possible directions reflected directions for a ray are defined between the surface point and the line , for an incident direction $\omega '$. The further away a point is on the line, the more likely a ray is to reflected in a direction from the surface point to that point on the line. The diffuse surface is equally likely to reflect a ray in any direction. Whereas, the specular surface favour a small subset are of direction in the hemisphere surrounding the surface point.\relax }{figure.caption.17}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {2.6}{\ignorespaces Two sculptures, one made from a diffuse material (left) and the other from a specular material.\relax }}{11}{figure.caption.18}}
-\newlabel{fig:material_pics}{{2.6}{11}{Two sculptures, one made from a diffuse material (left) and the other from a specular material.\relax }{figure.caption.18}{}}
+\newlabel{fig:diffuse_brdf}{{2.5a}{11}{Diffuse BRDF\relax }{figure.caption.19}{}}
+\newlabel{sub@fig:diffuse_brdf}{{a}{11}{Diffuse BRDF\relax }{figure.caption.19}{}}
+\newlabel{fig:specular_brdf}{{2.5b}{11}{Specular BRDF\relax }{figure.caption.19}{}}
+\newlabel{sub@fig:specular_brdf}{{b}{11}{Specular BRDF\relax }{figure.caption.19}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.5}{\ignorespaces A representation of both a diffuse surface and specular surface BRDF for a given angle of incidence $\omega '$. The surface point is located where all end of the arrows converge. The arrows indicate a subset of direction possible for the incident ray to be reflected in. All possible directions reflected directions for a ray are defined between the surface point and the line , for an incident direction $\omega '$. The further away a point is on the line, the more likely a ray is to reflected in a direction from the surface point to that point on the line. The diffuse surface is equally likely to reflect a ray in any direction. Whereas, the specular surface favour a small subset are of direction in the hemisphere surrounding the surface point.\relax }}{11}{figure.caption.19}}
+\newlabel{fig:brdfs}{{2.5}{11}{A representation of both a diffuse surface and specular surface BRDF for a given angle of incidence $\omega '$. The surface point is located where all end of the arrows converge. The arrows indicate a subset of direction possible for the incident ray to be reflected in. All possible directions reflected directions for a ray are defined between the surface point and the line , for an incident direction $\omega '$. The further away a point is on the line, the more likely a ray is to reflected in a direction from the surface point to that point on the line. The diffuse surface is equally likely to reflect a ray in any direction. Whereas, the specular surface favour a small subset are of direction in the hemisphere surrounding the surface point.\relax }{figure.caption.19}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.6}{\ignorespaces Two sculptures, one made from a diffuse material (left) and the other from a specular material.\relax }}{11}{figure.caption.20}}
+\newlabel{fig:material_pics}{{2.6}{11}{Two sculptures, one made from a diffuse material (left) and the other from a specular material.\relax }{figure.caption.20}{}}
 \citation{stanford_graphics}
 \citation{christensen2016path}
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.2.2}Path Tracing}{12}{subsection.2.2.2}}
@@ -125,69 +128,77 @@
 \citation{cline2008table}
 \citation{pegoraro2008towards}
 \citation{dahm2017learning}
-\citation{sutton2011reinforcement}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.7}{\ignorespaces An indirectly illuminated scene from a default path tracer. The grid of image sections represent an increasing number of samples per pixel (SPP), beginning in the top left with 16 SPP, to the bottom right with 512 SPP. The full image on the right is a reference image with 4096 SPP where the Monte Carlo approximation has almost converged for pixel values.\relax }}{13}{figure.caption.21}}
+\newlabel{fig:reduce_noise_spp_example}{{2.7}{13}{An indirectly illuminated scene from a default path tracer. The grid of image sections represent an increasing number of samples per pixel (SPP), beginning in the top left with 16 SPP, to the bottom right with 512 SPP. The full image on the right is a reference image with 4096 SPP where the Monte Carlo approximation has almost converged for pixel values.\relax }{figure.caption.21}{}}
 \newlabel{alg:forward_path_tracing}{{1}{13}{Path Tracing}{algocfline.1}{}}
 \@writefile{loa}{\contentsline {algocf}{\numberline {1}{\ignorespaces Forward path tracer\relax }}{13}{algocf.1}}
-\@writefile{toc}{\contentsline {section}{\numberline {2.3}Reinforcement Learning and TD-Learning}{13}{section.2.3}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.3.1}Markov Decision Processes}{13}{subsection.2.3.1}}
 \citation{sutton2011reinforcement}
+\citation{sutton2011reinforcement}
+\citation{sutton2011reinforcement}
+\citation{introToRL}
+\@writefile{toc}{\contentsline {section}{\numberline {2.3}Reinforcement Learning and TD-Learning}{14}{section.2.3}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.3.1}Markov Decision Processes}{14}{subsection.2.3.1}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.8}{\ignorespaces Markov Decision Process \cite  {sutton2011reinforcement}\relax }}{14}{figure.caption.22}}
+\newlabel{fig:mdp}{{2.8}{14}{Markov Decision Process \cite {sutton2011reinforcement}\relax }{figure.caption.22}{}}
 \citation{sutton2011reinforcement}
 \citation{introToRL}
 \citation{sutton2011reinforcement}
-\citation{introToRL}
-\citation{sutton2011reinforcement}
-\@writefile{lof}{\contentsline {figure}{\numberline {2.7}{\ignorespaces Markov Decision Process \cite  {sutton2011reinforcement}\relax }}{14}{figure.caption.19}}
-\newlabel{fig:mdp}{{2.7}{14}{Markov Decision Process \cite {sutton2011reinforcement}\relax }{figure.caption.19}{}}
-\newlabel{eq:markov_property}{{2.13}{14}{Markov Decision Processes}{equation.2.3.13}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.3.2}Goals and Rewards}{14}{subsection.2.3.2}}
+\newlabel{eq:markov_property}{{2.13}{15}{Markov Decision Processes}{equation.2.3.13}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.3.2}Goals and Rewards}{15}{subsection.2.3.2}}
+\newlabel{eq:return}{{2.14}{15}{Goals and Rewards}{equation.2.3.14}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.3.3}Value Function and Optimality}{15}{subsection.2.3.3}}
+\newlabel{eq:value_function}{{2.15}{15}{Value Function and Optimality}{equation.2.3.15}{}}
 \citation{sutton2011reinforcement}
 \citation{model_free_prediction}
 \citation{sutton2011reinforcement}
 \citation{mdp_dynamic_prog}
-\newlabel{eq:return}{{2.14}{15}{Goals and Rewards}{equation.2.3.14}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.3.3}Value Function and Optimality}{15}{subsection.2.3.3}}
-\newlabel{eq:value_function}{{2.15}{15}{Value Function and Optimality}{equation.2.3.15}{}}
-\newlabel{eq:optimal_value}{{2.16}{15}{Value Function and Optimality}{equation.2.3.16}{}}
-\newlabel{eq:bellman_optimal}{{2.17}{15}{Value Function and Optimality}{equation.2.3.17}{}}
 \citation{sutton2011reinforcement}
+\newlabel{eq:optimal_value}{{2.16}{16}{Value Function and Optimality}{equation.2.3.16}{}}
+\newlabel{eq:bellman_optimal}{{2.17}{16}{Value Function and Optimality}{equation.2.3.17}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.3.4}Temporal Difference Learning}{16}{subsection.2.3.4}}
 \newlabel{eq:sarsa}{{2.18}{16}{Sarsa}{equation.2.3.18}{}}
-\@writefile{toc}{\contentsline {subsubsection}{Q-Learning}{16}{section*.21}}
 \citation{sutton2011reinforcement}
 \citation{exploration_vs_exploitation}
 \citation{sutton2011reinforcement}
-\citation{dahm2017learning}
-\@writefile{toc}{\contentsline {subsubsection}{Expected Sarsa}{17}{section*.22}}
+\@writefile{toc}{\contentsline {subsubsection}{Q-Learning}{17}{section*.24}}
+\@writefile{toc}{\contentsline {subsubsection}{Expected Sarsa}{17}{section*.25}}
 \newlabel{eq:expected_sarsa}{{2.21}{17}{Expected Sarsa}{equation.2.3.21}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.3.5}Exploration vs Exploitation}{17}{subsection.2.3.5}}
-\@writefile{toc}{\contentsline {section}{\numberline {2.4}Linking TD-Learning and Light Transport Simulation}{17}{section.2.4}}
-\newlabel{sec:td_light_transport}{{2.4}{17}{Linking TD-Learning and Light Transport Simulation}{section.2.4}{}}
-\citation{greger1998irradiance}
+\citation{dahm2017learning}
+\@writefile{toc}{\contentsline {section}{\numberline {2.4}Linking TD-Learning and Light Transport Simulation}{18}{section.2.4}}
+\newlabel{sec:td_light_transport}{{2.4}{18}{Linking TD-Learning and Light Transport Simulation}{section.2.4}{}}
 \newlabel{eq:sarsa_integral}{{2.24}{18}{Linking TD-Learning and Light Transport Simulation}{equation.2.4.24}{}}
 \newlabel{eq:expected_sarsa_td_learning}{{2.25}{18}{Linking TD-Learning and Light Transport Simulation}{equation.2.4.25}{}}
-\newlabel{eq:mc_expected_sarsa_td_learning}{{2.26}{18}{Linking TD-Learning and Light Transport Simulation}{equation.2.4.26}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {2.5}The expected Sarsa Path tracer}{18}{section.2.5}}
-\newlabel{sec:expecte_sarsa_path_tracer}{{2.5}{18}{The expected Sarsa Path tracer}{section.2.5}{}}
+\citation{greger1998irradiance}
 \citation{shirley1994notes}
 \citation{bentley1975multidimensional}
-\citation{devroye2006nonuniform}
-\citation{dahm2017learning}
+\newlabel{eq:mc_expected_sarsa_td_learning}{{2.26}{19}{Linking TD-Learning and Light Transport Simulation}{equation.2.4.26}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {2.5}The expected Sarsa Path tracer}{19}{section.2.5}}
+\newlabel{sec:expecte_sarsa_path_tracer}{{2.5}{19}{The expected Sarsa Path tracer}{section.2.5}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.5.1}The Irradiance Volume}{19}{subsection.2.5.1}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.5.2}Expected Sarsa Path Tracing}{19}{subsection.2.5.2}}
-\@writefile{toc}{\contentsline {subsubsection}{Algorithm}{19}{section*.23}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.9}{\ignorespaces An Irradiance Volume. Each sector holds the incoming radiance $L_i(x,\omega _k)$, the more green a sector is the lower the stored radiance in that sector, the more red a sector is the higher the stored radiance in that sector. \relax }}{19}{figure.caption.26}}
+\newlabel{fig:irradiance_volume}{{2.9}{19}{An Irradiance Volume. Each sector holds the incoming radiance $L_i(x,\omega _k)$, the more green a sector is the lower the stored radiance in that sector, the more red a sector is the higher the stored radiance in that sector. \relax }{figure.caption.26}{}}
+\citation{devroye2006nonuniform}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.10}{\ignorespaces An example of discretizing location in the scene into Irradiance Volume locations. The geometry mesh (a) is used to uniformly sample Irradiance volume positions. Image (b) shows a voronoi plot for the Irradiance Volumes in the scene, where each pixel is coloured to the represent its closest Irradiance Volume, so each sector of colour in (b) represents a different Irradiance Volume location. Finally (c) gives a render using the Expected Sarsa path tracer based on Algorithm \ref  {alg:expected_sarsa_pathtracer}.\relax }}{20}{figure.caption.27}}
+\newlabel{fig:scene_discretization_example}{{2.10}{20}{An example of discretizing location in the scene into Irradiance Volume locations. The geometry mesh (a) is used to uniformly sample Irradiance volume positions. Image (b) shows a voronoi plot for the Irradiance Volumes in the scene, where each pixel is coloured to the represent its closest Irradiance Volume, so each sector of colour in (b) represents a different Irradiance Volume location. Finally (c) gives a render using the Expected Sarsa path tracer based on Algorithm \ref {alg:expected_sarsa_pathtracer}.\relax }{figure.caption.27}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.5.2}Expected Sarsa Path Tracing}{20}{subsection.2.5.2}}
+\@writefile{toc}{\contentsline {subsubsection}{Algorithm}{20}{section*.28}}
 \citation{dahm2017learning}
-\newlabel{alg:expected_sarsa_pathtracer}{{2}{20}{Algorithm}{algocfline.2}{}}
-\@writefile{loa}{\contentsline {algocf}{\numberline {2}{\ignorespaces Expected Sarsa forward path tracer \cite  {dahm2017learning}\relax }}{20}{algocf.2}}
-\@writefile{toc}{\contentsline {subsubsection}{Monte Carlo Integration}{20}{section*.24}}
-\newlabel{eq:decay_lr}{{2.27}{20}{Monte Carlo Integration}{equation.2.5.27}{}}
-\newlabel{eq:mc_expected_sarsa_pdf}{{2.28}{20}{Monte Carlo Integration}{equation.2.5.28}{}}
-\newlabel{fig:uniform_pdf}{{2.8a}{21}{Hemisphere with a uniform $pdf$\relax }{figure.caption.25}{}}
-\newlabel{sub@fig:uniform_pdf}{{a}{21}{Hemisphere with a uniform $pdf$\relax }{figure.caption.25}{}}
-\newlabel{fig:not_uniform_pdf}{{2.8b}{21}{Irradiance Volume with a non-uniform $pdf$\relax }{figure.caption.25}{}}
-\newlabel{sub@fig:not_uniform_pdf}{{b}{21}{Irradiance Volume with a non-uniform $pdf$\relax }{figure.caption.25}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {2.8}{\ignorespaces A 2 dimension view of a subset of values from two probability density functions ($pdf$). One for a unit hemisphere (left) with a uniform $pdf$. One for an Irradiance Volume (right) with non-uniform pdf. Where the arrows represent sampled directions and the values at the end are the evaluated $pdf$ values for each direction.\relax }}{21}{figure.caption.25}}
-\newlabel{fig:pdfs}{{2.8}{21}{A 2 dimension view of a subset of values from two probability density functions ($pdf$). One for a unit hemisphere (left) with a uniform $pdf$. One for an Irradiance Volume (right) with non-uniform pdf. Where the arrows represent sampled directions and the values at the end are the evaluated $pdf$ values for each direction.\relax }{figure.caption.25}{}}
-\@writefile{toc}{\contentsline {subsubsection}{Consistency}{21}{section*.26}}
+\citation{dahm2017learning}
+\newlabel{alg:expected_sarsa_pathtracer}{{2}{21}{Algorithm}{algocfline.2}{}}
+\@writefile{loa}{\contentsline {algocf}{\numberline {2}{\ignorespaces Expected Sarsa forward path tracer \cite  {dahm2017learning}\relax }}{21}{algocf.2}}
+\@writefile{toc}{\contentsline {subsubsection}{Monte Carlo Integration}{21}{section*.29}}
+\newlabel{eq:decay_lr}{{2.27}{21}{Monte Carlo Integration}{equation.2.5.27}{}}
+\newlabel{eq:mc_expected_sarsa_pdf}{{2.28}{21}{Monte Carlo Integration}{equation.2.5.28}{}}
+\newlabel{fig:uniform_pdf}{{2.11a}{22}{Hemisphere with a uniform $pdf$\relax }{figure.caption.30}{}}
+\newlabel{sub@fig:uniform_pdf}{{a}{22}{Hemisphere with a uniform $pdf$\relax }{figure.caption.30}{}}
+\newlabel{fig:not_uniform_pdf}{{2.11b}{22}{Irradiance Volume with a non-uniform $pdf$\relax }{figure.caption.30}{}}
+\newlabel{sub@fig:not_uniform_pdf}{{b}{22}{Irradiance Volume with a non-uniform $pdf$\relax }{figure.caption.30}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.11}{\ignorespaces A 2 dimension view of a subset of values from two probability density functions ($pdf$). One for a unit hemisphere (left) with a uniform $pdf$. One for an Irradiance Volume (right) with non-uniform pdf. Where the arrows represent sampled directions and the values at the end are the evaluated $pdf$ values for each direction.\relax }}{22}{figure.caption.30}}
+\newlabel{fig:pdfs}{{2.11}{22}{A 2 dimension view of a subset of values from two probability density functions ($pdf$). One for a unit hemisphere (left) with a uniform $pdf$. One for an Irradiance Volume (right) with non-uniform pdf. Where the arrows represent sampled directions and the values at the end are the evaluated $pdf$ values for each direction.\relax }{figure.caption.30}{}}
+\@writefile{toc}{\contentsline {subsubsection}{Consistency}{22}{section*.31}}
+\citation{zheng2018learning}
+\citation{muller2018neural}
 \@writefile{toc}{\contentsline {chapter}{\numberline {3}The Neural-Q Path tracer}{23}{chapter.3}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
@@ -227,18 +238,20 @@
 \bibcite{keller2016path}{18}
 \bibcite{krivanek2014recent}{19}
 \bibcite{morokoff1995quasi}{20}
-\bibcite{nvidia_turing_architecture_whitepaper_2018}{21}
-\bibcite{pan2006virtual}{22}
-\bibcite{pegoraro2008towards}{23}
-\bibcite{ramamoorthi2012theory}{24}
-\bibcite{scratchapixel_2015}{25}
-\bibcite{shirley1994notes}{26}
-\bibcite{sutton2011reinforcement}{27}
-\bibcite{exploration_vs_exploitation}{28}
-\bibcite{introToRL}{29}
-\bibcite{mdp_dynamic_prog}{30}
-\bibcite{model_free_prediction}{31}
-\bibcite{normals}{32}
+\bibcite{muller2018neural}{21}
+\bibcite{nvidia_turing_architecture_whitepaper_2018}{22}
+\bibcite{pan2006virtual}{23}
+\bibcite{pegoraro2008towards}{24}
+\bibcite{ramamoorthi2012theory}{25}
+\bibcite{scratchapixel_2015}{26}
+\bibcite{shirley1994notes}{27}
+\bibcite{sutton2011reinforcement}{28}
+\bibcite{exploration_vs_exploitation}{29}
+\bibcite{introToRL}{30}
+\bibcite{mdp_dynamic_prog}{31}
+\bibcite{model_free_prediction}{32}
+\bibcite{normals}{33}
+\bibcite{zheng2018learning}{34}
 \@writefile{toc}{\contentsline {chapter}{\numberline {A}An Example Appendix}{31}{appendix.A}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}

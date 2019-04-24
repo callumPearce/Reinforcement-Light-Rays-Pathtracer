@@ -117,6 +117,12 @@ William~J Morokoff and Russel~E Caflisch.
 \newblock Quasi-monte carlo integration.
 \newblock {\em Journal of computational physics}, 122(2):218--230, 1995.
 
+\bibitem{muller2018neural}
+Thomas M{\"u}ller, Brian McWilliams, Fabrice Rousselle, Markus Gross, and Jan
+  Nov{\'a}k.
+\newblock Neural importance sampling.
+\newblock {\em arXiv preprint arXiv:1808.03856}, 2018.
+
 \bibitem{nvidia_turing_architecture_whitepaper_2018}
 NVIDIA.
 \newblock {\em NVIDIA Turing Architecture Whitepaper}, 2018.
@@ -177,5 +183,10 @@ Hado van Hasselt.
 Eric~W Weisstein.
 \newblock Normal vector.
 \newblock MathWolrd--A Wolfram Web Resource.
+
+\bibitem{zheng2018learning}
+Quan Zheng and Matthias Zwicker.
+\newblock Learning to importance sample in primary sample space.
+\newblock {\em arXiv preprint arXiv:1808.07840}, 2018.
 
 \end{thebibliography}
