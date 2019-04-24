@@ -27,7 +27,7 @@
                 % the degree programme
                     degree={MEng},
                 % the dissertation    title (which cannot be blank)
-                     title={How effective are both Temporal Difference and Deep Temporal Difference learning methods for reducing the noise in images rendered by Monte Carlo path tracing?},
+                     title={How effective are both Temporal Difference Learning and Deep Reinforcement learning methods for reducing noise in images rendered by Monte Carlo path tracing?},
                 % the dissertation subtitle (which can be blank)
                   subtitle={},
                 % the dissertation     type

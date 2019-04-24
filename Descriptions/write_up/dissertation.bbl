@@ -98,6 +98,11 @@ James~T Kajiya.
 \newblock In {\em ACM SIGGRAPH computer graphics}, volume~20, pages 143--150.
   ACM, 1986.
 
+\bibitem{keller2019integral}
+Alexander Keller and Ken Dahm.
+\newblock Integral equations and machine learning.
+\newblock {\em Mathematics and Computers in Simulation}, 2019.
+
 \bibitem{keller2016path}
 Alexander Keller, Ken Dahm, and Nikolaus Binder.
 \newblock Path space filtering.
@@ -162,6 +167,11 @@ Richard~S Sutton and Andrew~G Barto.
 \bibitem{exploration_vs_exploitation}
 Hado van Hasselt.
 \newblock Exploration and exploitation.
+\newblock DeepMind: Advanced Deep Learning \& Reinforcement Learning.
+
+\bibitem{deep_rl_function_approx}
+Hado van Hasselt.
+\newblock Function approximation and deep reinforcement learning.
 \newblock DeepMind: Advanced Deep Learning \& Reinforcement Learning.
 
 \bibitem{introToRL}

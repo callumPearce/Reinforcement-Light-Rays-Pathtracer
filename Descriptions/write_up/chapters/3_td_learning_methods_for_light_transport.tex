@@ -2,18 +2,23 @@
 
 \begin{document}
 
-\chapter{TD-Learning Methods for Importance Sampling Light Paths}
+\chapter{TD-Learning and Deep Reinforcement Learning for Importance Sampling Light Paths}
 
 Monte Carlo Integration, importance sampling, Monte Carlo path tracing, reinforcement learning and the link between temporal difference learning and light transport have all been introduced. So now it is finally time to combine all of these concepts to build path tracing algorithms for Importance sampling. 
 
 In this section I introduce two path tracers I have implemented to assess their ability in reducing image noise in Monte Carlo path tracing with a fixed number of sampled light paths per pixel. The first is based on a method introduced by Nvidia \cite{dahm2017learning} which I refer to as the Expected Sarsa path tracer. The other I refer to as the Neural-Q path tracer which I have designed. Both of which progressively reduce the number of zero-contribution light paths sampled during rendering, reducing the variance in the Monte Carlo approximation of a pixels colour. Ultimately, reducing the noise in rendered images. 
 
-\section{The expected Sarsa Path tracer}
+\section{The expected Sarsa Path Tracer}
 \label{sec:expecte_sarsa_path_tracer}
 
+The Expected Sarsa path tracer was first introduced by Nvidia \cite{dahm2017learning} to apply the derived  Expected Sarsa learning rule for learning the outgoing radiance in a given direction from a position, which was derived in \ref{eq:mc_expected_sarsa_td_learning}:
+
+$$Q(x, \omega) \leftarrow (1 - \alpha) \cdot Q(x, \omega) + \alpha \cdot \left( L_e(y, -\omega) +\frac{2 \pi}{n} \sum_{k=1}^{n-1} Q(y, \omega_k) f_s(\omega_k, y, -\omega) \cos(\theta_k)  \right)$$
+
+I will now introduce my implementation of the algorithm which uses it to progressively reduce the number of zero-contribution light paths sampled in a path tracer, which can reduce noise in rendered images significantly. 
 
 \subsection{The Irradiance Volume}
-The learning rule introduced in \ref{sec:td_light_transport} requires some sort of data-structure for looking up and updating the outgoing radiance at point $x$ in direction $\omega$, which from here on I will refer to as a Q-value. Therefore, the main requirement of the data structure is that it has some was of representing a discrete set of angles ($\omega_k$) in a hemisphere located at a position $x$ and oriented to the surface normal at $x$. The Irradiance Volume data structure \cite{greger1998irradiance} meets this requirement.\\
+The derived Expected Sarsa learning rule requires some sort of data-structure for looking up and updating the outgoing radiance at point $x$ in direction $\omega$, which from here on I will refer to as a Q-value. Therefore, the main requirement of the data structure is that it has some way of representing a discrete set of angles ($\omega_k$) in a hemisphere located at a position $x$ and oriented to the surface normal at $x$. The Irradiance Volume data structure \cite{greger1998irradiance} meets this requirement.\\
 
 \begin{figure}[h]
 \begin{center}
@@ -130,8 +135,26 @@ However, the approximated radiance may vary across sectors, causing the associat
 \subsubsection{Consistency}
 While $Q(x, \omega_k)$ does converge, it does not necessarily converge on the true radiance $q_*(x, \omega_k)$. This is due to the discretization of the action/direction into sectors which make up a hemisphere. If the number of sectors was infinite then the algorithm would converge on the true radiance by the law of large number applied to Equation \ref{eq:mc_expected_sarsa_td_learning}. Clearly this is not possible, but later I discuss how increasing the number of  sectors on the Irradiance Volume affects the number of zero-contribution light paths. Another issue is Q-values will not be visited the same number of times during rendering. For example Irradiance Volumes located in places which are in the cameras view will be visited far more, so images rendered of the scene which have been in the cameras view for the longest are likely to have the lowest variance in pixel colours. This is a problem, as parts of the scene may look particularly noisy compared to others as the camera begins to move round the scene.
 
+\pagebreak
+
 % -----------------------------------------------------------------------------
 
+\section{The Neural-Q Path Tracer}
+
+Up to now I have only spoke of TD-learning techniques which involve use a tabular approach to approximate the the optimal value function (from section \ref{sec:optimal_value}, Equation \ref{eq:optimal_value}). However, it is possible to instead approximate the value function with a function approximater. Therefore I will introduce how a Neural Network can be used as a non-linear function approximater for the optimal value function \cite{deep_rl_function_approx}. Following this I introduce the Neural-Q path tracing algorithm I have designed and implemented.
+
+After, I take a slight detour to review the new materials that have been recently published on neural networks for importance sampling in Monte Carlo path tracing. These materials were published during the execution of the project, so it is important to find out where my Neural Q-learning algorithm sits compared to these new state of the art methods.
+
+
+\subsection{Introduction to Deep Reinforcement Learning}
+
+
+\subsection{Neural-Q Path Tracer}
+
+
+\subsection{Recent Advancements in Neural Light Path Construction}
+
+\begin{comment}
 % Advantages
 % Less memory
 % Same architecture can be applied to scene rather then applying complex data structures to the scene
@@ -147,7 +170,7 @@ Deep Learning for denoising light transport simulation rendering methods:
 \item \cite{keller2019integral} - Introduces a range of methods for NN, most related to mine is using NN to output Q-value of the light source.
 \end{itemize}
 
-\begin{comment}
+
 {\bf A topic-specific chapter, of roughly $15$ pages} 
 \vspace{1cm} 
 
@@ -245,7 +268,6 @@ the following content is auto-generated dummy text.
 This is an example paragraph; note the trailing full-stop in the title,
 which is intended to ensure it does not run into the text.
 
-\end{comment}
 
 \subsection{Plan}
 
@@ -267,5 +289,6 @@ which is intended to ensure it does not run into the text.
 \item Present some results side by side against a default path tracer and Nvidia's reinforcement learning approach. Pointing out aspects of the image and reasoning for certain parts.
 
 \end{enumerate}
+\end{comment}
 
 \end{document}
