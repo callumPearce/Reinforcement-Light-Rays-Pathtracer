@@ -70,7 +70,7 @@
 
 % My packages
 \usepackage{verbatim}
-
+\usepackage{subfiles}
 \usepackage{tikz}
 \usepackage{pgfplots}
 \usepackage{array}
