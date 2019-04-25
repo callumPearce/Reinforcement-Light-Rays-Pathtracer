@@ -141,18 +141,87 @@ While $Q(x, \omega_k)$ does converge, it does not necessarily converge on the tr
 
 \section{The Neural-Q Path Tracer}
 
-Up to now I have only spoke of TD-learning techniques which involve use a tabular approach to approximate the the optimal value function (from section \ref{sec:optimal_value}, Equation \ref{eq:optimal_value}). However, it is possible to instead approximate the value function with a function approximater. Therefore I will introduce how a Neural Network can be used as a non-linear function approximater for the optimal value function \cite{deep_rl_function_approx}. Following this I introduce the Neural-Q path tracing algorithm I have designed and implemented.
+Up to now I have only spoke of TD-learning techniques which involve use a tabular approach to approximate the the optimal value function. However, it is possible to instead use a Neural Network as a non-linear function approximater for the optimal value function \cite{deep_rl_function_approx}. Following this I introduce the Neural-Q path tracing algorithm I have designed and implemented.
 
 After, I take a slight detour to review the new materials that have been recently published on neural networks for importance sampling in Monte Carlo path tracing. These materials were published during the execution of the project, so it is important to find out where my Neural Q-learning algorithm sits compared to these new state of the art methods.
 
 \subsection{Introduction to Deep Reinforcement Learning}
 
-\begin{itemize}
-\item 
-\end{itemize}
+\subsubsection{Value Function Approximation}
+Observe the optimal value function introduced in section \ref{sec:optimal_value}, Equation \ref{eq:optimal_value}:
+
+$$ q_*(s,a) = \max_\pi q_\pi(s,a)$$
+
+Recall this is simply a function which given a state and action, outputs a scalar representing the value of that state action pair. Therefore, rather then approximating it using a tabular form, instead one can learn the a functions parametrized functional form with a weight vector $\theta = (\theta_0, ..., \theta_n) \text{ where } \theta_i \in \mathbb{R}$. This turns the task of approximating the value function into a function approximation problem, for which there are many possible methodologies. To name some, Coarse coding, Decision Trees, Nearest Neighbour, Fourier basis, and Artificial Neural Networks (ANNs) \cite{sutton2011reinforcement}. Function approximators other than ANNs have been successful for a range of reinforcement learning problems, whilst maintaining both data and computational efficiency \cite{sutton1996generalization, konidaris2011value, uther1998tree}. However, I will be using an ANN for value function approximation due to its capabilities of learning a non-linear functions, and its performance in the presence of a large amount of training data \cite{lecun2015deep}. The exact reasons these benefits are capitalized on will become more apparent later. By using a ANN for function approximation, the technique is now known as Deep Reinforcement Learning.
+
+\subsubsection{Stochastic Gradient Descent}
+The goal of the artificial neural network is to learn the value of the function parameters $\theta$ such that the functions loss over all possible state-action pair inputs is minimised. In the case of ANNs the parameters $\theta$ are the weights for the connections between neurons. For stochastic gradient descent a differentiable loss function which takes parameter vector $\theta$ as input and outputs a scalar loss value is required. The method from here on is to move the parameter values $\theta$ in the direction of the negative gradient to minimise the loss function:
+
+$$ \triangle \theta = -\frac{1}{2} \alpha \triangledown_\theta J(\theta)$$
+
+Where $\alpha$ is the step-size parameter. An example loss function for approximating the optimal value function $q_\pi$ is given in Equation \ref{eq:example_loss}. 
+
+\begin{equation}
+J(\theta) = \sum_{s \in \mathcal{S}} \sum_{a \in \mathcal{A}} (q_\pi(s,a) - q_\theta(s,a))^2
+\label{eq:example_loss}
+\end{equation}
+
+\noindent
+Where:
+\begin{conditions}
+J(\theta) & The loss value function for the current parameter values $\theta$\\
+q_\pi(s,a) & The value function under policy $\theta$ for the state-action pair\\
+q_\theta(s,a) & Current approximation of the value function under policy $\theta$ for the state-action pair 
+\end{conditions}
+
+If plenty of data was available for $q_\pi(s,a)$ for many state actions pairs $(s,a)$, it would be possible to train an ANN to approximate the optimal value function $q_\pi$. By simply running a forward pass on the ANN to compute $q_\theta(s,a)$ for a given state-action pair as input, then calculating the loss $J(\theta)$ using the ground truth $q_\pi(s,a)$. Then, by using the backpropagation algorithm to calculate the partial derivatives w.r.t the loss, the parameters values $\theta$ can be updated using an optimizer such as Adam. The issue is $q_\pi$ is unknown and no training data is initially available for the training procedure just described. Instead, deep reinforcement learning uses online training procedures closely resembling the TD-learning methods introduced in section \ref{sec:td_learning} for function approximation.
+
+\subsubsection{Bootstrapping}
+
+Following TD-learning, as the optimal value function $q_*$ (or $q_\pi$ in the previous section) is not available, it is possible to instead bootstrap using the current estimate of the value function \cite{deep_rl_function_approx}. Recall that bootstrapping for the value function is when the updated current estimate of the optimal value function for a state-action pair is partially based on new experience data, and the current estimated value of the next selected state-action pair when following policy $\pi$. An example of this is the Expected Sarsa method in section \ref{sec:td_learning}, Equation \ref{eq:expected_sarsa}. Equation \ref{eq:td_error_sarsa} gives what is known as the TD error ($\delta_t$) for Expected Sarsa at time step $t$. It is called an error as it gives the difference between the current estimate $Q(S_t, A_t)$ and the better estimate $R_{t+1} + \gamma \sum_a \pi(a | S_{t+1}) Q(S_{t+1}, a)$ when following policy $\pi$. Notice that the TD error is an estimate that has been made at time step $t$, meaning the error depends on the next state and the next reward which can both change across time steps.
+
+\begin{equation}
+\delta_t =\left( R_{t+1} + \gamma \sum_a \pi(a | S_{t+1}) Q(S_{t+1}, a)\right) - Q(S_t, A_t)
+\label{eq:td_error_sarsa}
+\end{equation}
+
+It is this TD error that can be used to form the loss function for an ANN to approximate the value function, as shown in Equation \ref{eq:loss_expected_sarsa}. The gradient of this loss function can be calculated by Equation \ref{eq:semi_gradient_one_step_exp_sarsa} which is used with an optimizer for updating the parameters $\theta$ during learning. It is known as semi-gradient one-step Expected Sarsa \cite{sutton2011reinforcement}, and is the only deep reinforcement learning rule I shall be using from here on for the Neural-Q path tracer.
+
+\begin{equation}
+J(\theta) = \left(R_{t+1} + \gamma \sum_a \pi(a | S_{t+1}) \left[\hat{q_\theta}(S_{t+1}, a) \right] \right) -
+\hat{q_\theta}(S_t, A_t)
+\label{eq:loss_expected_sarsa}
+\end{equation}
+
+\begin{equation}
+\triangledown _\theta J(\theta)  = \left( \left(R_{t+1} + \gamma \sum_a \pi(a | S_{t+1}) \left[\hat{q_\theta}(S_{t+1}, a) \right] \right) -
+\hat{q_\theta}(S_t, A_t) \right) \triangledown_\theta \hat{q_\theta}(S_t, A_t)
+\label{eq:semi_gradient_one_step_exp_sarsa}
+\end{equation}
+
+CONVERGENCE??? PG 197 SUTTON
+
+\noindent
+Where:
+\begin{conditions}
+\triangledown_\theta & Gradient w.r.t $\theta$\\
+\pi & The current policy followed\\
+\hat{q_\theta} & The current approximation of the value function modelled by an ANN\\
+\left[ . \right] & Stop gradient, meaning the value is taken as just a scalar input during backpropagation
+\end{conditions}
 
 \subsection{Neural-Q Path Tracer}
 
+\begin{itemize}
+\item Why use non-linear function for rendering with radiance distribution?
+\item Approximate value function, too many states (infinite technically), memory requirements are not limited it scales to scene size, generalization across states, one weight vector 
+\item Experience is not usually i.i.d
+\item Might take too long to learn about all states, instead we can benefit from generalization 
+\item Neural-Q path tracing algorithm
+\item Neural-Q network architecture
+\item Potential improvement to network that I will test out soon 
+\item 
+\end{itemize}
 
 \subsection{Recent Advancements in Neural Light Path Construction}
 

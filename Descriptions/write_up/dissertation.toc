@@ -37,8 +37,11 @@
 \contentsline {subsubsection}{Consistency}{24}{section*.35}
 \contentsline {section}{\numberline {3.2}The Neural-Q Path Tracer}{25}{section.3.2}
 \contentsline {subsection}{\numberline {3.2.1}Introduction to Deep Reinforcement Learning}{25}{subsection.3.2.1}
-\contentsline {subsection}{\numberline {3.2.2}Neural-Q Path Tracer}{25}{subsection.3.2.2}
-\contentsline {subsection}{\numberline {3.2.3}Recent Advancements in Neural Light Path Construction}{25}{subsection.3.2.3}
+\contentsline {subsubsection}{Value Function Approximation}{25}{section*.36}
+\contentsline {subsubsection}{Stochastic Gradient Descent}{25}{section*.37}
+\contentsline {subsubsection}{Bootstrapping}{26}{section*.38}
+\contentsline {subsection}{\numberline {3.2.2}Neural-Q Path Tracer}{26}{subsection.3.2.2}
+\contentsline {subsection}{\numberline {3.2.3}Recent Advancements in Neural Light Path Construction}{26}{subsection.3.2.3}
 \contentsline {chapter}{\numberline {4}Critical Evaluation}{27}{chapter.4}
 \contentsline {subsection}{\numberline {4.0.1}Plan}{27}{subsection.4.0.1}
 \contentsline {chapter}{\numberline {5}Conclusion}{29}{chapter.5}

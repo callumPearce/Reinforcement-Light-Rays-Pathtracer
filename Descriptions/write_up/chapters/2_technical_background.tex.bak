@@ -457,6 +457,7 @@ Equation \ref{eq:bellman_optimal} defines the Bellman optimality equation, which
 To summarize, the aim from here on is to build an agent which is able to learn the optimal value function, but whilst this is provably possible, it rarely happens in practice. However, the learning methods I will discuss in the next section on TD-learning are able to find a good value function for light path direction sampling.
 
 \subsection{Temporal Difference Learning}
+\label{sec:td_learning}
 
 TD-Learning is combination of Monte Carlo and Dynamic Programming reinforcement learning methods for learning the optimal value function from equation \ref{eq:optimal_value}. I will not discuss the details of Monte Carlo and Dynamic Programming methods as they are not investigated as part of my work. However, the reasoning for choosing to study  TD-learning approaches over these two alternative approaches are as follows; TD-learning can perform learning updates of the value function throughout an episode, unlike Monte Carlo approaches which wait until the end \cite{model_free_prediction}. This means TD-learning algorithms can be written in an online learning algorithm \cite{sutton2011reinforcement}. TD-learning can learn directly from experience, as it does not require a true model of the environment in order to learn, unlike Dynamic Programming methods \cite{mdp_dynamic_prog}. This means TD-learning is model-free, avoiding the expense of building the true model of the environment. I will now introduce
 

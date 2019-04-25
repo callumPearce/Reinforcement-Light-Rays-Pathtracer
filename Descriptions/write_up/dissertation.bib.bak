@@ -389,6 +389,44 @@ journal={from Wolfram MathWorld}
     url={https://www.youtube.com/watch?v=wAk1lxmiW4c&list=PLqYmG7hTraZDNJre23vqCGIVpfZ_K2RZs&index=9}
 }
 
+% Example of coarse coding in RL
+@inproceedings{sutton1996generalization,
+  title={Generalization in reinforcement learning: Successful examples using sparse coarse coding},
+  author={Sutton, Richard S},
+  booktitle={Advances in neural information processing systems},
+  pages={1038--1044},
+  year={1996}
+}
+
+% Fourier basis for function approximation in RL
+@inproceedings{konidaris2011value,
+  title={Value function approximation in reinforcement learning using the Fourier basis},
+  author={Konidaris, George and Osentoski, Sarah and Thomas, Philip},
+  booktitle={Twenty-fifth AAAI conference on artificial intelligence},
+  year={2011}
+}
+
+% Decision Tree for function approximation in RL
+@inproceedings{uther1998tree,
+  title={Tree based discretization for continuous state space reinforcement learning},
+  author={Uther, William TB and Veloso, Manuela M},
+  booktitle={Aaai/iaai},
+  pages={769--774},
+  year={1998}
+}
+
+% Deep learning for large datasets
+@article{lecun2015deep,
+  title={Deep learning},
+  author={LeCun, Yann and Bengio, Yoshua and Hinton, Geoffrey},
+  journal={nature},
+  volume={521},
+  number={7553},
+  pages={436},
+  year={2015},
+  publisher={Nature Publishing Group}
+}
+
 
 %% DEEP LEARNING LIGHT TRANSPORT PAPERS
 
@@ -424,3 +462,4 @@ journal={from Wolfram MathWorld}
   journal={arXiv preprint arXiv:1808.07840},
   year={2018}
 }
+

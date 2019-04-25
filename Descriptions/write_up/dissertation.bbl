@@ -98,16 +98,18 @@ James~T Kajiya.
 \newblock In {\em ACM SIGGRAPH computer graphics}, volume~20, pages 143--150.
   ACM, 1986.
 
-\bibitem{keller2019integral}
-Alexander Keller and Ken Dahm.
-\newblock Integral equations and machine learning.
-\newblock {\em Mathematics and Computers in Simulation}, 2019.
-
 \bibitem{keller2016path}
 Alexander Keller, Ken Dahm, and Nikolaus Binder.
 \newblock Path space filtering.
 \newblock In {\em Monte Carlo and Quasi-Monte Carlo Methods}, pages 423--436.
   Springer, 2016.
+
+\bibitem{konidaris2011value}
+George Konidaris, Sarah Osentoski, and Philip Thomas.
+\newblock Value function approximation in reinforcement learning using the
+  fourier basis.
+\newblock In {\em Twenty-fifth AAAI conference on artificial intelligence},
+  2011.
 
 \bibitem{krivanek2014recent}
 Jaroslav Kriv{\'a}nek, Alexander Keller, Iliyan Georgiev, Anton~S Kaplanyan,
@@ -117,16 +119,15 @@ Jaroslav Kriv{\'a}nek, Alexander Keller, Iliyan Georgiev, Anton~S Kaplanyan,
   of practice.
 \newblock In {\em SIGGRAPH Courses}, pages 17--1, 2014.
 
+\bibitem{lecun2015deep}
+Yann LeCun, Yoshua Bengio, and Geoffrey Hinton.
+\newblock Deep learning.
+\newblock {\em nature}, 521(7553):436, 2015.
+
 \bibitem{morokoff1995quasi}
 William~J Morokoff and Russel~E Caflisch.
 \newblock Quasi-monte carlo integration.
 \newblock {\em Journal of computational physics}, 122(2):218--230, 1995.
-
-\bibitem{muller2018neural}
-Thomas M{\"u}ller, Brian McWilliams, Fabrice Rousselle, Markus Gross, and Jan
-  Nov{\'a}k.
-\newblock Neural importance sampling.
-\newblock {\em arXiv preprint arXiv:1808.03856}, 2018.
 
 \bibitem{nvidia_turing_architecture_whitepaper_2018}
 NVIDIA.
@@ -159,10 +160,23 @@ Peter Shirley and Kenneth Chiu.
 \newblock Technical report, Technical Report 411, Department of Computer
   Science, Indiana University~…, 1994.
 
+\bibitem{sutton1996generalization}
+Richard~S Sutton.
+\newblock Generalization in reinforcement learning: Successful examples using
+  sparse coarse coding.
+\newblock In {\em Advances in neural information processing systems}, pages
+  1038--1044, 1996.
+
 \bibitem{sutton2011reinforcement}
 Richard~S Sutton and Andrew~G Barto.
 \newblock {\em Reinforcement learning: An introduction}.
 \newblock Cambridge, MA: MIT Press, 2011.
+
+\bibitem{uther1998tree}
+William~TB Uther and Manuela~M Veloso.
+\newblock Tree based discretization for continuous state space reinforcement
+  learning.
+\newblock In {\em Aaai/iaai}, pages 769--774, 1998.
 
 \bibitem{exploration_vs_exploitation}
 Hado van Hasselt.
@@ -193,10 +207,5 @@ Hado van Hasselt.
 Eric~W Weisstein.
 \newblock Normal vector.
 \newblock MathWolrd--A Wolfram Web Resource.
-
-\bibitem{zheng2018learning}
-Quan Zheng and Matthias Zwicker.
-\newblock Learning to importance sample in primary sample space.
-\newblock {\em arXiv preprint arXiv:1808.07840}, 2018.
 
 \end{thebibliography}
