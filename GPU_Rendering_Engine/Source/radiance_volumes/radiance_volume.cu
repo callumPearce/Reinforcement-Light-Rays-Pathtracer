@@ -281,7 +281,7 @@ void RadianceVolume::temporal_difference_update(float sector_irradiance, int sec
     update = update > (float)RADIANCE_THRESHOLD ? update : (float)RADIANCE_THRESHOLD;
 
     // Update the radiance grid value and the alpha value
-    atomicInc(&(this->visits[ sector_location ]), vs+1);
+    atomicAdd(&(this->visits[ sector_location ]), 1);
 
     // Update the irradiance estimate
     update_irradiance(surfaces, update, sector_x, sector_y);
