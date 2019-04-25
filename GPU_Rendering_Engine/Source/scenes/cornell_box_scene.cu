@@ -78,7 +78,7 @@ void get_cornell_shapes(std::vector<Surface>& Surfaces, std::vector<AreaLight>& 
     Surface clng8 = Surface(H, G, I, cyan);
     Surfaces.push_back(clng8);
 
-    vec3 diffuse_p = 9.f * vec3(0.9, 0.9, 0.9);
+    vec3 diffuse_p = 14.f * vec3(0.9, 0.9, 0.9);
     AreaLight a1 = AreaLight(K, I, J, diffuse_p);
     light_planes.push_back(a1);
 
