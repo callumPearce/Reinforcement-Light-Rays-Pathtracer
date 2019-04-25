@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.10.2)  24 APR 2019 22:07
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.10.2)  25 APR 2019 10:12
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1354,84 +1354,78 @@ Underfull \hbox (badness 10000) in paragraph at lines 295--296
 
  []
 
-
-Underfull \hbox (badness 10000) in paragraph at lines 303--304
+[11 <./images/diffuse_brdf.png> <./images/specular_brdf.png> <./images/diffuse_
+sculpture.jpeg> <./images/specular_sculpture.jpg>]
+Underfull \hbox (badness 10000) in paragraph at lines 308--309
 
  []
 
 
-Underfull \vbox (badness 2245) has occurred while \output is active []
-
- [11 <./images/diffuse_brdf.png> <./images/specular_brdf.png> <./images/diffuse
-_sculpture.jpeg> <./images/specular_sculpture.jpg>]
-Overfull \hbox (5.65875pt too wide) in paragraph at lines 318--322
+Overfull \hbox (5.65875pt too wide) in paragraph at lines 323--327
 [] 
  []
 
 
-<images/renders/noise_reduction_default/increasing_samples.png, id=466, 573.141
+<images/renders/noise_reduction_default/increasing_samples.png, id=469, 573.141
 25pt x 255.95625pt>
 File: images/renders/noise_reduction_default/increasing_samples.png Graphic fil
 e (type png)
 
 <use images/renders/noise_reduction_default/increasing_samples.png>
 Package pdftex.def Info: images/renders/noise_reduction_default/increasing_samp
-les.png used on input line 329.
+les.png used on input line 334.
 (pdftex.def)             Requested size: 450.69417pt x 201.27759pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 335--336
+Underfull \hbox (badness 10000) in paragraph at lines 340--341
 
  []
 
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [12]
-Underfull \hbox (badness 10000) in paragraph at lines 362--363
+[12]
+Underfull \hbox (badness 10000) in paragraph at lines 367--368
 
  []
 
 [13 <./images/renders/noise_reduction_default/increasing_samples.png>]
-<images/MDP.png, id=495, 615.29875pt x 242.9075pt>
+<images/MDP.png, id=498, 615.29875pt x 242.9075pt>
 File: images/MDP.png Graphic file (type png)
  <use images/MDP.png>
-Package pdftex.def Info: images/MDP.png used on input line 382.
+Package pdftex.def Info: images/MDP.png used on input line 387.
 (pdftex.def)             Requested size: 227.62206pt x 89.85953pt.
 
-Overfull \hbox (8.33034pt too wide) in paragraph at lines 393--398
+Overfull \hbox (8.33034pt too wide) in paragraph at lines 398--403
 [] 
  []
 
 [14 <./images/MDP.png>] [15]
-Underfull \hbox (badness 10000) in paragraph at lines 450--451
+Underfull \hbox (badness 10000) in paragraph at lines 455--456
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 469--470
+Underfull \hbox (badness 10000) in paragraph at lines 474--475
 
  []
 
 [16]
 
-LaTeX Warning: Reference `eq:q_learning' on page 17 undefined on input line 476
+LaTeX Warning: Reference `eq:q_learning' on page 17 undefined on input line 481
 .
 
 [17]
-Underfull \hbox (badness 10000) in paragraph at lines 505--506
+Underfull \hbox (badness 10000) in paragraph at lines 510--511
 
  []
 
 [18pdfTeX warning (ext4): destination with the same identifier (name{equation.2
-.4.25}) has been already used, duplicate ignored
+.4.26}) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.548 
+l.553 
       ]) (./chapters/3_td_learning_methods_for_light_transport.tex [19]
 [20
 
@@ -1443,7 +1437,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 21--22
  []
 
 
-<images/renders/hemispheres/irradiance_volume.png, id=595, 687.56876pt x 687.56
+<images/renders/hemispheres/irradiance_volume.png, id=598, 687.56876pt x 687.56
 876pt>
 File: images/renders/hemispheres/irradiance_volume.png Graphic file (type png)
  <use images/renders/hemispheres/irradiance_volume.png>
@@ -1459,7 +1453,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 31--32
 
  []
 
-<images/renders/simple_room/geometry.png, id=598, 886.31125pt x 885.3075pt>
+<images/renders/simple_room/geometry.png, id=601, 886.31125pt x 885.3075pt>
 File: images/renders/simple_room/geometry.png Graphic file (type png)
 
 <use images/renders/simple_room/geometry.png>
@@ -1467,7 +1461,7 @@ Package pdftex.def Info: images/renders/simple_room/geometry.png used on input
 line 36.
 (pdftex.def)             Requested size: 145.68144pt x 145.51556pt.
 
-<images/renders/simple_room/voronoi.png, id=599, 722.7pt x 722.7pt>
+<images/renders/simple_room/voronoi.png, id=602, 722.7pt x 722.7pt>
 File: images/renders/simple_room/voronoi.png Graphic file (type png)
 
 <use images/renders/simple_room/voronoi.png>
@@ -1492,14 +1486,14 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
 
 [22 <./images/renders/hemispheres/irradiance_volume.png> <./images/renders/simp
 le_room/geometry.png> <./images/renders/simple_room/voronoi.png>] [23]
-<images/uniform_pdf.png, id=642, 284.06125pt x 147.55125pt>
+<images/uniform_pdf.png, id=645, 284.06125pt x 147.55125pt>
 File: images/uniform_pdf.png Graphic file (type png)
 
 <use images/uniform_pdf.png>
 Package pdftex.def Info: images/uniform_pdf.png used on input line 124.
 (pdftex.def)             Requested size: 145.68144pt x 75.6734pt.
 
-<images/not_uniform_pdf.png, id=643, 284.06125pt x 147.55125pt>
+<images/not_uniform_pdf.png, id=646, 284.06125pt x 147.55125pt>
 File: images/not_uniform_pdf.png Graphic file (type png)
 
 <use images/not_uniform_pdf.png>
@@ -1564,10 +1558,10 @@ LaTeX Warning: There were undefined references.
 ### simple group (level 1) entered at line 1061 ({)
 ### bottom level 
 Here is how much of TeX's memory you used:
- 33475 strings out of 492995
- 759012 string characters out of 6132704
- 1137514 words of memory out of 5000000
- 36171 multiletter control sequences out of 15000+600000
+ 33477 strings out of 492995
+ 759051 string characters out of 6132704
+ 1137569 words of memory out of 5000000
+ 36172 multiletter control sequences out of 15000+600000
  16537 words of font info for 63 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  72i,19n,98p,1508b,25859s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -1592,10 +1586,10 @@ live/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texl
 ive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texli
 ve/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt8.pfb></usr/local/texlive
 /2017/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on dissertation.pdf (55 pages, 4360675 bytes).
+Output written on dissertation.pdf (55 pages, 4360821 bytes).
 PDF statistics:
- 852 PDF objects out of 1000 (max. 8388607)
- 729 compressed objects within 8 object streams
- 230 named destinations out of 1000 (max. 500000)
+ 855 PDF objects out of 1000 (max. 8388607)
+ 732 compressed objects within 8 object streams
+ 231 named destinations out of 1000 (max. 500000)
  236 words of extra memory for PDF output out of 10000 (max. 10000000)
 

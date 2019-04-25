@@ -111,6 +111,7 @@
 \@writefile{lof}{\contentsline {figure}{\numberline {2.4}{\ignorespaces A diagrammatic representation of the recursive nature of the rendering equation. The outgoing radiance ($L_o$) in a given direction $\omega $ from a point $x$ requires an estimation of the incident radiance coming from all angles in the hemisphere around the point, that is $L_i(h(x, \omega _i),-\omega _i) = L_i(y_i, -\omega _i)$ $\forall \omega _i \in \Omega $. To calculate $L_i(y_i, -\omega _i)$ is identical to calculating the outgoing radiance $L_o(y_i, -\omega _i)$ as we assume no radiance is lost along a ray line, hence the $L_o$ is a recursive function. \relax }}{10}{figure.caption.18}}
 \newlabel{fig:recursive_rendering}{{2.4}{10}{A diagrammatic representation of the recursive nature of the rendering equation. The outgoing radiance ($L_o$) in a given direction $\omega $ from a point $x$ requires an estimation of the incident radiance coming from all angles in the hemisphere around the point, that is $L_i(h(x, \omega _i),-\omega _i) = L_i(y_i, -\omega _i)$ $\forall \omega _i \in \Omega $. To calculate $L_i(y_i, -\omega _i)$ is identical to calculating the outgoing radiance $L_o(y_i, -\omega _i)$ as we assume no radiance is lost along a ray line, hence the $L_o$ is a recursive function. \relax }{figure.caption.18}{}}
 \citation{normals}
+\citation{glassner2014principles}
 \newlabel{fig:diffuse_brdf}{{2.5a}{11}{Diffuse BRDF\relax }{figure.caption.19}{}}
 \newlabel{sub@fig:diffuse_brdf}{{a}{11}{Diffuse BRDF\relax }{figure.caption.19}{}}
 \newlabel{fig:specular_brdf}{{2.5b}{11}{Specular BRDF\relax }{figure.caption.19}{}}
@@ -121,9 +122,10 @@
 \newlabel{fig:material_pics}{{2.6}{11}{Two sculptures, one made from a diffuse material (left) and the other from a specular material.\relax }{figure.caption.20}{}}
 \citation{stanford_graphics}
 \citation{christensen2016path}
+\newlabel{eq:conservation_energy}{{2.12}{12}{The Rendering Equation}{equation.2.2.12}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.2.2}Path Tracing}{12}{subsection.2.2.2}}
 \@writefile{toc}{\contentsline {subsubsection}{Monte Carlo Path Tracing}{12}{section*.21}}
-\newlabel{eq:rendering_eq_monte_carlo}{{2.12}{12}{Monte Carlo Path Tracing}{equation.2.2.12}{}}
+\newlabel{eq:rendering_eq_monte_carlo}{{2.13}{12}{Monte Carlo Path Tracing}{equation.2.2.13}{}}
 \citation{bashford2012significance}
 \citation{cline2008table}
 \citation{pegoraro2008towards}
@@ -145,34 +147,34 @@
 \citation{sutton2011reinforcement}
 \citation{introToRL}
 \citation{sutton2011reinforcement}
-\newlabel{eq:markov_property}{{2.13}{15}{Markov Decision Processes}{equation.2.3.13}{}}
+\newlabel{eq:markov_property}{{2.14}{15}{Markov Decision Processes}{equation.2.3.14}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.3.2}Goals and Rewards}{15}{subsection.2.3.2}}
-\newlabel{eq:return}{{2.14}{15}{Goals and Rewards}{equation.2.3.14}{}}
+\newlabel{eq:return}{{2.15}{15}{Goals and Rewards}{equation.2.3.15}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.3.3}Value Function and Optimality}{15}{subsection.2.3.3}}
 \newlabel{sec:optimal_value}{{2.3.3}{15}{Value Function and Optimality}{subsection.2.3.3}{}}
-\newlabel{eq:value_function}{{2.15}{15}{Value Function and Optimality}{equation.2.3.15}{}}
+\newlabel{eq:value_function}{{2.16}{15}{Value Function and Optimality}{equation.2.3.16}{}}
 \citation{sutton2011reinforcement}
 \citation{model_free_prediction}
 \citation{sutton2011reinforcement}
 \citation{mdp_dynamic_prog}
 \citation{sutton2011reinforcement}
-\newlabel{eq:optimal_value}{{2.16}{16}{Value Function and Optimality}{equation.2.3.16}{}}
-\newlabel{eq:bellman_optimal}{{2.17}{16}{Value Function and Optimality}{equation.2.3.17}{}}
+\newlabel{eq:optimal_value}{{2.17}{16}{Value Function and Optimality}{equation.2.3.17}{}}
+\newlabel{eq:bellman_optimal}{{2.18}{16}{Value Function and Optimality}{equation.2.3.18}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.3.4}Temporal Difference Learning}{16}{subsection.2.3.4}}
-\newlabel{eq:sarsa}{{2.18}{16}{Sarsa}{equation.2.3.18}{}}
+\newlabel{eq:sarsa}{{2.19}{16}{Sarsa}{equation.2.3.19}{}}
 \citation{sutton2011reinforcement}
 \citation{exploration_vs_exploitation}
 \citation{sutton2011reinforcement}
 \@writefile{toc}{\contentsline {subsubsection}{Q-Learning}{17}{section*.27}}
 \@writefile{toc}{\contentsline {subsubsection}{Expected Sarsa}{17}{section*.28}}
-\newlabel{eq:expected_sarsa}{{2.21}{17}{Expected Sarsa}{equation.2.3.21}{}}
+\newlabel{eq:expected_sarsa}{{2.22}{17}{Expected Sarsa}{equation.2.3.22}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.3.5}Exploration vs Exploitation}{17}{subsection.2.3.5}}
 \citation{dahm2017learning}
 \@writefile{toc}{\contentsline {section}{\numberline {2.4}Linking TD-Learning and Light Transport Simulation}{18}{section.2.4}}
 \newlabel{sec:td_light_transport}{{2.4}{18}{Linking TD-Learning and Light Transport Simulation}{section.2.4}{}}
-\newlabel{eq:sarsa_integral}{{2.24}{18}{Linking TD-Learning and Light Transport Simulation}{equation.2.4.24}{}}
-\newlabel{eq:expected_sarsa_td_learning}{{2.25}{18}{Linking TD-Learning and Light Transport Simulation}{equation.2.4.25}{}}
-\newlabel{eq:mc_expected_sarsa_td_learning}{{2.26}{19}{Linking TD-Learning and Light Transport Simulation}{equation.2.4.26}{}}
+\newlabel{eq:sarsa_integral}{{2.25}{18}{Linking TD-Learning and Light Transport Simulation}{equation.2.4.25}{}}
+\newlabel{eq:expected_sarsa_td_learning}{{2.26}{18}{Linking TD-Learning and Light Transport Simulation}{equation.2.4.26}{}}
+\newlabel{eq:mc_expected_sarsa_td_learning}{{2.27}{19}{Linking TD-Learning and Light Transport Simulation}{equation.2.4.27}{}}
 \citation{dahm2017learning}
 \citation{dahm2017learning}
 \citation{greger1998irradiance}
