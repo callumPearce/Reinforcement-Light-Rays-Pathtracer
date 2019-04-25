@@ -40,7 +40,7 @@ class Scene{
 
         void load_cornell_box_scene();
 
-        void load_custom_scene(const char* filename);
+        void load_custom_scene(const char* filename, bool lights_in_obj);
 
         // Save vertices to file
         void save_vertices_to_file();

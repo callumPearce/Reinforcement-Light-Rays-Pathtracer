@@ -46,7 +46,8 @@ NeuralQPathtracer::NeuralQPathtracer(
     dynet::ParameterCollection model;
     dynet::AdamTrainer trainer(model);
     this->dqn = DQNetwork();
-    this->dqn.initialize(model, this->vertices_count /* Input dims */, GRID_RESOLUTION*GRID_RESOLUTION /* Output dims */);
+    unsigned int input_dim = TRAIN_ON_POSITION ? 3 : this->vertices_count;
+    this->dqn.initialize(model, input_dim /* Input dims */, GRID_RESOLUTION*GRID_RESOLUTION /* Output dims */);
 
     //////////////////////////////////////////////////////////////
     /*                Load the previous DQN Model               */
@@ -306,9 +307,17 @@ void NeuralQPathtracer::render_frame(
                     dynet::ComputationGraph graph;
                     
                     // Formulate the expression with the state and the scenes vertices
-                    dynet::Dim input_dim({(unsigned int)this->vertices_count},current_batch_size);
-                    std::vector<float> input_vals(this->vertices_count*current_batch_size);
-                    checkCudaErrors(cudaMemcpy(&(input_vals[0]), &(ray_vertices[n*this->ray_batch_size*this->vertices_count]), sizeof(float) * this->vertices_count * current_batch_size, cudaMemcpyDeviceToHost));
+                    dynet::Dim input_dim;
+                    std::vector<float> input_vals;
+                    if (TRAIN_ON_POSITION){
+                        input_dim = dynet::Dim({(unsigned int)3},current_batch_size);
+                        input_vals = std::vector<float>(3*current_batch_size);
+                        checkCudaErrors(cudaMemcpy(&(input_vals[0]), &(ray_locations[n*this->ray_batch_size*3]), sizeof(float) * 3 * current_batch_size, cudaMemcpyDeviceToHost));
+                    } else{
+                        input_dim = dynet::Dim({(unsigned int)this->vertices_count},current_batch_size);
+                        input_vals = std::vector<float>(this->vertices_count*current_batch_size);
+                        checkCudaErrors(cudaMemcpy(&(input_vals[0]), &(ray_vertices[n*this->ray_batch_size*this->vertices_count]), sizeof(float) * this->vertices_count * current_batch_size, cudaMemcpyDeviceToHost));
+                    }
                     dynet::Expression states_batch = dynet::input(graph, input_dim, input_vals); 
                     
                     // Get the Q-values
@@ -416,9 +425,18 @@ void NeuralQPathtracer::render_frame(
                     // 1) Create the input expression to the neural network for S_t+1
                     unsigned int current_batch_size = std::min(SCREEN_HEIGHT*SCREEN_WIDTH - (n*this->ray_batch_size), this->ray_batch_size);
 
-                    dynet::Dim input_dim({(unsigned int)this->vertices_count},current_batch_size);
-                    std::vector<float> input_vals(this->vertices_count*current_batch_size);
-                    checkCudaErrors(cudaMemcpy(&(input_vals[0]), &(ray_vertices[n*this->ray_batch_size*this->vertices_count]), sizeof(float) * this->vertices_count * current_batch_size, cudaMemcpyDeviceToHost));
+                    dynet::Dim input_dim;
+                    std::vector<float> input_vals;
+                    if (TRAIN_ON_POSITION){
+                        input_dim = dynet::Dim({(unsigned int)3},current_batch_size);
+                        input_vals = std::vector<float>(3*current_batch_size);
+                        checkCudaErrors(cudaMemcpy(&(input_vals[0]), &(ray_locations[n*this->ray_batch_size*3]), sizeof(float) * 3 * current_batch_size, cudaMemcpyDeviceToHost));
+                    } else{
+                        input_dim = dynet::Dim({(unsigned int)this->vertices_count},current_batch_size);
+                        input_vals = std::vector<float>(this->vertices_count*current_batch_size);
+                        checkCudaErrors(cudaMemcpy(&(input_vals[0]), &(ray_vertices[n*this->ray_batch_size*this->vertices_count]), sizeof(float) * this->vertices_count * current_batch_size, cudaMemcpyDeviceToHost));
+                    }
+
                     dynet::Expression input_batch = dynet::input(graph, input_dim, input_vals); 
 
                     // 2) Get max_a Q(S_{t+1}, a)
@@ -460,8 +478,19 @@ void NeuralQPathtracer::render_frame(
 
                     // // 5) Get current Q(s,a) value
                     // Formulate the expression with the state and the scenes vertices
-                    std::vector<float> input_curr_state(this->vertices_count*current_batch_size);
-                    checkCudaErrors(cudaMemcpy(&(input_curr_state[0]), &(prev_ray_vertices[n*this->ray_batch_size*this->vertices_count]), sizeof(float) * this->vertices_count * current_batch_size, cudaMemcpyDeviceToHost));
+                    std::vector<float> input_curr_state;
+                    if (TRAIN_ON_POSITION){
+                        input_dim = dynet::Dim({(unsigned int)3},current_batch_size);
+                        input_curr_state = std::vector<float>(3*current_batch_size);
+                        checkCudaErrors(cudaMemcpy(&(input_curr_state[0]), &(prev_ray_locations[n*this->ray_batch_size*3]), sizeof(float) * 3 * current_batch_size, cudaMemcpyDeviceToHost));
+                    } else{
+                        input_dim = dynet::Dim({(unsigned int)this->vertices_count},current_batch_size);
+                        input_curr_state = std::vector<float>(this->vertices_count*current_batch_size);
+                        checkCudaErrors(cudaMemcpy(&(input_curr_state[0]), &(prev_ray_vertices[n*this->ray_batch_size*this->vertices_count]), sizeof(float) * this->vertices_count * current_batch_size, cudaMemcpyDeviceToHost));
+                    }
+
+                    // std::vector<float> input_curr_state(this->vertices_count*current_batch_size);
+                    // checkCudaErrors(cudaMemcpy(&(input_curr_state[0]), &(prev_ray_vertices[n*this->ray_batch_size*this->vertices_count]), sizeof(float) * this->vertices_count * current_batch_size, cudaMemcpyDeviceToHost));
                     dynet::Expression states_batch = dynet::input(graph, input_dim, input_curr_state); 
 
                     dynet::Expression prediction_qs = this->dqn.network_inference(graph, states_batch, true);

@@ -21,24 +21,26 @@ void Scene::load_cornell_box_scene(){
     // Convert to a fixed size array
     this->surfaces = new Surface[ this->surfaces_count ];
     this->area_lights = new AreaLight[ this->area_light_count ];
-    this->vertices = new float[ this->vertices_count ];
+    this->vertices = new float[ this->vertices_count*3 ];
     memcpy(this->surfaces, &(surfaces_v[0]), sizeof(Surface) * this->surfaces_count);
     memcpy(this->area_lights, &(area_lights_v[0]), sizeof(AreaLight) * this->area_light_count);
     memcpy(this->vertices, &(vertices_v[0]), sizeof(float) * 3 * this->vertices_count);
+
+    // std::cout << this->surfaces[0].material.diffuse_c.x << std::endl;
 }
 
 // Loads a custom scene's geometry into the scene
-void Scene::load_custom_scene(const char* filename){
+void Scene::load_custom_scene(const char* filename, bool lights_in_obj){
 
     // Load the custom scene geometry into a vector dynamically
     std::vector<Surface> surfaces_v;
     std::vector<AreaLight> area_lights_v;
     std::vector<float> vertices_v;
-    load_scene(filename, surfaces_v, area_lights_v, vertices_v);
+    load_scene(filename, surfaces_v, area_lights_v, vertices_v, lights_in_obj);
 
     if ( RENDER_SAVED_RADIANCE_VOLUMES ){
         RadianceVolume::read_radiance_volumes_to_surfaces(
-            "../Radiance_Map_Data/selected_radiance_volumes/selected_sarsa.txt",
+            "../Radiance_Map_Data/selected_radiance_volumes/selected_deep.txt",
             surfaces_v
         );
     }

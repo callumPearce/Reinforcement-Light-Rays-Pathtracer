@@ -97,13 +97,16 @@ int main (int argc, char** argv) {
     memset(screen.buffer, 0, screen.height*screen.width*sizeof(uint32_t));
 
     // Create the camera
-    Camera camera = Camera(vec4(-0.7f, 0.1f, -0.6f, 1.f));
-    camera.rotate_right(0.25f);
-    camera.rotate_down(0.8f);
+    // Door scene: vec4(0.f, 0.5f, -0.9f, 1.f)
+    // Cornell Box: vec4(0.f,0.f, -3.f, 1.f);
+    Camera camera = Camera(vec4(-1.f, -1.f, -0.4f, 1.f));
+    // camera.rotate_right(3.14f);
+    // camera.rotate_down(0.0f);
 
     // Initialise the scene
     Scene scene = Scene();
-    scene.load_custom_scene("../Models/simple_room_closed.obj");
+    // scene.load_cornell_box_scene();
+    scene.load_custom_scene("../Models/complex_light_room.obj", true);
     scene.save_vertices_to_file();
 
     // CASE: Deep Reinforcement Learning

@@ -13,22 +13,19 @@ void DQNetwork::initialize(dynet::ParameterCollection& model, int input_dims, in
     // Output: action_countx1
     FCLayer FC1 = FCLayer(/*Activation*/ RELU, /*Input dim (rows)*/ input_dims, /*Output dim (rows)*/ 200, /*Dropout*/ 0.f);
     FCLayer FC2 = FCLayer(/*Activation*/ RELU, /*Input dim (rows)*/ 200, /*Output dim (rows)*/ 300, /*Dropout*/ 0.f);
-    FCLayer FC3 = FCLayer(/*Activation*/ RELU, /*Input dim (rows)*/ 300, /*Output dim (rows)*/ 400, /*Dropout*/ 0.f);
-    FCLayer FC4 = FCLayer(/*Activation*/ RELU, /*Input dim (rows)*/ 400, /*Output dim (rows)*/ 200, /*Dropout*/ 0.f);
+    FCLayer FC3 = FCLayer(/*Activation*/ RELU, /*Input dim (rows)*/ 300, /*Output dim (rows)*/ 200, /*Dropout*/ 0.f);
     FCLayer OUT_FC = FCLayer(/*Activation*/ RELU, /*Input dim (rows)*/ 200, /*Output dim (rows)*/ actions_count, /*Dropout*/ 0.f);
 
     // Add the parameters of each layer to the vector of maintained params
     FC1.add_params(model, this->params);
     FC2.add_params(model, this->params);
     FC3.add_params(model, this->params);
-    FC4.add_params(model, this->params);
     OUT_FC.add_params(model, this->params);
 
     // Add layers to the networks vector of layers
     this->layers.push_back(FC1);
     this->layers.push_back(FC2);
     this->layers.push_back(FC3);
-    this->layers.push_back(FC4);
     this->layers.push_back(OUT_FC);
 
     // Set the depth of the network
