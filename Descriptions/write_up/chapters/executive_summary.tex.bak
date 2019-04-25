@@ -1,0 +1,113 @@
+\documentclass[../dissertation.tex]{subfiles}
+
+\begin{document}
+
+\chapter*{Executive Summary}
+
+\begin{comment}
+{\bf A compulsory section, of at most $1$ page} 
+\vspace{1cm} 
+
+\noindent
+This section should pr\'{e}cis the project context, aims and objectives,
+and main contributions (e.g., deliverables) and achievements; the same 
+section may be called an abstract elsewhere.  The goal is to ensure the 
+reader is clear about what the topic is, what you have done within this 
+topic, {\em and} what your view of the outcome is.
+
+The former aspects should be guided by your specification: essentially 
+this section is a (very) short version of what is typically the first 
+chapter.  Note that for research-type projects, this {\bf must} include 
+a clear research hypothesis.  This will obviously differ significantly
+for each project, but an example might be as follows:
+
+\begin{quote}
+My research hypothesis is that a suitable genetic algorithm will yield
+more accurate results (when applied to the standard ACME data set) than 
+the algorithm proposed by Jones and Smith, while also executing in less
+time.
+\end{quote}
+
+\noindent
+The latter aspects should (ideally) be presented as a concise, factual 
+bullet point list.  Again the points will differ for each project, but 
+an might be as follows:
+
+\begin{quote}
+\noindent
+\begin{itemize}
+\item I spent $120$ hours collecting material on and learning about the 
+      Java garbage-collection sub-system. 
+\item I wrote a total of $5000$ lines of source code, comprising a Linux 
+      device driver for a robot (in C) and a GUI (in Java) that is 
+      used to control it.
+\item I designed a new algorithm for computing the non-linear mapping 
+      from A-space to B-space using a genetic algorithm, see page $17$.
+\item I implemented a version of the algorithm proposed by Jones and 
+      Smith in [6], see page $12$, corrected a mistake in it, and 
+      compared the results with several alternatives.
+\end{itemize}
+\end{quote}
+\end{comment}
+
+In the field of Computer Graphics, Path tracing is an algorithm which 
+accurately approximates global illumination in order to produce 
+photo-realistic images. Path tracing has traditionally been known to 
+trade speed for image quality. This is due to the lengthy process of accurately 
+finding each pixels colour, whereby many light rays are 
+fired through each pixel into scene, then directions for each ray are 
+continually sampled until it intersects with a light source. Due to 
+this, a variety of Importance sampling algorithms have been designed 
+to avoid sampling directions which lead to rays contributing no light 
+to the rendered image. The paths formed by sampling rays in these 
+directions are known as zero contribution light paths. By not sampling 
+zero contribution light paths, it is possible to significantly reduce 
+the noise in rendered images using the same number of sampled rays per 
+pixel in path tracing\\
+
+Recently a Temporal Difference learning method was used by Nvidia to
+achieve impressive results in Importance sampling within a Path tracer.
+The algorithm essentially learns which directions light is coming from for
+a given point in the scene. It then uses importance sampling to favour shooting
+rays stored in those directions, reducing the number of zero contribution light paths
+sampled. With this success, there is plenty of potential to experiment with
+other Temporal Difference learning methods, particularly Deep Q-Learning.
+It is also important to assess both of these methods on their ability to 
+accurately approximate Global Illumination to produce photo-realistic images.
+From this, my goal is to investigate the ability of two different temporal
+difference learning algorithms ability to reduce the number of zero contribution
+light paths in path tracing, whilst still accurately approximating global illumination.
+More specifically, the first temporal difference learning method will be that proposed
+by Nvidia, and the second will be my designed Neural-Q path tracing algorithm.
+I will be comparing these two methods in order to test the following hypothesis:
+
+\begin{quote}
+The Neural-Q  path tracer is further able to reduce
+the number of zero contribution light paths than an Expected SARSA
+Path tracer proposed by Nvidia, whilst still accurately simulating Global Illumination.
+\end{quote}
+
+\noindent
+\textbf{Outcomes}
+\begin{itemize}
+\item Which is better able to reduce the number of zero contribution light paths expected SARSA or Deep Q-learning
+\item Can Expected SARSA learning handle multiple lights well in a scene \& deep q-learning
+\end{itemize}
+
+\noindent
+\textbf{Main areas of work}
+\begin{itemize}
+\item I have written $x$ lines of code to build a  Path tracing engine from scratch which supports a variety of GPU accelerated Path tracing algorithms I have experimented with.
+
+\item I have spent $x$ hours researching into the field of efficient light transport simulation for ray-tracing techniques.
+
+\item I have spent $x$ hours researching into Reinforcement learning, particularly Temporal Difference learning and Deep Reinforcement learning, neither of which I have been taught before.
+
+\item I spent $x$ hours implementing and validating the on-line Expected SARSA Path tracing algorithm proposed by Nvidia, which required me to implement the Irradiance Volume data structure as a prerequisite.
+
+\item I have spent $x$ hours designing, implementing and analysing my own on-line Deep Q-learning Path tracing algorithm, along with a neural network architecture
+designed for the algorithm.
+
+\end{itemize}
+
+\end{document}
