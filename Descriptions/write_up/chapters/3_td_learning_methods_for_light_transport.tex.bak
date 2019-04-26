@@ -28,7 +28,7 @@ The derived Expected Sarsa learning rule requires some sort of data-structure fo
 \label{fig:irradiance_volume}
 \end{figure}
 
-Originally designed to be used for pre-computation of radiance values which are looked up at runtime to approximate global illumination, the Irradiance Volume data structure is essentially a discretized version of a hemisphere which is visually represented in Figure \ref{fig:irradiance_volume}. The image shows the discrete sectors which make up a hemisphere, this was implemented by converting a 2D square grid into the 3D hemisphere shown, which is known as an adaptive quadrature. Where all sectors in the 2D grid have an equal area and a mapping introduced in \cite{shirley1994notes} converts the 2D grid coordinates into a regular discretized hemisphere in 3D space. The mapping ensures the hemisphere sectors remain equal to one another, meaning the discrete set of direction represented by the hemisphere are of equal angles apart from one another.\\
+Originally designed to be used for pre-computation of radiance values which are looked up at runtime to approximate global illumination, the Irradiance Volume data structure is essentially a discretized version of a hemisphere which is visually represented in Figure \ref{fig:irradiance_volume}. The image shows the discrete sectors which make up a hemisphere, this was implemented by converting a 2D square grid into the 3D hemisphere shown, which is known as an adaptive quadrature. Where all sectors in the 2D grid have an equal area and a mapping introduced in \cite{shirley1994notes} converts the 2D grid coordinates into a hemisphere made up of sectors in 3D space. The mapping ensures the hemisphere sectors remain equal to one another, meaning the discrete set of direction represented by the hemisphere are of equal angles apart from one another.\\
 
 \begin{figure}[!htb]
 \centering
@@ -53,7 +53,7 @@ Each sector of the Irradiance Volume is then used to store the current approxima
 \subsection{Expected Sarsa Path Tracing}
 
 \subsubsection{Algorithm}
-The Expected Sarsa based path tracing algorithm is very similar to the original forward path tracer introduced in Algorithm \ref{alg:forward_path_tracing}. The algorithm learns online, meaning after every rendered frame pixel values are likely to have a lower variance due to a reduction in the number of zero contribution light paths. Initially radiance volumes are sampled uniformly across the room with all Q-values initialised to a small constant proportional to the number of sectors on each hemisphere $k$. This encodes the assumption that initially the radiance in all direction from any given point in the room is equal, as initially there is no prior knowledge of any radiance values $Q(x, \omega)$. With the radiance volumes set up, $n$ sampled light paths are traced through each pixel from the camera and into the scene. The average colour estimate of the $n$ sampled light paths per pixel is averaged to find the colour of each pixel, every rendered frame. The colour estimate of each sampled light path is found by Algorithm \ref{alg:expected_sarsa_pathtracer}. The two additions to this algorithm from the forward path tracer in Algorithm \ref{alg:forward_path_tracing}, are as follows:
+The Expected Sarsa based path tracing algorithm is very similar to the original forward path tracer introduced in Algorithm \ref{alg:forward_path_tracing}. The algorithm learns online, meaning after every rendered frame pixel values are likely to have a lower variance due to a reduction in the number of zero contribution light paths sampled. Initially, radiance volumes are sampled uniformly across the room with all Q-values initialised to a small constant proportional to the number of sectors on each hemisphere $k$. This encodes the assumption that initially the radiance in all direction from any given point in the room is equal, as initially there is no prior knowledge of any radiance values $Q(x, \omega)$. With the radiance volumes set up, $n$ sampled light paths are traced through each pixel from the camera and into the scene. The average colour estimate of the $n$ sampled light paths per pixel is averaged to find the colour of each pixel, every rendered frame. The colour estimate of each sampled light path is found by Algorithm \ref{alg:expected_sarsa_pathtracer}. The two additions to this algorithm from the forward path tracer in Algorithm \ref{alg:forward_path_tracing}, are as follows:
 
 \begin{enumerate}
 \item Once the ray has intersected with a position in the scene $y$ from a position $x$, update the radiance estimate $Q(x, \omega)$ using the Expected Sarsa learning rule derived in Equation \ref{eq:mc_expected_sarsa_td_learning}. This is based on the radiance emitted from $y$ in direction $-\omega$ and the outgoing radiance estimate in direction $-\omega$ from point $y$ described by the summation. The summation involves summing all Q-values for the closest radiance volume to position $y$. Each of which are multiplied by BRDF of the surface at $y$, as well as the cosine of the angle between the sector direction for the Q-value ($\omega_k$) and the surface normal $y$.
@@ -177,6 +177,7 @@ q_\theta(s,a) & Current approximation of the value function under policy $\theta
 If plenty of data was available for $q_\pi(s,a)$ for many state actions pairs $(s,a)$, it would be possible to train an ANN to approximate the optimal value function $q_\pi$. By simply running a forward pass on the ANN to compute $q_\theta(s,a)$ for a given state-action pair as input, then calculating the loss $J(\theta)$ using the ground truth $q_\pi(s,a)$. Then, by using the backpropagation algorithm to calculate the partial derivatives w.r.t the loss, the parameters values $\theta$ can be updated using an optimizer such as Adam. The issue is $q_\pi$ is unknown and no training data is initially available for the training procedure just described. Instead, deep reinforcement learning uses online training procedures closely resembling the TD-learning methods introduced in section \ref{sec:td_learning} for function approximation.
 
 \subsubsection{Bootstrapping}
+\label{sec:bootstrapping}
 
 Following TD-learning, as the optimal value function $q_*$ (or $q_\pi$ in the previous section) is not available, it is possible to instead bootstrap using the current estimate of the value function \cite{deep_rl_function_approx}. Recall that bootstrapping for the value function is when the updated current estimate of the optimal value function for a state-action pair is partially based on new experience data, and the current estimated value of the next selected state-action pair when following policy $\pi$. An example of this is the off-policy method Q-learning presented in section \ref{sec:td_learning}, Equation \ref{eq:q_learning}. Equation \ref{eq:td_error_q_learning} gives what is known as the TD error ($\delta_t$) for Q-learning at time step $t$. It is called an error as it gives the difference between the current estimate $Q(S_t, A_t)$ and the better estimate $R_{t+1} + \gamma \max_a Q(S_{t+1}, a)$. Notice that the TD error is an estimate that has been made at time step $t$, meaning the error depends on the next state and the next reward which can both change across time steps.
 
@@ -249,14 +250,14 @@ Where:
 
 \subsection{Artificial Neural Network Architecture}
 
-With the loss function defined in Equation \ref{eq:neural_q_loss} for learning the incident radiance on a point from a given direction, a suitable ANN architecture must be developed for approximating the $\hat{q_\theta}(x,\omega)$. One might at first think from the function $\hat{q_\theta}(x, \omega)$, the ANN would take a single 3D position $x$ and an incident direction $\omega$ as input for a forward pass to calculate the approximated valuation under parameters $\theta$. This way the ANN could take any arbitrary incident direction $\omega$ to calculate the incident radiance on position $x$. However, when the radiance needs to be estimated for each discrete direction $\omega_k$ in the hemisphere around a position $x$ for all $n$ directions, $n$ forward passes must be made through the ANN must be made. A single light path may include hundreds of reflections before intersecting with a light source, meaning potentially thousands of forwards passes would need to be evaluated for a single light path. To be conservative, imagine every light path reflected 30 times before intersecting with a light source, if we only sample $16$ light paths per pixel for a $512x512$ image. The total number of forward passes for using only 16 different possible directions to sample a light path in every time it is reflected is over a billion.\\
+With the loss function defined in Equation \ref{eq:neural_q_loss} for learning the incident radiance on a point from a given direction, a suitable ANN architecture must be developed for approximating the $\hat{q_\theta}(x,\omega)$. At first one might the ANN would take a single 3D position $x$ and an incident direction $\omega$ as input for a forward pass to calculate the approximated valuation under parameters $\theta$. This way the ANN could take any arbitrary incident direction $\omega$ to calculate the incident radiance on position $x$. However, when the radiance needs to be estimated for each discrete direction $\omega_k$ in the hemisphere around a position $x$ for all $n$ directions, $n$ forward passes must be made through the ANN must be made. A single light path may include hundreds of reflections before intersecting with a light source, meaning potentially thousands of forwards passes would need to be evaluated for a single light path. To be conservative, imagine every light path reflected 30 times before intersecting with a light source, if we only sample $16$ light paths per pixel for a $512x512$ image. The total number of forward passes for using only 16 different possible directions to sample a light path in every time it is reflected is over a billion.\\
 
 To avoid this situation, I followed the technique proposed for learning to play Atari games in \cite{mnih2013playing}. Which is in the context of reinforcement learning to give the ANN as input the agents state, then a forward pass of the network gives the value (Q-value) of each state-action pair for the input state. Applying this to incident radiance where the input state is the position $x$, a forward pass computes the radiance incident from the set of discrete directions $\omega_k$ $\forall k = 0, ..., n$.  In other words, a single forward pass of the ANN gives all the required information needed to importance sample a direction to continue the light path in.\\
 
 With the current process proposed only a single 3D point will be passed into the ANN to infer the radiance in directions $\omega_k$ $\forall k = 0, ..., n$. The 3D position given is in the world coordinate system of the scene, hence it gives no information regarding where that point is relative to the geometry in the scene. In terms of reinforcement learning, the state is said to be only partially observable \cite{sutton2011reinforcement}. Instead, I found that in order for the network to learning the  radiance from incident directions $\omega_k$, the input state should instead be the coordinates of all vertices in the scene in a coordinate system relative to the position the incident radiance is being estimated at. Formally, for any position 3D $x \in \mathbb{R}^3$ in the scene with a set of vertices $\mathbf{v} = (v_0, v_1, ..., v_m)$ where $v_i \in \mathbb{R}^3$ $\forall v_i \in \mathbf{v}$, an input vector $\mathbf{v^x}$ was formed:
 
 \begin{gather*}
-\mathbf{v^x} = (v^x_0, v^x1, ..., v^x_m)\\
+\mathbf{v^x} = (v^x_0, v^x_1, ..., v^x_m)\\
 \text{where: } v^x_i = v_i - x \ \ \ \forall i = 0, ..., m \nonumber
 \end{gather*}
 
@@ -265,11 +266,51 @@ This decision was inspired by \cite{mnih2013playing}, where a state in a game of
 %TODO Illustration of neural network taking in state
 
 %TODO once decided on
-The ANN used for training on all examples had 
+
+Training the ANN is where the main difference arises compared to the supervised learning case. Recall from section \ref{sec:bootstrapping}, in the reinforcement learning case there is no large training data set available for learning the optimal value function directly. Hence, bootstrapping is used in TD-learning methods in order to learn online by continually updating the estimate of the optimal value function as data is received. This is otherwise known as learning from experience \cite{sutton2011reinforcement}. The loss function in Equation \ref{eq:neural_q_loss} does exactly that, where the loss is described in terms of some immediate reward which is the emitted radiance $L_e$ term, and partially on the current estimate of radiance incident from direction $\omega$:
+
+$$\text{TD Error: } \triangle \hat{q_\theta}(x, \omega) = \left( L_e(y, -\omega) + \left[ \max_{\omega_i} \left(\hat{q_\theta}(y, \omega_i) f_s(\omega_i, y, \omega) (\omega_i \cdot \mathbf{n}) \right) \right] \right) - \hat{q_\theta}(x, \omega)$$
+
+So, to compute this loss an initial forward pass on the network must be made to determine the value of $\hat{q_\theta}(x, \omega)$, then a second pass must be made to calculate $max_{\omega_i} \hat{q_\theta}(y, \omega_i)$. All other terms are a result of experience and are calculated in the path tracing algorithm. After the loss is calculated backpropagation is used to compute the partial derivative of the loss with w.r.t to each parameter. Then another pass can be made through the network to update the networks weights using the partial derivatives calculated in the previous step with an optimizer, in this case I use the Adam optimizer. While there is no guarantee, in practice ver many iterations of this learning procedure, the ANNs estimate of incident radiance for a discrete set of directions $\omega_k$ for any point $x$ in the scene should move towards a local optimum \cite{deep_rl_function_approx}.
 
 \subsection{Neural-Q Path Tracing Algorithm}
 
-The Neural-Q path tracer proposed uses the loss function found in Equation \ref{eq:neural_q_loss}  for learning the incident radiance on a position $x$ in direction $\omega$, $L_i(x ,\omega) \sim \hat{\theta}(x, \omega)$. Similarly to the Expected Sarsa path tracer presented in Algorithm \ref{alg:expected_sarsa_pathtracer}, the incident radiance estimated for a discrete set of angles over a hemisphere around a point is used for importance sampling directions to continue light paths in. To get these directions I used the adaptive quadrature method used in updating values in the Irradiance Volume data structure described in \ref{sec:expecte_sarsa_path_tracer}. 
+With the ANN and the method for training it detailed, a modified path tracing algorithm is required to incorporate to use the approximated radiance incident on a point for importance sampling directions to continue light paths in. Therefore, the path tracing algorithm is very similar to the Expected Sarsa path tracer in Algorithm \ref{alg:expected_sarsa_pathtracer}.
+
+\begin{algorithm}[H]
+\label{alg:neural_q_pathtracer}
+\SetKwProg{Fn}{Function}{ }{end}
+\SetAlgoLined
+ \Fn{renderImage(camera, scene, decay)}{  
+   $\text{initANN()}$
+   \For{$i = 1$ \KwTo $N$}{
+       \For{$b = 1$ \KwTo $\text{Batches}$}{
+           \For{$k = 1$ \KwTo $\text{BatchSize}$}{
+               $p \leftarrow \text{getPixel(j,k)}$\\
+               $ray \leftarrow \text{initializeRay(p, camera)}$\\
+               \For{$j=1$ \KwTo $\infty$}{
+                   $(y, cos(\theta)) \leftarrow \text{closestIntersection}(ray, scene)$
+                   \If{$j > 1$}{
+                       \sample
+                   }
+                   \If{$\text{noIntersection}(y)$}{
+                       $ray.throughput \leftarrow ray.throughput \cdot \text{environmentLightRadiance(ray,y)}$
+                   }
+                   \If{$\text{areaLightIntersection}(y)$}{
+                      $ray.throughput \leftarrow ray.throughput \cdot \text{areaLightRadiance(ray,y)}$
+                   }
+                   \If{$j > 1$}{
+                       $(\omega, \rho_i, f_s) \leftarrow \text{sampleRayDirEtaGreedy}(eta, ray)$
+                       $ray.throughput \leftarrow ray.throughtput \cdot f_s \cdot cos(\theta) / \rho_i
+                       ray \leftarrow (y, \omega)$
+                   }
+               }
+           }
+       }
+   }
+ }
+ \caption{Neural-Q forward path tracer. Samples a single light path trough every pixel in the screen.}
+\end{algorithm}
 
 \begin{itemize}
 \item Adaptive quadrature of directions
