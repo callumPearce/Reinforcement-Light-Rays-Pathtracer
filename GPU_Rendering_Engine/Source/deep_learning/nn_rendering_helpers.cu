@@ -104,7 +104,7 @@ void compute_td_targets(
   
     if (batch_start_idx + batch_idx >= SCREEN_HEIGHT*SCREEN_WIDTH) return;
 
-    int action_count = GRID_RESOLUTION*GRID_RESOLUTION;
+    const int action_count = GRID_RESOLUTION*GRID_RESOLUTION;
 
     if (ray_states[batch_start_idx + batch_idx] != 1){
         // Get the max q_val multiplied by related cos_theta (cos_theta being part of the discount factor )
