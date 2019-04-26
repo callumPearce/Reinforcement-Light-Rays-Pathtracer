@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.10.2)  25 APR 2019 19:57
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.10.2)  26 APR 2019 13:40
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1356,12 +1356,12 @@ Underfull \hbox (badness 10000) in paragraph at lines 295--296
 
 [11 <./images/diffuse_brdf.png> <./images/specular_brdf.png> <./images/diffuse_
 sculpture.jpeg> <./images/specular_sculpture.jpg>]
-Underfull \hbox (badness 10000) in paragraph at lines 308--309
+Underfull \hbox (badness 10000) in paragraph at lines 309--310
 
  []
 
 
-Overfull \hbox (5.65875pt too wide) in paragraph at lines 323--327
+Overfull \hbox (5.65875pt too wide) in paragraph at lines 324--328
 [] 
  []
 
@@ -1373,19 +1373,19 @@ e (type png)
 
 <use images/renders/noise_reduction_default/increasing_samples.png>
 Package pdftex.def Info: images/renders/noise_reduction_default/increasing_samp
-les.png used on input line 334.
+les.png used on input line 335.
 (pdftex.def)             Requested size: 450.69417pt x 201.27759pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 340--341
+Underfull \hbox (badness 10000) in paragraph at lines 341--342
 
  []
 
 [12]
-Underfull \hbox (badness 10000) in paragraph at lines 367--368
+Underfull \hbox (badness 10000) in paragraph at lines 368--369
 
  []
 
@@ -1393,30 +1393,30 @@ Underfull \hbox (badness 10000) in paragraph at lines 367--368
 <images/MDP.png, id=498, 615.29875pt x 242.9075pt>
 File: images/MDP.png Graphic file (type png)
  <use images/MDP.png>
-Package pdftex.def Info: images/MDP.png used on input line 387.
+Package pdftex.def Info: images/MDP.png used on input line 388.
 (pdftex.def)             Requested size: 227.62206pt x 89.85953pt.
 
-Overfull \hbox (8.33034pt too wide) in paragraph at lines 398--403
+Overfull \hbox (8.33034pt too wide) in paragraph at lines 399--404
 [] 
  []
 
 [14 <./images/MDP.png>] [15]
-Underfull \hbox (badness 10000) in paragraph at lines 455--456
+Underfull \hbox (badness 10000) in paragraph at lines 456--457
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 475--476
+Underfull \hbox (badness 10000) in paragraph at lines 476--477
 
  []
 
 [16]
 
-LaTeX Warning: Reference `eq:q_learning' on page 17 undefined on input line 482
+LaTeX Warning: Reference `eq:q_learning' on page 17 undefined on input line 483
 .
 
 [17]
-Underfull \hbox (badness 10000) in paragraph at lines 511--512
+Underfull \hbox (badness 10000) in paragraph at lines 512--513
 
  []
 
@@ -1425,7 +1425,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 511--512
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.554 
+l.555 
       ]) (./chapters/3_td_learning_methods_for_light_transport.tex [19]
 [20
 
@@ -1506,8 +1506,30 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[24 <./images/uniform_pdf.png> <./images/not_uniform_pdf.png>] [25])
-(./chapters/4_critical_evaluation.tex
+[24 <./images/uniform_pdf.png> <./images/not_uniform_pdf.png>]
+
+LaTeX Warning: Reference `eq:q_learning' on page 25 undefined on input line 181
+.
+
+[25]
+
+LaTeX Warning: Citation `lillicrap2015continuous' on page 26 undefined on input
+ line 210.
+
+
+LaTeX Warning: Citation `mnih2013playing' on page 26 undefined on input line 21
+0.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 218--219
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 220--221
+
+ []
+
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
  Make it at least 22.43335pt.
@@ -1515,14 +1537,26 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  This may cause the page layout to be inconsistent, however.
 
 [26]
+Underfull \hbox (badness 10000) in paragraph at lines 222--223
+
+ []
+
+) (./chapters/4_critical_evaluation.tex [27]
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 22.43335pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[28
+
+]
 Chapter 4.
-[27
-
-]) (./chapters/5_conclusion.tex [28]
+[29]) (./chapters/5_conclusion.tex [30]
 Chapter 5.
-) [29
+) [31
 
-] [30
+] [32
 
 ] (./dissertation.bbl
 LaTeX Font Info:    Font shape `OMS/cmr/m/it' in size <10> not available
@@ -1530,15 +1564,15 @@ LaTeX Font Info:    Font shape `OMS/cmr/m/it' in size <10> not available
 Missing character: There is no â in font cmti10!
 Missing character: There is no € in font cmti10!
 Missing character: There is no ™ in font cmti10!
- [31
+ [33
 
 ]
 Missing character: There is no â in font cmr10!
 Missing character: There is no € in font cmr10!
 Missing character: There is no ¦ in font cmr10!
-) [32]
+) [34]
 Appendix A.
-[33
+[35
 
 ]
 Package atveryend Info: Empty hook `BeforeClearDocument' on input line 186.
@@ -1558,10 +1592,10 @@ LaTeX Warning: There were undefined references.
 ### simple group (level 1) entered at line 1061 ({)
 ### bottom level 
 Here is how much of TeX's memory you used:
- 33490 strings out of 492995
- 759287 string characters out of 6132704
- 1137862 words of memory out of 5000000
- 36177 multiletter control sequences out of 15000+600000
+ 33497 strings out of 492995
+ 759384 string characters out of 6132704
+ 1137916 words of memory out of 5000000
+ 36180 multiletter control sequences out of 15000+600000
  16537 words of font info for 63 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  72i,19n,98p,1508b,25859s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -1587,10 +1621,10 @@ ive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texli
 ve/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt8.pfb></usr/local/texlive
 /2017/texmf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb></usr/local/tex
 live/2017/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on dissertation.pdf (55 pages, 4377554 bytes).
+Output written on dissertation.pdf (57 pages, 4382223 bytes).
 PDF statistics:
- 882 PDF objects out of 1000 (max. 8388607)
- 758 compressed objects within 8 object streams
- 239 named destinations out of 1000 (max. 500000)
+ 896 PDF objects out of 1000 (max. 8388607)
+ 770 compressed objects within 8 object streams
+ 243 named destinations out of 1000 (max. 500000)
  236 words of extra memory for PDF output out of 10000 (max. 10000000)
 

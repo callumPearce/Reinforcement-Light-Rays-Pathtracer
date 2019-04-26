@@ -41,9 +41,11 @@
 \contentsline {subsubsection}{Stochastic Gradient Descent}{25}{section*.37}
 \contentsline {subsubsection}{Bootstrapping}{26}{section*.38}
 \contentsline {subsection}{\numberline {3.2.2}Neural-Q Path Tracer}{26}{subsection.3.2.2}
-\contentsline {subsection}{\numberline {3.2.3}Recent Advancements in Neural Light Path Construction}{26}{subsection.3.2.3}
-\contentsline {chapter}{\numberline {4}Critical Evaluation}{27}{chapter.4}
-\contentsline {subsection}{\numberline {4.0.1}Plan}{27}{subsection.4.0.1}
-\contentsline {chapter}{\numberline {5}Conclusion}{29}{chapter.5}
-\contentsline {subsection}{\numberline {5.0.1}Plan}{29}{subsection.5.0.1}
-\contentsline {chapter}{\numberline {A}An Example Appendix}{33}{appendix.A}
+\contentsline {subsubsection}{Deep Reinforcement Learning Motivation}{26}{section*.39}
+\contentsline {subsubsection}{Neural-Q Path Tracing}{27}{section*.40}
+\contentsline {subsection}{\numberline {3.2.3}Recent Advancements in Neural Light Path Construction}{27}{subsection.3.2.3}
+\contentsline {chapter}{\numberline {4}Critical Evaluation}{29}{chapter.4}
+\contentsline {subsection}{\numberline {4.0.1}Plan}{29}{subsection.4.0.1}
+\contentsline {chapter}{\numberline {5}Conclusion}{31}{chapter.5}
+\contentsline {subsection}{\numberline {5.0.1}Plan}{31}{subsection.5.0.1}
+\contentsline {chapter}{\numberline {A}An Example Appendix}{35}{appendix.A}

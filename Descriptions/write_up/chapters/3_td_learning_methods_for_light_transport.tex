@@ -178,39 +178,56 @@ If plenty of data was available for $q_\pi(s,a)$ for many state actions pairs $(
 
 \subsubsection{Bootstrapping}
 
-Following TD-learning, as the optimal value function $q_*$ (or $q_\pi$ in the previous section) is not available, it is possible to instead bootstrap using the current estimate of the value function \cite{deep_rl_function_approx}. Recall that bootstrapping for the value function is when the updated current estimate of the optimal value function for a state-action pair is partially based on new experience data, and the current estimated value of the next selected state-action pair when following policy $\pi$. An example of this is the Expected Sarsa method in section \ref{sec:td_learning}, Equation \ref{eq:expected_sarsa}. Equation \ref{eq:td_error_sarsa} gives what is known as the TD error ($\delta_t$) for Expected Sarsa at time step $t$. It is called an error as it gives the difference between the current estimate $Q(S_t, A_t)$ and the better estimate $R_{t+1} + \gamma \sum_a \pi(a | S_{t+1}) Q(S_{t+1}, a)$ when following policy $\pi$. Notice that the TD error is an estimate that has been made at time step $t$, meaning the error depends on the next state and the next reward which can both change across time steps.
+Following TD-learning, as the optimal value function $q_*$ (or $q_\pi$ in the previous section) is not available, it is possible to instead bootstrap using the current estimate of the value function \cite{deep_rl_function_approx}. Recall that bootstrapping for the value function is when the updated current estimate of the optimal value function for a state-action pair is partially based on new experience data, and the current estimated value of the next selected state-action pair when following policy $\pi$. An example of this is the off-policy method Q-learning presented in section \ref{sec:td_learning}, Equation \ref{eq:q_learning}. Equation \ref{eq:td_error_q_learning} gives what is known as the TD error ($\delta_t$) for Q-learning at time step $t$. It is called an error as it gives the difference between the current estimate $Q(S_t, A_t)$ and the better estimate $R_{t+1} + \gamma \max_a Q(S_{t+1}, a)$. Notice that the TD error is an estimate that has been made at time step $t$, meaning the error depends on the next state and the next reward which can both change across time steps.
 
 \begin{equation}
-\delta_t =\left( R_{t+1} + \gamma \sum_a \pi(a | S_{t+1}) Q(S_{t+1}, a)\right) - Q(S_t, A_t)
-\label{eq:td_error_sarsa}
+\delta_t =\left(R_{t+1} + \gamma \max_a Q(S_{t+1}, a)\right) - Q(S_t, A_t)
+\label{eq:td_error_q_learning}
 \end{equation}
 
-It is this TD error that can be used to form the loss function for an ANN to approximate the value function, as shown in Equation \ref{eq:loss_expected_sarsa}. The gradient of this loss function can be calculated by Equation \ref{eq:semi_gradient_one_step_exp_sarsa} which is used with an optimizer for updating the parameters $\theta$ during learning. It is known as semi-gradient one-step Expected Sarsa \cite{sutton2011reinforcement}, and is the only deep reinforcement learning rule I shall be using from here on for the Neural-Q path tracer.
+It is this TD error that can be used to form the loss function for an ANN to approximate the value function, as shown in Equation \ref{eq:loss_q_learning}. The gradient of this loss function can be calculated by Equation \ref{eq:q_learning_derv_loss} which is used with an optimizer for updating the parameters $\theta$ during learning. This is the only deep reinforcement learning rule I shall be using from here on for the Neural-Q path tracer.
 
 \begin{equation}
-J(\theta) = \left(R_{t+1} + \gamma \sum_a \pi(a | S_{t+1}) \left[\hat{q_\theta}(S_{t+1}, a) \right] \right) -
+J(\theta) = \left(R_{t+1} + \gamma \left[ \max_a q_\theta(S_{t+1}, a) \right] \right) -
 \hat{q_\theta}(S_t, A_t)
-\label{eq:loss_expected_sarsa}
+\label{eq:loss_q_learning}
 \end{equation}
 
 \begin{equation}
-\triangledown _\theta J(\theta)  = \left( \left(R_{t+1} + \gamma \sum_a \pi(a | S_{t+1}) \left[\hat{q_\theta}(S_{t+1}, a) \right] \right) -
+\triangledown _\theta J(\theta)  = \left( \left(R_{t+1} + \gamma \left[ \max_a q_\theta(S_{t+1}, a) \right] \right) -
 \hat{q_\theta}(S_t, A_t) \right) \triangledown_\theta \hat{q_\theta}(S_t, A_t)
-\label{eq:semi_gradient_one_step_exp_sarsa}
+\label{eq:q_learning_derv_loss}
 \end{equation}
-
-CONVERGENCE??? PG 197 SUTTON
 
 \noindent
 Where:
 \begin{conditions}
 \triangledown_\theta & Gradient w.r.t $\theta$\\
-\pi & The current policy followed\\
 \hat{q_\theta} & The current approximation of the value function modelled by an ANN\\
 \left[ . \right] & Stop gradient, meaning the value is taken as just a scalar input during backpropagation
 \end{conditions}
 
+Unfortunately due to the use of function approximators for TD-learning methods, the methods are no longer proven to converge on the optimal policy $q_*$. That said, in general these methods perform well in practice for appropriate use cases \cite{lillicrap2015continuous, mnih2013playing}, and generally learn faster than the other option of Monte Carlo Reinforcement Learning with function approximation \cite{sutton2011reinforcement}.
+
 \subsection{Neural-Q Path Tracer}
+
+Here, I will first outline the motivation for using ANNs for approximating the outgoing radiance $L_o(x, \omega)$, compared to using a tabular TD-learning technique such as the Expected Sarsa path tracer described in section \ref{sec:expecte_sarsa_path_tracer}. I will then move on to outlining the details of the light path construction algorithm and ANN architecture used for approximating $L_o(x, \omega)$.
+
+\subsubsection{Deep Reinforcement Learning Motivation}
+
+Like tabular TD-learning methods, deep reinforcement learning methods can be used to approximate the distribution of outgoing radiance in all directions in a hemisphere for any point in the scene, this is known as the radiance distribution \cite{greger1998irradiance}. A good approximation of the radiance distribution at a point can be used in importance sampling directions for light path construction during Monte Carlo path tracing in order to reduce image noise (see section \ref{sec:monte_carlo_path_tracing}).\\
+
+Unlike the Expected Sarsa tabular approach, function approximation has the ability to generalize the value over state-action pairs. In other words, the tabular approach requires a single entry for every possible state-action. So, if an update is made to a state-action pair, it affects that state-action pair value alone. In the case where there are many states (potentially infinitely many) state-action pairs may not be updated often due to the number of them. This means they will be updated infrequently, making learning slow. It may not even be possible to store such a number of state-action pairs. Using an ANN or any function approximator allows one to model a potentially infinite state space and generalize for the valuation of for unseen state-action pairs, which applies well to rendering as the number of unique positions in the scene is infinite. However, this comes at the cost of updating weights in the ANN can affect the valuation of multiple states, making it impossible in practice to predict the optimal value for every state-action pair, unlike the tabular case. This causes proofs for convergence on the optimal value function, $q_*(s,a)$ to break down.\\
+
+Previously, I highlighted that I chose an ANN as the function approximator for the Neural-Q path tracer due to its ability to model non-linear functions well in the presence of a large amount of training data. When approximating the outgoing radiance $L_o(x, \omega)$ for all possible positions in the scene, the radiance distribution at any point in the scene can be a non-linear function due to the way light paths randomly reflect off complex geometry in a scene. Therefore, learning the radiance distribution for all points in a arbitrary scene requires a non-linear function approximator. In terms of training data, the rendering process samples light paths to approximate radiance which can be used for training. This means as much training data as needed can be generated during the rendering process.\\
+
+The range of improvements to the approximation of outgoing radiance that can be potentially made by using ANNs makes it a clear area to investigate. However, this is all conditioned on if it is possible for an ANN to learn the radiance distribution for any point in an arbitrary scene.
+
+TODO PIC OF RADIANCE DISTRIBUTION WHERE FIRST INTRODUCED
+
+\subsubsection{Neural-Q Path Tracing}
+
+The Neural-Q path tracer proposed uses the semi-gradient one-step Expected Sarsa loss function applied to the rendering equation for learning the outgoing radiance from a position $x$ in direction $\omega$, $L_o(x ,\omega)$. The algorithm for constructing a single light is similar to that presented in the Expected Sarsa path tracer presented in Algorithm \ref{alg:expected_sarsa_pathtracer}. That is, the calculated 
 
 \begin{itemize}
 \item Why use non-linear function for rendering with radiance distribution?
