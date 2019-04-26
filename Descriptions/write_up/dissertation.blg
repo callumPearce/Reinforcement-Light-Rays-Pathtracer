@@ -15,45 +15,45 @@ Warning--can't use both volume and number fields in cline2008table
 Warning--empty publisher in glassner2014principles
 Warning--can't use both volume and number fields in kajiya1986rendering
 Warning--empty title in nvidia_turing_architecture_whitepaper_2018
-You've used 37 entries,
+You've used 39 entries,
             2118 wiz_defined-function locations,
-            692 strings with 9724 characters,
-and the built_in function-call counts, 13021 in all, are:
-= -- 1247
-> -- 670
+            701 strings with 10214 characters,
+and the built_in function-call counts, 13842 in all, are:
+= -- 1315
+> -- 751
 < -- 13
-+ -- 272
-- -- 230
-* -- 871
-:= -- 2121
-add.period$ -- 115
-call.type$ -- 37
-change.case$ -- 221
++ -- 304
+- -- 260
+* -- 941
+:= -- 2277
+add.period$ -- 121
+call.type$ -- 39
+change.case$ -- 242
 chr.to.int$ -- 0
-cite$ -- 42
-duplicate$ -- 489
-empty$ -- 1013
-format.name$ -- 230
-if$ -- 2751
+cite$ -- 44
+duplicate$ -- 509
+empty$ -- 1047
+format.name$ -- 260
+if$ -- 2902
 int.to.chr$ -- 0
-int.to.str$ -- 37
-missing$ -- 29
-newline$ -- 185
-num.names$ -- 74
-pop$ -- 296
+int.to.str$ -- 39
+missing$ -- 31
+newline$ -- 195
+num.names$ -- 78
+pop$ -- 317
 preamble$ -- 1
-purify$ -- 186
+purify$ -- 205
 quote$ -- 0
-skip$ -- 370
+skip$ -- 384
 stack$ -- 0
-substring$ -- 672
-swap$ -- 137
+substring$ -- 682
+swap$ -- 139
 text.length$ -- 13
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 144
+type$ -- 152
 warning$ -- 5
-while$ -- 121
-width$ -- 39
-write$ -- 390
+while$ -- 125
+width$ -- 41
+write$ -- 410
 (There was 1 error message)

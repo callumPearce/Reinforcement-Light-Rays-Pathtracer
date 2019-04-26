@@ -40,10 +40,11 @@
 \contentsline {subsubsection}{Value Function Approximation}{25}{section*.36}
 \contentsline {subsubsection}{Stochastic Gradient Descent}{25}{section*.37}
 \contentsline {subsubsection}{Bootstrapping}{26}{section*.38}
-\contentsline {subsection}{\numberline {3.2.2}Neural-Q Path Tracer}{26}{subsection.3.2.2}
-\contentsline {subsubsection}{Deep Reinforcement Learning Motivation}{26}{section*.39}
-\contentsline {subsubsection}{Neural-Q Path Tracing}{27}{section*.40}
-\contentsline {subsection}{\numberline {3.2.3}Recent Advancements in Neural Light Path Construction}{27}{subsection.3.2.3}
+\contentsline {subsection}{\numberline {3.2.2}Deep Reinforcement Learning Motivation}{26}{subsection.3.2.2}
+\contentsline {subsection}{\numberline {3.2.3}Deep Q-learning for Light Transport}{27}{subsection.3.2.3}
+\contentsline {subsection}{\numberline {3.2.4}Artificial Neural Network Architecture}{27}{subsection.3.2.4}
+\contentsline {subsection}{\numberline {3.2.5}Neural-Q Path Tracing Algorithm}{28}{subsection.3.2.5}
+\contentsline {subsection}{\numberline {3.2.6}Recent Advancements in Neural Light Path Construction}{28}{subsection.3.2.6}
 \contentsline {chapter}{\numberline {4}Critical Evaluation}{29}{chapter.4}
 \contentsline {subsection}{\numberline {4.0.1}Plan}{29}{subsection.4.0.1}
 \contentsline {chapter}{\numberline {5}Conclusion}{31}{chapter.5}
