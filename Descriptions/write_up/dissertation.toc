@@ -32,21 +32,18 @@
 \contentsline {section}{\numberline {3.1}The expected Sarsa Path Tracer}{21}{section.3.1}
 \contentsline {subsection}{\numberline {3.1.1}The Irradiance Volume}{21}{subsection.3.1.1}
 \contentsline {subsection}{\numberline {3.1.2}Expected Sarsa Path Tracing}{23}{subsection.3.1.2}
-\contentsline {subsubsection}{Algorithm}{23}{section*.32}
-\contentsline {subsubsection}{Monte Carlo Integration}{24}{section*.33}
-\contentsline {subsubsection}{Consistency}{25}{section*.35}
 \contentsline {section}{\numberline {3.2}The Neural-Q Path Tracer}{26}{section.3.2}
 \contentsline {subsection}{\numberline {3.2.1}Introduction to Deep Reinforcement Learning}{26}{subsection.3.2.1}
-\contentsline {subsubsection}{Value Function Approximation}{26}{section*.36}
-\contentsline {subsubsection}{Stochastic Gradient Descent}{26}{section*.37}
-\contentsline {subsubsection}{Bootstrapping}{27}{section*.38}
+\contentsline {subsubsection}{Value Function Approximation}{26}{section*.38}
+\contentsline {subsubsection}{Stochastic Gradient Descent}{26}{section*.39}
+\contentsline {subsubsection}{Bootstrapping}{27}{section*.40}
 \contentsline {subsection}{\numberline {3.2.2}Deep Reinforcement Learning Motivation}{27}{subsection.3.2.2}
 \contentsline {subsection}{\numberline {3.2.3}Deep Q-learning for Light Transport}{28}{subsection.3.2.3}
 \contentsline {subsection}{\numberline {3.2.4}Artificial Neural Network Architecture}{28}{subsection.3.2.4}
 \contentsline {subsection}{\numberline {3.2.5}Neural-Q Path Tracing Algorithm}{29}{subsection.3.2.5}
-\contentsline {subsection}{\numberline {3.2.6}Recent Advancements in Neural Light Path Construction}{30}{subsection.3.2.6}
-\contentsline {chapter}{\numberline {4}Critical Evaluation}{31}{chapter.4}
-\contentsline {subsection}{\numberline {4.0.1}Plan}{31}{subsection.4.0.1}
-\contentsline {chapter}{\numberline {5}Conclusion}{33}{chapter.5}
-\contentsline {subsection}{\numberline {5.0.1}Plan}{33}{subsection.5.0.1}
-\contentsline {chapter}{\numberline {A}An Example Appendix}{37}{appendix.A}
+\contentsline {subsection}{\numberline {3.2.6}Recent Advancements in Neural Light Path Construction}{31}{subsection.3.2.6}
+\contentsline {chapter}{\numberline {4}Critical Evaluation}{33}{chapter.4}
+\contentsline {subsection}{\numberline {4.0.1}Plan}{33}{subsection.4.0.1}
+\contentsline {chapter}{\numberline {5}Conclusion}{35}{chapter.5}
+\contentsline {subsection}{\numberline {5.0.1}Plan}{35}{subsection.5.0.1}
+\contentsline {chapter}{\numberline {A}An Example Appendix}{39}{appendix.A}

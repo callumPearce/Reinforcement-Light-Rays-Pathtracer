@@ -42,6 +42,19 @@
   year={2015}
 }
 
+% Benefits of batching in RL
+@article{hafner2011reinforcement,
+  title={Reinforcement learning in feedback control},
+  author={Hafner, Roland and Riedmiller, Martin},
+  journal={Machine learning},
+  volume={84},
+  number={1-2},
+  pages={137--169},
+  year={2011},
+  publisher={Springer}
+}
+
+
 % Reinforcement Learning book
 @book{sutton2011reinforcement,
   title={Reinforcement learning: An introduction},

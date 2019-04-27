@@ -3,7 +3,7 @@
 \contentsline {algocf}{\numberline {1}{\ignorespaces Forward Path Tracer. Given a camera position, scene geometry, this algorithm will render a single image by finding the colour estimate for each pixel using Monte Carlo path tracing. Where $N$ is the pre-specified number of sampled light paths per pixel.\relax }}{13}{algocf.1}
 \addvspace {10\p@ }
 \contentsline {algocf}{\numberline {2}{\ignorespaces Expected Sarsa path tracer pseudo code following Nvidia's method in \cite {dahm2017learning}. Given a camera position, scene geometry, this algorithm will render a single image using a tabular Expected Sarsa approach to progressively reduce image noise. Where $N$ is the pre-specified number of sampled light paths per pixel.\relax }}{24}{algocf.2}
-\contentsline {algocf}{\numberline {3}{\ignorespaces Neural-Q forward path tracer. Given a camera position, scene geometry, epsilon and epsilon decay, this algorithm will render a single image using deep Q-learning loss to progressively reduce image noise. Where $N$ is the pre-specified number of sampled light paths per pixel.\relax }}{30}{algocf.3}
+\contentsline {algocf}{\numberline {3}{\ignorespaces Neural-Q forward path tracer. Given a camera position, scene geometry, epsilon and epsilon decay, this algorithm will render a single image using deep Q-learning loss to progressively reduce image noise. Where $N$ is the pre-specified number of sampled light paths per pixel.\relax }}{31}{algocf.3}
 \addvspace {10\p@ }
 \addvspace {10\p@ }
 \addvspace {10\p@ }
