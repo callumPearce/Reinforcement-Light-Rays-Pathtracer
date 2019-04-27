@@ -48,46 +48,54 @@ Originally designed to be used for pre-computation of radiance values which are 
 \label{fig:scene_discretization_example}
 \end{figure}
 
-Each sector of the Irradiance Volume is then used to store the current approximation of radiance from the centre of the hemispheres location $x$, in the incident direction formed by the unit vector from centre of the sector to $x$. Therefore, an Irradiance Volume stores the incident radiance (Q-value) for a given position $x$ (state) from each direction $\omega_k$ (action), for all sectors $k$ in the hemisphere located at $x$. In order to store Q-values across the scene, Irradiance Volumes can be uniformly sampled over the scenes geometry as shown in Figure \ref{fig:scene_discretization_example}. Then to lookup a radiance/Q-value for a given position $x$ in direction $\omega_k$, a nearest neighbour search is performed to find the closest Irradianc volume to position $x$, then retrieve the Q-value from the sector at index $k$. Giving a lookup and update time of $O(\log n) + O(1) = O(\log n)$ when using a data structure such as a KD-Tree for nearest neighbour search \cite{bentley1975multidimensional}. Lookup and update procedures from the Irradiance volumes in the scene is all that is needed to apply the Expected Sarsa learning rule in Equation \ref{eq:mc_expected_sarsa_td_learning}.
+Each sector of the Irradiance Volume is then used to store the current approximation of radiance from the centre of the hemispheres location $x$, in the incident direction formed by the unit vector from centre of the sector to $x$. Therefore, an Irradiance Volume stores the incident radiance (Q-value) for a given position $x$ (state) from each direction $\omega_k$ (action), for all sectors $\forall k = 1,...,n$ in the hemisphere located at $x$. In order to store Q-values across the scene, Irradiance Volumes can be uniformly sampled over the scenes geometry as shown in Figure \ref{fig:scene_discretization_example}. Then to lookup a radiance/Q-value for a given position $x$ in direction $\omega_k$, a nearest neighbour search is performed to find the closest Irradiance volume to position $x$, then retrieve the Q-value from the sector at index $k$. Giving a lookup and update time of $O(\log n) + O(1) = O(\log n)$ when using a data structure such as a KD-Tree for nearest neighbour search \cite{bentley1975multidimensional}. Lookup and update procedures from the Irradiance volumes in the scene is all that is needed to apply the Expected Sarsa learning rule in Equation \ref{eq:mc_expected_sarsa_td_learning}.\\
+
+At each Irradiance Volume the radiance distribution is stored. The radiance distribution for each radiance volumes is a probability distribution over the $n$ Q-values (incoming radiance estimates) stored by the radiance volume. As described in section \ref{sec:td_light_transport}, a direction to continue a light path in can be sampled proportionally to the radiance distribution of the closest radiance volume to the a light paths intersection point. This distribution is also used as the probability density function in the Monte Carlo path tracing colour estimate for a pixel (Equation \ref{eq:rendering_eq_monte_carlo}). Due to this, as the radiance estimate held in each of the $n$ sectors of every radiance volume improves with the number of rendered frames, the radiance distribution will come closer a normalized version of the true function describing the incoming radiance on point $x$. Therefore, the variance in the colour estimate for a light path through a given pixel will reduce for the same number of samples used, progressively reducing image noise.
 
 \subsection{Expected Sarsa Path Tracing}
 
 \subsubsection{Algorithm}
-The Expected Sarsa based path tracing algorithm is very similar to the original forward path tracer introduced in Algorithm \ref{alg:forward_path_tracing}. The algorithm learns online, meaning after every rendered frame pixel values are likely to have a lower variance due to a reduction in the number of zero contribution light paths sampled. Initially, radiance volumes are sampled uniformly across the room with all Q-values initialised to a small constant proportional to the number of sectors on each hemisphere $k$. This encodes the assumption that initially the radiance in all direction from any given point in the room is equal, as initially there is no prior knowledge of any radiance values $Q(x, \omega)$. With the radiance volumes set up, $n$ sampled light paths are traced through each pixel from the camera and into the scene. The average colour estimate of the $n$ sampled light paths per pixel is averaged to find the colour of each pixel, every rendered frame. The colour estimate of each sampled light path is found by Algorithm \ref{alg:expected_sarsa_pathtracer}. The two additions to this algorithm from the forward path tracer in Algorithm \ref{alg:forward_path_tracing}, are as follows:
+The Expected Sarsa based path tracing algorithm is very similar to the original forward path tracer introduced in Algorithm \ref{alg:forward_path_tracing}. The algorithm learns online, meaning after every rendered frame pixel values are likely to have a lower variance due to a reduction in the number of zero contribution light paths sampled. Initially, radiance volumes are sampled uniformly across the room with all Q-values initialised to a small constant proportional to the number of sectors on each hemisphere $k$. This encodes the assumption that initially the radiance in all directions from any given point in the room is equal, as initially there is no prior knowledge of any radiance values $Q(x, \omega)$. With the radiance volumes set up, every frame $N$ sampled light paths are traced through each pixel from the camera and into the scene to find its average colour estimate using Algorithm \ref{alg:expected_sarsa_pathtracer}. Algorithm \ref{alg:expected_sarsa_pathtracer} updates the radiance distribution stored in by each Irradiance Volume after every rendered frame using the updated $Q(x, \omega_k)$ values stored. Meaning the next frame will importance sample from the new updated radiance distribution estimate held by every Irradiance Volume. The three additions to this algorithm from the forward path tracer in Algorithm \ref{alg:forward_path_tracing}, are as follows:
 
 \begin{enumerate}
 \item Once the ray has intersected with a position in the scene $y$ from a position $x$, update the radiance estimate $Q(x, \omega)$ using the Expected Sarsa learning rule derived in Equation \ref{eq:mc_expected_sarsa_td_learning}. This is based on the radiance emitted from $y$ in direction $-\omega$ and the outgoing radiance estimate in direction $-\omega$ from point $y$ described by the summation. The summation involves summing all Q-values for the closest radiance volume to position $y$. Each of which are multiplied by BRDF of the surface at $y$, as well as the cosine of the angle between the sector direction for the Q-value ($\omega_k$) and the surface normal $y$.
 
-\item The direction to continue the light path in is sampled proportional to the Q-values stored in the closest hemisphere to position $y$. This is achieved by normalizing the Q-values for the radiance volumes, converting them into a distribution which is appropriately known as the radiance distribution. Then inverse transform sampling \cite{devroye2006nonuniform} is performed to get a direction in the hemisphere to sample a ray in. Inverse transform sampling is where a random number $r \in [0,1]$ is sampled, then the largest number $x$ from the domain of the cumulative distribution $P(X)$ is returned where $ P(-\infty < X < x) \leq r$. 
+\item The direction to continue the light path in is sampled proportional to the Q-values stored in the closest Irradiance Volume to position $y$ by using the stored radiance distribution in the closest Irradiance Volume.  Inverse transform sampling \cite{devroye2006nonuniform} is used to sample a direction from the stored radiance distribution. Inverse transform sampling is where a random number $r \in [0,1]$ is sampled, then the largest number $x$ from the domain of the cumulative distribution $P(X)$ is returned where $ P(-\infty < X < x) \leq r$. 
+
+\item Update every radiance volumes radiance distribution in the scene by normalizing the radiance volumes updated $Q(x, \omega_k)$ values. 
 \end{enumerate}
+
 
 \begin{algorithm}[H]
 \label{alg:expected_sarsa_pathtracer}
 \SetKwProg{Fn}{Function}{ }{end}
 \SetAlgoLined
- \Fn{pathTrace(camera, scene, pixel)}{  
-   $throughput \leftarrow 1$\\
-   $ray \leftarrow initialiseRayForPixel(pixel, camera)$\\
-    \For{$i = 0$ \KwTo $\infty$}{
-        $(y, norm) = closestIntersection(ray, scene)$\\
-        \tcc{Addition (1)}
-        \If{$i > 0$}{
-            $Q(x, \omega) \leftarrow (1 - \alpha) \cdot Q(x, \omega) + \alpha \cdot \left( L_e(y, -\omega) +\frac{2 \pi}{n} \sum_{k=1}^{n-1} Q(y, \omega_k) f_s(\omega_k, y, -\omega) \cos(\theta_k)  \right)$
-        }    
-            
-        \If{$noIntersection(y)$}{
-            \Return $throughput \cdot \text{environmentLightRadiance}(ray,y)$
-        }
-        \ElseIf{$areaLightIntersection(y)$}{
-            \Return $throughput \cdot \text{areaLightRadiance}(ray, y)$
-        }
-        \tcc{Addition (2)}
-        $(\omega, \rho_i, f_s) \leftarrow \text{sampleRayDirProportionalToQ(y)}$\\
-        $throughput \leftarrow throughput \cdot f_s \cdot cos(norm, \omega) / \rho_i$\\
-        $ray \leftarrow (y,\omega)$
-    }
+ \Fn{renderImage(camera, scene)}{  
+   \For{$i = 1$ \KwTo $N$}{
+     \For{$p$ \In $camera.screen$}{
+         $ray \leftarrow \text{initializeRay}(p, camera)$\\
+         \For{$j=1$ \KwTo $\infty$}{
+         $(y, \mathbf{n}, L_e) \leftarrow \text{closestIntersection}(ray, scene)$\\
+         \If{$j > 1$}{
+            \tcc{Addition (1)}
+            $(\omega_i, \rho_i, f_s) \leftarrow \text{sampleRayDirFromClosestRadianceDistribution}(y)$\\
+            \tcc{Addition (2)}
+            $Q(ray.x, ray.\omega) \leftarrow (1 - \alpha(ray.x, ray.\omega)) \cdot Q(ray.x, ray.\omega) + \alpha(ray.x, ray.\omega) \cdot \left( L_e +\frac{2 \pi}{n} \sum_{k=1}^{n-1} Q(y, \omega_k) f_s(\omega_k, y, -ray.\omega) \cdot (\omega_k \cdot \mathbf{n})  \right)$\\
+         }
+         \If{$\text{noIntersection}(y) \ \Or \ \text{areaLightIntersection}(y)$}{
+             $ray.throughput \leftarrow ray.throughput \cdot L_e$\\
+             $\text{updatePixelColourEstimate}(p, ray.throughput)$\\
+             $\Break$
+          }
+          $ray.throughput \leftarrow ray.throughtput \cdot f_s \cdot (\omega_i \cdot \mathbf{n}) / \rho_i$\\
+          $ray \leftarrow (y, \omega_i)$
+       }
+   }
+  }
+  \tcc{Addition (3)}
+  $\text{updateRadianceVolumeDistributions()}$
  }
- \caption{Expected Sarsa forward path tracer \cite{dahm2017learning}}
+ \caption{Expected Sarsa path tracer pseudo code following Nvidia's method in \cite{dahm2017learning}. Given a camera position, scene geometry, this algorithm will render a single image using a tabular Expected Sarsa approach to progressively reduce image noise. Where $N$ is the pre-specified number of sampled light paths per pixel.}
 \end{algorithm}
 
 \subsubsection{Monte Carlo Integration}
@@ -281,37 +289,39 @@ With the ANN and the method for training it detailed, a modified path tracing al
 \label{alg:neural_q_pathtracer}
 \SetKwProg{Fn}{Function}{ }{end}
 \SetAlgoLined
- \Fn{renderImage(camera, scene, decay)}{  
-   $ANN = \text{initANN()}$\\
+ \Fn{renderImage(camera, scene, decay, $\epsilon$)}{  
+   $ANN = \text{loadANN()}$\\
    \For{$i = 1$ \KwTo $N$}{
        \For{$b = 1$ \KwTo $\text{Batches}$}{
            \For{$k = 1$ \KwTo $\text{BatchSize}$}{
-               $p \leftarrow \text{getPixel(j,k)}$\\
-               $ray \leftarrow \text{initializeRay(p, camera)}$\\
+               $p \leftarrow \text{getPixel(b,k)}$\\
+               $ray \leftarrow \text{initializeRay}(p, camera)$\\
                \For{$j=1$ \KwTo $\infty$}{
-                   $(y, cos(\theta)) \leftarrow \text{closestIntersection}(ray, scene)$\\
+                   $(y, \mathbf{n}, L_e) \leftarrow \text{closestIntersection}(ray, scene)$\\
                    \If{$j > 1$}{
-                       $\hat{q_\theta}x \leftarrow ANN.getQValue(x, \omega)$\\
+                       \tcc{Addition (1)}
+                       $(\omega_i, \rho_i, f_s) \leftarrow \text{sampleRayDirEpsilonGreedy}(\epsilon, y)$\\
+                       \tcc{Addition (2)}
+                       $\hat{q_\theta}x \leftarrow ANN.getQValue(ray.x, ray.\omega)$\\
                        $\hat{q_\theta}y \leftarrow ANN.getMaxQValue(y)$\\
-                       $\left( L_e(y, -\omega) + \left[ \max_{\omega_i} \left(\hat{q_\theta}(y, \omega_i) f_s(\omega_i, y, \omega) (\omega_i \cdot \mathbf{n}) \right) \right] \right) - \hat{q_\theta}(x, \omega)$
+                       $\triangle \hat{q}_\theta x \leftarrow L_e +  \left(\hat{q_\theta}y  \cdot f_s \cdot (\omega_i \cdot \mathbf{n}) \right) - \hat{q_\theta}x$\\
+                       $ANN.\text{train}(\triangle \hat{q}_\theta x)$
                    }
-                   \If{$\text{noIntersection}(y)$}{
-                       $ray.throughput \leftarrow ray.throughput \cdot \text{environmentLightRadiance(ray,y)}$
+                   \If{$\text{noIntersection}(y) \ \Or \ \text{areaLightIntersection}(y)$}{
+                       $ray.throughput \leftarrow ray.throughput \cdot L_e$\\
+                       $\text{updatePixelColourEstimate}(p, ray.throughput)$\\
+                       $\Break$
                    }
-                   \If{$\text{areaLightIntersection}(y)$}{
-                      $ray.throughput \leftarrow ray.throughput \cdot \text{areaLightRadiance(ray,y)}$
-                   }
-                   \If{$j > 1$}{
-                       $(\omega, \rho_i, f_s) \leftarrow \text{sampleRayDirEtaGreedy}(eta, ray)$\\
-                       $ray.throughput \leftarrow ray.throughtput \cdot f_s \cdot cos(\theta) / \rho_i
-                       ray \leftarrow (y, \omega)$
-                   }
+                  $ray.throughput \leftarrow ray.throughtput \cdot f_s \cdot (\omega_i \cdot \mathbf{n}) / \rho_i$\\
+                  $ray \leftarrow (y, \omega_i)$
                }
            }
        }
+       \tcc{Addition (3)}
+       $\epsilon \leftarrow \epsilon - decay$
    }
  }
- \caption{Neural-Q forward path tracer. Samples a single light path trough every pixel in the screen.}
+ \caption{Neural-Q forward path tracer. Given a camera position, scene geometry, epsilon and epsilon decay, this algorithm will render a single image using deep Q-learning loss to progressively reduce image noise. Where $N$ is the pre-specified number of sampled light paths per pixel.}
 \end{algorithm}
 
 \begin{itemize}

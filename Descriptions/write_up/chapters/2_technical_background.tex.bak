@@ -363,6 +363,39 @@ Algorithm \ref{alg:forward_path_tracing} describes a forward path tracer which c
  \caption{Forward path tracer}
 \end{algorithm}
 
+\begin{algorithm}[H]
+\label{alg:expected_sarsa_pathtracer}
+\SetKwProg{Fn}{Function}{ }{end}
+\SetAlgoLined
+ \Fn{renderImage(camera, scene)}{  
+   \For{$i = 1$ \KwTo $N$}{
+     \For{$p$ \In $camera.screen$}{
+         $ray \leftarrow \text{initializeRay}(p, camera)$\\
+         \For{$j=1$ \KwTo $\infty$}{
+         $(y, \mathbf{n}, L_e) \leftarrow \text{closestIntersection}(ray, scene)$\\
+         \If{$j > 1$}{
+            \tcc{Addition (1)}
+            $(\omega_i, \rho_i, f_s) \leftarrow \text{sampleRayDirFromClosestRadianceDistribution}(y)$\\
+            \tcc{Addition (2)}
+            $Q(ray.x, ray.\omega) \leftarrow (1 - \alpha(ray.x, ray.\omega)) \cdot Q(ray.x, ray.\omega) + \alpha(ray.x, ray.\omega) \cdot \left( L_e +\frac{2 \pi}{n} \sum_{k=1}^{n-1} Q(y, \omega_k) f_s(\omega_k, y, -ray.\omega) \cdot (\omega_k \cdot \mathbf{n})  \right)$\\
+         }
+         \If{$\text{noIntersection}(y) \ \Or \ \text{areaLightIntersection}(y)$}{
+             $ray.throughput \leftarrow ray.throughput \cdot L_e$\\
+             $\text{updatePixelColourEstimate}(p, ray.throughput)$\\
+             $\Break$
+          }
+          $ray.throughput \leftarrow ray.throughtput \cdot f_s \cdot (\omega_i \cdot \mathbf{n}) / \rho_i$\\
+          $ray \leftarrow (y, \omega_i)$
+       }
+   }
+  }
+  \tcc{Addition (3)}
+  $\text{updateRadianceVolumeDistributions()}$
+ }
+ \caption{Expected Sarsa path tracer pseudo code following Nvidia's method in \cite{dahm2017learning}. Given a camera position, scene geometry, this algorithm will render a single image using a tabular Expected Sarsa approach to progressively reduce image noise. Where $N$ is the pre-specified number of sampled light paths per pixel.}
+\end{algorithm}
+
+
 \subsubsection{Importance Sampling in Path Tracing}
 
 As path tracing is a Monte Carlo method for solving the rendering equation, Importance sampling can be applied in order to reduce the variance pixel colour estimates. In section \ref{sec:importance_smapling} it was shown that by using a probability density function ($pdf$) which closely matches the shape of the function being integrated, the variance in the Monte Carlo estimate is significantly reduced. Applying this to Equation \ref{eq:rendering_eq_monte_carlo}, the term $\rho_i$ which represents the probability density function for sampling the next ray direction at intersection location $x_i$ with angle of incidence $\omega_i$. Currently you can assume that the probability density function $\rho_i$ is uniform. But this can be modified with prior knowledge regarding which directions are more important for continuing a light path in, where an important direction is one which leads to a high contribution of radiance to the pixel estimate.\\

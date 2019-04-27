@@ -33,18 +33,18 @@
 \contentsline {subsection}{\numberline {3.1.1}The Irradiance Volume}{21}{subsection.3.1.1}
 \contentsline {subsection}{\numberline {3.1.2}Expected Sarsa Path Tracing}{23}{subsection.3.1.2}
 \contentsline {subsubsection}{Algorithm}{23}{section*.32}
-\contentsline {subsubsection}{Monte Carlo Integration}{23}{section*.33}
-\contentsline {subsubsection}{Consistency}{24}{section*.35}
-\contentsline {section}{\numberline {3.2}The Neural-Q Path Tracer}{25}{section.3.2}
-\contentsline {subsection}{\numberline {3.2.1}Introduction to Deep Reinforcement Learning}{25}{subsection.3.2.1}
-\contentsline {subsubsection}{Value Function Approximation}{25}{section*.36}
-\contentsline {subsubsection}{Stochastic Gradient Descent}{25}{section*.37}
-\contentsline {subsubsection}{Bootstrapping}{26}{section*.38}
-\contentsline {subsection}{\numberline {3.2.2}Deep Reinforcement Learning Motivation}{26}{subsection.3.2.2}
-\contentsline {subsection}{\numberline {3.2.3}Deep Q-learning for Light Transport}{27}{subsection.3.2.3}
-\contentsline {subsection}{\numberline {3.2.4}Artificial Neural Network Architecture}{27}{subsection.3.2.4}
-\contentsline {subsection}{\numberline {3.2.5}Neural-Q Path Tracing Algorithm}{28}{subsection.3.2.5}
-\contentsline {subsection}{\numberline {3.2.6}Recent Advancements in Neural Light Path Construction}{29}{subsection.3.2.6}
+\contentsline {subsubsection}{Monte Carlo Integration}{24}{section*.33}
+\contentsline {subsubsection}{Consistency}{25}{section*.35}
+\contentsline {section}{\numberline {3.2}The Neural-Q Path Tracer}{26}{section.3.2}
+\contentsline {subsection}{\numberline {3.2.1}Introduction to Deep Reinforcement Learning}{26}{subsection.3.2.1}
+\contentsline {subsubsection}{Value Function Approximation}{26}{section*.36}
+\contentsline {subsubsection}{Stochastic Gradient Descent}{26}{section*.37}
+\contentsline {subsubsection}{Bootstrapping}{27}{section*.38}
+\contentsline {subsection}{\numberline {3.2.2}Deep Reinforcement Learning Motivation}{27}{subsection.3.2.2}
+\contentsline {subsection}{\numberline {3.2.3}Deep Q-learning for Light Transport}{28}{subsection.3.2.3}
+\contentsline {subsection}{\numberline {3.2.4}Artificial Neural Network Architecture}{28}{subsection.3.2.4}
+\contentsline {subsection}{\numberline {3.2.5}Neural-Q Path Tracing Algorithm}{29}{subsection.3.2.5}
+\contentsline {subsection}{\numberline {3.2.6}Recent Advancements in Neural Light Path Construction}{30}{subsection.3.2.6}
 \contentsline {chapter}{\numberline {4}Critical Evaluation}{31}{chapter.4}
 \contentsline {subsection}{\numberline {4.0.1}Plan}{31}{subsection.4.0.1}
 \contentsline {chapter}{\numberline {5}Conclusion}{33}{chapter.5}
