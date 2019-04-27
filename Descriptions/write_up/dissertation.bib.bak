@@ -18,6 +18,31 @@
   publisher={IEEE}
 }
 
+% SD-tree
+@inproceedings{muller2017practical,
+  title={Practical path guiding for efficient light-transport simulation},
+  author={M{\"u}ller, Thomas and Gross, Markus and Nov{\'a}k, Jan},
+  booktitle={Computer Graphics Forum},
+  volume={36},
+  number={4},
+  pages={91--100},
+  year={2017},
+  organization={Wiley Online Library}
+}
+
+% Learning light trasnport with GMMs
+@article{vorba2014line,
+  title={On-line learning of parametric mixture models for light transport simulation},
+  author={Vorba, Ji{\v{r}}{\'\i} and Karl{\'\i}k, Ond{\v{r}}ej and {\v{S}}ik, Martin and Ritschel, Tobias and K{\v{r}}iv{\'a}nek, Jaroslav},
+  journal={ACM Transactions on Graphics (TOG)},
+  volume={33},
+  number={4},
+  pages={101},
+  year={2014},
+  publisher={ACM}
+}
+
+
 % Converting a 2D grid to a 3D hemisphere of  uniform section areas
 @techreport{shirley1994notes,
   title={Notes on adaptive quadrature on the hemisphere},

@@ -152,9 +152,9 @@ Now, while $Q(x, \omega_k)$ does converge, it does not necessarily converge on t
 
 \section{The Neural-Q Path Tracer}
 
-Up to now I have only spoke of TD-learning techniques which involve use a tabular approach to approximate the the optimal value function. However, it is possible to instead use a Neural Network as a non-linear function approximater for the optimal value function \cite{deep_rl_function_approx}. Following this I introduce the Neural-Q path tracing algorithm I have designed and implemented.
+Up to now I have only spoke of TD-learning techniques which involve use a tabular approach to approximate the the optimal value function. However, it is possible to instead use a Neural Network as a non-linear function approximater for the optimal value function \cite{deep_rl_function_approx}. Following this I introduce an artificial neural network architecture capable of learning the incident radiance on any point in a scene from a discrete set of angles. I then propose the Neural-Q path tracing algorithm I have designed and implemented which uses the neural networks approximations for importance sampling direction to continue light paths in.
 
-After, I take a slight detour to review the new materials that have been recently published on neural networks for importance sampling in Monte Carlo path tracing. These materials were published during the execution of the project, so it is important to find out where my Neural Q-learning algorithm sits compared to these new state of the art methods.
+After, I take a slight detour to review the new materials that have been recently published on neural networks for importance sampling in Monte Carlo path tracing. The materials that focus on neural importance sampling for light path construction were published during the execution of the project, so it is important to find out where my Neural Q-learning algorithm sits compared to these new state of the art methods.
 
 \subsection{Introduction to Deep Reinforcement Learning}
 
@@ -343,8 +343,10 @@ As part of the decaying $\epsilon$-\textit{greedy} policy, the value of $\epsilo
  \caption{Neural-Q forward path tracer. Given a camera position, scene geometry, epsilon and epsilon decay, this algorithm will render a single image using deep Q-learning loss to progressively reduce image noise. Where $N$ is the pre-specified number of sampled light paths per pixel.}
 \end{algorithm}
 
+\subsection{Recent Advancements in Neural Importance Sampling for Monte Carlo Path Tracing}
 
-\subsection{Recent Advancements in Neural Light Path Construction}
+Along with Nvidia's paper which suggested a reinforcement learning approach for approximating the incident radiance at any point in a scene \cite{dahm2017learning}, other reinforcement learning based methods for learning light transport in a scene have been engineered \cite{muller2017practical, vorba2014line}, but none of them investigated the potential of deep reinforcement learning for this problem. However, recently neural networks for both the global and local sampling for light path construction have had a large amount of research \cite{zheng2018learning, muller2018neural, keller2019integral, hermosilla2018deep}. Global light path sampling is where the density of sampled light rays per pixel 
+
 
 \begin{comment}
 % Advantages

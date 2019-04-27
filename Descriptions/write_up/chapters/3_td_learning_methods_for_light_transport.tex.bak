@@ -63,7 +63,7 @@ The direction to continue the light path in is sampled proportional to the Q-val
 \subsubsection*{Addition 2: Update stored Q-values}
 Once the ray has intersected with a position in the scene $y$ from a position $x$, update the radiance estimate $Q(x, \omega)$ using the Expected Sarsa learning rule derived in Equation \ref{eq:mc_expected_sarsa_td_learning}. This is based on the radiance emitted from $y$ in direction $-\omega$ and the outgoing radiance estimate in direction $-\omega$ from point $y$ described by the summation. The summation involves summing all Q-values for the closest radiance volume to position $y$. Each of which are multiplied by BRDF of the surface at $y$, as well as the cosine of the angle between the sector direction for the Q-value ($\omega_k$) and the surface normal $y$.
 
-\subsubsection*{Addition 3: Update Iadiance Volume Distributions}
+\subsubsection*{Addition 3: Update Irradiance Volume Distributions}
 Update every radiance volumes radiance distribution in the scene by normalizing the radiance volumes updated $Q(x, \omega_k)$ values. 
 
 
@@ -95,7 +95,7 @@ Update every radiance volumes radiance distribution in the scene by normalizing 
    }
   }
   \tcc{Addition (3)}
-  $\text{updateRadianceVolumeDistributions()}$
+  $\text{updateIrradianceVolumeDistributions()}$
  }
  \caption{Expected Sarsa path tracer pseudo code following Nvidia's method in \cite{dahm2017learning}. Given a camera position, scene geometry, this algorithm will render a single image using a tabular Expected Sarsa approach to progressively reduce image noise. Where $N$ is the pre-specified number of sampled light paths per pixel.}
 \end{algorithm}
@@ -152,9 +152,9 @@ Now, while $Q(x, \omega_k)$ does converge, it does not necessarily converge on t
 
 \section{The Neural-Q Path Tracer}
 
-Up to now I have only spoke of TD-learning techniques which involve use a tabular approach to approximate the the optimal value function. However, it is possible to instead use a Neural Network as a non-linear function approximater for the optimal value function \cite{deep_rl_function_approx}. Following this I introduce the Neural-Q path tracing algorithm I have designed and implemented.
+Up to now I have only spoke of TD-learning techniques which involve use a tabular approach to approximate the the optimal value function. However, it is possible to instead use a Neural Network as a non-linear function approximater for the optimal value function \cite{deep_rl_function_approx}. Following this I introduce an artificial neural network architecture capable of learning the incident radiance on any point in a scene from a discrete set of angles. I then propose the Neural-Q path tracing algorithm I have designed and implemented which uses the neural networks approximations for importance sampling direction to continue light paths in.
 
-After, I take a slight detour to review the new materials that have been recently published on neural networks for importance sampling in Monte Carlo path tracing. These materials were published during the execution of the project, so it is important to find out where my Neural Q-learning algorithm sits compared to these new state of the art methods.
+After, I take a slight detour to review the new materials that have been recently published on neural networks for importance sampling in Monte Carlo path tracing. The materials that focus on neural importance sampling for light path construction were published during the execution of the project, so it is important to find out where my Neural Q-learning algorithm sits compared to these new state of the art methods.
 
 \subsection{Introduction to Deep Reinforcement Learning}
 
@@ -289,8 +289,6 @@ So, to compute this loss an initial forward pass on the network must be made to 
 
 With an ANN and a method for training it to learn the the incident radiance from $n$ discrete directions on a point detailed, a modified Monte Carlo path tracing algorithm which uses this ANNs predictions for importance sampling directions to continue light paths must be introduced. Algorithm \ref{alg:neural_q_pathtracer} renders a single image using $N$ sampled light paths per pixel to compute the colour estimate of each pixel by Monte Carlo path tracing. Similarly to the Expected Sarsa path tracer detailed in Algorithm \ref{alg:expected_sarsa_pathtracer}, the Neural-Q path tracer estimates the radiance distribution at the intersection point of a light path and samples a direction to continue the light path in proportional to this distribution. This radiance distribution is also used as the probability density function in the Monte Carlo estimate of the rendering equation \ref{eq:rendering_eq_monte_carlo} to reduce the variance in the approximation of the outgoing radiance $L_o$, leading to a reduction in image noise. The algorithm also trains online, meaning it progressively reduces noise in the image as simulates more light paths. Once again the $\rho_i$ term is the probability density function over the hemisphere of directions $\Omega$ at intersection point $x$ to continue a light path in, evaluated for the sampled direction $\omega_i$. This can be calculated using Equation \ref{eq:mc_expected_sarsa_pdf} in section \ref{sec:expected_sarsa_path_tracer}. There are four additions to this algorithm compared to the default forward path tracing algorithm \ref{alg:forward_path_tracing}:
 
-\begin{enumerate}
-
 \subsubsection*{Addition 1: Minibatching}
 In order to yield smoother sample gradient for training, a minibatching method is used where the gradient information for light paths is accumulated over a small batch of size $BatchSize = 128$ to train the network. This was proven to be succesful for a range of physical control tasks in\cite{lillicrap2015continuous}. While Algorithm \ref{alg:neural_q_pathtracer} iterates through the batches to clearly represent the steps the algorithm takes, in practice all computation with the batch loops are done in parallel. 
 
@@ -304,8 +302,6 @@ Whilst a replay buffer was not used in the Neural-Q path tracer, what it hopes t
 
 \subsubsection*{Addition 4: Decaying decaying $\epsilon$-\textit{greedy}}
 As part of the decaying $\epsilon$-\textit{greedy} policy, the value of $\epsilon$ is decreased after $1$ sampled light path is computed through every pixel in the image. Meaning, according to Algorithm \ref{alg:neural_q_pathtracer}, this represents a single epoch. This is a reasonable point to decay epsilon as for an average light path length of $30$ for each sampled pixel in a $512x512$ image with a minibatch size of $128$, around $61,000$ training updates are made on the network. As discussed in section \ref{eq:exploration_vs_exploitation}, the decaying $\epsilon$-\textit{greedy} policy means the makes sure the path tracer at first prioritises exploration of which direction contribute the most radiance. As training progresses, the path tracers policy alters more towards exploiting by sampling directions to continue light paths in based on the current estimated radiance distribution at their intersections points. This behaviour is desirable, as by focusing on exploitation to early, the path tracer may not sample seemingly unfavourable directions in the short term which after more reflections off surfaces lead to a large amount of incident radiance to the point.
-
-\end{enumerate}
 
 \begin{algorithm}[H]
 \label{alg:neural_q_pathtracer}
@@ -347,25 +343,10 @@ As part of the decaying $\epsilon$-\textit{greedy} policy, the value of $\epsilo
  \caption{Neural-Q forward path tracer. Given a camera position, scene geometry, epsilon and epsilon decay, this algorithm will render a single image using deep Q-learning loss to progressively reduce image noise. Where $N$ is the pre-specified number of sampled light paths per pixel.}
 \end{algorithm}
 
+\subsection{Recent Advancements in Neural Importance Sampling for Monte Carlo Path Tracing}
 
+Along with Nvidia's paper which suggested a reinforcement learning approach for approximating the incident radiance at any point in a scene \cite{dahm2017learning}, other reinforcement learning based methods for learning light transport in a scene have been engineered \cite{muller2017practical, vorba2014line}, but none of them investigated the potential of deep reinforcement learning for this problem. However, recently neural networks for both the global and local sampling for light path construction have had a large amount of research \cite{zheng2018learning, muller2018neural, keller2019integral, hermosilla2018deep}. Global light path sampling is where the density of sampled light rays per pixel 
 
-\begin{itemize}
-\item Adaptive quadrature of directions
-\item The algorithm pseudo code
-\item Neural network architecture + implementation in dynet
-\end{itemize}
-
-The pseudo code for constructing a single light path is given in Algorithm
-
-\begin{itemize}
-\item Experience is not usually i.i.d
-\item Neural-Q path tracing algorithm
-\item Neural-Q network architecture
-\item Potential improvement to network that I will test out soon 
-\item Deep Q-learning does not model light transport as closesly as outgoing radiance is not equal to only the max incident radiance, but this is a good indicator is a state is valuable so can still be good for importance sampling with
-\end{itemize}
-
-\subsection{Recent Advancements in Neural Light Path Construction}
 
 \begin{comment}
 % Advantages

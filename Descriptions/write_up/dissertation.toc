@@ -41,7 +41,7 @@
 \contentsline {subsection}{\numberline {3.2.3}Deep Q-learning for Light Transport}{28}{subsection.3.2.3}
 \contentsline {subsection}{\numberline {3.2.4}Artificial Neural Network Architecture}{28}{subsection.3.2.4}
 \contentsline {subsection}{\numberline {3.2.5}Neural-Q Path Tracing Algorithm}{29}{subsection.3.2.5}
-\contentsline {subsection}{\numberline {3.2.6}Recent Advancements in Neural Light Path Construction}{31}{subsection.3.2.6}
+\contentsline {subsection}{\numberline {3.2.6}Recent Advancements in Neural Importance Sampling for Monte Carlo Path Tracing}{31}{subsection.3.2.6}
 \contentsline {chapter}{\numberline {4}Critical Evaluation}{33}{chapter.4}
 \contentsline {subsection}{\numberline {4.0.1}Plan}{33}{subsection.4.0.1}
 \contentsline {chapter}{\numberline {5}Conclusion}{35}{chapter.5}
