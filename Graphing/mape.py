@@ -10,11 +10,12 @@ import numpy as np
 def mape_score(ground_truth, prediction):
 
     # Get image as a 3D array: Width, Height, RGB
-    gt_arr = np.asarray(imread(ground_truth, mode='RGB'))
-    p_arr = np.asarray(imread(prediction, mode='RGB'))
+    gt_arr = np.asarray(imread(ground_truth, mode='RGB'), dtype=np.intc)
+    p_arr = np.asarray(imread(prediction, mode='RGB'), dtype=np.intc)
 
     # Compute the score
-    score = np.sum(np.abs(gt_arr/255 - p_arr/255)/((gt_arr+0.01)/255))/(len(gt_arr) * len(gt_arr[0]) * len(gt_arr[0][0]))
+    score = np.sum(np.abs(gt_arr/255 - p_arr/255)/((gt_arr+0.01)/255))
+    score /= len(gt_arr) * len(gt_arr[0]) * len(gt_arr[0][0])
 
     # Round to 4 decimal places
     return round(score,4)
