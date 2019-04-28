@@ -11,6 +11,10 @@ Simple directmedia layer.
 {TensorFlow}: Large-scale machine learning on heterogeneous systems, 2015.
 \newblock Software available from tensorflow.org.
 
+\bibitem{maya}
+Autodesk.
+\newblock Autodesk maya api white paper.
+
 \bibitem{bako2017kernel}
 Steve Bako, Thijs Vogels, Brian McWilliams, Mark Meyer, Jan Nov{\'a}k, Alex
   Harvill, Pradeep Sen, Tony Derose, and Fabrice Rousselle.

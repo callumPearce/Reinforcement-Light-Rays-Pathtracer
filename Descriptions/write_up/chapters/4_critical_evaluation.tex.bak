@@ -13,14 +13,31 @@ Here, a range of techniques are used to evaluate both the Expected Sarsa and the
 
 A path tracing renderer was built from scratch which supported Algorithms \ref{alg:forward_path_tracing}, \ref{alg:expected_sarsa_pathtracer}, \ref{alg:neural_q_pathtracer} and was used to produce all rendered results seen in this thesis. The rendering engine used only OpenGL Mathematics library \cite{glm} for various operations that are common in the rendering pipeline, SDL2 \cite{sdl2} for displaying rendered images, and the Dynet neural network library \cite{dynet} for the Neural-Q path tracer implementation. Algorithms \ref{alg:forward_path_tracing}, \ref{alg:expected_sarsa_pathtracer}, \ref{alg:neural_q_pathtracer} were all accelerated on an Nvidia GPU by using the CUDA Toolkit \cite{cuda} to receive experimental results in an acceptable time. The reasoning for choosing Dynet over more commonly used neural networks libraries such as Tensorflow \cite{tensorflow2015-whitepaper}, was due to its ability to be easily compiled with the CUDA \verb|nvcc| compiler and it had a well documented C++ API. This was a requirement for the Neural-Q path tracer as tracing light paths, ANN inference, and ANN training are all performed on a Nvidia GPU via C++ API calls. All results were produced using a machine with an Intel i5-8600K CPU, Nvidia 1070Ti GPU and 16GB of RAM installed.\\
 
-I developed four different scenes using Maya \cite{maya} and created a custom object importer to import the scenes into my path tracer renderer. A reference image of all four scenes is given in Figure \ref{fig:reference_scenes}, which have been rendered with 4096 sampled light rays per pixel using the default forward path tracing Algorithm \ref{alg:forward_path_tracing}. They are known as reference images as they have minimal visible noise, meaning the Monte Carlo approximations for each pixel's colour value has approximately converged. Due to path tracing accurately modelling physical light transport (see section \ref{mc_pathtracing}), these images are the ideal case for which all other path tracing algorithms should aim to produce as closely as possible with as few samples as possible. 
+I developed four different scenes using Maya \cite{maya} and created a custom object importer to import the scenes into my path tracer renderer. A reference image of all four scenes is given in Figure \ref{fig:reference_scenes}, which have been rendered with 4096 sampled light rays per pixel using the default forward path tracing Algorithm \ref{alg:forward_path_tracing}. They are known as reference images as they have minimal visible noise, meaning the Monte Carlo approximations for each pixel's colour value has approximately converged. Due to path tracing accurately modelling physical light transport (see section \ref{sec:mc_pathtracing}), these images are the ideal case for which all other path tracing algorithms should aim to produce as closely as possible with as few samples as possible. 
 
 \section{Reducing Image Noise}
 
+To quantify the amount noise within images rendered by a default forward path tracer, the Expected Sarsa path tracer, and the Neural-Q path tracer, I will use the Mean Absolute Percentage Error (MAPE) given in Equation \ref{eq:mape} \cite{muller2018neural}.
+
+\begin{equation}
+M = \frac{1}{N} \sum_{i=0}^{N-1} \left| \frac{A_i - F_i}{A_i} \right|
+\end{equation}
+
+\noindent
+Where:
+\begin{conditions}
+N & The total number of pixels in the image\\
+A_i & The $i$th pixel value in the reference image\\
+F_i & The $i$th pixel value in the image whose noise is being quantified\\
+\end{conditions}
+
+The MAPE value can therefore be used to quantify the average difference between pixel values from an image rendered by each rendering technique with the same number of sampled light rays per pixel and the reference image. While the MAPE quantifies the overall accuracy of the image rendered, it does not specify which pixel values in particular have a a high error. I have represented this visually by taking the taking the average squared error across the RGB channels between corresponding pixels in the rendered image to test and the reference image. the  from the rendered image and the reference image. 
+
 \begin{itemize}
-\item Results with corresponding MAPE scores for all 3 methods on all 4 scenes
+\item Results with corresponding MAPE scores for all 3 methods on all 4 scenes and image difference
 \item Squared Difference images to reference image
 \item Results display for varying number of samples for all three methods
+\item Path length reduction
 \item Training curve to show convergence time, can compare the number of zero contribution light paths as when this peaks the algorithm has converged
 \end{itemize}
 
