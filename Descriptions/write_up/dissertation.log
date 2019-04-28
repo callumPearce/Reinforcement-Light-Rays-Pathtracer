@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.10.2)  27 APR 2019 18:45
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.10.2)  28 APR 2019 12:13
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1589,42 +1589,27 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  This may cause the page layout to be inconsistent, however.
 
 [30]
+Underfull \hbox (badness 10000) in paragraph at lines 348--349
 
-LaTeX Warning: Citation `muller2017practical' on page 31 undefined on input lin
-e 348.
-
-
-LaTeX Warning: Citation `vorba2014line' on page 31 undefined on input line 348.
+ []
 
 
+Underfull \hbox (badness 10000) in paragraph at lines 350--351
 
-LaTeX Warning: Citation `zheng2018learning' on page 31 undefined on input line 
-348.
+ []
 
-
-LaTeX Warning: Citation `muller2018neural' on page 31 undefined on input line 3
-48.
-
-
-LaTeX Warning: Citation `keller2019integral' on page 31 undefined on input line
- 348.
-
-
-LaTeX Warning: Citation `hermosilla2018deep' on page 31 undefined on input line
- 348.
-
-) (./chapters/4_critical_evaluation.tex [31]
+[31]) (./chapters/4_critical_evaluation.tex
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
  Make it at least 22.43335pt.
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[32
-
-]
+[32]
 Chapter 4.
-[33]) (./chapters/5_conclusion.tex [34]
+[33
+
+]) (./chapters/5_conclusion.tex [34]
 Chapter 5.
 ) [35
 
@@ -1642,11 +1627,11 @@ Missing character: There is no ™ in font cmti10!
 Missing character: There is no â in font cmr10!
 Missing character: There is no € in font cmr10!
 Missing character: There is no ¦ in font cmr10!
-) [38]
-Appendix A.
-[39
+ [38]) [39] [40
 
 ]
+Appendix A.
+[41]
 Package atveryend Info: Empty hook `BeforeClearDocument' on input line 186.
 Package atveryend Info: Empty hook `AfterLastShipout' on input line 186.
  (./dissertation.aux)
@@ -1664,10 +1649,10 @@ LaTeX Warning: There were undefined references.
 ### simple group (level 1) entered at line 1061 ({)
 ### bottom level 
 Here is how much of TeX's memory you used:
- 33537 strings out of 492995
- 760006 string characters out of 6132704
- 1141169 words of memory out of 5000000
- 36204 multiletter control sequences out of 15000+600000
+ 33548 strings out of 492995
+ 760190 string characters out of 6132704
+ 1141443 words of memory out of 5000000
+ 36206 multiletter control sequences out of 15000+600000
  17594 words of font info for 66 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  72i,28n,98p,1723b,25865s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -1695,10 +1680,10 @@ ve/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texliv
 e/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt8.pfb></usr/local/texlive/
 2017/texmf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb></usr/local/texl
 ive/2017/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on dissertation.pdf (61 pages, 4422260 bytes).
+Output written on dissertation.pdf (63 pages, 4427320 bytes).
 PDF statistics:
- 974 PDF objects out of 1000 (max. 8388607)
- 841 compressed objects within 9 object streams
- 257 named destinations out of 1000 (max. 500000)
+ 1004 PDF objects out of 1200 (max. 8388607)
+ 869 compressed objects within 9 object streams
+ 266 named destinations out of 1000 (max. 500000)
  236 words of extra memory for PDF output out of 10000 (max. 10000000)
 
