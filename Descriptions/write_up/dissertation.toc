@@ -40,10 +40,13 @@
 \contentsline {subsection}{\numberline {3.2.2}Deep Reinforcement Learning Motivation}{27}{subsection.3.2.2}
 \contentsline {subsection}{\numberline {3.2.3}Deep Q-learning for Light Transport}{28}{subsection.3.2.3}
 \contentsline {subsection}{\numberline {3.2.4}Artificial Neural Network Architecture}{28}{subsection.3.2.4}
-\contentsline {subsection}{\numberline {3.2.5}Neural-Q Path Tracing Algorithm}{29}{subsection.3.2.5}
-\contentsline {subsection}{\numberline {3.2.6}Recent Advancements in Neural Importance Sampling for Monte Carlo Path Tracing}{31}{subsection.3.2.6}
-\contentsline {chapter}{\numberline {4}Critical Evaluation}{33}{chapter.4}
-\contentsline {subsection}{\numberline {4.0.1}Plan}{33}{subsection.4.0.1}
-\contentsline {chapter}{\numberline {5}Conclusion}{35}{chapter.5}
-\contentsline {subsection}{\numberline {5.0.1}Plan}{35}{subsection.5.0.1}
-\contentsline {chapter}{\numberline {A}An Example Appendix}{41}{appendix.A}
+\contentsline {subsection}{\numberline {3.2.5}Neural-Q Path Tracing Algorithm}{30}{subsection.3.2.5}
+\contentsline {subsection}{\numberline {3.2.6}Recent Advancements in Neural Importance Sampling for Monte Carlo Path Tracing}{32}{subsection.3.2.6}
+\contentsline {chapter}{\numberline {4}Critical Evaluation}{35}{chapter.4}
+\contentsline {section}{\numberline {4.1}Experimental Setup}{35}{section.4.1}
+\contentsline {section}{\numberline {4.2}}{35}{section.4.2}
+\contentsline {section}{\numberline {4.3}Parallelization}{35}{section.4.3}
+\contentsline {subsection}{\numberline {4.3.1}Plan}{36}{subsection.4.3.1}
+\contentsline {chapter}{\numberline {5}Conclusion}{39}{chapter.5}
+\contentsline {subsection}{\numberline {5.0.1}Plan}{39}{subsection.5.0.1}
+\contentsline {chapter}{\numberline {A}An Example Appendix}{45}{appendix.A}

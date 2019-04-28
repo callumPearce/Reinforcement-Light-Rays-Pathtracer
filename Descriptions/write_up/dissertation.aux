@@ -187,6 +187,7 @@
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
 \@writefile{loa}{\addvspace {10\p@ }}
+\newlabel{chap:td_deep_sampling}{{3}{21}{TD-Learning and Deep Reinforcement Learning for Importance Sampling Light Paths}{chapter.3}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {3.1}The expected Sarsa Path Tracer}{21}{section.3.1}}
 \newlabel{sec:expecte_sarsa_path_tracer}{{3.1}{21}{The expected Sarsa Path Tracer}{section.3.1}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.1.1}The Irradiance Volume}{21}{subsection.3.1.1}}
@@ -239,12 +240,15 @@
 \citation{mnih2013playing}
 \citation{sutton2011reinforcement}
 \citation{mnih2013playing}
+\citation{nair2010rectified}
+\citation{ren2013global}
 \citation{sutton2011reinforcement}
 \citation{deep_rl_function_approx}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.2.5}Neural-Q Path Tracing Algorithm}{29}{subsection.3.2.5}}
 \citation{lillicrap2015continuous}
 \citation{mnih2013playing}
 \citation{sutton2011reinforcement}
+\citation{muller2018neural}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2.5}Neural-Q Path Tracing Algorithm}{30}{subsection.3.2.5}}
 \citation{dahm2017learning}
 \citation{muller2017practical}
 \citation{vorba2014line}
@@ -256,73 +260,89 @@
 \citation{zheng2018learning}
 \citation{dahm2017learning}
 \citation{keller2019integral}
-\newlabel{alg:neural_q_pathtracer}{{3}{31}{Addition 4: Decaying decaying $\epsilon $-\textit {greedy}}{algocfline.3}{}}
-\@writefile{loa}{\contentsline {algocf}{\numberline {3}{\ignorespaces Neural-Q forward path tracer. Given a camera position, scene geometry, epsilon and epsilon decay, this algorithm will render a single image using deep Q-learning loss to progressively reduce image noise. Where $N$ is the pre-specified number of sampled light paths per pixel.\relax }}{31}{algocf.3}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.2.6}Recent Advancements in Neural Importance Sampling for Monte Carlo Path Tracing}{31}{subsection.3.2.6}}
-\citation{muller2017practical}
+\newlabel{alg:neural_q_pathtracer}{{3}{32}{Addition 4: Decaying decaying $\epsilon $-\textit {greedy}}{algocfline.3}{}}
+\@writefile{loa}{\contentsline {algocf}{\numberline {3}{\ignorespaces Neural-Q forward path tracer. Given a camera position, scene geometry, epsilon and epsilon decay, this algorithm will render a single image using deep Q-learning loss to progressively reduce image noise. Where $N$ is the pre-specified number of sampled light paths per pixel.\relax }}{32}{algocf.3}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2.6}Recent Advancements in Neural Importance Sampling for Monte Carlo Path Tracing}{32}{subsection.3.2.6}}
+\citation{muller2018neural}
 \citation{dinh2014nice}
-\citation{muller2017practical}
-\@writefile{toc}{\contentsline {chapter}{\numberline {4}Critical Evaluation}{33}{chapter.4}}
+\citation{muller2018neural}
+\citation{glm}
+\citation{sdl2}
+\citation{dynet}
+\citation{cuda}
+\citation{tensorflow2015-whitepaper}
+\citation{maya}
+\@writefile{toc}{\contentsline {chapter}{\numberline {4}Critical Evaluation}{35}{chapter.4}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
 \@writefile{loa}{\addvspace {10\p@ }}
-\newlabel{chap:evaluation}{{4}{33}{Critical Evaluation}{chapter.4}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.0.1}Plan}{33}{subsection.4.0.1}}
-\@writefile{toc}{\contentsline {chapter}{\numberline {5}Conclusion}{35}{chapter.5}}
+\newlabel{chap:evaluation}{{4}{35}{Critical Evaluation}{chapter.4}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {4.1}Experimental Setup}{35}{section.4.1}}
+\@writefile{toc}{\contentsline {section}{\numberline {4.2}}{35}{section.4.2}}
+\@writefile{toc}{\contentsline {section}{\numberline {4.3}Parallelization}{35}{section.4.3}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.3.1}Plan}{36}{subsection.4.3.1}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {5}Conclusion}{39}{chapter.5}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
 \@writefile{loa}{\addvspace {10\p@ }}
-\newlabel{chap:conclusion}{{5}{35}{Conclusion}{chapter.5}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.0.1}Plan}{35}{subsection.5.0.1}}
+\newlabel{chap:conclusion}{{5}{39}{Conclusion}{chapter.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.0.1}Plan}{39}{subsection.5.0.1}}
 \bibdata{dissertation}
-\bibcite{bako2017kernel}{1}
-\bibcite{bashford2012significance}{2}
-\bibcite{bentley1975multidimensional}{3}
-\bibcite{bloomberg.com}{4}
-\bibcite{chaitanya2017interactive}{5}
-\bibcite{christensen2018renderman}{6}
-\bibcite{christensen2016path}{7}
-\bibcite{cline2008table}{8}
-\bibcite{dahm2017learning}{9}
-\bibcite{devroye2006nonuniform}{10}
-\bibcite{dinh2014nice}{11}
-\bibcite{dutre2004state}{12}
-\bibcite{georgiev2018arnold}{13}
-\bibcite{glassner2014principles}{14}
-\bibcite{greger1998irradiance}{15}
-\bibcite{stanford_graphics}{16}
-\bibcite{hermosilla2018deep}{17}
-\bibcite{jensen1996global}{18}
-\bibcite{kajiya1986rendering}{19}
-\bibcite{keller2019integral}{20}
-\bibcite{keller2016path}{21}
-\bibcite{konidaris2011value}{22}
-\bibcite{krivanek2014recent}{23}
-\bibcite{lecun2015deep}{24}
-\bibcite{lillicrap2015continuous}{25}
-\bibcite{mnih2013playing}{26}
-\bibcite{morokoff1995quasi}{27}
-\bibcite{muller2017practical}{28}
-\bibcite{muller2018neural}{29}
-\bibcite{nvidia_turing_architecture_whitepaper_2018}{30}
-\bibcite{pan2006virtual}{31}
-\bibcite{pegoraro2008towards}{32}
-\bibcite{ramamoorthi2012theory}{33}
-\bibcite{scratchapixel_2015}{34}
-\bibcite{shirley1994notes}{35}
-\bibcite{sutton1996generalization}{36}
-\bibcite{sutton2011reinforcement}{37}
-\bibcite{uther1998tree}{38}
-\bibcite{exploration_vs_exploitation}{39}
-\bibcite{deep_rl_function_approx}{40}
-\bibcite{introToRL}{41}
-\bibcite{mdp_dynamic_prog}{42}
-\bibcite{model_free_prediction}{43}
-\bibcite{vorba2014line}{44}
-\bibcite{normals}{45}
-\bibcite{zheng2018learning}{46}
-\@writefile{toc}{\contentsline {chapter}{\numberline {A}An Example Appendix}{41}{appendix.A}}
+\bibcite{glm}{1}
+\bibcite{sdl2}{2}
+\bibcite{tensorflow2015-whitepaper}{3}
+\bibcite{bako2017kernel}{4}
+\bibcite{bashford2012significance}{5}
+\bibcite{bentley1975multidimensional}{6}
+\bibcite{bloomberg.com}{7}
+\bibcite{chaitanya2017interactive}{8}
+\bibcite{christensen2018renderman}{9}
+\bibcite{christensen2016path}{10}
+\bibcite{cline2008table}{11}
+\bibcite{dahm2017learning}{12}
+\bibcite{devroye2006nonuniform}{13}
+\bibcite{dinh2014nice}{14}
+\bibcite{dutre2004state}{15}
+\bibcite{georgiev2018arnold}{16}
+\bibcite{glassner2014principles}{17}
+\bibcite{greger1998irradiance}{18}
+\bibcite{stanford_graphics}{19}
+\bibcite{hermosilla2018deep}{20}
+\bibcite{jensen1996global}{21}
+\bibcite{kajiya1986rendering}{22}
+\bibcite{keller2019integral}{23}
+\bibcite{keller2016path}{24}
+\bibcite{konidaris2011value}{25}
+\bibcite{krivanek2014recent}{26}
+\bibcite{lecun2015deep}{27}
+\bibcite{lillicrap2015continuous}{28}
+\bibcite{mnih2013playing}{29}
+\bibcite{morokoff1995quasi}{30}
+\bibcite{muller2017practical}{31}
+\bibcite{muller2018neural}{32}
+\bibcite{nair2010rectified}{33}
+\bibcite{dynet}{34}
+\bibcite{cuda}{35}
+\bibcite{nvidia_turing_architecture_whitepaper_2018}{36}
+\bibcite{pan2006virtual}{37}
+\bibcite{pegoraro2008towards}{38}
+\bibcite{ramamoorthi2012theory}{39}
+\bibcite{ren2013global}{40}
+\bibcite{scratchapixel_2015}{41}
+\bibcite{shirley1994notes}{42}
+\bibcite{sutton1996generalization}{43}
+\bibcite{sutton2011reinforcement}{44}
+\bibcite{uther1998tree}{45}
+\bibcite{exploration_vs_exploitation}{46}
+\bibcite{deep_rl_function_approx}{47}
+\bibcite{introToRL}{48}
+\bibcite{mdp_dynamic_prog}{49}
+\bibcite{model_free_prediction}{50}
+\bibcite{vorba2014line}{51}
+\bibcite{normals}{52}
+\bibcite{zheng2018learning}{53}
+\@writefile{toc}{\contentsline {chapter}{\numberline {A}An Example Appendix}{45}{appendix.A}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
 \@writefile{loa}{\addvspace {10\p@ }}
-\newlabel{appx:example}{{A}{41}{An Example Appendix}{appendix.A}{}}
+\newlabel{appx:example}{{A}{45}{An Example Appendix}{appendix.A}{}}

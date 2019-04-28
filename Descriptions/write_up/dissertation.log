@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.10.2)  28 APR 2019 12:13
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.10.2)  28 APR 2019 17:26
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1101,7 +1101,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 77--77
 
  []
 
-<logo/logo_uob_color.pdf, id=84, 546.04pt x 158.5925pt>
+<logo/logo_uob_color.pdf, id=96, 546.04pt x 158.5925pt>
 File: logo/logo_uob_color.pdf Graphic file (type pdf)
 
 <use logo/logo_uob_color.pdf>
@@ -1178,7 +1178,7 @@ LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
 
 ] (./chapters/1_conceptual_background.tex
 Chapter 1.
-<images/path_tracing.png, id=301, 1927.2pt x 1084.05pt>
+<images/path_tracing.png, id=316, 1927.2pt x 1084.05pt>
 File: images/path_tracing.png Graphic file (type png)
 
 <use images/path_tracing.png>
@@ -1197,7 +1197,7 @@ l.58
       [1
 
  <./images/path_tracing.png>]
-<images/renders/cornell/direct_light.png, id=311, 719.68875pt x 720.6925pt>
+<images/renders/cornell/direct_light.png, id=326, 719.68875pt x 720.6925pt>
 File: images/renders/cornell/direct_light.png Graphic file (type png)
 
 <use images/renders/cornell/direct_light.png>
@@ -1205,7 +1205,7 @@ Package pdftex.def Info: images/renders/cornell/direct_light.png used on input
 line 62.
 (pdftex.def)             Requested size: 202.81099pt x 203.09015pt.
 
-<images/renders/cornell/2048_300_default.png, id=312, 722.7pt x 722.7pt>
+<images/renders/cornell/2048_300_default.png, id=327, 722.7pt x 722.7pt>
 File: images/renders/cornell/2048_300_default.png Graphic file (type png)
 
 <use images/renders/cornell/2048_300_default.png>
@@ -1222,7 +1222,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 80--100
 
  []
 
-<images/renders/simple_room/default_16.png, id=317, 722.7pt x 722.7pt>
+<images/renders/simple_room/default_16.png, id=332, 722.7pt x 722.7pt>
 File: images/renders/simple_room/default_16.png Graphic file (type png)
 
 <use images/renders/simple_room/default_16.png>
@@ -1230,7 +1230,7 @@ Package pdftex.def Info: images/renders/simple_room/default_16.png used on inpu
 t line 104.
 (pdftex.def)             Requested size: 202.81099pt x 202.80675pt.
 
-<images/renders/simple_room/reinforcement_16.png, id=318, 722.7pt x 722.7pt>
+<images/renders/simple_room/reinforcement_16.png, id=333, 722.7pt x 722.7pt>
 File: images/renders/simple_room/reinforcement_16.png Graphic file (type png)
 
 <use images/renders/simple_room/reinforcement_16.png>
@@ -1253,7 +1253,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 209--217
 
  []
 
-<images/light_blocker.png, id=342, 1053.9375pt x 1005.7575pt>
+<images/light_blocker.png, id=357, 1053.9375pt x 1005.7575pt>
 File: images/light_blocker.png Graphic file (type png)
 
 <use images/light_blocker.png>
@@ -1310,35 +1310,35 @@ Overfull \hbox (6.68353pt too wide) in paragraph at lines 242--250
 [] 
  []
 
-<images/rendering_equation.png, id=439, 516.93124pt x 142.5325pt>
+<images/rendering_equation.png, id=454, 516.93124pt x 142.5325pt>
 File: images/rendering_equation.png Graphic file (type png)
 
 <use images/rendering_equation.png>
 Package pdftex.def Info: images/rendering_equation.png used on input line 256.
 (pdftex.def)             Requested size: 318.66948pt x 87.869pt.
  [10 <./images/rendering_equation.png>]
-<images/diffuse_brdf.png, id=452, 284.06125pt x 142.5325pt>
+<images/diffuse_brdf.png, id=467, 284.06125pt x 142.5325pt>
 File: images/diffuse_brdf.png Graphic file (type png)
 
 <use images/diffuse_brdf.png>
 Package pdftex.def Info: images/diffuse_brdf.png used on input line 267.
 (pdftex.def)             Requested size: 145.68144pt x 73.09947pt.
 
-<images/specular_brdf.png, id=453, 284.06125pt x 142.5325pt>
+<images/specular_brdf.png, id=468, 284.06125pt x 142.5325pt>
 File: images/specular_brdf.png Graphic file (type png)
 
 <use images/specular_brdf.png>
 Package pdftex.def Info: images/specular_brdf.png used on input line 271.
 (pdftex.def)             Requested size: 145.68144pt x 73.09947pt.
 
-<images/diffuse_sculpture.jpeg, id=455, 642.4pt x 481.8pt>
+<images/diffuse_sculpture.jpeg, id=470, 642.4pt x 481.8pt>
 File: images/diffuse_sculpture.jpeg Graphic file (type jpg)
 
 <use images/diffuse_sculpture.jpeg>
 Package pdftex.def Info: images/diffuse_sculpture.jpeg used on input line 283.
 (pdftex.def)             Requested size: 145.68144pt x 109.26045pt.
 
-<images/specular_sculpture.jpg, id=456, 90.8193pt x 60.225pt>
+<images/specular_sculpture.jpg, id=471, 90.8193pt x 60.225pt>
 File: images/specular_sculpture.jpg Graphic file (type jpg)
 
 <use images/specular_sculpture.jpg>
@@ -1366,7 +1366,7 @@ Overfull \hbox (5.65875pt too wide) in paragraph at lines 324--328
  []
 
 
-<images/renders/noise_reduction_default/increasing_samples.png, id=479, 573.141
+<images/renders/noise_reduction_default/increasing_samples.png, id=494, 573.141
 25pt x 255.95625pt>
 File: images/renders/noise_reduction_default/increasing_samples.png Graphic fil
 e (type png)
@@ -1388,7 +1388,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 369--370
  []
 
 [13 <./images/renders/noise_reduction_default/increasing_samples.png>]
-<images/MDP.png, id=506, 615.29875pt x 242.9075pt>
+<images/MDP.png, id=521, 615.29875pt x 242.9075pt>
 File: images/MDP.png Graphic file (type png)
  <use images/MDP.png>
 Package pdftex.def Info: images/MDP.png used on input line 389.
@@ -1431,50 +1431,50 @@ l.5 \chapter
 ]
 Chapter 3.
 
-Underfull \hbox (badness 10000) in paragraph at lines 21--22
+Underfull \hbox (badness 10000) in paragraph at lines 22--23
 
  []
 
 
-<images/renders/hemispheres/irradiance_volume.png, id=608, 687.56876pt x 687.56
+<images/renders/hemispheres/irradiance_volume.png, id=623, 687.56876pt x 687.56
 876pt>
 File: images/renders/hemispheres/irradiance_volume.png Graphic file (type png)
  <use images/renders/hemispheres/irradiance_volume.png>
 Package pdftex.def Info: images/renders/hemispheres/irradiance_volume.png used 
-on input line 25.
+on input line 26.
 (pdftex.def)             Requested size: 136.57462pt x 136.56708pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 31--32
+Underfull \hbox (badness 10000) in paragraph at lines 32--33
 
  []
 
-<images/renders/simple_room/geometry.png, id=611, 886.31125pt x 885.3075pt>
+<images/renders/simple_room/geometry.png, id=626, 886.31125pt x 885.3075pt>
 File: images/renders/simple_room/geometry.png Graphic file (type png)
 
 <use images/renders/simple_room/geometry.png>
 Package pdftex.def Info: images/renders/simple_room/geometry.png used on input 
-line 36.
+line 37.
 (pdftex.def)             Requested size: 145.68144pt x 145.51556pt.
 
-<images/renders/simple_room/voronoi.png, id=612, 722.7pt x 722.7pt>
+<images/renders/simple_room/voronoi.png, id=627, 722.7pt x 722.7pt>
 File: images/renders/simple_room/voronoi.png Graphic file (type png)
 
 <use images/renders/simple_room/voronoi.png>
 Package pdftex.def Info: images/renders/simple_room/voronoi.png used on input l
-ine 40.
+ine 41.
 (pdftex.def)             Requested size: 145.68144pt x 145.67326pt.
 File: images/renders/simple_room/reinforcement_16.png Graphic file (type png)
 
 <use images/renders/simple_room/reinforcement_16.png>
 Package pdftex.def Info: images/renders/simple_room/reinforcement_16.png used o
-n input line 44.
+n input line 45.
 (pdftex.def)             Requested size: 145.68144pt x 145.67326pt.
  [21]
-Underfull \hbox (badness 10000) in paragraph at lines 51--52
+Underfull \hbox (badness 10000) in paragraph at lines 52--53
 
  []
 
@@ -1495,18 +1495,18 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[24] <images/uniform_pdf.png, id=660, 284.06125pt x 147.55125pt>
+[24] <images/uniform_pdf.png, id=675, 284.06125pt x 147.55125pt>
 File: images/uniform_pdf.png Graphic file (type png)
 
 <use images/uniform_pdf.png>
-Package pdftex.def Info: images/uniform_pdf.png used on input line 128.
+Package pdftex.def Info: images/uniform_pdf.png used on input line 129.
 (pdftex.def)             Requested size: 145.68144pt x 75.6734pt.
 
-<images/not_uniform_pdf.png, id=661, 284.06125pt x 147.55125pt>
+<images/not_uniform_pdf.png, id=676, 284.06125pt x 147.55125pt>
 File: images/not_uniform_pdf.png Graphic file (type png)
 
 <use images/not_uniform_pdf.png>
-Package pdftex.def Info: images/not_uniform_pdf.png used on input line 132.
+Package pdftex.def Info: images/not_uniform_pdf.png used on input line 133.
 (pdftex.def)             Requested size: 145.68144pt x 75.6734pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
@@ -1520,30 +1520,30 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
 
 [26]
 
-LaTeX Warning: Reference `eq:q_learning' on page 27 undefined on input line 193
+LaTeX Warning: Reference `eq:q_learning' on page 27 undefined on input line 194
 .
 
 
 LaTeX Warning: Reference `sec:irradiance_volume' on page 27 undefined on input 
-line 226.
+line 227.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 226--227
+Underfull \hbox (badness 10000) in paragraph at lines 227--228
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 228--229
+Underfull \hbox (badness 10000) in paragraph at lines 229--230
 
  []
 
 [27]
-Underfull \hbox (badness 10000) in paragraph at lines 230--231
+Underfull \hbox (badness 10000) in paragraph at lines 231--232
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 265--266
+Underfull \hbox (badness 10000) in paragraph at lines 266--267
 
  []
 
@@ -1558,29 +1558,34 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.266 
+l.267 
       ]
-Underfull \hbox (badness 10000) in paragraph at lines 267--268
+Underfull \hbox (badness 10000) in paragraph at lines 268--269
 
  []
 
 
 LaTeX Warning: Reference `fig:nn_radiance_estimate_illustration' on page 29 und
-efined on input line 276.
+efined on input line 277.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 276--277
+Underfull \hbox (badness 10000) in paragraph at lines 277--278
+
+ []
+
+
+LaTeX Warning: Reference `fig:nn_radiance_estimate_illustration' on page 29 und
+efined on input line 281.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 281--282
 
  []
 
 [29]
-Underfull \hbox (badness 10000) in paragraph at lines 299--300
+Underfull \hbox (badness 10000) in paragraph at lines 300--301
 
  []
-
-
-LaTeX Warning: Reference `eq:exploration_vs_exploitation' on page 30 undefined 
-on input line 304.
 
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -1589,59 +1594,97 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  This may cause the page layout to be inconsistent, however.
 
 [30]
-Underfull \hbox (badness 10000) in paragraph at lines 348--349
+
+LaTeX Warning: Reference `eq:exploration_vs_exploitation' on page 31 undefined 
+on input line 305.
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [31]
+Underfull \hbox (badness 10000) in paragraph at lines 349--350
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 350--351
+Underfull \hbox (badness 10000) in paragraph at lines 351--352
 
  []
 
-[31]) (./chapters/4_critical_evaluation.tex
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
  Make it at least 22.43335pt.
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[32]
+[32]) (./chapters/4_critical_evaluation.tex [33]
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 22.43335pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[34
+
+]
 Chapter 4.
-[33
 
-]) (./chapters/5_conclusion.tex [34]
+LaTeX Warning: Reference `chap:td_deep_sampling' on page 35 undefined on input 
+line 8.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 12--13
+
+ []
+
+
+LaTeX Warning: Citation `maya' on page 35 undefined on input line 14.
+
+
+LaTeX Warning: Reference `fig:reference_scenes' on page 35 undefined on input l
+ine 14.
+
+
+LaTeX Warning: Reference `mc_pathtracing' on page 35 undefined on input line 14
+.
+
+[35] [36]) (./chapters/5_conclusion.tex [37] [38
+
+]
 Chapter 5.
-) [35
-
-] [36
+) [39] [40
 
 ] (./dissertation.bbl
 LaTeX Font Info:    Font shape `OMS/cmr/m/it' in size <10> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 42.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 53.
+ [41
+
+]
 Missing character: There is no â in font cmti10!
 Missing character: There is no € in font cmti10!
 Missing character: There is no ™ in font cmti10!
- [37
-
-]
+ [42]
 Missing character: There is no â in font cmr10!
 Missing character: There is no € in font cmr10!
 Missing character: There is no ¦ in font cmr10!
- [38]) [39] [40
+) [43] [44
 
 ]
 Appendix A.
-[41]
+[45]
 Package atveryend Info: Empty hook `BeforeClearDocument' on input line 186.
 Package atveryend Info: Empty hook `AfterLastShipout' on input line 186.
  (./dissertation.aux)
 Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 186.
 Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 186.
 Package rerunfilecheck Info: File `dissertation.out' has not changed.
-(rerunfilecheck)             Checksum: 4CCC5646310FF726BA8A404DEE9D2EEF;1204.
+(rerunfilecheck)             Checksum: 25F32140CECE89C69BAD0EA3F1C0306A;1378.
 
 
 LaTeX Warning: There were undefined references.
+
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
 
  )
 (\end occurred inside a group at level 1)
@@ -1649,13 +1692,13 @@ LaTeX Warning: There were undefined references.
 ### simple group (level 1) entered at line 1061 ({)
 ### bottom level 
 Here is how much of TeX's memory you used:
- 33548 strings out of 492995
- 760190 string characters out of 6132704
- 1141443 words of memory out of 5000000
- 36206 multiletter control sequences out of 15000+600000
+ 33576 strings out of 492995
+ 760548 string characters out of 6132704
+ 1140681 words of memory out of 5000000
+ 36220 multiletter control sequences out of 15000+600000
  17594 words of font info for 66 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 72i,28n,98p,1723b,25865s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 72i,28n,98p,1984b,25865s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts
 /cm/cmbx10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/
 cm/cmbx12.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/c
@@ -1680,10 +1723,10 @@ ve/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texliv
 e/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt8.pfb></usr/local/texlive/
 2017/texmf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb></usr/local/texl
 ive/2017/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on dissertation.pdf (63 pages, 4427320 bytes).
+Output written on dissertation.pdf (67 pages, 4435542 bytes).
 PDF statistics:
- 1004 PDF objects out of 1200 (max. 8388607)
- 869 compressed objects within 9 object streams
- 266 named destinations out of 1000 (max. 500000)
- 236 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 1061 PDF objects out of 1200 (max. 8388607)
+ 921 compressed objects within 10 object streams
+ 280 named destinations out of 1000 (max. 500000)
+ 260 words of extra memory for PDF output out of 10000 (max. 10000000)
 

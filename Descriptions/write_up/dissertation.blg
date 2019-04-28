@@ -10,51 +10,54 @@ I was expecting a `,' or a `}'---line 324 of file dissertation.bib
 I'm skipping whatever remains of this entry
 Warning--I didn't find a database entry for "latexbook1"
 Warning--I didn't find a database entry for "latexbook2"
+Warning--to sort, need author or key in glm
+Warning--to sort, need author or key in sdl2
+Warning--to sort, need author or key in tensorflow2015-whitepaper
 Warning--can't use both volume and number fields in bashford2012significance
 Warning--can't use both volume and number fields in cline2008table
 Warning--empty publisher in glassner2014principles
 Warning--can't use both volume and number fields in kajiya1986rendering
 Warning--can't use both volume and number fields in muller2017practical
 Warning--empty title in nvidia_turing_architecture_whitepaper_2018
-You've used 46 entries,
+You've used 53 entries,
             2118 wiz_defined-function locations,
-            731 strings with 11338 characters,
-and the built_in function-call counts, 16088 in all, are:
-= -- 1526
-> -- 892
-< -- 15
-+ -- 359
-- -- 308
-* -- 1097
-:= -- 2675
-add.period$ -- 143
-call.type$ -- 46
-change.case$ -- 287
+            757 strings with 12523 characters,
+and the built_in function-call counts, 18568 in all, are:
+= -- 1736
+> -- 1076
+< -- 16
++ -- 434
+- -- 376
+* -- 1285
+:= -- 3073
+add.period$ -- 160
+call.type$ -- 53
+change.case$ -- 342
 chr.to.int$ -- 0
-cite$ -- 52
-duplicate$ -- 591
-empty$ -- 1194
-format.name$ -- 308
-if$ -- 3355
+cite$ -- 62
+duplicate$ -- 663
+empty$ -- 1366
+format.name$ -- 376
+if$ -- 3862
 int.to.chr$ -- 0
-int.to.str$ -- 46
-missing$ -- 38
-newline$ -- 230
-num.names$ -- 92
-pop$ -- 361
+int.to.str$ -- 53
+missing$ -- 41
+newline$ -- 261
+num.names$ -- 100
+pop$ -- 443
 preamble$ -- 1
-purify$ -- 243
+purify$ -- 291
 quote$ -- 0
-skip$ -- 444
+skip$ -- 508
 stack$ -- 0
-substring$ -- 753
-swap$ -- 156
-text.length$ -- 15
+substring$ -- 829
+swap$ -- 173
+text.length$ -- 16
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 180
-warning$ -- 6
-while$ -- 143
-width$ -- 48
-write$ -- 484
+type$ -- 208
+warning$ -- 9
+while$ -- 155
+width$ -- 55
+write$ -- 545
 (There was 1 error message)

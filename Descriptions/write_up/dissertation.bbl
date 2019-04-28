@@ -1,5 +1,16 @@
 \begin{thebibliography}{10}
 
+\bibitem{glm}
+Opengl mathematics (glm).
+
+\bibitem{sdl2}
+Simple directmedia layer.
+\newblock SDL version 2.0.9 (stable).
+
+\bibitem{tensorflow2015-whitepaper}
+{TensorFlow}: Large-scale machine learning on heterogeneous systems, 2015.
+\newblock Software available from tensorflow.org.
+
 \bibitem{bako2017kernel}
 Steve Bako, Thijs Vogels, Brian McWilliams, Mark Meyer, Jan Nov{\'a}k, Alex
   Harvill, Pradeep Sen, Tony Derose, and Fabrice Rousselle.
@@ -168,6 +179,27 @@ Thomas M{\"u}ller, Brian McWilliams, Fabrice Rousselle, Markus Gross, and Jan
 \newblock Neural importance sampling.
 \newblock {\em arXiv preprint arXiv:1808.03856}, 2018.
 
+\bibitem{nair2010rectified}
+Vinod Nair and Geoffrey~E Hinton.
+\newblock Rectified linear units improve restricted boltzmann machines.
+\newblock In {\em Proceedings of the 27th international conference on machine
+  learning (ICML-10)}, pages 807--814, 2010.
+
+\bibitem{dynet}
+Graham Neubig, Chris Dyer, Yoav Goldberg, Austin Matthews, Waleed Ammar,
+  Antonios Anastasopoulos, Miguel Ballesteros, David Chiang, Daniel Clothiaux,
+  Trevor Cohn, Kevin Duh, Manaal Faruqui, Cynthia Gan, Dan Garrette, Yangfeng
+  Ji, Lingpeng Kong, Adhiguna Kuncoro, Gaurav Kumar, Chaitanya Malaviya, Paul
+  Michel, Yusuke Oda, Matthew Richardson, Naomi Saphra, Swabha Swayamdipta, and
+  Pengcheng Yin.
+\newblock Dynet: The dynamic neural network toolkit.
+\newblock {\em arXiv preprint arXiv:1701.03980}, 2017.
+
+\bibitem{cuda}
+Nvidia.
+\newblock Cuda toolkit.
+\newblock Develop, Optimize and Deploy GPU-accelerated Apps.
+
 \bibitem{nvidia_turing_architecture_whitepaper_2018}
 NVIDIA.
 \newblock {\em NVIDIA Turing Architecture Whitepaper}, 2018.
@@ -188,6 +220,11 @@ Vincent Pegoraro, Carson Brownlee, Peter~S Shirley, and Steven~G Parker.
 Ravi Ramamoorthi, John Anderson, Mark Meyer, and Derek Nowrouzezahrai.
 \newblock A theory of monte carlo visibility sampling.
 \newblock {\em ACM Transactions on Graphics (TOG)}, 31(5):121, 2012.
+
+\bibitem{ren2013global}
+Peiran Ren, Jiaping Wang, Minmin Gong, Stephen Lin, Xin Tong, and Baining Guo.
+\newblock Global illumination with radiance regression functions.
+\newblock {\em ACM Transactions on Graphics (TOG)}, 32(4):130, 2013.
 
 \bibitem{scratchapixel_2015}
 Scratchapixel.
