@@ -5,7 +5,9 @@
 \chapter{Critical Evaluation}
 \label{chap:evaluation}
 
-Here, a range of techniques are used to evaluate both the Expected Sarsa and the Neural-Q path tracers presented in Chapter \ref{chap:td_deep_sampling} against one another on their ability to reduce noise in rendered images produced by path tracing. However, the trade-off's each algorithm makes and their significance must also be assessed. This includes memory requirements, ability to run in parallel, scaling with scene complexity and current performance bottlenecks.
+Here, a range of techniques are used to evaluate both the Expected Sarsa and the Neural-Q path tracers presented in Chapter \ref{chap:td_deep_sampling} against one another on their ability to reduce noise in rendered images produced by path tracing. However, the trade-off's each algorithm makes and their significance is also assessed. This includes memory requirements, ability to run in parallel, scaling with scene complexity, number of samples per pixel for learning to converge, and current performance bottlenecks.
+
+% Insert reference images of four test scenes
 
 \section{Experimental Setup}
 
@@ -13,7 +15,14 @@ A path tracing renderer was built from scratch which supported Algorithms \ref{a
 
 I developed four different scenes using Maya \cite{maya} and created a custom object importer to import the scenes into my path tracer renderer. A reference image of all four scenes is given in Figure \ref{fig:reference_scenes}, which have been rendered with 4096 sampled light rays per pixel using the default forward path tracing Algorithm \ref{alg:forward_path_tracing}. They are known as reference images as they have minimal visible noise, meaning the Monte Carlo approximations for each pixel's colour value has approximately converged. Due to path tracing accurately modelling physical light transport (see section \ref{mc_pathtracing}), these images are the ideal case for which all other path tracing algorithms should aim to produce as closely as possible with as few samples as possible. 
 
-\section{}
+\section{Reducing Image Noise}
+
+\begin{itemize}
+\item Results with corresponding MAPE scores for all 3 methods on all 4 scenes
+\item Squared Difference images to reference image
+\item Results display for varying number of samples for all three methods
+\item Training curve to show convergence time, can compare the number of zero contribution light paths as when this peaks the algorithm has converged
+\end{itemize}
 
 \section{Parallelization}
 
@@ -23,7 +32,15 @@ I developed four different scenes using Maya \cite{maya} and created a custom ob
 \item Firstly, no details regarding how this algorithm is parallelized were given. This is a very important to take into consideration as nearly all computer graphics algorithms leverage the power of Graphical Processing Units (GPUs) for superior speeds in practice. Therefore if the algorithm cannot be parallelized to high degree, it will never be able to perform as well as other existing rendering algorithms.  Every pixel % TODO go in analysis
 \end{itemize}
 
+\section{Scalability, Memory Usage, and Processing Time}
 
+\section{Comparison to other methods}
+
+\section{The Bigger Picture}
+\begin{itemize}
+\item Where do the algorithms fit in the industry right now?
+\item Is the industry ready for them, or are there more problems to solve?
+\end{itemize}
 
 {\bf A topic-specific chapter, of roughly $15$ pages} 
 \vspace{1cm} 
