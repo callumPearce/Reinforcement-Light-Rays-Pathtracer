@@ -20,8 +20,8 @@ def compute_sqd_image(ground_truth, prediction):
         for y in range(len(p_arr)):
             err = (np.sum(np.absolute(gt_arr[x][y] - p_arr[x][y]))/3)**2
             diff_arr[x][y][0] = err
-            diff_arr[x][y][1] = 255 - err
-            diff_arr[x][y][2] = 255 - err
+            diff_arr[x][y][1] = err
+            diff_arr[x][y][2] = err
 
     # diff_arr = np.square(np.absolute(gt_arr - p_arr))
     diff_arr = diff_arr.astype(np.uint8)
