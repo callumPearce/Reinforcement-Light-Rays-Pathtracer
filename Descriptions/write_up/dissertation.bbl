@@ -11,6 +11,17 @@ Simple directmedia layer.
 {TensorFlow}: Large-scale machine learning on heterogeneous systems, 2015.
 \newblock Software available from tensorflow.org.
 
+\bibitem{alerstam2008parallel}
+Erik Alerstam, Tomas Svensson, and Stefan Andersson-Engels.
+\newblock Parallel computing with graphics processing units for high-speed
+  monte carlo simulation of photon migration.
+\newblock {\em Journal of biomedical optics}, 13(6):060504, 2008.
+
+\bibitem{accelerated_ray_tracing}
+Roger Allen.
+\newblock Accelerated ray tracing in one weekend in cuda.
+\newblock NVIDIA Developer Blog.
+
 \bibitem{maya}
 Autodesk.
 \newblock Autodesk maya api white paper.
@@ -63,6 +74,12 @@ David Cline, Daniel Adams, and Parris Egbert.
 \newblock In {\em Computer Graphics Forum}, volume~27, pages 1115--1123. Wiley
   Online Library, 2008.
 
+\bibitem{crockett1995parallel}
+Thomas~W Crockett.
+\newblock Parallel rendering.
+\newblock Technical report, INSTITUTE FOR COMPUTER APPLICATIONS IN SCIENCE AND
+  ENGINEERING HAMPTON VA, 1995.
+
 \bibitem{dahm2017learning}
 Ken Dahm and Alexander Keller.
 \newblock Learning light transport the reinforced way.
@@ -84,6 +101,19 @@ Philip Dutr{\'e}, Henrik~Wann Jensen, Jim Arvo, Kavita Bala, Philippe Bekaert,
   Steve Marschner, and Matt Pharr.
 \newblock State of the art in monte carlo global illumination.
 \newblock In {\em ACM SIGGRAPH 2004 Course Notes}, page~5. ACM, 2004.
+
+\bibitem{fatahalian2009data}
+Kayvon Fatahalian, Edward Luong, Solomon Boulos, Kurt Akeley, William~R Mark,
+  and Pat Hanrahan.
+\newblock Data-parallel rasterization of micropolygons with defocus and motion
+  blur.
+\newblock In {\em Proceedings of the Conference on High Performance Graphics
+  2009}, pages 59--68. ACM, 2009.
+
+\bibitem{embarissingly_parallelizable}
+Ian Foster.
+\newblock Designing and building parallel programs.
+\newblock Section 1.4.4.
 
 \bibitem{georgiev2018arnold}
 Iliyan Georgiev, Thiago Ize, Mike Farnsworth, Ram{\'o}n Montoya-Vozmediano,
@@ -239,6 +269,11 @@ Peter Shirley and Kenneth Chiu.
 \newblock Notes on adaptive quadrature on the hemisphere.
 \newblock Technical report, Technical Report 411, Department of Computer
   Science, Indiana University~…, 1994.
+
+\bibitem{hyperion}
+Walt Disney~Animation Studios.
+\newblock Hyperion.
+\newblock Disney's Hyperion Renderer.
 
 \bibitem{sutton1996generalization}
 Richard~S Sutton.

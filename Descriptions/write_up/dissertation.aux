@@ -279,12 +279,30 @@
 \@writefile{loa}{\addvspace {10\p@ }}
 \newlabel{chap:evaluation}{{4}{35}{Critical Evaluation}{chapter.4}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {4.1}Experimental Setup}{35}{section.4.1}}
-\@writefile{toc}{\contentsline {section}{\numberline {4.2}Reducing Image Noise}{35}{section.4.2}}
-\@writefile{toc}{\contentsline {section}{\numberline {4.3}Parallelization}{36}{section.4.3}}
-\@writefile{toc}{\contentsline {section}{\numberline {4.4}Scalability, Memory Usage, and Processing Time}{36}{section.4.4}}
-\@writefile{toc}{\contentsline {section}{\numberline {4.5}Comparison to other methods}{36}{section.4.5}}
-\@writefile{toc}{\contentsline {section}{\numberline {4.6}The Bigger Picture}{36}{section.4.6}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.6.1}Plan}{37}{subsection.4.6.1}}
+\@writefile{toc}{\contentsline {section}{\numberline {4.2}Assessing the reduction in image Noise for Monte Carlo Path Tracing}{35}{section.4.2}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2.1}Quantifying the Reduction in Image Noise}{35}{subsection.4.2.1}}
+\citation{georgiev2018arnold}
+\citation{christensen2018renderman}
+\citation{hyperion}
+\newlabel{eq:mape}{{4.1}{36}{Quantifying the Reduction in Image Noise}{equation.4.2.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2.2}Convergence for Learning Incident Radiance}{36}{subsection.4.2.2}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2.3}Hyper Parameter Tuning}{36}{subsection.4.2.3}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2.4}Reusing Trained ANN for Different Scenes}{36}{subsection.4.2.4}}
+\@writefile{toc}{\contentsline {section}{\numberline {4.3}From Memory Bound to Compute Bound}{36}{section.4.3}}
+\@writefile{toc}{\contentsline {section}{\numberline {4.4}Memory Usage}{36}{section.4.4}}
+\citation{crockett1995parallel}
+\citation{alerstam2008parallel}
+\citation{fatahalian2009data}
+\citation{embarissingly_parallelizable}
+\citation{accelerated_ray_tracing}
+\citation{hyperion}
+\citation{raynal2012concurrent}
+\citation{cuda}
+\citation{keller2019integral}
+\citation{muller2018neural}
+\citation{tensor_cores}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.4.1}Parallel Processing}{37}{subsection.4.4.1}}
+\@writefile{toc}{\contentsline {section}{\numberline {4.5}Neural-Q Design Discussion}{38}{section.4.5}}
 \@writefile{toc}{\contentsline {chapter}{\numberline {5}Conclusion}{39}{chapter.5}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
@@ -295,57 +313,63 @@
 \bibcite{glm}{1}
 \bibcite{sdl2}{2}
 \bibcite{tensorflow2015-whitepaper}{3}
-\bibcite{maya}{4}
-\bibcite{bako2017kernel}{5}
-\bibcite{bashford2012significance}{6}
-\bibcite{bentley1975multidimensional}{7}
-\bibcite{bloomberg.com}{8}
-\bibcite{chaitanya2017interactive}{9}
-\bibcite{christensen2018renderman}{10}
-\bibcite{christensen2016path}{11}
-\bibcite{cline2008table}{12}
-\bibcite{dahm2017learning}{13}
-\bibcite{devroye2006nonuniform}{14}
-\bibcite{dinh2014nice}{15}
-\bibcite{dutre2004state}{16}
-\bibcite{georgiev2018arnold}{17}
-\bibcite{glassner2014principles}{18}
-\bibcite{greger1998irradiance}{19}
-\bibcite{stanford_graphics}{20}
-\bibcite{hermosilla2018deep}{21}
-\bibcite{jensen1996global}{22}
-\bibcite{kajiya1986rendering}{23}
-\bibcite{keller2019integral}{24}
-\bibcite{keller2016path}{25}
-\bibcite{konidaris2011value}{26}
-\bibcite{krivanek2014recent}{27}
-\bibcite{lecun2015deep}{28}
-\bibcite{lillicrap2015continuous}{29}
-\bibcite{mnih2013playing}{30}
-\bibcite{morokoff1995quasi}{31}
-\bibcite{muller2017practical}{32}
-\bibcite{muller2018neural}{33}
-\bibcite{nair2010rectified}{34}
-\bibcite{dynet}{35}
-\bibcite{cuda}{36}
-\bibcite{nvidia_turing_architecture_whitepaper_2018}{37}
-\bibcite{pan2006virtual}{38}
-\bibcite{pegoraro2008towards}{39}
-\bibcite{ramamoorthi2012theory}{40}
-\bibcite{ren2013global}{41}
-\bibcite{scratchapixel_2015}{42}
-\bibcite{shirley1994notes}{43}
-\bibcite{sutton1996generalization}{44}
-\bibcite{sutton2011reinforcement}{45}
-\bibcite{uther1998tree}{46}
-\bibcite{exploration_vs_exploitation}{47}
-\bibcite{deep_rl_function_approx}{48}
-\bibcite{introToRL}{49}
-\bibcite{mdp_dynamic_prog}{50}
-\bibcite{model_free_prediction}{51}
-\bibcite{vorba2014line}{52}
-\bibcite{normals}{53}
-\bibcite{zheng2018learning}{54}
+\bibcite{alerstam2008parallel}{4}
+\bibcite{accelerated_ray_tracing}{5}
+\bibcite{maya}{6}
+\bibcite{bako2017kernel}{7}
+\bibcite{bashford2012significance}{8}
+\bibcite{bentley1975multidimensional}{9}
+\bibcite{bloomberg.com}{10}
+\bibcite{chaitanya2017interactive}{11}
+\bibcite{christensen2018renderman}{12}
+\bibcite{christensen2016path}{13}
+\bibcite{cline2008table}{14}
+\bibcite{crockett1995parallel}{15}
+\bibcite{dahm2017learning}{16}
+\bibcite{devroye2006nonuniform}{17}
+\bibcite{dinh2014nice}{18}
+\bibcite{dutre2004state}{19}
+\bibcite{fatahalian2009data}{20}
+\bibcite{embarissingly_parallelizable}{21}
+\bibcite{georgiev2018arnold}{22}
+\bibcite{glassner2014principles}{23}
+\bibcite{greger1998irradiance}{24}
+\bibcite{stanford_graphics}{25}
+\bibcite{hermosilla2018deep}{26}
+\bibcite{jensen1996global}{27}
+\bibcite{kajiya1986rendering}{28}
+\bibcite{keller2019integral}{29}
+\bibcite{keller2016path}{30}
+\bibcite{konidaris2011value}{31}
+\bibcite{krivanek2014recent}{32}
+\bibcite{lecun2015deep}{33}
+\bibcite{lillicrap2015continuous}{34}
+\bibcite{mnih2013playing}{35}
+\bibcite{morokoff1995quasi}{36}
+\bibcite{muller2017practical}{37}
+\bibcite{muller2018neural}{38}
+\bibcite{nair2010rectified}{39}
+\bibcite{dynet}{40}
+\bibcite{cuda}{41}
+\bibcite{nvidia_turing_architecture_whitepaper_2018}{42}
+\bibcite{pan2006virtual}{43}
+\bibcite{pegoraro2008towards}{44}
+\bibcite{ramamoorthi2012theory}{45}
+\bibcite{ren2013global}{46}
+\bibcite{scratchapixel_2015}{47}
+\bibcite{shirley1994notes}{48}
+\bibcite{hyperion}{49}
+\bibcite{sutton1996generalization}{50}
+\bibcite{sutton2011reinforcement}{51}
+\bibcite{uther1998tree}{52}
+\bibcite{exploration_vs_exploitation}{53}
+\bibcite{deep_rl_function_approx}{54}
+\bibcite{introToRL}{55}
+\bibcite{mdp_dynamic_prog}{56}
+\bibcite{model_free_prediction}{57}
+\bibcite{vorba2014line}{58}
+\bibcite{normals}{59}
+\bibcite{zheng2018learning}{60}
 \@writefile{toc}{\contentsline {chapter}{\numberline {A}An Example Appendix}{45}{appendix.A}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
