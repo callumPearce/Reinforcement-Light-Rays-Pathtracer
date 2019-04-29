@@ -1,5 +1,20 @@
 \begin{thebibliography}{10}
 
+\bibitem{glm}
+Opengl mathematics (glm).
+
+\bibitem{sdl2}
+Simple directmedia layer.
+\newblock SDL version 2.0.9 (stable).
+
+\bibitem{tensorflow2015-whitepaper}
+{TensorFlow}: Large-scale machine learning on heterogeneous systems, 2015.
+\newblock Software available from tensorflow.org.
+
+\bibitem{maya}
+Autodesk.
+\newblock Autodesk maya api white paper.
+
 \bibitem{bako2017kernel}
 Steve Bako, Thijs Vogels, Brian McWilliams, Mark Meyer, Jan Nov{\'a}k, Alex
   Harvill, Pradeep Sen, Tony Derose, and Fabrice Rousselle.
@@ -59,6 +74,11 @@ Luc Devroye.
 \newblock {\em Handbooks in operations research and management science},
   13:83--121, 2006.
 
+\bibitem{dinh2014nice}
+Laurent Dinh, David Krueger, and Yoshua Bengio.
+\newblock Nice: Non-linear independent components estimation.
+\newblock {\em arXiv preprint arXiv:1410.8516}, 2014.
+
 \bibitem{dutre2004state}
 Philip Dutr{\'e}, Henrik~Wann Jensen, Jim Arvo, Kavita Bala, Philippe Bekaert,
   Steve Marschner, and Matt Pharr.
@@ -87,6 +107,11 @@ Pat Hanrahan.
 \newblock Monte carlo path tracing.
 \newblock Stanford Graphics.
 
+\bibitem{hermosilla2018deep}
+Pedro Hermosilla, Sebastian Maisch, Tobias Ritschel, and Timo Ropinski.
+\newblock Deep-learning the latent space of light transport.
+\newblock {\em arXiv preprint arXiv:1811.04756}, 2018.
+
 \bibitem{jensen1996global}
 Henrik~Wann Jensen.
 \newblock Global illumination using photon maps.
@@ -97,6 +122,11 @@ James~T Kajiya.
 \newblock The rendering equation.
 \newblock In {\em ACM SIGGRAPH computer graphics}, volume~20, pages 143--150.
   ACM, 1986.
+
+\bibitem{keller2019integral}
+Alexander Keller and Ken Dahm.
+\newblock Integral equations and machine learning.
+\newblock {\em Mathematics and Computers in Simulation}, 2019.
 
 \bibitem{keller2016path}
 Alexander Keller, Ken Dahm, and Nikolaus Binder.
@@ -124,10 +154,55 @@ Yann LeCun, Yoshua Bengio, and Geoffrey Hinton.
 \newblock Deep learning.
 \newblock {\em nature}, 521(7553):436, 2015.
 
+\bibitem{lillicrap2015continuous}
+Timothy~P Lillicrap, Jonathan~J Hunt, Alexander Pritzel, Nicolas Heess, Tom
+  Erez, Yuval Tassa, David Silver, and Daan Wierstra.
+\newblock Continuous control with deep reinforcement learning.
+\newblock {\em arXiv preprint arXiv:1509.02971}, 2015.
+
+\bibitem{mnih2013playing}
+Volodymyr Mnih, Koray Kavukcuoglu, David Silver, Alex Graves, Ioannis
+  Antonoglou, Daan Wierstra, and Martin Riedmiller.
+\newblock Playing atari with deep reinforcement learning.
+\newblock {\em arXiv preprint arXiv:1312.5602}, 2013.
+
 \bibitem{morokoff1995quasi}
 William~J Morokoff and Russel~E Caflisch.
 \newblock Quasi-monte carlo integration.
 \newblock {\em Journal of computational physics}, 122(2):218--230, 1995.
+
+\bibitem{muller2017practical}
+Thomas M{\"u}ller, Markus Gross, and Jan Nov{\'a}k.
+\newblock Practical path guiding for efficient light-transport simulation.
+\newblock In {\em Computer Graphics Forum}, volume~36, pages 91--100. Wiley
+  Online Library, 2017.
+
+\bibitem{muller2018neural}
+Thomas M{\"u}ller, Brian McWilliams, Fabrice Rousselle, Markus Gross, and Jan
+  Nov{\'a}k.
+\newblock Neural importance sampling.
+\newblock {\em arXiv preprint arXiv:1808.03856}, 2018.
+
+\bibitem{nair2010rectified}
+Vinod Nair and Geoffrey~E Hinton.
+\newblock Rectified linear units improve restricted boltzmann machines.
+\newblock In {\em Proceedings of the 27th international conference on machine
+  learning (ICML-10)}, pages 807--814, 2010.
+
+\bibitem{dynet}
+Graham Neubig, Chris Dyer, Yoav Goldberg, Austin Matthews, Waleed Ammar,
+  Antonios Anastasopoulos, Miguel Ballesteros, David Chiang, Daniel Clothiaux,
+  Trevor Cohn, Kevin Duh, Manaal Faruqui, Cynthia Gan, Dan Garrette, Yangfeng
+  Ji, Lingpeng Kong, Adhiguna Kuncoro, Gaurav Kumar, Chaitanya Malaviya, Paul
+  Michel, Yusuke Oda, Matthew Richardson, Naomi Saphra, Swabha Swayamdipta, and
+  Pengcheng Yin.
+\newblock Dynet: The dynamic neural network toolkit.
+\newblock {\em arXiv preprint arXiv:1701.03980}, 2017.
+
+\bibitem{cuda}
+Nvidia.
+\newblock Cuda toolkit.
+\newblock Develop, Optimize and Deploy GPU-accelerated Apps.
 
 \bibitem{nvidia_turing_architecture_whitepaper_2018}
 NVIDIA.
@@ -149,6 +224,11 @@ Vincent Pegoraro, Carson Brownlee, Peter~S Shirley, and Steven~G Parker.
 Ravi Ramamoorthi, John Anderson, Mark Meyer, and Derek Nowrouzezahrai.
 \newblock A theory of monte carlo visibility sampling.
 \newblock {\em ACM Transactions on Graphics (TOG)}, 31(5):121, 2012.
+
+\bibitem{ren2013global}
+Peiran Ren, Jiaping Wang, Minmin Gong, Stephen Lin, Xin Tong, and Baining Guo.
+\newblock Global illumination with radiance regression functions.
+\newblock {\em ACM Transactions on Graphics (TOG)}, 32(4):130, 2013.
 
 \bibitem{scratchapixel_2015}
 Scratchapixel.
@@ -203,9 +283,21 @@ Hado van Hasselt.
 \newblock Model-free prediction and control.
 \newblock DeepMind: Advanced Deep Learning \& Reinforcement Learning.
 
+\bibitem{vorba2014line}
+Ji{\v{r}}{\'\i} Vorba, Ond{\v{r}}ej Karl{\'\i}k, Martin {\v{S}}ik, Tobias
+  Ritschel, and Jaroslav K{\v{r}}iv{\'a}nek.
+\newblock On-line learning of parametric mixture models for light transport
+  simulation.
+\newblock {\em ACM Transactions on Graphics (TOG)}, 33(4):101, 2014.
+
 \bibitem{normals}
 Eric~W Weisstein.
 \newblock Normal vector.
 \newblock MathWolrd--A Wolfram Web Resource.
+
+\bibitem{zheng2018learning}
+Quan Zheng and Matthias Zwicker.
+\newblock Learning to importance sample in primary sample space.
+\newblock {\em arXiv preprint arXiv:1808.07840}, 2018.
 
 \end{thebibliography}

@@ -3,57 +3,61 @@ Capacity: max_strings=100000, hash_size=100000, hash_prime=85009
 The top-level auxiliary file: dissertation.aux
 The style file: plain.bst
 Database file #1: dissertation.bib
-I was expecting a `,' or a `}'---line 286 of file dissertation.bib
+I was expecting a `,' or a `}'---line 324 of file dissertation.bib
  :   
  :   publisher={Elsevier}
 (Error may have been on previous line)
 I'm skipping whatever remains of this entry
 Warning--I didn't find a database entry for "latexbook1"
 Warning--I didn't find a database entry for "latexbook2"
+Warning--to sort, need author or key in glm
+Warning--to sort, need author or key in sdl2
+Warning--to sort, need author or key in tensorflow2015-whitepaper
 Warning--can't use both volume and number fields in bashford2012significance
 Warning--can't use both volume and number fields in cline2008table
 Warning--empty publisher in glassner2014principles
 Warning--can't use both volume and number fields in kajiya1986rendering
+Warning--can't use both volume and number fields in muller2017practical
 Warning--empty title in nvidia_turing_architecture_whitepaper_2018
-You've used 37 entries,
+You've used 54 entries,
             2118 wiz_defined-function locations,
-            692 strings with 9724 characters,
-and the built_in function-call counts, 13021 in all, are:
-= -- 1247
-> -- 670
-< -- 13
-+ -- 272
-- -- 230
-* -- 871
-:= -- 2121
-add.period$ -- 115
-call.type$ -- 37
-change.case$ -- 221
+            760 strings with 12564 characters,
+and the built_in function-call counts, 18761 in all, are:
+= -- 1752
+> -- 1083
+< -- 16
++ -- 437
+- -- 378
+* -- 1290
+:= -- 3104
+add.period$ -- 162
+call.type$ -- 54
+change.case$ -- 346
 chr.to.int$ -- 0
-cite$ -- 42
-duplicate$ -- 489
-empty$ -- 1013
-format.name$ -- 230
-if$ -- 2751
+cite$ -- 63
+duplicate$ -- 670
+empty$ -- 1388
+format.name$ -- 378
+if$ -- 3904
 int.to.chr$ -- 0
-int.to.str$ -- 37
-missing$ -- 29
-newline$ -- 185
-num.names$ -- 74
-pop$ -- 296
+int.to.str$ -- 54
+missing$ -- 41
+newline$ -- 265
+num.names$ -- 102
+pop$ -- 451
 preamble$ -- 1
-purify$ -- 186
+purify$ -- 294
 quote$ -- 0
-skip$ -- 370
+skip$ -- 518
 stack$ -- 0
-substring$ -- 672
-swap$ -- 137
-text.length$ -- 13
+substring$ -- 834
+swap$ -- 174
+text.length$ -- 16
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 144
-warning$ -- 5
-while$ -- 121
-width$ -- 39
-write$ -- 390
+type$ -- 212
+warning$ -- 9
+while$ -- 157
+width$ -- 56
+write$ -- 552
 (There was 1 error message)

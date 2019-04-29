@@ -12,5 +12,11 @@
 \BOOKMARK [1][-]{section.3.1}{The expected Sarsa Path Tracer}{chapter.3}% 12
 \BOOKMARK [1][-]{section.3.2}{The Neural-Q Path Tracer}{chapter.3}% 13
 \BOOKMARK [0][-]{chapter.4}{Critical Evaluation}{}% 14
-\BOOKMARK [0][-]{chapter.5}{Conclusion}{}% 15
-\BOOKMARK [0][-]{appendix.A}{An Example Appendix}{}% 16
+\BOOKMARK [1][-]{section.4.1}{Experimental Setup}{chapter.4}% 15
+\BOOKMARK [1][-]{section.4.2}{Reducing Image Noise}{chapter.4}% 16
+\BOOKMARK [1][-]{section.4.3}{Parallelization}{chapter.4}% 17
+\BOOKMARK [1][-]{section.4.4}{Scalability, Memory Usage, and Processing Time}{chapter.4}% 18
+\BOOKMARK [1][-]{section.4.5}{Comparison to other methods}{chapter.4}% 19
+\BOOKMARK [1][-]{section.4.6}{The Bigger Picture}{chapter.4}% 20
+\BOOKMARK [0][-]{chapter.5}{Conclusion}{}% 21
+\BOOKMARK [0][-]{appendix.A}{An Example Appendix}{}% 22

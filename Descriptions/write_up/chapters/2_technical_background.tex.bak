@@ -327,7 +327,7 @@ Where:
  \rho_i   & Probability density function over reflected ray directions for position $x_i$ and $\omega_i$ angle of incidence
 \end{conditions}
 
-In Equation \ref{eq:rendering_eq_monte_carlo} recursive $L_i$ is still present, but the recursion is terminated when the light path intersects with a light source. By the law of large numbers in Equation \ref{eq:law_large_numbers}, the larger the number of sampled light paths ($N$), the closer each pixels approximation will be to the pixels true value as a result of solving the rendering equation. As known from section \ref{sec:rendering_equation}, the rendering equation follows the physical law of energy conservation, and due to this it accurately models light transport simulation for global illumination. Therefore, the more samples used in the Monte Carlo approximation in Equation \ref{eq:rendering_eq_monte_carlo}, the lower the amount of noise in the image \cite{christensen2016path}. An example of this concept applied to a simple forward path tracer is shown in Figure \ref{fig:reduce_noise_spp_example}.
+In Equation \ref{eq:rendering_eq_monte_carlo} recursive $L_i$ is still present, but the recursion is terminated when the light path intersects with a light source. By the law of large numbers in Equation \ref{eq:law_large_numbers}, the larger the number of sampled light paths ($N$), the closer each pixels approximation will be to the pixels true value as a result of solving the rendering equation. As known from section \ref{sec:rendering_equation}, the rendering equation follows the physical law of energy conservation, and due to this it accurately models light transport simulation for global illumination. Therefore, the more samples used in the Monte Carlo approximation in Equation \ref{eq:rendering_eq_monte_carlo}, the lower the amount of noise in the image \cite{christensen2016path}. An example of this concept applied to a simple forward path tracer is shown in Figure \ref{fig:reduce_noise_spp_example}, and the pseudo code for this forward path tracer to produce a single rendered image is given in Algorithm \ref{alg:forward_path_tracing}.
 
 % Include figure of increasing sampling count leading to a reduction in variance which corresponds to a reduction in image noise from things like fireflies
 \begin{figure}[h]
@@ -338,30 +338,31 @@ In Equation \ref{eq:rendering_eq_monte_carlo} recursive $L_i$ is still present, 
 \label{fig:reduce_noise_spp_example}
 \end{figure}
 
-Algorithm \ref{alg:forward_path_tracing} describes a forward path tracer which computes one sample inside the summation of Equation \ref{eq:rendering_eq_monte_carlo} to find a sampled light paths colour estimate for a given pixel. To render an entire image, this algorithm would be called for each pixel $N$ times (where $N$ is the number of samples per pixel) and the colour estimates of all $N$ rays would be average to find the colour estimate of the pixel.\\
-
 \begin{algorithm}[H]
 \label{alg:forward_path_tracing}
 \SetKwProg{Fn}{Function}{ }{end}
 \SetAlgoLined
- \Fn{pathTrace(camera, scene, pixel)}{  
-   $throughput \leftarrow 1$\\
-   $ray \leftarrow initialiseRayForPixel(pixel, camera)$\\
-    \For{$i = 0$ \KwTo $\infty$}{
-        $(y, norm) = closestIntersection(ray, scene)$\\
-        \If{$noIntersection(y)$}{
-            \Return $throughput \cdot \text{environmentLightRadiance}(ray,y)$
-        }
-        \ElseIf{$areaLightIntersection(y)$}{
-            \Return $throughput \cdot \text{areaLightRadiance}(ray, y)$
-        }
-        $(\omega, \rho_i, f_s) \leftarrow \text{sampleRayDirRandomly(y)}$\\
-        $throughput \leftarrow throughput \cdot f_s \cdot cos(norm, \omega) / \rho_i$\\
-        $ray \leftarrow (y,\omega)$
-    }
+ \Fn{renderImage(camera, scene)}{  
+   \For{$i = 1$ \KwTo $N$}{
+     \For{$p$ \In $camera.screen$}{
+         $ray \leftarrow \text{initializeRay}(p, camera)$\\
+         \For{$j=1$ \KwTo $\infty$}{
+         $(y, \mathbf{n}, L_e) \leftarrow \text{closestIntersection}(ray, scene)$\\
+         \If{$\text{noIntersection}(y) \ \Or \ \text{areaLightIntersection}(y)$}{
+             $ray.throughput \leftarrow ray.throughput \cdot L_e$\\
+             $\text{updatePixelColourEstimate}(p, ray.throughput)$\\
+             $\Break$
+          }
+          $(\omega_i, \rho_i, f_s) \leftarrow \text{sampleRayDirRandomly}(y)$\\
+          $ray.throughput \leftarrow ray.throughtput \cdot f_s \cdot (\omega_i \cdot \mathbf{n}) / \rho_i$\\
+          $ray \leftarrow (y, \omega_i)$
+       }
+   }
+  }
  }
- \caption{Forward path tracer}
+ \caption{Forward Path Tracer. Given a camera position, scene geometry, this algorithm will render a single image by finding the colour estimate for each pixel using Monte Carlo path tracing. Where $N$ is the pre-specified number of sampled light paths per pixel.}
 \end{algorithm}
+
 
 \subsubsection{Importance Sampling in Path Tracing}
 
@@ -497,6 +498,7 @@ Q(S_t, A_t) &  \leftarrow Q(S_t, A_t) + \alpha [R_{t+1} + \gamma \mathbf{E}[Q(S_
 \end{align}
 
 \subsection{Exploration vs Exploitation}
+\label{sec:exploration_vs_exploitation}
 
 Up to now I have formally introduced what reinforcement learning is, including what the optimal value function is and different ways to learn it. As for the TD-learning methods presented so far, I have not discussed any details about the kind of policy an agent should use to select actions in the process of learning. Deciding on this policy is very influential on our agents performance, as the agent needs to gather enough information about its environment to make the best overall decisions. Therefore, online decision-making requires a fundamental choice to be made by the agent every time it chooses to take an action \cite{exploration_vs_exploitation}. This is between the following:
 
@@ -558,7 +560,7 @@ Q(x, \omega) \leftarrow (1 - \alpha) \cdot Q(x, \omega) + \alpha \cdot \left( L_
 \label{eq:mc_expected_sarsa_td_learning}
 \end{equation}
 
-The estimated outgoing radiance values evaluated using Equation \ref{eq:mc_expected_sarsa_td_learning} for a discrete set of angles around a given  point $x$ can then be converted in to a distribution. This distribution is accordingly named the radiance distribution for a point. A good approximation of the radiance distribution at a point $x$ will have a similar shape to the true function of outgoing radiance at point $x$, $L_o(x, \omega)$ $\forall \omega \in \Omega$. Therefore, by Monte Carlo importance sampling, sampling directions for light path construction from the learned radiance distribution and using it as the probability density function in the Monte Carlo approximation will significantly reduce the variance in the approximation. Leading to a significant reduction to a significant reduction in image noise.
+The estimated outgoing radiance values evaluated using Equation \ref{eq:mc_expected_sarsa_td_learning} for a discrete set of angles around a given  point $x$ can then be converted in to a distribution. This distribution is accordingly named the radiance distribution for a point \cite{greger1998irradiance}. A good approximation of the radiance distribution at a point $x$ will have a similar shape to the true function of outgoing radiance at point $x$, $L_o(x, \omega)$ $\forall \omega \in \Omega$. Therefore, by Monte Carlo importance sampling, sampling directions for light path construction from the learned radiance distribution and using it as the probability density function in the Monte Carlo approximation will significantly reduce the variance in the approximation. Leading to a significant reduction to a significant reduction in image noise.
 
 \section*{Summary}
 The story up to this point can be summarised as follows; Monte Carlo integration is a numerical technique for approximating integral. It can be used to find an approximation of pixel values in path tracing by approximating the reflected radiance from a point in a given direction. Rather then uniformly sampling directions in light path construction for determining pixel values, a whole field is dedicated to importance sample these directions to reduce the variance in the Monte Carlo approximation. However, most traditional methods lack the ability to effectively reduce the number of zero-contribution light paths as they do not take into account visibility. Instead, reinforcement learning, specifically temporal difference learning techniques can be applied to learning the outgoing radiance from a point in a given direction, which are in turn used for importance sampling ray directions where the approximated radiance is high. To do this a link has been made between the rendering equation and the temporal difference learning rule Exepected Sarsa. This has opened up the opportunity to design and evaluate new algorithms for importance sampling directions in light path construction, specifically ones involving deep reinforcement learning.
