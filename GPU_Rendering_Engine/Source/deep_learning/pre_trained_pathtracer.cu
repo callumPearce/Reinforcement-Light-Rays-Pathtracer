@@ -42,7 +42,7 @@ PretrainedPathtracer::PretrainedPathtracer(
     //////////////////////////////////////////////////////////////
     /*             Load in the Parameter Values                 */
     //////////////////////////////////////////////////////////////
-    std::string fname = "/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Radiance_Map_Data/deep_q_learning_20_20.model";
+    std::string fname = "/home/calst/Documents/year4/thesis/monte_carlo_raytracer/Radiance_Map_Data/archway_12_12.model";
     if (file_exists(fname)){
         dynet::TextFileLoader loader(fname);
         loader.populate(model);
