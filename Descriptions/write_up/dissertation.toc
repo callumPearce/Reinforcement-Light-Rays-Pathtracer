@@ -50,9 +50,9 @@
 \contentsline {subsection}{\numberline {4.2.3}Hyper Parameter Tuning}{36}{subsection.4.2.3}
 \contentsline {subsection}{\numberline {4.2.4}Reusing Trained ANN for Different Scenes}{36}{subsection.4.2.4}
 \contentsline {section}{\numberline {4.3}From Memory Bound to Compute Bound}{36}{section.4.3}
-\contentsline {section}{\numberline {4.4}Memory Usage}{36}{section.4.4}
-\contentsline {subsection}{\numberline {4.4.1}Parallel Processing}{37}{subsection.4.4.1}
-\contentsline {section}{\numberline {4.5}Neural-Q Design Discussion}{38}{section.4.5}
-\contentsline {chapter}{\numberline {5}Conclusion}{39}{chapter.5}
-\contentsline {subsection}{\numberline {5.0.1}Plan}{39}{subsection.5.0.1}
-\contentsline {chapter}{\numberline {A}An Example Appendix}{45}{appendix.A}
+\contentsline {subsection}{\numberline {4.3.1}Memory Usage}{36}{subsection.4.3.1}
+\contentsline {subsection}{\numberline {4.3.2}Parallel Processing}{38}{subsection.4.3.2}
+\contentsline {section}{\numberline {4.4}Neural-Q Design Discussion}{39}{section.4.4}
+\contentsline {chapter}{\numberline {5}Conclusion}{41}{chapter.5}
+\contentsline {subsection}{\numberline {5.0.1}Plan}{41}{subsection.5.0.1}
+\contentsline {chapter}{\numberline {A}An Example Appendix}{47}{appendix.A}

@@ -132,6 +132,14 @@
   organization={ACM}
 }
 
+% Transformers polygon count
+@misc{devastator,
+    title={Weighty Matters, Computer Graphics World},
+    	url={http://www.cgw.com/Publications/CGW/2009/Volume-32-Issue-7-July-2009-/Weighty-Matters.aspx}, 
+	author={Barbara Robertson},
+	note={Transformers: Revenge of the Fallen}
+}
+
 % Radiosity method for global illumination
 @inproceedings{goral1984modeling,
   title={Modeling the interaction of light between diffuse surfaces},
@@ -461,6 +469,15 @@ journal={from Wolfram MathWorld}
     author={Roger Allen},
     note={NVIDIA Developer Blog},
     url={https://devblogs.nvidia.com/accelerated-ray-tracing-cuda/}
+}
+
+
+% CUDA C programming guide
+@misc{cuda_c_guide,
+  title={NVIDIA CUDA C Programming Guide},
+  author={NVIDIA},
+  note={NVIDIA CUDA},
+  year={2012}
 }
 
 %% HADO's LECTURES
