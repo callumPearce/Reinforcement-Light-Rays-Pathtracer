@@ -44,12 +44,15 @@
 \contentsline {subsection}{\numberline {3.2.6}Recent Advancements in Neural Importance Sampling for Monte Carlo Path Tracing}{32}{subsection.3.2.6}
 \contentsline {chapter}{\numberline {4}Critical Evaluation}{35}{chapter.4}
 \contentsline {section}{\numberline {4.1}Experimental Setup}{35}{section.4.1}
-\contentsline {section}{\numberline {4.2}Reducing Image Noise}{35}{section.4.2}
-\contentsline {section}{\numberline {4.3}Parallelization}{36}{section.4.3}
-\contentsline {section}{\numberline {4.4}Scalability, Memory Usage, and Processing Time}{36}{section.4.4}
-\contentsline {section}{\numberline {4.5}Comparison to other methods}{36}{section.4.5}
-\contentsline {section}{\numberline {4.6}The Bigger Picture}{36}{section.4.6}
-\contentsline {subsection}{\numberline {4.6.1}Plan}{37}{subsection.4.6.1}
+\contentsline {section}{\numberline {4.2}Assessing the reduction in image Noise for Monte Carlo Path Tracing}{35}{section.4.2}
+\contentsline {subsection}{\numberline {4.2.1}Quantifying the Reduction in Image Noise}{35}{subsection.4.2.1}
+\contentsline {subsection}{\numberline {4.2.2}Convergence for Learning Incident Radiance}{36}{subsection.4.2.2}
+\contentsline {subsection}{\numberline {4.2.3}Hyper Parameter Tuning}{36}{subsection.4.2.3}
+\contentsline {subsection}{\numberline {4.2.4}Reusing Trained ANN for Different Scenes}{36}{subsection.4.2.4}
+\contentsline {section}{\numberline {4.3}From Memory Bound to Compute Bound}{36}{section.4.3}
+\contentsline {section}{\numberline {4.4}Memory Usage}{36}{section.4.4}
+\contentsline {subsection}{\numberline {4.4.1}Parallel Processing}{37}{subsection.4.4.1}
+\contentsline {section}{\numberline {4.5}Neural-Q Design Discussion}{38}{section.4.5}
 \contentsline {chapter}{\numberline {5}Conclusion}{39}{chapter.5}
 \contentsline {subsection}{\numberline {5.0.1}Plan}{39}{subsection.5.0.1}
 \contentsline {chapter}{\numberline {A}An Example Appendix}{45}{appendix.A}

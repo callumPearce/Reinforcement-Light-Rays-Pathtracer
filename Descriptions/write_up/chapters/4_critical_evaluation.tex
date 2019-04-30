@@ -3,11 +3,10 @@
 \begin{document}
 
 \chapter{Critical Evaluation}
+
 \label{chap:evaluation}
 
-Here, a range of techniques are used to evaluate both the Expected Sarsa and the Neural-Q path tracers presented in Chapter \ref{chap:td_deep_sampling} against one another on their ability to reduce noise in rendered images produced by path tracing. However, the trade-off's each algorithm makes and their significance is also assessed. This includes memory requirements, ability to run in parallel, scaling with scene complexity, number of samples per pixel for learning to converge, and current performance bottlenecks.
-
-% Insert reference images of four test scenes
+Here, a range of techniques are used to evaluate the newly proposed Neural-Q path tracer against the Expected Sarsa path tracer presented in Chapter \ref{chap:td_deep_sampling} on its ability to reduce noise in rendered images produced by Monte Carlo path tracing. The benefits of the Neural-Q path tracer for its lack of hyper parameters which need to be set and its ability to reuse a trained network for a slightly different scene are also discussed. The introduction of deep reinforcement learning for importance sampling light transport paths in Monte Carlo path tracing comes with two important trade-off in practice that limits its current applicability in industry, but presents its clear potential in the long term. The first is the trade-off between being memory bound rendering using the Expected Sarsa path tracer to compute bound using the Neural-Q path tracer. The second is between the significant computational costs that come with the integrated deep reinforcement learning scheme compared to a default forward path tracer for rendering arbitrary scenes.
 
 \section{Experimental Setup}
 
@@ -15,11 +14,18 @@ A path tracing renderer was built from scratch which supported Algorithms \ref{a
 
 I developed four different scenes using Maya \cite{maya} and created a custom object importer to import the scenes into my path tracer renderer. A reference image of all four scenes is given in Figure \ref{fig:reference_scenes}, which have been rendered with 4096 sampled light rays per pixel using the default forward path tracing Algorithm \ref{alg:forward_path_tracing}. They are known as reference images as they have minimal visible noise, meaning the Monte Carlo approximations for each pixel's colour value has approximately converged. Due to path tracing accurately modelling physical light transport (see section \ref{sec:mc_pathtracing}), these images are the ideal case for which all other path tracing algorithms should aim to produce as closely as possible with as few samples as possible. 
 
-\section{Reducing Image Noise}
+% Insert reference images of four test scenes
+
+\section{Assessing the reduction in image Noise for Monte Carlo Path Tracing}
+
+
+
+\subsection{Quantifying the Reduction in Image Noise}
 
 To quantify the amount noise within images rendered by a default forward path tracer, the Expected Sarsa path tracer, and the Neural-Q path tracer, I will use the Mean Absolute Percentage Error (MAPE) given in Equation \ref{eq:mape} \cite{muller2018neural}.
 
 \begin{equation}
+\label{eq:mape}
 M = \frac{1}{N} \sum_{i=0}^{N-1} \left| \frac{A_i - F_i}{A_i} \right|
 \end{equation}
 
@@ -31,33 +37,62 @@ A_i & The $i$th pixel value in the reference image\\
 F_i & The $i$th pixel value in the image whose noise is being quantified\\
 \end{conditions}
 
-The MAPE value can therefore be used to quantify the average difference between pixel values from an image rendered by each rendering technique with the same number of sampled light rays per pixel and the reference image. While the MAPE quantifies the overall accuracy of the image rendered, it does not specify which pixel values in particular have a a high error. I have represented this visually by taking the average squared error across the RGB channels between corresponding pixels in the image being evaluated and the reference image. This allows one to more accurately find failure cases for both the Expected Sarsa and Neural-Q path tracers.
+The MAPE value can therefore be used to quantify the average difference between pixel values from an image rendered by each rendering technique with the same number of sampled light rays per pixel and the reference image. While the MAPE quantifies the overall amount of noise of the image rendered, it does not specify which pixel values in particular have a a high error. I have represented this visually by taking the average squared error across the RGB channels between corresponding pixels in the image being evaluated and the reference image. The image produced highlights failure cases for both the Expected Sarsa and Neural-Q path tracers.
 
+\subsection{Convergence for Learning Incident Radiance}
 \begin{itemize}
-\item Results with corresponding MAPE scores for all 3 methods on all 4 scenes and image difference
-\item Squared Difference images to reference image
-\item Results display for varying number of samples for all three methods
 \item Path length reduction
 \item Training curve to show convergence time, can compare the number of zero contribution light paths as when this peaks the algorithm has converged
 \end{itemize}
 
-\section{Parallelization}
+\subsection{Hyper Parameter Tuning}
+\begin{itemize}
+\item Hyperparams in expected sarsa include what the min of radiance distribution can be set to, the selection of the learning rate $\alpha$, the memory used for the scene...
+\item Hyperparams for Neural-Q on the other hand are the epsilon start and epsilon decay
+\end{itemize}
+
+\subsection{Reusing Trained ANN for Different Scenes}
+\begin{itemize}
+\item Expected Sarsa cannot be reused for a slightly different scene whereas the Neural-Q path tracer can 
+\item Show the Neural-Q path tracer ability to be reused
+\end{itemize}
+
+
+\section{From Memory Bound to Compute Bound}
+
+Computational resources utilized by the path tracing algorithms introduced is a very important talking point when considering the potential to be integrated into renders used in industry such as \cite{georgiev2018arnold, christensen2018renderman, hyperion}. In particular any bounds imposed on the algorithm from current available hardware are the most important to consider, as rendering algorithms should be designed to give as much power to artists as possible to create and render any arbitrary scene of their choice. A detailed investigation on both highly optimised implementations of the Expected Sarsa and Neural-Q path tracers performance using current available hardware warrants a detailed investigation in itself. Instead for completeness, this section presents a high level analysis of how both memory usage and compute power limits their performance.
+
+\section{Memory Usage}
+
+The default path tracing algorithm uses a minimal amount of memory to calculate the colour estimate of a single light path as it only updates local variables during the computation. Therefore, default path tracing is said to be compute bound, meaning the only way to make the algorithm faster is by providing more compute power. For example parallelizing the rendering process using a GPU with a quicker processor clock speed. However, the performance of the Expected Sarsa algorithm for reducing image noise is bound by the amount of memory the algorithm has available to it. This is due to the requirement of storing the Q-table which holds a discrete number of approximated incident radiance values. The size of memory used by the Q-table is therefore defined by the number of Irradiance Volumes sampled across the scenes geometry, as well as the number incident radiance values stored for the discrete directions $\omega_k$ $\forall i = 1,...,n$  by each Irradiance Volume. The higher the number of sampled Irradiance Volumes the more accurate the incident radiance approximation is to be for a given intersection point as shown in Figure \ref{fig:more_irradiance_volumes}.  By sampling the more Irradiance Volumes, on average the distance from a light path intersection point to the closest Irradiance Volume is likely to be lower. Recall that a nearest neighbour search is performed to calculate to estimate the incident radiance on a point based on the stored values in the closest Irradiance Volume, therefore the closer the Irradiance Volume used for this approximation the more accurate the approximation is likely to be. Moreover, the higher the number of discrete directions$n$ represented by each Irradiance Volume, the more accurate the estimated radiance distribution at the given intersection point will be, which is displayed in Figure \ref{fig:more_directions}. This is because the true radiance distribution at a point is continuous, so the more samples used in the Monte Carlo approximation of this probability density function (see section \ref{sec:td_light_transport}), the lower the error in the approximation due the law of large number in Equation \ref{eq:law_large_numbers}. 
+
+% Stats showing more samples for expected sarsa the better the approximation & images
+% Pics for increasing volumes and directions in volumes
+
+The issue is, the amount of memory required to significantly reduce image noise for renders of a scene is dependent on the complexity of the scenes geometry. The more complex the geometry the more sampled Irradiance Volumes which will be required to accurately approximate the radiance distribution at any point in the scene. Meaning, the radiance distributions for two points in the scene which are close to each other are likely to vary far more then that of a scene with simple geometry, as there will a larger number of blockers. %TODO improve this bit 
+
+
+\subsection{Parallel Processing}
+
+For high quality, high frame rate rendering of scenes, rendering algorithms in general become very computationally demanding \cite{crockett1995parallel}. In order to facilitate this high level of performance, parallel computing must be used to distribute the computational workload. This pattern follows for both scanline renderers and ray-tracing renderers (which path tracing falls into) \cite{alerstam2008parallel, fatahalian2009data}. The default path tracing algorithm in particular is an embarrassingly parallel algorithm \cite{embarissingly_parallelizable}, as the task of finding the colour estimate of a single light path can be performed independently by a single process without any communication to other processes. A simple example of this is given in \cite{accelerated_ray_tracing}, whereby using GPU the process of rendering an image using an algorithm which closely resembles path tracing is split among many cores on a GPU. In industry path tracing algorithms take advantage of parallelism to an unprecedented scale, such as Disney's supercomputer for rendering full-length films using the Hyperion renderer \cite{hyperion}. Therefore, for any modified path tracing algorithm to gain industries attention it needs to be able to take fully advantage of parallel computing hardware.\\
+
+The Expected Sarsa path tracer is no longer as trivial to parallelize as the default forward path tracing algorithm due to the the first addition to the algorithm detailed in section \ref{sec:expected_sarsa_path_tracer}, where the incident radiance estimate for a given entry $Q(x,\omega_k)$ is updated after each intersection point is traced for constructing a light path. To parallelize the algorithm means to create and individual process to construct each light path as part of determining the estimate of a pixel value. However, the Q-table which stores the current approximation of all discrete incident radiance values in the scene is accessed by each thread. Meaning, it is highly possible that two threads will attempt to write to the same location at the same time in the Q-table if they intersect near one another, meaning the update rule provided in Equation \ref{eq:mc_expected_sarsa_td_learning} will not be applied correctly. To remedy this, the update rule can be placed within a critical code section \cite{raynal2012concurrent} to ensure only one thread at a time can calculate and set the updated incident radiance estimate. For my purposes, all code written for parallel execution used the CUDA Toolkit \cite{cuda}, where CUDA atomic operations were used to ensure only one thread at a time can calculate and apply the Q-value update. While the critical section does ensure that the Expected Sarsa path tracer can run in parallel, the performance overhead present for each thread in both waiting to and performing the update rule are added to the path tracing algorithm.\\
+
+As for the Neural-Q path tracer parallel execution is slightly different. Batches of light paths are computed once at a time, where each light path's colour estimate in the batch can be computed in parallel. The batch size should be set to be large enough such that no processors are idle whilst computing a batch. Also, mini-batches which are the same size as the batch of light paths can be used in querying and training the ANN by stochastic gradient descent. However, the computation time to train and evaluate the network for every batch is more expensive than that of updating and looking up the incident radiance values from a Q-table. This performance penalty imposed by the ANN has been found to be very expensive in \cite{keller2019integral, muller2018neural}, and is clear problem which need to be alleviated before neural network importance sampling for Monte Carlo path tracers can be used competitively in industry renderers. Answers to this problem may lie in leveraging the power from recent advancements in hardware such as NVIDIAS TensorCores in Tesla GPUs \cite{tensor_cores} which claims to have 40X higher performance than CPUs for inference on ANNs.
 
 \begin{itemize}
+\item Includes compute bottlenecks
+
 \item Here I roughly outline some important implementation details I had to consider which I found should be considered when building a path tracing engine using Algorithm \ref{alg:expected_sarsa_pathtracer}.
 
 \item Firstly, no details regarding how this algorithm is parallelized were given. This is a very important to take into consideration as nearly all computer graphics algorithms leverage the power of Graphical Processing Units (GPUs) for superior speeds in practice. Therefore if the algorithm cannot be parallelized to high degree, it will never be able to perform as well as other existing rendering algorithms.  Every pixel % TODO go in analysis
 \end{itemize}
 
-\section{Scalability, Memory Usage, and Processing Time}
 
-\section{Comparison to other methods}
+\section{Neural-Q Design Discussion}
+Move section down here discussing other methods
 
-\section{The Bigger Picture}
-\begin{itemize}
-\item Where do the algorithms fit in the industry right now?
-\item Is the industry ready for them, or are there more problems to solve?
-\end{itemize}
+\begin{comment}
 
 {\bf A topic-specific chapter, of roughly $15$ pages} 
 \vspace{1cm} 
@@ -141,5 +176,7 @@ in a suitable manner.
  neural network is continually trained and inferred from. Continuous state 
  space vs discretized required for storage in expected SARSA.
 \end{enumerate}
+
+\end{comment}
 
 \end{document}
