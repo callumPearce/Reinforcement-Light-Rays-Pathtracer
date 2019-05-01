@@ -108,7 +108,7 @@ int main (int argc, char** argv) {
     // Initialise the scene
     Scene scene = Scene();
     scene.load_cornell_box_scene();
-    // scene.load_custom_scene("../Models/door_room.obj", false);
+    // scene.load_custom_scene("../Models/archway.obj", false);
     scene.save_vertices_to_file();
 
     // CASE: Deep Reinforcement Learning

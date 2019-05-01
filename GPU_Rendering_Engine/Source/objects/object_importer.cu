@@ -150,13 +150,13 @@ void build_surfaces(std::vector<Surface>& surfaces, std::vector<float>& vertices
         Material mat = Material(vec3(0.75f));
                 
         // Red (FOR DOOR SCENE)
-        if( i > 23 && i < 36){
-            mat = Material(vec3(0.75f, 0.15f, 0.15f));
-        }  
-        // Red (FOR ARCHWAY SCENE)
-        // if(i > 80){
+        // if( i > 23 && i < 36){
         //     mat = Material(vec3(0.75f, 0.15f, 0.15f));
-        // }
+        // }  
+        // Red (FOR ARCHWAY SCENE)
+        if(i > 80){
+            mat = Material(vec3(0.75f, 0.15f, 0.15f));
+        }
         // Blue 
         if( 11 < i && i < 24){
             mat = Material(vec3(0.15f, 0.15f, 0.75f));
@@ -213,10 +213,10 @@ void build_area_lights(std::vector<AreaLight>& area_lights, std::vector<float>& 
 
     // Define the area light vectors ( Door room )
     float l = 2.f;
-    vec4 I((6.3f*l)/8, (l*6.f)/8, 1.499f*l, 1);
-    vec4 J((6.3f*l)/8, 0, 1.499f*l, 1);
-    vec4 K((2.58f*l)/8, (l*6.f)/8, 1.499f*l, 1);
-    vec4 L((2.58f*l)/8, 0, 1.499f*l, 1);
+    // vec4 I((6.3f*l)/8, (l*6.f)/8, 1.499f*l, 1);
+    // vec4 J((6.3f*l)/8, 0, 1.499f*l, 1);
+    // vec4 K((2.58f*l)/8, (l*6.f)/8, 1.499f*l, 1);
+    // vec4 L((2.58f*l)/8, 0, 1.499f*l, 1);
 
     // ( Simple Closed Room )
     // vec4 I(l - 0.001f, (l*4.f)/8, 1.f*l, 1.f);
@@ -230,45 +230,45 @@ void build_area_lights(std::vector<AreaLight>& area_lights, std::vector<float>& 
     // vec4 K(l - 0.001f, (l*6.f)/8, 0.25f*l, 1.f);
     // vec4 L(l - 0.001f, (l*3.f)/8, 0.25f*l, 1.f);
 
-    AreaLight a1 = AreaLight(K, I, J, diffuse_p);
-    area_lights.push_back(a1);
-
-    AreaLight a2 = AreaLight(K, J, L, diffuse_p);
-    area_lights.push_back(a2);
-
-    // // ( Archway )
-    // vec4 I(l+ 1.99f, l, 2.5*l, 1.f);
-    // vec4 J(l+ 1.99f, (l*4.f)/8, 2.5f*l, 1.f);
-    // vec4 K(l+ 1.99f, l, 2.f*l, 1.f);
-    // vec4 L(l+ 1.99f, (l*4.f)/8, 2.f*l, 1.f);
-
     // AreaLight a1 = AreaLight(K, I, J, diffuse_p);
     // area_lights.push_back(a1);
 
     // AreaLight a2 = AreaLight(K, J, L, diffuse_p);
     // area_lights.push_back(a2);
 
-    // vec4 M(l- 1.99f, l, 2.5f*l, 1.f);
-    // vec4 N(l- 1.99f, (l*4.f)/8, 2.5f*l, 1.f);
-    // vec4 O(l- 1.99f, l, 2.0f*l, 1.f);
-    // vec4 P(l- 1.99f, (l*4.f)/8, 2.0f*l, 1.f);
+    // ( Archway )
+    vec4 I(l+ 1.99f, l, 2.5*l, 1.f);
+    vec4 J(l+ 1.99f, (l*4.f)/8, 2.5f*l, 1.f);
+    vec4 K(l+ 1.99f, l, 2.f*l, 1.f);
+    vec4 L(l+ 1.99f, (l*4.f)/8, 2.f*l, 1.f);
 
-    // AreaLight a3 = AreaLight(O, M, N, diffuse_p);
-    // area_lights.push_back(a3);
+    AreaLight a1 = AreaLight(K, I, J, diffuse_p);
+    area_lights.push_back(a1);
 
-    // AreaLight a4 = AreaLight(O, N, P, diffuse_p);
-    // area_lights.push_back(a4);
+    AreaLight a2 = AreaLight(K, J, L, diffuse_p);
+    area_lights.push_back(a2);
 
-    // vec4 Q(l- 0.5f, l, 2.99f*l, 1.f);
-    // vec4 R(l- 0.5f, l * 0.5f, 2.99f*l, 1.f);
-    // vec4 S(l+ 0.5f, l, 2.99f*l, 1.f);
-    // vec4 T(l+ 0.5f, l * 0.5f, 2.99f*l, 1.f);
+    vec4 M(l- 1.99f, l, 2.5f*l, 1.f);
+    vec4 N(l- 1.99f, (l*4.f)/8, 2.5f*l, 1.f);
+    vec4 O(l- 1.99f, l, 2.0f*l, 1.f);
+    vec4 P(l- 1.99f, (l*4.f)/8, 2.0f*l, 1.f);
 
-    // AreaLight a5 = AreaLight(S, Q, R, diffuse_p);
-    // area_lights.push_back(a5);
+    AreaLight a3 = AreaLight(O, M, N, diffuse_p);
+    area_lights.push_back(a3);
 
-    // AreaLight a6 = AreaLight(S, R, T, diffuse_p);
-    // area_lights.push_back(a6);
+    AreaLight a4 = AreaLight(O, N, P, diffuse_p);
+    area_lights.push_back(a4);
+
+    vec4 Q(l- 0.5f, l, 2.99f*l, 1.f);
+    vec4 R(l- 0.5f, l * 0.5f, 2.99f*l, 1.f);
+    vec4 S(l+ 0.5f, l, 2.99f*l, 1.f);
+    vec4 T(l+ 0.5f, l * 0.5f, 2.99f*l, 1.f);
+
+    AreaLight a5 = AreaLight(S, Q, R, diffuse_p);
+    area_lights.push_back(a5);
+
+    AreaLight a6 = AreaLight(S, R, T, diffuse_p);
+    area_lights.push_back(a6);
 
     // Resize the vertices to fit correctly into the scene
     for (size_t i = 0 ; i < area_lights.size() ; ++i) {
