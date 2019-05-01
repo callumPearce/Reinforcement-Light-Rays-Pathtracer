@@ -2,7 +2,7 @@
 #define DEEP_LEARNING_H
 
 // Epsilon greedy constants
-#define EPSILON_START 1.0f
+#define EPSILON_START 0.05f
 #define EPSILON_MIN 0.05f
 #define EPSILON_DECAY 0.01f
 

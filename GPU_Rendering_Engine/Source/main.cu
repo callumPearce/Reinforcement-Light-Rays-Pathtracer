@@ -101,14 +101,14 @@ int main (int argc, char** argv) {
     // Cornell Box: vec4(0.f,0.f, -3.f, 1.f);
     // Complex light: vec4(-1.f, -1.f, -0.4f, 1.f);
     // Archway: vec4(-1.f, 0.2f, -0.99f, 1.f)
-    Camera camera = Camera(vec4(-1.f, 0.2f, -0.99f, 1.f));
+    Camera camera = Camera(vec4(0.f,0.f, -3.f, 1.f));
     // camera.rotate_right(3.14f);
     // camera.rotate_down(0.0f);
 
     // Initialise the scene
     Scene scene = Scene();
     scene.load_cornell_box_scene();
-    // scene.load_custom_scene("../Models/archway.obj", false);
+    // scene.load_custom_scene("../Models/complex_light_room.obj", true);
     scene.save_vertices_to_file();
 
     // CASE: Deep Reinforcement Learning
@@ -287,6 +287,10 @@ int main (int argc, char** argv) {
             checkCudaErrors(cudaMalloc(&device_radiance_array, sizeof(RadianceTreeElement) * radiance_map->radiance_array_size));
             checkCudaErrors(cudaMemcpy(device_radiance_array, &radiance_array_v[0], sizeof(RadianceTreeElement) * radiance_map->radiance_array_size, cudaMemcpyHostToDevice));
             checkCudaErrors(cudaMemcpy(&(device_radiance_map->radiance_array), &device_radiance_array, sizeof(RadianceTreeElement*), cudaMemcpyHostToDevice));
+
+            // Variable to store the total number of zero contribution light paths
+            int* zero_contribution_light_paths;
+            checkCudaErrors(cudaMalloc(&zero_contribution_light_paths, sizeof(int)));
             
             // Get the number of blocks for updating the radiance volumes list
             int radiance_volume_block_size = 32;
@@ -295,6 +299,9 @@ int main (int argc, char** argv) {
             // RENDER LOOP
             int frames = 0;
             while (Update(camera)&& frames < 100){
+
+                // Reset the number of zero contribution light paths counter
+                checkCudaErrors(cudaMemset(zero_contribution_light_paths, 0, sizeof(int)));
 
                 // Copy the camera to the device
                 checkCudaErrors(cudaMemcpy(device_camera, &camera, sizeof(Camera), cudaMemcpyHostToDevice));
@@ -305,7 +312,8 @@ int main (int argc, char** argv) {
                     device_radiance_map,
                     device_camera,
                     device_scene,
-                    device_path_lengths
+                    device_path_lengths,
+                    zero_contribution_light_paths
                 );
 
                 cudaDeviceSynchronize();
@@ -319,6 +327,18 @@ int main (int argc, char** argv) {
                 float avg = total / (SCREEN_HEIGHT * SCREEN_WIDTH);
                 printf("Average Path Length: %.3f\n", avg);
 
+                // Print the total number of zero contribution light paths
+                int zero_contrib_lps = 0;
+                checkCudaErrors(cudaMemcpy(&zero_contrib_lps, zero_contribution_light_paths, sizeof(int), cudaMemcpyDeviceToHost));
+                printf("Zero contribution light paths: %d\n", zero_contrib_lps);
+
+                // Write the stats to the training stats file
+                std::ofstream stats_file;   
+                stats_file.open("../Radiance_Map_Data/sarsa_training_stats.txt", std::ios::app);
+                stats_file << avg << " " << 0.0 << " " << zero_contrib_lps << "\n";
+                stats_file.close();
+
+                // Update radiance volume distributions
                 update_radiance_volume_distributions<<<radaince_volume_num_blocks, radiance_volume_block_size>>>(
                     device_radiance_map
                 );
@@ -388,6 +408,7 @@ int main (int argc, char** argv) {
             // Delete radiance map variables
             cudaFree(device_radiance_volumes);
             cudaFree(device_radiance_map);
+            cudaFree(zero_contribution_light_paths);
         }
         // VORONOI
         else if(PATH_TRACING_METHOD == 2){

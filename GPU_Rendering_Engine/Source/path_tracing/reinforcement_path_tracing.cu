@@ -7,32 +7,39 @@ __global__
 void update_radiance_volume_distributions(RadianceMap* radiance_map){
     
     int i = blockIdx.x * blockDim.x + threadIdx.x;
-    radiance_map->radiance_volumes[i].update_radiance_distribution();
-
-    float temp = radiance_map->radiance_volumes[i].get_irradiance_estimate();
+    if (i < radiance_map->radiance_volumes_count){
+        radiance_map->radiance_volumes[i].update_radiance_distribution();
+    }
 }
 
 __global__
-void draw_reinforcement_path_tracing(vec3* device_buffer, curandState* d_rand_state, RadianceMap* radiance_map, Camera* camera, Scene* scene, int* device_path_lengths){
+void draw_reinforcement_path_tracing(vec3* device_buffer, curandState* d_rand_state, RadianceMap* radiance_map, Camera* camera, Scene* scene, int* device_path_lengths, int* zero_contribution_light_paths){
     
     // Populate the shared GPU/CPU screen buffer
     int x = blockIdx.x * blockDim.x + threadIdx.x;
     int y = blockIdx.y * blockDim.y + threadIdx.y;
 
     // Path trace the ray to find the colour to paint the pixel
-    device_buffer[x*(int)SCREEN_HEIGHT + y] = path_trace_reinforcement(d_rand_state, radiance_map, camera, x, y, scene, device_path_lengths);
+    device_buffer[x*(int)SCREEN_HEIGHT + y] = path_trace_reinforcement(d_rand_state, radiance_map, camera, x, y, scene, device_path_lengths, zero_contribution_light_paths);
 }
 
 __device__
-vec3 path_trace_reinforcement(curandState* d_rand_state, RadianceMap* radiance_map, Camera* camera, int pixel_x, int pixel_y, Scene* scene, int* device_path_lengths){
+vec3 path_trace_reinforcement(curandState* d_rand_state, RadianceMap* radiance_map, Camera* camera, int pixel_x, int pixel_y, Scene* scene, int* device_path_lengths, int* zero_contribution_light_paths){
     vec3 irradiance = vec3(0.f);
     int total_path_lengths = 0;
     for (int i = 0; i < SAMPLES_PER_PIXEL; i++){
 
         // Trace the path of the ray
         int path_length;
-        irradiance += path_trace_reinforcement_iterative(pixel_x, pixel_y, camera, d_rand_state, radiance_map, scene, path_length);
+        vec3 temp_irradiance = path_trace_reinforcement_iterative(pixel_x, pixel_y, camera, d_rand_state, radiance_map, scene, path_length);
+        irradiance += temp_irradiance;
         total_path_lengths += path_length;
+        
+        // Check if zero contribution light path
+        float avg_temp_irradiance = (temp_irradiance.x + temp_irradiance.y + temp_irradiance.z)/3.f;
+        if(avg_temp_irradiance < THROUGHPUT_THRESHOLD){
+            atomicAdd(zero_contribution_light_paths, 1);
+        }
     }
     int avg_path_length = int(total_path_lengths/SAMPLES_PER_PIXEL);
     device_path_lengths[pixel_x*SCREEN_HEIGHT + pixel_y] = avg_path_length;
