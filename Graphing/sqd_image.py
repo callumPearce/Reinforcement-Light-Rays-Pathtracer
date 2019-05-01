@@ -8,6 +8,19 @@ from scipy.misc import imread
 from PIL import Image
 import numpy as np
 
+def mape_score(ground_truth, prediction):
+
+    # Get image as a 3D array: Width, Height, RGB
+    gt_arr = np.asarray(imread(ground_truth, mode='RGB'), dtype=np.intc)
+    p_arr = np.asarray(imread(prediction, mode='RGB'), dtype=np.intc)
+
+    # Compute the score
+    score = np.sum(np.abs(gt_arr/255 - p_arr/255)/((gt_arr+0.01)/255))
+    score /= len(gt_arr) * len(gt_arr[0]) * len(gt_arr[0][0])
+
+    # Round to 4 decimal places
+    return round(score,4)
+
 def compute_sqd_image(ground_truth, prediction):
 
     # Get image as a 3D array: Width, Height, RGB
@@ -26,9 +39,13 @@ def compute_sqd_image(ground_truth, prediction):
     # diff_arr = np.square(np.absolute(gt_arr - p_arr))
     diff_arr = diff_arr.astype(np.uint8)
 
+    # Img name
+    score = mape_score(ground_truth, prediction)
+    name = prediction[:-4] + "_mape_" + str(score) + ".png"
+
     # Compute and save image
     img = Image.fromarray(diff_arr, 'RGB')
-    img.save('my.png')
+    img.save(name)
     img.show()
 
 
