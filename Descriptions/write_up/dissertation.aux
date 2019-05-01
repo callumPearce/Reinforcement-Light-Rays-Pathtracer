@@ -249,6 +249,56 @@
 \citation{sutton2011reinforcement}
 \citation{muller2018neural}
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.2.5}Neural-Q Path Tracing Algorithm}{30}{subsection.3.2.5}}
+\newlabel{alg:neural_q_pathtracer}{{3}{32}{Addition 4: Decaying decaying $\epsilon $-\textit {greedy}}{algocfline.3}{}}
+\@writefile{loa}{\contentsline {algocf}{\numberline {3}{\ignorespaces Neural-Q forward path tracer. Given a camera position, scene geometry, epsilon and epsilon decay, this algorithm will render a single image using deep Q-learning loss to progressively reduce image noise. Where $N$ is the pre-specified number of sampled light paths per pixel.\relax }}{32}{algocf.3}}
+\citation{glm}
+\citation{sdl2}
+\citation{dynet}
+\citation{cuda}
+\citation{tensorflow2015-whitepaper}
+\citation{maya}
+\citation{muller2018neural}
+\@writefile{toc}{\contentsline {chapter}{\numberline {4}Critical Evaluation}{33}{chapter.4}}
+\@writefile{lof}{\addvspace {10\p@ }}
+\@writefile{lot}{\addvspace {10\p@ }}
+\@writefile{loa}{\addvspace {10\p@ }}
+\newlabel{chap:evaluation}{{4}{33}{Critical Evaluation}{chapter.4}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {4.1}Experimental Setup}{33}{section.4.1}}
+\@writefile{toc}{\contentsline {section}{\numberline {4.2}Assessing the reduction in image Noise for Monte Carlo Path Tracing}{33}{section.4.2}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2.1}Quantifying the Reduction in Image Noise}{33}{subsection.4.2.1}}
+\newlabel{eq:mape}{{4.1}{33}{Quantifying the Reduction in Image Noise}{equation.4.2.1}{}}
+\citation{georgiev2018arnold}
+\citation{christensen2018renderman}
+\citation{hyperion}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2.2}Convergence for Learning Incident Radiance}{34}{subsection.4.2.2}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2.3}Hyper Parameter Tuning}{34}{subsection.4.2.3}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2.4}Reusing Trained ANN for Different Scenes}{34}{subsection.4.2.4}}
+\@writefile{toc}{\contentsline {section}{\numberline {4.3}From Memory Bound to Compute Bound}{34}{section.4.3}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.3.1}Memory Usage}{34}{subsection.4.3.1}}
+\citation{dahm2017learning}
+\citation{devastator}
+\citation{ren2013global}
+\citation{crockett1995parallel}
+\citation{alerstam2008parallel}
+\citation{fatahalian2009data}
+\citation{embarissingly_parallelizable}
+\citation{accelerated_ray_tracing}
+\citation{hyperion}
+\@writefile{toc}{\contentsline {subsubsection}{Expected Sarsa}{35}{section*.45}}
+\@writefile{toc}{\contentsline {subsubsection}{Neural-Q}{35}{section*.46}}
+\citation{raynal2012concurrent}
+\citation{cuda}
+\citation{cuda_c_guide}
+\citation{global_vs_shared}
+\citation{dahm2017learning}
+\citation{muller2018neural}
+\citation{alg:neural_q_path_tracer}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.3.2}Parallel Processing}{36}{subsection.4.3.2}}
+\@writefile{toc}{\contentsline {subsubsection}{Expected Sarsa}{36}{section*.47}}
+\citation{global_data_transfer}
+\citation{muller2018neural}
+\citation{keller2019integral}
+\citation{tensor_cores}
 \citation{dahm2017learning}
 \citation{muller2017practical}
 \citation{vorba2014line}
@@ -260,68 +310,19 @@
 \citation{zheng2018learning}
 \citation{dahm2017learning}
 \citation{keller2019integral}
-\newlabel{alg:neural_q_pathtracer}{{3}{32}{Addition 4: Decaying decaying $\epsilon $-\textit {greedy}}{algocfline.3}{}}
-\@writefile{loa}{\contentsline {algocf}{\numberline {3}{\ignorespaces Neural-Q forward path tracer. Given a camera position, scene geometry, epsilon and epsilon decay, this algorithm will render a single image using deep Q-learning loss to progressively reduce image noise. Where $N$ is the pre-specified number of sampled light paths per pixel.\relax }}{32}{algocf.3}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.2.6}Recent Advancements in Neural Importance Sampling for Monte Carlo Path Tracing}{32}{subsection.3.2.6}}
+\@writefile{toc}{\contentsline {subsubsection}{Neural-Q}{37}{section*.48}}
+\@writefile{toc}{\contentsline {section}{\numberline {4.4}Neural-Q Path Tracer Design}{37}{section.4.4}}
+\@writefile{toc}{\contentsline {section}{\numberline {4.5}Recent Advancements in Neural Importance Sampling for Monte Carlo Path Tracing}{37}{section.4.5}}
 \citation{muller2018neural}
 \citation{dinh2014nice}
 \citation{muller2018neural}
-\citation{glm}
-\citation{sdl2}
-\citation{dynet}
-\citation{cuda}
-\citation{tensorflow2015-whitepaper}
-\citation{maya}
 \citation{muller2018neural}
-\@writefile{toc}{\contentsline {chapter}{\numberline {4}Critical Evaluation}{35}{chapter.4}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {5}Conclusion}{39}{chapter.5}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
 \@writefile{loa}{\addvspace {10\p@ }}
-\newlabel{chap:evaluation}{{4}{35}{Critical Evaluation}{chapter.4}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {4.1}Experimental Setup}{35}{section.4.1}}
-\@writefile{toc}{\contentsline {section}{\numberline {4.2}Assessing the reduction in image Noise for Monte Carlo Path Tracing}{35}{section.4.2}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.2.1}Quantifying the Reduction in Image Noise}{35}{subsection.4.2.1}}
-\newlabel{eq:mape}{{4.1}{35}{Quantifying the Reduction in Image Noise}{equation.4.2.1}{}}
-\citation{georgiev2018arnold}
-\citation{christensen2018renderman}
-\citation{hyperion}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.2.2}Convergence for Learning Incident Radiance}{36}{subsection.4.2.2}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.2.3}Hyper Parameter Tuning}{36}{subsection.4.2.3}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.2.4}Reusing Trained ANN for Different Scenes}{36}{subsection.4.2.4}}
-\@writefile{toc}{\contentsline {section}{\numberline {4.3}From Memory Bound to Compute Bound}{36}{section.4.3}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.3.1}Memory Usage}{36}{subsection.4.3.1}}
-\citation{dahm2017learning}
-\citation{devastator}
-\citation{ren2013global}
-\citation{crockett1995parallel}
-\citation{alerstam2008parallel}
-\citation{fatahalian2009data}
-\citation{embarissingly_parallelizable}
-\citation{accelerated_ray_tracing}
-\citation{hyperion}
-\@writefile{toc}{\contentsline {subsubsection}{Expected Sarsa}{37}{section*.45}}
-\@writefile{toc}{\contentsline {subsubsection}{Neural-Q}{37}{section*.46}}
-\citation{raynal2012concurrent}
-\citation{cuda}
-\citation{cuda_c_guide}
-\citation{global_vs_shared}
-\citation{dahm2017learning}
-\citation{muller2018neural}
-\citation{alg:neural_q_path_tracer}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.3.2}Parallel Processing}{38}{subsection.4.3.2}}
-\@writefile{toc}{\contentsline {subsubsection}{Expected Sarsa}{38}{section*.47}}
-\citation{global_data_transfer}
-\citation{muller2018neural}
-\citation{keller2019integral}
-\citation{tensor_cores}
-\@writefile{toc}{\contentsline {subsubsection}{Neural-Q}{39}{section*.48}}
-\@writefile{toc}{\contentsline {section}{\numberline {4.4}Neural-Q Design}{39}{section.4.4}}
-\@writefile{toc}{\contentsline {chapter}{\numberline {5}Conclusion}{41}{chapter.5}}
-\@writefile{lof}{\addvspace {10\p@ }}
-\@writefile{lot}{\addvspace {10\p@ }}
-\@writefile{loa}{\addvspace {10\p@ }}
-\newlabel{chap:conclusion}{{5}{41}{Conclusion}{chapter.5}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.0.1}Plan}{41}{subsection.5.0.1}}
+\newlabel{chap:conclusion}{{5}{39}{Conclusion}{chapter.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.0.1}Plan}{39}{subsection.5.0.1}}
 \bibdata{dissertation}
 \bibcite{glm}{1}
 \bibcite{sdl2}{2}
@@ -388,8 +389,8 @@
 \bibcite{vorba2014line}{63}
 \bibcite{normals}{64}
 \bibcite{zheng2018learning}{65}
-\@writefile{toc}{\contentsline {chapter}{\numberline {A}An Example Appendix}{47}{appendix.A}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {A}An Example Appendix}{45}{appendix.A}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
 \@writefile{loa}{\addvspace {10\p@ }}
-\newlabel{appx:example}{{A}{47}{An Example Appendix}{appendix.A}{}}
+\newlabel{appx:example}{{A}{45}{An Example Appendix}{appendix.A}{}}
