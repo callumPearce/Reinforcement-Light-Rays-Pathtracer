@@ -137,6 +137,11 @@ Pat Hanrahan.
 \newblock Monte carlo path tracing.
 \newblock Stanford Graphics.
 
+\bibitem{global_vs_shared}
+Mark Harris.
+\newblock Using shared memory in cuda c/c++.
+\newblock NVIDIA Developer Blog.
+
 \bibitem{hermosilla2018deep}
 Pedro Hermosilla, Sebastian Maisch, Tobias Ritschel, and Timo Ropinski.
 \newblock Deep-learning the latent space of light transport.
@@ -234,6 +239,16 @@ Nvidia.
 \newblock Cuda toolkit.
 \newblock Develop, Optimize and Deploy GPU-accelerated Apps.
 
+\bibitem{tensor_cores}
+NVIDIA.
+\newblock Nvidia tensor cores.
+\newblock The Next Generation of Deep Learning.
+
+\bibitem{cuda_c_guide}
+NVIDIA.
+\newblock Nvidia cuda c programming guide, 2012.
+\newblock NVIDIA CUDA.
+
 \bibitem{nvidia_turing_architecture_whitepaper_2018}
 NVIDIA.
 \newblock {\em NVIDIA Turing Architecture Whitepaper}, 2018.
@@ -255,10 +270,21 @@ Ravi Ramamoorthi, John Anderson, Mark Meyer, and Derek Nowrouzezahrai.
 \newblock A theory of monte carlo visibility sampling.
 \newblock {\em ACM Transactions on Graphics (TOG)}, 31(5):121, 2012.
 
+\bibitem{raynal2012concurrent}
+Michel Raynal.
+\newblock {\em Concurrent programming: algorithms, principles, and
+  foundations}.
+\newblock Springer Science \& Business Media, 2012.
+
 \bibitem{ren2013global}
 Peiran Ren, Jiaping Wang, Minmin Gong, Stephen Lin, Xin Tong, and Baining Guo.
 \newblock Global illumination with radiance regression functions.
 \newblock {\em ACM Transactions on Graphics (TOG)}, 32(4):130, 2013.
+
+\bibitem{devastator}
+Barbara Robertson.
+\newblock Weighty matters, computer graphics world.
+\newblock Transformers: Revenge of the Fallen.
 
 \bibitem{scratchapixel_2015}
 Scratchapixel.

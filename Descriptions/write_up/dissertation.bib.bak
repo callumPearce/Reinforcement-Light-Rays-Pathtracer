@@ -42,7 +42,6 @@
   publisher={ACM}
 }
 
-
 % Converting a 2D grid to a 3D hemisphere of  uniform section areas
 @techreport{shirley1994notes,
   title={Notes on adaptive quadrature on the hemisphere},
@@ -471,6 +470,21 @@ journal={from Wolfram MathWorld}
     url={https://devblogs.nvidia.com/accelerated-ray-tracing-cuda/}
 }
 
+% Shared memory vs global
+@misc{global_vs_shared,
+    title={Using Shared Memory in CUDA C/C++},
+    author={Mark Harris},
+    note={NVIDIA Developer Blog},
+    url={hhttps://devblogs.nvidia.com/using-shared-memory-cuda-cc/}
+}
+
+% Global to CPU data transfer
+@misc{global_data_transfer,
+    title={How to Optimize Data Transfers in CUDA C/C++},
+    author={Mark Harris},
+    note={NVIDIA Developer Blog},
+    url={https://devblogs.nvidia.com/how-optimize-data-transfers-cuda-cc/}
+}
 
 % CUDA C programming guide
 @misc{cuda_c_guide,

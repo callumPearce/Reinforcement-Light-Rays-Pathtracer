@@ -281,10 +281,10 @@
 \@writefile{toc}{\contentsline {section}{\numberline {4.1}Experimental Setup}{35}{section.4.1}}
 \@writefile{toc}{\contentsline {section}{\numberline {4.2}Assessing the reduction in image Noise for Monte Carlo Path Tracing}{35}{section.4.2}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {4.2.1}Quantifying the Reduction in Image Noise}{35}{subsection.4.2.1}}
+\newlabel{eq:mape}{{4.1}{35}{Quantifying the Reduction in Image Noise}{equation.4.2.1}{}}
 \citation{georgiev2018arnold}
 \citation{christensen2018renderman}
 \citation{hyperion}
-\newlabel{eq:mape}{{4.1}{36}{Quantifying the Reduction in Image Noise}{equation.4.2.1}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {4.2.2}Convergence for Learning Incident Radiance}{36}{subsection.4.2.2}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {4.2.3}Hyper Parameter Tuning}{36}{subsection.4.2.3}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {4.2.4}Reusing Trained ANN for Different Scenes}{36}{subsection.4.2.4}}
@@ -299,16 +299,23 @@
 \citation{embarissingly_parallelizable}
 \citation{accelerated_ray_tracing}
 \citation{hyperion}
+\@writefile{toc}{\contentsline {subsubsection}{Expected Sarsa}{37}{section*.45}}
+\@writefile{toc}{\contentsline {subsubsection}{Neural-Q}{37}{section*.46}}
 \citation{raynal2012concurrent}
 \citation{cuda}
 \citation{cuda_c_guide}
 \citation{global_vs_shared}
 \citation{dahm2017learning}
-\citation{keller2019integral}
 \citation{muller2018neural}
-\citation{tensor_cores}
+\citation{alg:neural_q_path_tracer}
 \@writefile{toc}{\contentsline {subsection}{\numberline {4.3.2}Parallel Processing}{38}{subsection.4.3.2}}
-\@writefile{toc}{\contentsline {section}{\numberline {4.4}Neural-Q Design Discussion}{39}{section.4.4}}
+\@writefile{toc}{\contentsline {subsubsection}{Expected Sarsa}{38}{section*.47}}
+\citation{global_data_transfer}
+\citation{muller2018neural}
+\citation{keller2019integral}
+\citation{tensor_cores}
+\@writefile{toc}{\contentsline {subsubsection}{Neural-Q}{39}{section*.48}}
+\@writefile{toc}{\contentsline {section}{\numberline {4.4}Neural-Q Design}{39}{section.4.4}}
 \@writefile{toc}{\contentsline {chapter}{\numberline {5}Conclusion}{41}{chapter.5}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
@@ -341,41 +348,46 @@
 \bibcite{glassner2014principles}{23}
 \bibcite{greger1998irradiance}{24}
 \bibcite{stanford_graphics}{25}
-\bibcite{hermosilla2018deep}{26}
-\bibcite{jensen1996global}{27}
-\bibcite{kajiya1986rendering}{28}
-\bibcite{keller2019integral}{29}
-\bibcite{keller2016path}{30}
-\bibcite{konidaris2011value}{31}
-\bibcite{krivanek2014recent}{32}
-\bibcite{lecun2015deep}{33}
-\bibcite{lillicrap2015continuous}{34}
-\bibcite{mnih2013playing}{35}
-\bibcite{morokoff1995quasi}{36}
-\bibcite{muller2017practical}{37}
-\bibcite{muller2018neural}{38}
-\bibcite{nair2010rectified}{39}
-\bibcite{dynet}{40}
-\bibcite{cuda}{41}
-\bibcite{nvidia_turing_architecture_whitepaper_2018}{42}
-\bibcite{pan2006virtual}{43}
-\bibcite{pegoraro2008towards}{44}
-\bibcite{ramamoorthi2012theory}{45}
-\bibcite{ren2013global}{46}
-\bibcite{scratchapixel_2015}{47}
-\bibcite{shirley1994notes}{48}
-\bibcite{hyperion}{49}
-\bibcite{sutton1996generalization}{50}
-\bibcite{sutton2011reinforcement}{51}
-\bibcite{uther1998tree}{52}
-\bibcite{exploration_vs_exploitation}{53}
-\bibcite{deep_rl_function_approx}{54}
-\bibcite{introToRL}{55}
-\bibcite{mdp_dynamic_prog}{56}
-\bibcite{model_free_prediction}{57}
-\bibcite{vorba2014line}{58}
-\bibcite{normals}{59}
-\bibcite{zheng2018learning}{60}
+\bibcite{global_vs_shared}{26}
+\bibcite{hermosilla2018deep}{27}
+\bibcite{jensen1996global}{28}
+\bibcite{kajiya1986rendering}{29}
+\bibcite{keller2019integral}{30}
+\bibcite{keller2016path}{31}
+\bibcite{konidaris2011value}{32}
+\bibcite{krivanek2014recent}{33}
+\bibcite{lecun2015deep}{34}
+\bibcite{lillicrap2015continuous}{35}
+\bibcite{mnih2013playing}{36}
+\bibcite{morokoff1995quasi}{37}
+\bibcite{muller2017practical}{38}
+\bibcite{muller2018neural}{39}
+\bibcite{nair2010rectified}{40}
+\bibcite{dynet}{41}
+\bibcite{cuda}{42}
+\bibcite{tensor_cores}{43}
+\bibcite{cuda_c_guide}{44}
+\bibcite{nvidia_turing_architecture_whitepaper_2018}{45}
+\bibcite{pan2006virtual}{46}
+\bibcite{pegoraro2008towards}{47}
+\bibcite{ramamoorthi2012theory}{48}
+\bibcite{raynal2012concurrent}{49}
+\bibcite{ren2013global}{50}
+\bibcite{devastator}{51}
+\bibcite{scratchapixel_2015}{52}
+\bibcite{shirley1994notes}{53}
+\bibcite{hyperion}{54}
+\bibcite{sutton1996generalization}{55}
+\bibcite{sutton2011reinforcement}{56}
+\bibcite{uther1998tree}{57}
+\bibcite{exploration_vs_exploitation}{58}
+\bibcite{deep_rl_function_approx}{59}
+\bibcite{introToRL}{60}
+\bibcite{mdp_dynamic_prog}{61}
+\bibcite{model_free_prediction}{62}
+\bibcite{vorba2014line}{63}
+\bibcite{normals}{64}
+\bibcite{zheng2018learning}{65}
 \@writefile{toc}{\contentsline {chapter}{\numberline {A}An Example Appendix}{47}{appendix.A}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
