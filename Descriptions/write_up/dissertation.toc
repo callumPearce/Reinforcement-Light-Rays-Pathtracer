@@ -50,13 +50,13 @@
 \contentsline {subsection}{\numberline {4.2.4}Reusing Trained ANN for Different Scenes}{34}{subsection.4.2.4}
 \contentsline {section}{\numberline {4.3}From Memory Bound to Compute Bound}{34}{section.4.3}
 \contentsline {subsection}{\numberline {4.3.1}Memory Usage}{34}{subsection.4.3.1}
-\contentsline {subsubsection}{Expected Sarsa}{35}{section*.45}
-\contentsline {subsubsection}{Neural-Q}{35}{section*.46}
-\contentsline {subsection}{\numberline {4.3.2}Parallel Processing}{36}{subsection.4.3.2}
-\contentsline {subsubsection}{Expected Sarsa}{36}{section*.47}
-\contentsline {subsubsection}{Neural-Q}{37}{section*.48}
-\contentsline {section}{\numberline {4.4}Neural-Q Path Tracer Design}{37}{section.4.4}
-\contentsline {section}{\numberline {4.5}Recent Advancements in Neural Importance Sampling for Monte Carlo Path Tracing}{37}{section.4.5}
-\contentsline {chapter}{\numberline {5}Conclusion}{39}{chapter.5}
-\contentsline {subsection}{\numberline {5.0.1}Plan}{39}{subsection.5.0.1}
-\contentsline {chapter}{\numberline {A}An Example Appendix}{45}{appendix.A}
+\contentsline {subsubsection}{Expected Sarsa}{36}{section*.46}
+\contentsline {subsubsection}{Neural-Q}{36}{section*.47}
+\contentsline {subsection}{\numberline {4.3.2}Parallel Processing}{37}{subsection.4.3.2}
+\contentsline {subsubsection}{Expected Sarsa}{37}{section*.48}
+\contentsline {subsubsection}{Neural-Q}{38}{section*.49}
+\contentsline {section}{\numberline {4.4}Neural-Q Path Tracer Design}{38}{section.4.4}
+\contentsline {section}{\numberline {4.5}Recent Advancements in Neural Importance Sampling for Monte Carlo Path Tracing}{38}{section.4.5}
+\contentsline {chapter}{\numberline {5}Conclusion}{41}{chapter.5}
+\contentsline {subsection}{\numberline {5.0.1}Plan}{41}{subsection.5.0.1}
+\contentsline {chapter}{\numberline {A}An Example Appendix}{47}{appendix.A}

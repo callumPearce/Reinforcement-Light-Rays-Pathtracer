@@ -15,7 +15,7 @@ def mape_score(ground_truth, prediction):
     p_arr = np.asarray(imread(prediction, mode='RGB'), dtype=np.intc)
 
     # Compute the score
-    score = np.sum(np.abs(gt_arr/255 - p_arr/255)/((gt_arr+0.01)/255))
+    score = np.sum(np.abs((gt_arr/255) - (p_arr/255))/((gt_arr+0.01)/255))
     score /= len(gt_arr) * len(gt_arr[0]) * len(gt_arr[0][0])
 
     # Round to 4 decimal places

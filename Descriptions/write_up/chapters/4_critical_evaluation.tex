@@ -18,8 +18,6 @@ I developed four different scenes using Maya \cite{maya} and created a custom ob
 
 \section{Assessing the reduction in image Noise for Monte Carlo Path Tracing}
 
-
-
 \subsection{Quantifying the Reduction in Image Noise}
 
 To quantify the amount noise within images rendered by a default forward path tracer, the Expected Sarsa path tracer, and the Neural-Q path tracer, I will use the Mean Absolute Percentage Error (MAPE) given in Equation \ref{eq:mape} \cite{muller2018neural}.
@@ -41,12 +39,20 @@ The MAPE value can therefore be used to quantify the average difference between 
 
 While the MAPE quantifies the overall amount of noise of the image rendered, it does not specify which pixel values in particular have a a high error. I have represented this visually by taking the average squared error across the RGB channels between corresponding pixels in the image being evaluated and the reference image. The image produced highlights failure cases for both the Expected Sarsa and Neural-Q path tracers. 
 
-\ref{fig:mape_results_grid}
+
+\begin{figure}[hbtp]
+\begin{center}
+\includegraphics[width=0.9\textwidth]{images/noise_reduction.png}    
+\end{center}
+\caption{A comparison of the default forward path tracer, Expected Sarsa path tracer, and the Neural-Q path tracer of their image noise for four different rendered scenes. All scenes were rendered with 128 samples per pixel. The score under each column in an image row corresponds to the MAPE score of for each rendering technique for the particular scene.}
+\label{fig:mape_results_grid}
+\end{figure}
 
 \subsection{Convergence for Learning Incident Radiance}
 \begin{itemize}
 \item Path length reduction
 \item Training curve to show convergence time, can compare the number of zero contribution light paths as when this peaks the algorithm has converged
+\item 1SPP taking the max direction and outputting the image to see which has converged on where the light is
 \end{itemize}
 
 \subsection{Hyper Parameter Tuning}
