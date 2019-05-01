@@ -101,7 +101,7 @@ int main (int argc, char** argv) {
     // Cornell Box: vec4(0.f,0.f, -3.f, 1.f);
     // Complex light: vec4(-1.f, -1.f, -0.4f, 1.f);
     // Archway: vec4(-1.f, 0.2f, -0.99f, 1.f)
-    Camera camera = Camera(vec4(0.f,0.f, -3.f, 1.f));
+    Camera camera = Camera(vec4(-1.f, 0.2f, -0.99f, 1.f));
     // camera.rotate_right(3.14f);
     // camera.rotate_down(0.0f);
 
