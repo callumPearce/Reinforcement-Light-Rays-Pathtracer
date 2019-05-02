@@ -71,6 +71,20 @@ void sample_batch_ray_directions_importance_sample(
     int batch_start_idx
 );
 
+__device__
+void sample_max_direction(
+    curandState* d_rand_state,
+    unsigned int* ray_direction_indices,
+    float* current_qs_device,
+    float* ray_directions,
+    float* ray_locations,
+    float* ray_normals,
+    float* ray_throughputs,
+    unsigned int* ray_states,
+    int batch_start_idx,
+    int batch_elem
+);
+
 // Sample random directions to further trace the rays in
 __global__
 void sample_next_ray_directions_randomly(

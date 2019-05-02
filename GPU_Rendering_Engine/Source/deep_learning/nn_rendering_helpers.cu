@@ -312,7 +312,7 @@ void sample_batch_ray_directions_importance_sample(
     // Get the index of the ray in the current batch
     int batch_elem =  blockIdx.x * blockDim.x + threadIdx.x;
 
-    importance_sample_direction(
+    sample_max_direction(
         d_rand_state,
         ray_direction_indices,
         q_values_device,
@@ -485,6 +485,70 @@ void importance_sample_direction(
 
             break;
         }
+    }
+}
+
+__device__
+void sample_max_direction(
+    curandState* d_rand_state,
+    unsigned int* ray_direction_indices,
+    float* current_qs_device,
+    float* ray_directions,
+    float* ray_locations,
+    float* ray_normals,
+    float* ray_throughputs,
+    unsigned int* ray_states,
+    int batch_start_idx,
+    int batch_elem
+){
+    
+    if (batch_start_idx + batch_elem >= SCREEN_HEIGHT*SCREEN_WIDTH) return;
+
+    // Sample the random number to be used for eta-greedy policy
+    float rv = curand_uniform(&d_rand_state[ batch_start_idx + batch_elem ]);
+    
+    // The total number of actions to choose from
+    const int action_count = GRID_RESOLUTION*GRID_RESOLUTION;
+
+    // Get max q index
+    int max_idx = 0;
+    float max_q = 0.f;
+    for (int i = 0; i < action_count; i++){
+        float temp = current_qs_device[batch_elem*action_count + i];
+        if (temp > max_q){
+            max_idx = i;
+            max_q = temp;
+        }
+    }
+
+    vec3 dir = sample_ray_for_grid_index( 
+        d_rand_state,
+        max_idx,
+        ray_normals,
+        ray_locations,
+        (batch_elem+batch_start_idx)
+    );
+    vec3 normal(
+        ray_normals[(batch_start_idx+batch_elem)*3], 
+        ray_normals[(batch_start_idx+batch_elem)*3 + 1], 
+        ray_normals[(batch_start_idx+batch_elem)*3 + 2]
+    );
+
+    float cos_theta = dot(normal, dir);
+
+    // Update the 3D stored direction
+    ray_directions[(batch_start_idx+batch_elem)*3]     = dir.x;
+    ray_directions[(batch_start_idx+batch_elem)*3 + 1] = dir.y; 
+    ray_directions[(batch_start_idx+batch_elem)*3 + 2] = dir.z;
+
+    // Update throughput with new sampled angle
+    if ( ray_states[(batch_start_idx+batch_elem)] == 0 ){
+
+        float pdf = RHO*2.f;
+
+        ray_throughputs[(batch_start_idx+batch_elem)*3    ] = ((ray_throughputs[(batch_start_idx+batch_elem)*3    ] * cos_theta)/pdf);
+        ray_throughputs[(batch_start_idx+batch_elem)*3 + 1] = ((ray_throughputs[(batch_start_idx+batch_elem)*3 + 1] * cos_theta)/pdf);
+        ray_throughputs[(batch_start_idx+batch_elem)*3 + 2] = ((ray_throughputs[(batch_start_idx+batch_elem)*3 + 2] * cos_theta)/pdf);
     }
 }
 

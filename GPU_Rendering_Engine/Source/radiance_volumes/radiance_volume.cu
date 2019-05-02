@@ -244,7 +244,7 @@ vec4 RadianceVolume::sample_direction_from_radiance_distribution(curandState* d_
 
 // Samples a direction from the radiance volume using binary search for the sector
 __device__
-vec4 RadianceVolume::sample_max_direction_from_radiance_distribution(curandState* d_rand_state, int pixel_x, int pixel_y, int& sector_x, int& sector_y){
+vec4 RadianceVolume::sample_max_direction_from_radiance_distribution(curandState* d_rand_state, int pixel_x, int pixel_y, int& sector_x, int& sector_y, float& pdf){
     
     // Find max val in radiance grid
     int max_idx = 0;
@@ -255,12 +255,24 @@ vec4 RadianceVolume::sample_max_direction_from_radiance_distribution(curandState
             max_idx = i;
         }
     }
+
     // Found the sector at location max
     sector_x = (int)max_idx/GRID_RESOLUTION;
     sector_y = max_idx - (sector_x*GRID_RESOLUTION);
+
     // Randomly sample within the sector
     float rx = curand_uniform(&d_rand_state[pixel_x*SCREEN_HEIGHT + pixel_y]);
     float ry = curand_uniform(&d_rand_state[pixel_x*SCREEN_HEIGHT + pixel_y]);
+
+    // if (rx > 0.98){
+    //     return this->sample_direction_from_radiance_distribution(d_rand_state, pixel_x, pixel_y, sector_x, sector_y, pdf);
+    // }
+
+    // pdf
+    float max_pdf = this->radiance_distribution[ max_idx ];
+    float last_pdf = max_idx == 0 ? this->radiance_distribution[ max_idx ] : this->radiance_distribution[ max_idx-1 ];
+    pdf = RHO * ((max_pdf-last_pdf) / GRID_RHO);
+
     return vec4(convert_grid_pos_to_direction(sector_x+rx, sector_y+ry, vec3(this->position), this->transformation_matrix), 1.f);
 }
 

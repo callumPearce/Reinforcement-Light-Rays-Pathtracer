@@ -91,7 +91,7 @@ class RadianceVolume{
 
         // Samples a direction from the radiance volume using binary search for the sector
         __device__
-        vec4 sample_max_direction_from_radiance_distribution(curandState* d_rand_state, int pixel_x, int pixel_y, int& sector_x, int& sector_y);
+        vec4 sample_max_direction_from_radiance_distribution(curandState* d_rand_state, int pixel_x, int pixel_y, int& sector_x, int& sector_y, float& pdf);
 
         // Performs a temporal difference update for the current radiance volume for the incident
         // radiance in the sector specified with the intersection surfaces irradiance value
