@@ -3,6 +3,7 @@ import numpy as np
 import sys
 import os
 
+plt.rcParams.update({'font.size': 22})
 
 def read_data_nn_training_stats(filename, avg_path_lengths, training_loss, zero_contrib_paths):
 
