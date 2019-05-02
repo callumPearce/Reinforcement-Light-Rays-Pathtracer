@@ -156,10 +156,12 @@ void build_surfaces(std::vector<Surface>& surfaces, std::vector<float>& vertices
         // Red (FOR ARCHWAY SCENE)
         if(i > 80){
             mat = Material(vec3(0.75f, 0.15f, 0.15f));
+            return;
         }
         // Blue 
         if( 11 < i && i < 24){
             mat = Material(vec3(0.15f, 0.15f, 0.75f));
+            return;
         }
 
         // Create the surface
