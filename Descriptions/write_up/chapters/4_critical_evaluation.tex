@@ -77,15 +77,19 @@ By visual observation of the rendered images \ref{fig:mape_results_grid}, the ty
 
 \begin{figure}[h]
 \centering
-\minipage{0.4\textwidth}
+\minipage{0.32\textwidth}
+  \includegraphics[width=\textwidth]{images/renders/max_dir/1_spp_default.png}   
+  \subcaption{Default}\label{fig:default_1_spp}
+\endminipage\hspace{0.1em}
+\minipage{0.32\textwidth}
   \includegraphics[width=\textwidth]{images/renders/max_dir/1_spp_sarsa_max_dir.png}   
   \subcaption{Expected Sarsa}\label{fig:sarsa_1_spp}
-\endminipage\hspace{5em}
-\minipage{0.4\textwidth}
+\endminipage\hspace{0.1em}
+\minipage{0.32\textwidth}
   \includegraphics[width=\textwidth]{images/renders/max_dir/1_spp_nn_max_dir.png}
   \subcaption{Neural-Q}\label{fig:neural_q_1_spp}
 \endminipage
-\caption{The Door Room scene rendered using only 1 sampled light path per pixel with the default path tracer, a trained Expected Sarsa path tracer, and a trained Neural-Q path tracer. The single sample for the Expected Sarsa and Neural-Q renders is constructed by reflecting the light path in the direction of highest estimated radiance upon every intersection point, until the light is intersected.}
+\caption{The Door Room scene rendered using only 1 sampled light path per pixel with the default path tracer, a trained Expected Sarsa path tracer, and a trained Neural-Q path tracer. The light path through each pixel using the default path tracer is constructed according to Algorithm \ref{alg:default_path_tracer}. Whereas, the single sample for each pixel in the Expected Sarsa and Neural-Q renders is constructed by reflecting the light path in the direction of highest estimated radiance upon every intersection point, until the light is intersected.}
 \label{fig:1_spp_max_dir}
 \end{figure}
 

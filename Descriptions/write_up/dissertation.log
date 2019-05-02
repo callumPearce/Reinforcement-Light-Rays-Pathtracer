@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.10.2)  3 MAY 2019 00:15
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.10.2)  3 MAY 2019 00:25
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1128,12 +1128,16 @@ Im-por-tance Sam-pling Light Paths[][] []
 ] (./dissertation.lof
 Underfull \vbox (badness 2856) has occurred while \output is active []
 
- [5])
+ [5]
+
+LaTeX Warning: Reference `alg:default_path_tracer' on page vi undefined on inpu
+t line 23.
+
+)
 \tf@lof=\write7
 \openout7 = `dissertation.lof'.
 
-
-[6] (./dissertation.lot)
+ [6] (./dissertation.lot)
 \tf@lot=\write8
 \openout8 = `dissertation.lot'.
 
@@ -1178,7 +1182,7 @@ LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
 
 ] (./chapters/1_conceptual_background.tex
 Chapter 1.
-<images/path_tracing.png, id=361, 1927.2pt x 1084.05pt>
+<images/path_tracing.png, id=362, 1927.2pt x 1084.05pt>
 File: images/path_tracing.png Graphic file (type png)
 
 <use images/path_tracing.png>
@@ -1197,7 +1201,7 @@ l.58
       [1
 
  <./images/path_tracing.png>]
-<images/renders/cornell/direct_light.png, id=371, 719.68875pt x 720.6925pt>
+<images/renders/cornell/direct_light.png, id=372, 719.68875pt x 720.6925pt>
 File: images/renders/cornell/direct_light.png Graphic file (type png)
 
 <use images/renders/cornell/direct_light.png>
@@ -1205,7 +1209,7 @@ Package pdftex.def Info: images/renders/cornell/direct_light.png used on input
 line 62.
 (pdftex.def)             Requested size: 202.81099pt x 203.09015pt.
 
-<images/renders/cornell/2048_300_default.png, id=372, 722.7pt x 722.7pt>
+<images/renders/cornell/2048_300_default.png, id=373, 722.7pt x 722.7pt>
 File: images/renders/cornell/2048_300_default.png Graphic file (type png)
 
 <use images/renders/cornell/2048_300_default.png>
@@ -1222,7 +1226,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 80--100
 
  []
 
-<images/renders/simple_room/default_16.png, id=377, 722.7pt x 722.7pt>
+<images/renders/simple_room/default_16.png, id=378, 722.7pt x 722.7pt>
 File: images/renders/simple_room/default_16.png Graphic file (type png)
 
 <use images/renders/simple_room/default_16.png>
@@ -1230,7 +1234,7 @@ Package pdftex.def Info: images/renders/simple_room/default_16.png used on inpu
 t line 104.
 (pdftex.def)             Requested size: 202.81099pt x 202.80675pt.
 
-<images/renders/simple_room/reinforcement_16.png, id=378, 722.7pt x 722.7pt>
+<images/renders/simple_room/reinforcement_16.png, id=379, 722.7pt x 722.7pt>
 File: images/renders/simple_room/reinforcement_16.png Graphic file (type png)
 
 <use images/renders/simple_room/reinforcement_16.png>
@@ -1253,7 +1257,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 209--217
 
  []
 
-<images/light_blocker.png, id=402, 1053.9375pt x 1005.7575pt>
+<images/light_blocker.png, id=403, 1053.9375pt x 1005.7575pt>
 File: images/light_blocker.png Graphic file (type png)
 
 <use images/light_blocker.png>
@@ -1310,35 +1314,35 @@ Overfull \hbox (6.68353pt too wide) in paragraph at lines 242--250
 [] 
  []
 
-<images/rendering_equation.png, id=499, 516.93124pt x 142.5325pt>
+<images/rendering_equation.png, id=500, 516.93124pt x 142.5325pt>
 File: images/rendering_equation.png Graphic file (type png)
 
 <use images/rendering_equation.png>
 Package pdftex.def Info: images/rendering_equation.png used on input line 256.
 (pdftex.def)             Requested size: 318.66948pt x 87.869pt.
  [10 <./images/rendering_equation.png>]
-<images/diffuse_brdf.png, id=512, 284.06125pt x 142.5325pt>
+<images/diffuse_brdf.png, id=513, 284.06125pt x 142.5325pt>
 File: images/diffuse_brdf.png Graphic file (type png)
 
 <use images/diffuse_brdf.png>
 Package pdftex.def Info: images/diffuse_brdf.png used on input line 267.
 (pdftex.def)             Requested size: 145.68144pt x 73.09947pt.
 
-<images/specular_brdf.png, id=513, 284.06125pt x 142.5325pt>
+<images/specular_brdf.png, id=514, 284.06125pt x 142.5325pt>
 File: images/specular_brdf.png Graphic file (type png)
 
 <use images/specular_brdf.png>
 Package pdftex.def Info: images/specular_brdf.png used on input line 271.
 (pdftex.def)             Requested size: 145.68144pt x 73.09947pt.
 
-<images/diffuse_sculpture.jpeg, id=515, 642.4pt x 481.8pt>
+<images/diffuse_sculpture.jpeg, id=516, 642.4pt x 481.8pt>
 File: images/diffuse_sculpture.jpeg Graphic file (type jpg)
 
 <use images/diffuse_sculpture.jpeg>
 Package pdftex.def Info: images/diffuse_sculpture.jpeg used on input line 283.
 (pdftex.def)             Requested size: 145.68144pt x 109.26045pt.
 
-<images/specular_sculpture.jpg, id=516, 90.8193pt x 60.225pt>
+<images/specular_sculpture.jpg, id=517, 90.8193pt x 60.225pt>
 File: images/specular_sculpture.jpg Graphic file (type jpg)
 
 <use images/specular_sculpture.jpg>
@@ -1366,7 +1370,7 @@ Overfull \hbox (5.65875pt too wide) in paragraph at lines 324--328
  []
 
 
-<images/renders/noise_reduction_default/increasing_samples.png, id=539, 573.141
+<images/renders/noise_reduction_default/increasing_samples.png, id=540, 573.141
 25pt x 255.95625pt>
 File: images/renders/noise_reduction_default/increasing_samples.png Graphic fil
 e (type png)
@@ -1388,7 +1392,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 369--370
  []
 
 [13 <./images/renders/noise_reduction_default/increasing_samples.png>]
-<images/MDP.png, id=567, 615.29875pt x 242.9075pt>
+<images/MDP.png, id=568, 615.29875pt x 242.9075pt>
 File: images/MDP.png Graphic file (type png)
  <use images/MDP.png>
 Package pdftex.def Info: images/MDP.png used on input line 389.
@@ -1436,7 +1440,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 22--23
  []
 
 
-<images/renders/hemispheres/irradiance_volume.png, id=668, 687.56876pt x 687.56
+<images/renders/hemispheres/irradiance_volume.png, id=669, 687.56876pt x 687.56
 876pt>
 File: images/renders/hemispheres/irradiance_volume.png Graphic file (type png)
  <use images/renders/hemispheres/irradiance_volume.png>
@@ -1452,7 +1456,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 32--33
 
  []
 
-<images/renders/simple_room/geometry.png, id=671, 886.31125pt x 885.3075pt>
+<images/renders/simple_room/geometry.png, id=672, 886.31125pt x 885.3075pt>
 File: images/renders/simple_room/geometry.png Graphic file (type png)
 
 <use images/renders/simple_room/geometry.png>
@@ -1460,7 +1464,7 @@ Package pdftex.def Info: images/renders/simple_room/geometry.png used on input
 line 37.
 (pdftex.def)             Requested size: 145.68144pt x 145.51556pt.
 
-<images/renders/simple_room/voronoi.png, id=672, 722.7pt x 722.7pt>
+<images/renders/simple_room/voronoi.png, id=673, 722.7pt x 722.7pt>
 File: images/renders/simple_room/voronoi.png Graphic file (type png)
 
 <use images/renders/simple_room/voronoi.png>
@@ -1495,14 +1499,14 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[24] <images/uniform_pdf.png, id=722, 284.06125pt x 147.55125pt>
+[24] <images/uniform_pdf.png, id=723, 284.06125pt x 147.55125pt>
 File: images/uniform_pdf.png Graphic file (type png)
 
 <use images/uniform_pdf.png>
 Package pdftex.def Info: images/uniform_pdf.png used on input line 131.
 (pdftex.def)             Requested size: 145.68144pt x 75.6734pt.
 
-<images/not_uniform_pdf.png, id=723, 284.06125pt x 147.55125pt>
+<images/not_uniform_pdf.png, id=724, 284.06125pt x 147.55125pt>
 File: images/not_uniform_pdf.png Graphic file (type png)
 
 <use images/not_uniform_pdf.png>
@@ -1626,7 +1630,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 38--39
 
  []
 
-<images/noise_reduction.png, id=876, 570.4512pt x 820.2645pt>
+<images/noise_reduction.png, id=877, 570.4512pt x 820.2645pt>
 File: images/noise_reduction.png Graphic file (type png)
 
 <use images/noise_reduction.png>
@@ -1636,7 +1640,7 @@ Package pdftex.def Info: images/noise_reduction.png used on input line 44.
 
 LaTeX Warning: Float too large for page by 14.36754pt on input line 48.
 
-<images/noise_diff.png, id=882, 538.1706pt x 203.8014pt>
+<images/noise_diff.png, id=883, 538.1706pt x 203.8014pt>
 File: images/noise_diff.png Graphic file (type png)
 
 <use images/noise_diff.png>
@@ -1646,7 +1650,7 @@ Package pdftex.def Info: images/noise_diff.png used on input line 56.
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-<images/training_curves.png, id=885, 419.4069pt x 331.4784pt>
+<images/training_curves.png, id=886, 419.4069pt x 331.4784pt>
 File: images/training_curves.png Graphic file (type png)
 
 <use images/training_curves.png>
@@ -1656,98 +1660,114 @@ Package pdftex.def Info: images/training_curves.png used on input line 71.
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-<images/renders/max_dir/1_spp_sarsa_max_dir.png, id=886, 722.7pt x 722.7pt>
+<images/renders/max_dir/1_spp_default.png, id=887, 722.7pt x 722.7pt>
+File: images/renders/max_dir/1_spp_default.png Graphic file (type png)
+
+<use images/renders/max_dir/1_spp_default.png>
+Package pdftex.def Info: images/renders/max_dir/1_spp_default.png used on input
+ line 81.
+(pdftex.def)             Requested size: 145.68144pt x 145.67326pt.
+
+<images/renders/max_dir/1_spp_sarsa_max_dir.png, id=888, 722.7pt x 722.7pt>
 File: images/renders/max_dir/1_spp_sarsa_max_dir.png Graphic file (type png)
 
 <use images/renders/max_dir/1_spp_sarsa_max_dir.png>
 Package pdftex.def Info: images/renders/max_dir/1_spp_sarsa_max_dir.png used on
- input line 81.
-(pdftex.def)             Requested size: 182.09486pt x 182.09709pt.
+ input line 85.
+(pdftex.def)             Requested size: 145.68144pt x 145.67326pt.
 
-<images/renders/max_dir/1_spp_nn_max_dir.png, id=887, 722.7pt x 722.7pt>
+<images/renders/max_dir/1_spp_nn_max_dir.png, id=889, 722.7pt x 722.7pt>
 File: images/renders/max_dir/1_spp_nn_max_dir.png Graphic file (type png)
 
 <use images/renders/max_dir/1_spp_nn_max_dir.png>
 Package pdftex.def Info: images/renders/max_dir/1_spp_nn_max_dir.png used on in
-put line 85.
-(pdftex.def)             Requested size: 182.09486pt x 182.09709pt.
+put line 89.
+(pdftex.def)             Requested size: 145.68144pt x 145.67326pt.
+
+
+LaTeX Warning: Reference `alg:default_path_tracer' on page 34 undefined on inpu
+t line 92.
+
+
+LaTeX Warning: Reference `alg:default_path_tracer' on page 34 undefined on inpu
+t line 92.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 111--112
-
- []
-
-[34] [35 <./images/noise_reduction.png>]
-
-LaTeX Warning: Reference `fig:more_irradiance_volumes' on page 36 undefined on 
-input line 115.
-
-
-LaTeX Warning: Reference `fig:voronoi_difference' on page 36 undefined on input
- line 115.
 
 
 Underfull \hbox (badness 10000) in paragraph at lines 115--116
 
  []
 
+[34] [35 <./images/noise_reduction.png>]
 
-LaTeX Warning: Reference `' on page 36 undefined on input line 123.
+LaTeX Warning: Reference `fig:more_irradiance_volumes' on page 36 undefined on 
+input line 119.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 123--124
+LaTeX Warning: Reference `fig:voronoi_difference' on page 36 undefined on input
+ line 119.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 119--120
+
+ []
+
+
+LaTeX Warning: Reference `' on page 36 undefined on input line 127.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 127--128
 
  []
 
 [36 <./images/noise_diff.png>]
 
 LaTeX Warning: Reference `fig:more_directions' on page 37 undefined on input li
-ne 133.
+ne 137.
 
 [37 <./images/training_curves.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 137--138
-
- []
-
-
 Underfull \hbox (badness 10000) in paragraph at lines 141--142
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 143--144
+Underfull \hbox (badness 10000) in paragraph at lines 145--146
 
  []
 
-[38 <./images/renders/max_dir/1_spp_sarsa_max_dir.png> <./images/renders/max_di
-r/1_spp_nn_max_dir.png>]
+
+Underfull \hbox (badness 10000) in paragraph at lines 147--148
+
+ []
+
+[38 <./images/renders/max_dir/1_spp_default.png> <./images/renders/max_dir/1_sp
+p_sarsa_max_dir.png> <./images/renders/max_dir/1_spp_nn_max_dir.png>]
 
 LaTeX Warning: Citation `alg:neural_q_path_tracer' on page 39 undefined on inpu
-t line 148.
+t line 152.
 
 
 LaTeX Warning: Reference `fig:memory_transfer' on page 39 undefined on input li
-ne 148.
+ne 152.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 148--149
+Underfull \hbox (badness 10000) in paragraph at lines 152--153
 
  []
 
 
 LaTeX Warning: Citation `global_data_transfer' on page 39 undefined on input li
-ne 152.
+ne 156.
 
 [39]
-Underfull \hbox (badness 10000) in paragraph at lines 166--167
+Underfull \hbox (badness 10000) in paragraph at lines 170--171
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 168--169
+Underfull \hbox (badness 10000) in paragraph at lines 172--173
 
  []
 
@@ -1795,10 +1815,10 @@ LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
 ### simple group (level 1) entered at line 1061 ({)
 ### bottom level 
 Here is how much of TeX's memory you used:
- 33648 strings out of 492995
- 762366 string characters out of 6132704
- 1149669 words of memory out of 5000000
- 36268 multiletter control sequences out of 15000+600000
+ 33656 strings out of 492995
+ 762629 string characters out of 6132704
+ 1149990 words of memory out of 5000000
+ 36275 multiletter control sequences out of 15000+600000
  17594 words of font info for 66 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  72i,28n,98p,2501b,25865s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -1826,10 +1846,10 @@ ve/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texliv
 e/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt8.pfb></usr/local/texlive/
 2017/texmf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb></usr/local/texl
 ive/2017/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on dissertation.pdf (69 pages, 18332724 bytes).
+Output written on dissertation.pdf (69 pages, 18558538 bytes).
 PDF statistics:
- 1177 PDF objects out of 1200 (max. 8388607)
- 1024 compressed objects within 11 object streams
+ 1179 PDF objects out of 1200 (max. 8388607)
+ 1025 compressed objects within 11 object streams
  298 named destinations out of 1000 (max. 500000)
- 301 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 306 words of extra memory for PDF output out of 10000 (max. 10000000)
 
