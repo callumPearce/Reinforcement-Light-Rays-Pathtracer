@@ -37,6 +37,8 @@ F_i & The $i$th pixel value in the image whose noise is being quantified\\
 
 The MAPE value can therefore be used to quantify the average difference between pixel values from an image rendered by each rendering technique with the same number of sampled light rays per pixel and the reference image. Therefore, a lower MAPE score is desirable for a rendered image as it means the image has a lower amount of noise.\\
 
+%TODO Table presenting memory usage between two techniques for each scene & batch size needs to be mentioned somewhere
+
 \begin{figure}[hbtp]
 \begin{center}
 \includegraphics[width=0.9\textwidth]{images/noise_reduction.png}    
@@ -63,6 +65,29 @@ By visual observation of the rendered images \ref{fig:mape_results_grid}, the ty
 \item Training curve to show convergence time, can compare the number of zero contribution light paths as when this peaks the algorithm has converged
 \item 1SPP taking the max direction and outputting the image to see which has converged on where the light is
 \end{itemize}
+
+\begin{figure}[h]
+\begin{center}
+\includegraphics[width=0.6\textwidth]{images/training_curves.png}    
+\end{center}
+\caption{Training curves for the average path length and number of zero contribution light paths when rendering the Shelter scene for 100 epochs, using both the Expected Sarsa and Neural-Q path tracers. An epoch represents one sampled light ray through every pixel in the image. The average path length is the number reflections a light path takes before intersecting with a light source. A zero contribution light path is one which contributes almost zero colour to the final image.}
+\label{fig:training_curves_archway}
+\end{figure}
+
+
+\begin{figure}[h]
+\centering
+\minipage{0.4\textwidth}
+  \includegraphics[width=\textwidth]{images/renders/max_dir/1_spp_sarsa_max_dir.png}   
+  \subcaption{Expected Sarsa}\label{fig:sarsa_1_spp}
+\endminipage\hspace{5em}
+\minipage{0.4\textwidth}
+  \includegraphics[width=\textwidth]{images/renders/max_dir/1_spp_nn_max_dir.png}
+  \subcaption{Neural-Q}\label{fig:neural_q_1_spp}
+\endminipage
+\caption{The Door Room scene rendered using only 1 sampled light path per pixel with the default path tracer, a trained Expected Sarsa path tracer, and a trained Neural-Q path tracer. The single sample for the Expected Sarsa and Neural-Q renders is constructed by reflecting the light path in the direction of highest estimated radiance upon every intersection point, until the light is intersected.}
+\label{fig:1_spp_max_dir}
+\end{figure}
 
 \subsection{Hyper Parameter Tuning}
 \begin{itemize}

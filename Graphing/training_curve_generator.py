@@ -3,7 +3,7 @@ import numpy as np
 import sys
 import os
 
-plt.rcParams.update({'font.size': 22})
+plt.rcParams.update({'font.size': 28})
 
 def read_data_nn_training_stats(filename, avg_path_lengths, training_loss, zero_contrib_paths):
 
@@ -34,7 +34,7 @@ def plot_avg_path_lengths(avg_path_lengths):
     plt.plot(x_data, y_data)
     plt.xlabel("Epochs")
     plt.ylabel("Average Path Length")
-    plt.title("Average Path Length for Neural-Q Path Tracer")
+    #plt.title("Average Path Length for Neural-Q Path Tracer")
 
 
 def plot_training_loss(training_loss):
@@ -48,7 +48,7 @@ def plot_training_loss(training_loss):
     plt.plot(x_data, y_data)
     plt.xlabel("Epochs")
     plt.ylabel("Training Loss")
-    plt.title("Training Loss for Neural-Q Path Tracer")
+    #plt.title("Training Loss for Neural-Q Path Tracer")
 
 
 def plot_zero_contrib_paths(zero_contrib_paths):
@@ -61,8 +61,8 @@ def plot_zero_contrib_paths(zero_contrib_paths):
     traing_loss_fig = plt.figure()
     plt.plot(x_data, y_data)
     plt.xlabel("Epochs")
-    plt.ylabel("Number of zero contribution light paths")
-    plt.title("Number of zero contribution light paths for Neural-Q Path Tracer")
+    plt.ylabel("Zero contribution light paths")
+    #plt.title("Number of zero contribution light paths for Neural-Q Path Tracer")
 
 
 if __name__ == '__main__':
