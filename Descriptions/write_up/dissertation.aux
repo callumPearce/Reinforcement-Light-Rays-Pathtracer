@@ -267,18 +267,23 @@
 \@writefile{toc}{\contentsline {section}{\numberline {4.2}Assessing the reduction in image Noise for Monte Carlo Path Tracing}{33}{section.4.2}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {4.2.1}Quantifying the Reduction in Image Noise}{33}{subsection.4.2.1}}
 \newlabel{eq:mape}{{4.1}{33}{Quantifying the Reduction in Image Noise}{equation.4.2.1}{}}
+\citation{christensen2016path}
 \citation{georgiev2018arnold}
 \citation{christensen2018renderman}
 \citation{hyperion}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.2.2}Convergence for Learning Incident Radiance}{34}{subsection.4.2.2}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.2.3}Hyper Parameter Tuning}{34}{subsection.4.2.3}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.2.4}Reusing Trained ANN for Different Scenes}{34}{subsection.4.2.4}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2.2}A Closer Inspection of Pixel Error Values}{34}{subsection.4.2.2}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2.3}Convergence for Learning Incident Radiance}{34}{subsection.4.2.3}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2.4}Hyper Parameter Tuning}{34}{subsection.4.2.4}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2.5}Reusing Trained ANN for Different Scenes}{34}{subsection.4.2.5}}
 \@writefile{toc}{\contentsline {section}{\numberline {4.3}From Memory Bound to Compute Bound}{34}{section.4.3}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.3.1}Memory Usage}{34}{subsection.4.3.1}}
-\@writefile{lof}{\contentsline {figure}{\numberline {4.1}{\ignorespaces A comparison of the default forward path tracer, Expected Sarsa path tracer, and the Neural-Q path tracer of their image noise for four different rendered scenes. All scenes were rendered with 128 samples per pixel. The score under each column in an image row corresponds to the MAPE score of for each rendering technique for the particular scene.\relax }}{35}{figure.caption.45}}
-\newlabel{fig:mape_results_grid}{{4.1}{35}{A comparison of the default forward path tracer, Expected Sarsa path tracer, and the Neural-Q path tracer of their image noise for four different rendered scenes. All scenes were rendered with 128 samples per pixel. The score under each column in an image row corresponds to the MAPE score of for each rendering technique for the particular scene.\relax }{figure.caption.45}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.1}{\ignorespaces A comparison of the default forward path tracer, Expected Sarsa path tracer, and the Neural-Q path tracer of their image noise for four different rendered scenes. All scenes were rendered with 128 samples per pixel. The score under each column in an image row corresponds to the MAPE score for each path tracing algorithm for the particular scene.The Neural-Q and Expected Sarsa algorithms both used $144$ equally spaced directions to estimate the radiance distribution on a given point. The Neural-Q path tracer used the network described in \ref  {sec:ann_architecture} for all fours scenes with a decaying $\epsilon $-\textit  {greedy} policy start at $\epsilon =1$ with a decay of $\delta = 0.05$ applied after every pixel in the image has had a light path sampled through it once. The Expected Sarsa path tracer used just enough Irradiance Volumes (which varied depending on the scene) to facilitate a significant reduction in image noise in all four renders.\relax }}{35}{figure.caption.45}}
+\newlabel{fig:mape_results_grid}{{4.1}{35}{A comparison of the default forward path tracer, Expected Sarsa path tracer, and the Neural-Q path tracer of their image noise for four different rendered scenes. All scenes were rendered with 128 samples per pixel. The score under each column in an image row corresponds to the MAPE score for each path tracing algorithm for the particular scene.The Neural-Q and Expected Sarsa algorithms both used $144$ equally spaced directions to estimate the radiance distribution on a given point. The Neural-Q path tracer used the network described in \ref {sec:ann_architecture} for all fours scenes with a decaying $\epsilon $-\textit {greedy} policy start at $\epsilon =1$ with a decay of $\delta = 0.05$ applied after every pixel in the image has had a light path sampled through it once. The Expected Sarsa path tracer used just enough Irradiance Volumes (which varied depending on the scene) to facilitate a significant reduction in image noise in all four renders.\relax }{figure.caption.45}{}}
 \citation{dahm2017learning}
 \citation{devastator}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.2}{\ignorespaces Histograms for the average RGB pixel error values for all four rendered scenes using both the Expected Sarsa path tracer and the Neural-Q path tracer. Where the average RGB pixel error value is the average difference in all RGB colour channels between a pixel in the reference image, and the corresponding pixel in the image rendered by either the Expected Sarsa or Neural-Q path tracers. The histograms are based on the rendered images presented in Figure \ref  {fig:mape_results_grid}.\relax }}{36}{figure.caption.46}}
+\newlabel{fig:histogram_errors}{{4.2}{36}{Histograms for the average RGB pixel error values for all four rendered scenes using both the Expected Sarsa path tracer and the Neural-Q path tracer. Where the average RGB pixel error value is the average difference in all RGB colour channels between a pixel in the reference image, and the corresponding pixel in the image rendered by either the Expected Sarsa or Neural-Q path tracers. The histograms are based on the rendered images presented in Figure \ref {fig:mape_results_grid}.\relax }{figure.caption.46}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.3.1}Memory Usage}{36}{subsection.4.3.1}}
+\@writefile{toc}{\contentsline {subsubsection}{Expected Sarsa}{36}{section*.47}}
 \citation{ren2013global}
 \citation{crockett1995parallel}
 \citation{alerstam2008parallel}
@@ -286,21 +291,21 @@
 \citation{embarissingly_parallelizable}
 \citation{accelerated_ray_tracing}
 \citation{hyperion}
-\@writefile{toc}{\contentsline {subsubsection}{Expected Sarsa}{36}{section*.46}}
-\@writefile{toc}{\contentsline {subsubsection}{Neural-Q}{36}{section*.47}}
 \citation{raynal2012concurrent}
 \citation{cuda}
+\@writefile{toc}{\contentsline {subsubsection}{Neural-Q}{37}{section*.48}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.3.2}Parallel Processing}{37}{subsection.4.3.2}}
+\@writefile{toc}{\contentsline {subsubsection}{Expected Sarsa}{37}{section*.49}}
 \citation{cuda_c_guide}
 \citation{global_vs_shared}
 \citation{dahm2017learning}
 \citation{muller2018neural}
 \citation{alg:neural_q_path_tracer}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.3.2}Parallel Processing}{37}{subsection.4.3.2}}
-\@writefile{toc}{\contentsline {subsubsection}{Expected Sarsa}{37}{section*.48}}
 \citation{global_data_transfer}
 \citation{muller2018neural}
 \citation{keller2019integral}
 \citation{tensor_cores}
+\@writefile{toc}{\contentsline {subsubsection}{Neural-Q}{38}{section*.50}}
 \citation{dahm2017learning}
 \citation{muller2017practical}
 \citation{vorba2014line}
@@ -312,13 +317,12 @@
 \citation{zheng2018learning}
 \citation{dahm2017learning}
 \citation{keller2019integral}
-\@writefile{toc}{\contentsline {subsubsection}{Neural-Q}{38}{section*.49}}
-\@writefile{toc}{\contentsline {section}{\numberline {4.4}Neural-Q Path Tracer Design}{38}{section.4.4}}
-\@writefile{toc}{\contentsline {section}{\numberline {4.5}Recent Advancements in Neural Importance Sampling for Monte Carlo Path Tracing}{38}{section.4.5}}
 \citation{muller2018neural}
 \citation{dinh2014nice}
 \citation{muller2018neural}
 \citation{muller2018neural}
+\@writefile{toc}{\contentsline {section}{\numberline {4.4}Neural-Q Path Tracer Design}{39}{section.4.4}}
+\@writefile{toc}{\contentsline {section}{\numberline {4.5}Recent Advancements in Neural Importance Sampling for Monte Carlo Path Tracing}{39}{section.4.5}}
 \@writefile{toc}{\contentsline {chapter}{\numberline {5}Conclusion}{41}{chapter.5}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}

@@ -45,18 +45,19 @@
 \contentsline {section}{\numberline {4.1}Experimental Setup}{33}{section.4.1}
 \contentsline {section}{\numberline {4.2}Assessing the reduction in image Noise for Monte Carlo Path Tracing}{33}{section.4.2}
 \contentsline {subsection}{\numberline {4.2.1}Quantifying the Reduction in Image Noise}{33}{subsection.4.2.1}
-\contentsline {subsection}{\numberline {4.2.2}Convergence for Learning Incident Radiance}{34}{subsection.4.2.2}
-\contentsline {subsection}{\numberline {4.2.3}Hyper Parameter Tuning}{34}{subsection.4.2.3}
-\contentsline {subsection}{\numberline {4.2.4}Reusing Trained ANN for Different Scenes}{34}{subsection.4.2.4}
+\contentsline {subsection}{\numberline {4.2.2}A Closer Inspection of Pixel Error Values}{34}{subsection.4.2.2}
+\contentsline {subsection}{\numberline {4.2.3}Convergence for Learning Incident Radiance}{34}{subsection.4.2.3}
+\contentsline {subsection}{\numberline {4.2.4}Hyper Parameter Tuning}{34}{subsection.4.2.4}
+\contentsline {subsection}{\numberline {4.2.5}Reusing Trained ANN for Different Scenes}{34}{subsection.4.2.5}
 \contentsline {section}{\numberline {4.3}From Memory Bound to Compute Bound}{34}{section.4.3}
-\contentsline {subsection}{\numberline {4.3.1}Memory Usage}{34}{subsection.4.3.1}
-\contentsline {subsubsection}{Expected Sarsa}{36}{section*.46}
-\contentsline {subsubsection}{Neural-Q}{36}{section*.47}
+\contentsline {subsection}{\numberline {4.3.1}Memory Usage}{36}{subsection.4.3.1}
+\contentsline {subsubsection}{Expected Sarsa}{36}{section*.47}
+\contentsline {subsubsection}{Neural-Q}{37}{section*.48}
 \contentsline {subsection}{\numberline {4.3.2}Parallel Processing}{37}{subsection.4.3.2}
-\contentsline {subsubsection}{Expected Sarsa}{37}{section*.48}
-\contentsline {subsubsection}{Neural-Q}{38}{section*.49}
-\contentsline {section}{\numberline {4.4}Neural-Q Path Tracer Design}{38}{section.4.4}
-\contentsline {section}{\numberline {4.5}Recent Advancements in Neural Importance Sampling for Monte Carlo Path Tracing}{38}{section.4.5}
+\contentsline {subsubsection}{Expected Sarsa}{37}{section*.49}
+\contentsline {subsubsection}{Neural-Q}{38}{section*.50}
+\contentsline {section}{\numberline {4.4}Neural-Q Path Tracer Design}{39}{section.4.4}
+\contentsline {section}{\numberline {4.5}Recent Advancements in Neural Importance Sampling for Monte Carlo Path Tracing}{39}{section.4.5}
 \contentsline {chapter}{\numberline {5}Conclusion}{41}{chapter.5}
 \contentsline {subsection}{\numberline {5.0.1}Plan}{41}{subsection.5.0.1}
 \contentsline {chapter}{\numberline {A}An Example Appendix}{47}{appendix.A}

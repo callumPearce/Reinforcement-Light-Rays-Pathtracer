@@ -37,15 +37,24 @@ F_i & The $i$th pixel value in the image whose noise is being quantified\\
 
 The MAPE value can therefore be used to quantify the average difference between pixel values from an image rendered by each rendering technique with the same number of sampled light rays per pixel and the reference image. Therefore, a lower MAPE score is desirable for a rendered image as it means the image has a lower amount of noise.\\
 
-While the MAPE quantifies the overall amount of noise of the image rendered, it does not specify which pixel values in particular have a a high error. I have represented this visually by taking the average squared error across the RGB channels between corresponding pixels in the image being evaluated and the reference image. The image produced highlights failure cases for both the Expected Sarsa and Neural-Q path tracers. 
-
-
 \begin{figure}[hbtp]
 \begin{center}
 \includegraphics[width=0.9\textwidth]{images/noise_reduction.png}    
 \end{center}
-\caption{A comparison of the default forward path tracer, Expected Sarsa path tracer, and the Neural-Q path tracer of their image noise for four different rendered scenes. All scenes were rendered with 128 samples per pixel. The score under each column in an image row corresponds to the MAPE score of for each rendering technique for the particular scene.}
+\caption{A comparison of the default forward path tracer, Expected Sarsa path tracer, and the Neural-Q path tracer of their image noise for four different rendered scenes. All scenes were rendered with 128 samples per pixel. The score under each column in an image row corresponds to the MAPE score for each  path tracing algorithm for the particular scene.The Neural-Q and Expected Sarsa algorithms both used $144$ equally spaced directions to estimate the radiance distribution on a given point. The Neural-Q path tracer used the network described in \ref{sec:ann_architecture} for all fours scenes with a decaying $\epsilon$-\textit{greedy} policy start at $\epsilon =1$ with a decay of $\delta = 0.05$ applied after every pixel in the image has had a light path sampled through it once. The Expected Sarsa path tracer used just enough Irradiance Volumes (which varied depending on the scene) to facilitate a significant reduction in image noise in all four renders.}
 \label{fig:mape_results_grid}
+\end{figure}
+
+\subsection{A Closer Inspection of Pixel Error Values}
+
+By visual observation of the rendered images \ref{fig:mape_results_grid}, the type of noise present in the Expected Sarsa and Neural-Q path tracer's renders is quite different. In particular, the noise resulting from the Expected Sarsa path tracer are pixels with very high RGB values compared to that of their neighbours, which are commonly referred to as 'fireflies'  \cite{christensen2016path}. Whereas the noise present in the Neural-Q renders is more subtle, however its general presence can be clearly seen when comparing these renders to that of the reference image. In order to investigate this further I have provided histograms in Figure \ref{fig:histogram_errors} for the frequency of average RGB pixel error values of the rendered image compared to the reference image. Essentially, the greater the average RGB error for a particular pixel, the higher the amount of noise present in the pixel value estimate.
+
+\begin{figure}[h]
+\begin{center}
+\includegraphics[width=0.99\textwidth]{images/noise_diff.png}    
+\end{center}
+\caption{Histograms for the average RGB pixel error values for all four rendered scenes using both the Expected Sarsa path tracer and the Neural-Q path tracer. Where the average RGB pixel error value is the average difference in all RGB colour channels between a pixel in the reference image, and the corresponding pixel in the image rendered by either the Expected Sarsa or Neural-Q path tracers. The histograms are based on the rendered images presented in Figure \ref{fig:mape_results_grid}.}
+\label{fig:histogram_errors}
 \end{figure}
 
 \subsection{Convergence for Learning Incident Radiance}
@@ -124,6 +133,7 @@ Move section down here discussing other methods
 \begin{itemize}
 \item With and without vertices in coord space for training and state reasoning
 \item Number of actions experimented with on door scene
+\item With and without epsilon greedy, lack of exploration
 \end{itemize}
 
 \section{Recent Advancements in Neural Importance Sampling for Monte Carlo Path Tracing}
