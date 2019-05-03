@@ -6,17 +6,19 @@
 
 \label{chap:evaluation}
 
-Here, a range of techniques are used to evaluate the newly proposed Neural-Q path tracer against the Expected Sarsa path tracer presented in Chapter \ref{chap:td_deep_sampling} on its ability to reduce noise in rendered images produced by Monte Carlo path tracing. The introduction of deep reinforcement learning for importance sampling light transport paths in Monte Carlo path tracing comes with a variety of benefits which are tested and discussed in detail. However, the methods viability in industry is currently found to be limited due to the time taken to evaluate a forward pass through an ANN.
+Here, a range of techniques are used to evaluate the benefits of the newly proposed Neural-Q path tracer compared to the Expected Sarsa path tracer presented in Chapter \ref{chap:td_deep_sampling}. However, it is also made clear that Neural-Q's viability in current industry is limited due to the time taken to evaluate a forward pass through an ANN.
 
 \section{Experimental Setup}
 
 A path tracing renderer was built from scratch which supported Algorithms \ref{alg:forward_path_tracing}, \ref{alg:expected_sarsa_pathtracer}, \ref{alg:neural_q_pathtracer} and was used to produce all rendered results seen in this thesis. The rendering engine used only OpenGL Mathematics library \cite{glm} for various operations that are common in the rendering pipeline, SDL2 \cite{sdl2} for displaying rendered images, and the Dynet neural network library \cite{dynet} for the Neural-Q path tracer implementation. Algorithms \ref{alg:forward_path_tracing}, \ref{alg:expected_sarsa_pathtracer}, \ref{alg:neural_q_pathtracer} were all accelerated on an Nvidia GPU by using the CUDA Toolkit \cite{cuda} to receive experimental results in an acceptable time. The reasoning for choosing Dynet over more commonly used neural networks libraries such as Tensorflow \cite{tensorflow2015-whitepaper}, was due to its ability to be easily compiled with the CUDA \verb|nvcc| compiler and it had a well documented C++ API. This was a requirement for the Neural-Q path tracer as tracing light paths, ANN inference, and ANN training are all performed on a Nvidia GPU via C++ API calls. All results were produced using a machine with an Intel i5-8600K CPU, Nvidia 1070Ti GPU and 16GB of RAM installed.\\
 
-I developed four different scenes using Maya \cite{maya} and created a custom object importer to import the scenes into my path tracer renderer. A reference image of all four scenes is given in Figure \ref{fig:reference_scenes}, which have been rendered with 4096 sampled light rays per pixel using the default forward path tracing Algorithm \ref{alg:forward_path_tracing}. They are known as reference images as they have minimal visible noise, meaning the Monte Carlo approximations for each pixel's colour value has approximately converged. Due to path tracing accurately modelling physical light transport (see section \ref{sec:mc_pathtracing}), these images are the ideal case for which all other path tracing algorithms should aim to produce as closely as possible with as few samples as possible. 
+I developed four different scenes using Maya \cite{maya} and created a custom object importer to import the scenes into my path tracer renderer. A reference image of all four scenes is given in Figure \ref{fig:reference_scenes}, which have been rendered with 4096 sampled light rays per pixel using the default forward path tracing Algorithm \ref{alg:forward_path_tracing}. They are known as reference images as they have minimal visible noise, meaning the Monte Carlo approximations for each pixel's colour value has approximately converged. Each rendered image from any of the techniques has been rendered at a resolution of 720X720. Due to path tracing accurately modelling physical light transport (see section \ref{sec:mc_pathtracing}), these images are the ideal case for which all other path tracing algorithms should aim to produce as closely as possible with as few samples as possible. 
 
 % Insert reference images of four test scenes
 
 \section{Assessing the reduction in image Noise for Monte Carlo Path Tracing}
+
+Importance sampling techniques are used in Monte Carlo path tracing to ultimately reduce image noise using the same number of sampled light paths per pixel. Therefore, the most important point to assess is if the Neural-Q path tracer is able to reduce image noise to the same extent as the Expected Sarsa path tracer when using the same SPP. 
 
 \subsection{Quantifying the Reduction in Image Noise}
 
@@ -35,9 +37,21 @@ A_i & The $i$th pixel value in the reference image\\
 F_i & The $i$th pixel value in the image whose noise is being quantified\\
 \end{conditions}
 
-The MAPE value can therefore be used to quantify the average difference between pixel values from an image rendered by each rendering technique with the same number of sampled light rays per pixel and the reference image. Therefore, a lower MAPE score is desirable for a rendered image as it means the image has a lower amount of noise.\\
+The MAPE value can then be used to quantify the average difference between pixel values from the reference image to each image rendered by the three path tracing algorithms with the same number of SPP. Therefore, a lower MAPE score is more desirable for a rendered image, as it means the image has a lower amount of noise. The MAPE score for images rendered by the three different path tracing algorithms for four different scenes  is shown in \ref{fig:mape_results_grid}. Each one of the four different scenes have been designed to exhibit different properties which affect light transport simulation, which can be summarised as:\\
 
-%TODO Table presenting memory usage between two techniques for each scene & batch size needs to be mentioned somewhere
+\begin{itemize}
+\item \textbf{Shelter} - A large scene which includes three different area lights, each with their own blockers. This makes it difficult to learn the contribution of radiance from each of the three sources to a given point in the scene. The scene is a sealed room, meaning all light paths will intersect with an area light as the number of reflections tend to infinity.
+
+\item \textbf{Cornell Box} - A ubiquitous scene to test the accuracy of a rendering techniques approximation of global illumination. The scene is small and includes two light blockers. The wall in the directions of the camera is missing, meaning there is a void which causes light paths to potentially never intersect with an area light.
+
+\item \textbf{Complex Pillars} - A scene which poses a true challenge to estimating the incident radiance on a point, due to the number of light blockers. The scene is sealed and the left, right, bottom, and top walls are all made to absorb most of the light incident on them. Meaning, light paths must navigate through the pillars to illuminate the back walls of the scene and the pillars themselves.
+
+\item \textbf{Door Room} - The door room is a sealed scene which is almost entirely lit by indirect illumination. Light paths must reach the light before their contribution to the final image becomes negligible. 
+\end{itemize}
+
+From the MAPE score calculated for each rendered image of the four scenes using the three different path tracers, it is clear that the default forward path tracer in Algorithm \ref{alg:default_path_tracer} is inferior to the path tracers which leverage the power of importance sampling in light path construction. Meaning, the Expected Sarsa and Neural-Q algorithms have both learnt an approximation of the incident radiance distribution function $L_i(x, \omega)$ for each scene, such that it is closer to normalizing the numerator in the Monte Carlo integration computed by path tracing (Equation \ref{eq:rendering_eq_monte_carlo}). This causes a reduction in variance for the estimate of a pixel's colour value by the path tracing algorithms, leading to a lower amount of image noise within the renders displayed in \ref{fig:mape_results_grid}.\\
+
+The MAPE scores for the Neural-Q path tracer are significantly lower for the Shelter and Complex pillars scenes compared to the Expected Sarsa algorithms, and a tie is essentially reached for the Door Room scene. Whereas, the Expected Sarsa clearly beats the Neural-Q path tracer for MAPE score on the Cornell Box. Based on the MAPE calculation, the Neural-Q path tracer outperforms the Expected Sarsa path tracer for larger scenes with more complex geometry and a greater number of area light sources for reducing image noise when using 144 discrete directions to estimate the incident radiance distribution. However, the for smaller scenes with less complex geometry and a lower number of area light sources, the Expected Sarsa algorithm performs comparably well if not better. My hypothesis behind why this is, is that the reduction in noise is largely due to the Neural-Q's ability to generalize the approximation of the incident radiance distribution at any position in the scene, and that this is more important for larger complex scenes. This hypothesis is discussed in more detail in section \ref{sec:convergence_learning_incident}.
 
 \begin{figure}[hbtp]
 \begin{center}
@@ -49,17 +63,94 @@ The MAPE value can therefore be used to quantify the average difference between 
 
 \subsection{A Closer Inspection of Pixel Error Values}
 
-By visual observation of the rendered images \ref{fig:mape_results_grid}, the type of noise present in the Expected Sarsa and Neural-Q path tracer's renders is quite different. In particular, the noise resulting from the Expected Sarsa path tracer are pixels with very high RGB values compared to that of their neighbours, which are commonly referred to as 'fireflies'  \cite{christensen2016path}. Whereas the noise present in the Neural-Q renders is more subtle, however its general presence can be clearly seen when comparing these renders to that of the reference image. In order to investigate this further I have provided histograms in Figure \ref{fig:histogram_errors} for the frequency of average RGB pixel error values of the rendered image compared to the reference image. Essentially, the greater the average RGB error for a particular pixel, the higher the amount of noise present in the pixel value estimate.
+By visual observation of the rendered images \ref{fig:mape_results_grid}, the type of noise present in the Expected Sarsa and Neural-Q path tracer's renders are quite different. In particular, the noise resulting from the Expected Sarsa path tracer are pixels with very high RGB values compared to that of their neighbours, which are commonly referred to as 'fireflies'  \cite{christensen2016path}. Whereas the noise present in the Neural-Q renders is more subtle, however its general presence can be seen when comparing these renders to that of the reference image. In order to investigate this further I have provided histograms in Figure \ref{fig:histogram_errors} for the frequency of average RGB pixel error values of the rendered image compared to the reference image. Essentially, the greater the average RGB error for a particular pixel, the higher the amount of noise present in the pixel's colour estimate as a result of Monte Carlo path tracing. Note, the histograms use a $\log$ scale, as the vast majority of pixel values when using 128 SPP for both algorithms have a low error, so the $\log$ scale allows one to compare the trend of high error estimates within the image. 
 
 \begin{figure}[h]
 \begin{center}
 \includegraphics[width=0.99\textwidth]{images/noise_diff.png}    
 \end{center}
-\caption{Histograms for the average RGB pixel error values for all four rendered scenes using both the Expected Sarsa path tracer and the Neural-Q path tracer. Where the average RGB pixel error value is the average difference in all RGB colour channels between a pixel in the reference image, and the corresponding pixel in the image rendered by either the Expected Sarsa or Neural-Q path tracers. The histograms are based on the rendered images presented in Figure \ref{fig:mape_results_grid}.}
+\caption{Histograms for the average RGB pixel error values for all four rendered scenes using both the Expected Sarsa path tracer and the Neural-Q path tracer. Where the average RGB pixel error value is the average difference in all RGB colour channels between a pixel in the reference image, and the corresponding pixel in the image rendered by either the Expected Sarsa or Neural-Q path tracers. The max average RGB pixel error value is $255$, which corresponds to the case where the reference images pixels value was $(255,255,255)$ whereas the rendered images was $(0,0,0)$ or vice versa. The histograms are based on the rendered images presented in Figure \ref{fig:mape_results_grid}.}
 \label{fig:histogram_errors}
 \end{figure}
 
-\subsection{Convergence for Learning Incident Radiance}
+By comparing the tail end of the two rows of histograms, the reasoning behind the fireflies within the Expected Sarsa renders becomes clear. That is, the number of high average RGB error pixels is greater for the Expected Sarsa path tracer compared to the Neural-Q path tracer, which are the direct cause of fireflies. This validates the visual observation of fireflies in the renders shown in \ref{fig:mape_results_grid}. For example, the Door Room scene render from the Expected Sarsa path tracer has many bright white and red pixels compared to the reference images, which corresponds to the high number of the large error values within the histogram. The question now is, why are there more pixels with high error values in the Expected Sarsa path tracer renders compared to those produced by Neural-Q? To answer this question, first recall from section \ref{sec:importance_smapling} the closer the probability density function ($pdf$) comes to normalizing the function being integrated($f(x)$), the lower the variance in the Monte Carlo integral approximation. However, if the probability density function used has a different shape to the function, it can actually increase the variance in the Monte Carlo approximation, as illustrated in Figure \ref{fig:improtance_incorrect}. To relate this concept to learning the incident radiance $L_i(x, \omega)$ for importance sampling in Monte Carlo path tracing, if the error in the approximated incident radiance $L_i(x, \omega)$ is high for a scene, the noise in the approximated pixel values will be higher. This is because a normalised version of $L_i(x, \omega)$ for the light paths intersection point $x$ is used to importance sample a direction to continue a light path in. Therefore, a comparison needs to be made about the difference between the learned incident radiance function between the Neural-Q and Expected Sarsa path tracers to understand why their pixel error values are different.
+
+\begin{figure}[h]
+\centering
+\minipage{0.45\textwidth}
+  \includegraphics[width=\textwidth]{images/renders/expected_sarsa_visualisation.png}   
+  \subcaption{Expected Sarsa}\label{fig:exp_saras_distribution}
+\endminipage\hspace{2em}
+\minipage{0.45\textwidth}
+  \includegraphics[width=\textwidth]{images/renders/neural_q_visualisation.png}
+  \subcaption{Neural-Q}\label{fig:neural_q_distribution}
+\endminipage
+\caption{Visualisation of the incident radiance at three different points within a scene using both the Expected Sarsa and Neural-Q learned incident radiance function. The learned incident radiance is represented by placing an adaptive quadrature at the point with 144 different sectors, each representing an incident direction which the incident radiance has been estimated at. Sectors where the approximated incident from radiance is at its highest are the sectors which the closest to being red, whereas sectors closer to green have a low incident radiance estimate. The scene consists of a large area light on the left, therefore the large majority of light contributed to a point in the scene are directions which intersect with this light.}
+\label{fig:distribution_visualisation}
+\end{figure}
+
+As previously explained incident radiance function $L_i(x, \omega)$ is a 5-dimensional function as $x \in \mathbb{R}^3$, $\omega \in \mathbb{R}^2$, making it difficult to visualize. Therefore, in Figure \ref{fig:distribution_visualisation} a visual representation of both the Expected Sarsa and Neural-Q algorithms learned incident radiance for three points in a scene are given. The scene is simple, it has no light blockers and there is a single area light from which the majority of incident radiance on the three points comes from, meaning it clearly presents the differences in the shape of the distribution formed by normalising the incident radiance values at at a point. The Neural-Q incident radiance in Figure \ref{fig:neural_q_distribution} is far smoother approximation of incident radiance on all three points, compared to that of the Expected Sarsa in Figure \ref{fig:exp_saras_distribution}, due to the spread of sectors with a incident radiance value estimate (red sectors). By observing the relative position of the light in the scene, the Neural-Q's smoother incident radiance estimate seems to be an accurate approximation, as there are many angles represented by the adaptive quadrature which lead to a direct intersection with the area light. Whereas only a small subset of the Expected Sarsa's quadrature sectors have a high incident radiance estimate, which is not accurate seeing the size and positioning of the area light. An illustration of Expected Sarsa's inaccuracy in this setting is given in Figure \ref{fig:dist_2_methods}. Clearly, Expected Sarsa will approximate some incident direction $\omega_i$ to have a significantly lower contribution of radiance to a point $x$ then it actually provides. Meaning, the probability density function $pdf(x, \omega_i)$ will be small, and when used to divide the numerator in Equation \ref{eq:rendering_eq_monte_carlo}, the approximated pixel colour value will be much higher then its true value. This ultimately leads to the 'fireflies' noise in the rendered images for the Expected Sarsa approach in Figure \ref{fig:mape_results_grid}.
+
+\begin{figure}[!htb]
+\centering
+\minipage{0.33\textwidth}
+\begin{tikzpicture}
+	\begin{axis}[every axis plot post/.append style={
+	  mark=none,domain=-2:3,samples=50,smooth},
+	  axis lines = left,
+	  tick style={draw=none},
+	  xticklabels={},
+	  yticklabels={},
+	    % All plots: from -2:2, 50 samples, smooth, no marks
+	  axis x line*=bottom, % no box around the plot, only x and y axis
+	  axis y line*=left, % the * suppresses the arrow tips
+	  enlargelimits=upper,
+	  xlabel = $\omega_i$,
+	  ylabel = $p(\omega_i)$
+	  ] % extend the axes a bit to the right and top
+	  \addplot [
+	  color=red,
+	  ]{gauss(0.5,0.8)};
+	  \addplot [
+	  color=blue,
+	  ]{gauss(0.5,0.5)};
+	\end{axis}
+\end{tikzpicture}
+  \subcaption{Expected Sarsa}\label{fig:dist_expected_sarsa}
+\endminipage
+\minipage{0.33\textwidth}
+    \begin{tikzpicture}
+	\begin{axis}[every axis plot post/.append style={
+	  mark=none,domain=-2:3,samples=50,smooth},
+	  axis lines = left,
+	  tick style={draw=none},
+	  xticklabels={},
+	  yticklabels={},
+	    % All plots: from -2:2, 50 samples, smooth, no marks
+	  axis x line*=bottom, % no box around the plot, only x and y axis
+	  axis y line*=left, % the * suppresses the arrow tips
+	  enlargelimits=upper,
+	  xlabel = $\omega_i$,
+	  ylabel = $p(\omega_i)$
+	  ] % extend the axes a bit to the right and top
+	  \addplot [
+	  color=red,
+	  ]{gauss(0.5,0.8)};
+	  \addplot [
+	  color=blue,
+	  ]{gauss(0.5,1.0)};
+	\end{axis}
+	\end{tikzpicture}  
+   \subcaption{Neural-Q}\label{fig:dist_neural_q}
+\endminipage
+\caption{An illustration of the incident radiance distribution for a given point directly in front of the light source shown in Figure \ref{fig:distribution_visualisation} for both the Expected Sarsa and Neural-Q methods. Where $\omega_i \in \Omega$ is discrete incident angles on the point, and  $p(\omega_i)$ is the probability density function over incident radiance evaluated at angle $\omega_i$. The \textbf{red} line represents the true incident radiance distribution on the point, the \textbf{blue} represents a smoothed version of the corresponding methods approximation of the incident radiance distribution on the point.}
+\label{fig:dist_2_methods}
+\end{figure}
+
+
+
+\section{Convergence and Learning Incident Radiance}
+\label{sec:convergence_learning_incident}
 \begin{itemize}
 \item Path length reduction
 \item Training curve to show convergence time, can compare the number of zero contribution light paths as when this peaks the algorithm has converged
@@ -77,15 +168,19 @@ By visual observation of the rendered images \ref{fig:mape_results_grid}, the ty
 
 \begin{figure}[h]
 \centering
-\minipage{0.4\textwidth}
+\minipage{0.32\textwidth}
+  \includegraphics[width=\textwidth]{images/renders/max_dir/1_spp_default.png}   
+  \subcaption{Default}\label{fig:default_1_spp}
+\endminipage\hspace{0.1em}
+\minipage{0.32\textwidth}
   \includegraphics[width=\textwidth]{images/renders/max_dir/1_spp_sarsa_max_dir.png}   
   \subcaption{Expected Sarsa}\label{fig:sarsa_1_spp}
-\endminipage\hspace{5em}
-\minipage{0.4\textwidth}
+\endminipage\hspace{0.1em}
+\minipage{0.32\textwidth}
   \includegraphics[width=\textwidth]{images/renders/max_dir/1_spp_nn_max_dir.png}
   \subcaption{Neural-Q}\label{fig:neural_q_1_spp}
 \endminipage
-\caption{The Door Room scene rendered using only 1 sampled light path per pixel with the default path tracer, a trained Expected Sarsa path tracer, and a trained Neural-Q path tracer. The single sample for the Expected Sarsa and Neural-Q renders is constructed by reflecting the light path in the direction of highest estimated radiance upon every intersection point, until the light is intersected.}
+\caption{The Door Room scene rendered using only 1 sampled light path per pixel with the default path tracer, a trained Expected Sarsa path tracer, and a trained Neural-Q path tracer. The light path through each pixel using the default path tracer is constructed according to Algorithm \ref{alg:default_path_tracer}. Whereas, the single sample for each pixel in the Expected Sarsa and Neural-Q renders is constructed by reflecting the light path in the direction of highest estimated radiance upon every intersection point, until the light is intersected.}
 \label{fig:1_spp_max_dir}
 \end{figure}
 
@@ -109,6 +204,23 @@ Computational resources utilized by the path tracing algorithms introduced is a 
 \subsection{Memory Usage}
 
 The default forward path tracer is compute bound, meaning the only way to make the algorithm faster is by providing more compute power. For example by parallelizing the rendering process using a GPU with a quicker processor clock speed. On the other hand, the performance of the Expected Sarsa algorithm for reducing image noise has been found to be bound by the amount of RAM the algorithm has available to it from the  underlying hardware. This is due to the requirement of storing the Q-table in RAM which holds the approximated incident radiance values for a scene.\\
+
+\begin{table}[h]
+	\centering
+	\begin{tabular}{lcc}
+		\toprule
+		& \multicolumn{2}{c}{Memory (MB)} \\ \cmidrule(lr){2-3}
+		Scene & Expected Sarsa & Neural-Q \\
+		\midrule
+		Shelter & 271 & 30 \\
+		Cornell Box & 44 & 30 \\
+		Complex Pillars & 300 & 30 \\
+		Door Room & 66 & 30 \\
+		\bottomrule
+	\end{tabular}
+	\caption{Additional memory required in Megabytes (MB) to render each of the four scenes shown in Figure \ref{fig:mape_results_grid} using both the Expected Sarsa and Neural-Q path tracers.}
+	\label{tab-label}
+\end{table}
 
 \subsubsection{Expected Sarsa}
 

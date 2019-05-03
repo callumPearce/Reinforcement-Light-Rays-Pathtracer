@@ -266,57 +266,71 @@
 \@writefile{toc}{\contentsline {section}{\numberline {4.1}Experimental Setup}{33}{section.4.1}}
 \@writefile{toc}{\contentsline {section}{\numberline {4.2}Assessing the reduction in image Noise for Monte Carlo Path Tracing}{33}{section.4.2}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {4.2.1}Quantifying the Reduction in Image Noise}{33}{subsection.4.2.1}}
-\newlabel{eq:mape}{{4.1}{33}{Quantifying the Reduction in Image Noise}{equation.4.2.1}{}}
 \citation{christensen2016path}
+\newlabel{eq:mape}{{4.1}{34}{Quantifying the Reduction in Image Noise}{equation.4.2.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2.2}A Closer Inspection of Pixel Error Values}{34}{subsection.4.2.2}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.1}{\ignorespaces A comparison of the default forward path tracer, Expected Sarsa path tracer, and the Neural-Q path tracer of their image noise for four different rendered scenes. All scenes were rendered with 128 samples per pixel. The score under each column in an image row corresponds to the MAPE score for each path tracing algorithm for the particular scene.The Neural-Q and Expected Sarsa algorithms both used $144$ equally spaced directions to estimate the radiance distribution on a given point. The Neural-Q path tracer used the network described in \ref  {sec:ann_architecture} for all fours scenes with a decaying $\epsilon $-\textit  {greedy} policy start at $\epsilon =1$ with a decay of $\delta = 0.05$ applied after every pixel in the image has had a light path sampled through it once. The Expected Sarsa path tracer used just enough Irradiance Volumes (which varied depending on the scene) to facilitate a significant reduction in image noise in all four renders.\relax }}{35}{figure.caption.45}}
+\newlabel{fig:mape_results_grid}{{4.1}{35}{A comparison of the default forward path tracer, Expected Sarsa path tracer, and the Neural-Q path tracer of their image noise for four different rendered scenes. All scenes were rendered with 128 samples per pixel. The score under each column in an image row corresponds to the MAPE score for each path tracing algorithm for the particular scene.The Neural-Q and Expected Sarsa algorithms both used $144$ equally spaced directions to estimate the radiance distribution on a given point. The Neural-Q path tracer used the network described in \ref {sec:ann_architecture} for all fours scenes with a decaying $\epsilon $-\textit {greedy} policy start at $\epsilon =1$ with a decay of $\delta = 0.05$ applied after every pixel in the image has had a light path sampled through it once. The Expected Sarsa path tracer used just enough Irradiance Volumes (which varied depending on the scene) to facilitate a significant reduction in image noise in all four renders.\relax }{figure.caption.45}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.2}{\ignorespaces Histograms for the average RGB pixel error values for all four rendered scenes using both the Expected Sarsa path tracer and the Neural-Q path tracer. Where the average RGB pixel error value is the average difference in all RGB colour channels between a pixel in the reference image, and the corresponding pixel in the image rendered by either the Expected Sarsa or Neural-Q path tracers. The max average RGB pixel error value is $255$, which corresponds to the case where the reference images pixels value was $(255,255,255)$ whereas the rendered images was $(0,0,0)$ or vice versa. The histograms are based on the rendered images presented in Figure \ref  {fig:mape_results_grid}.\relax }}{36}{figure.caption.46}}
+\newlabel{fig:histogram_errors}{{4.2}{36}{Histograms for the average RGB pixel error values for all four rendered scenes using both the Expected Sarsa path tracer and the Neural-Q path tracer. Where the average RGB pixel error value is the average difference in all RGB colour channels between a pixel in the reference image, and the corresponding pixel in the image rendered by either the Expected Sarsa or Neural-Q path tracers. The max average RGB pixel error value is $255$, which corresponds to the case where the reference images pixels value was $(255,255,255)$ whereas the rendered images was $(0,0,0)$ or vice versa. The histograms are based on the rendered images presented in Figure \ref {fig:mape_results_grid}.\relax }{figure.caption.46}{}}
+\newlabel{fig:exp_saras_distribution}{{4.3a}{37}{Expected Sarsa\relax }{figure.caption.47}{}}
+\newlabel{sub@fig:exp_saras_distribution}{{a}{37}{Expected Sarsa\relax }{figure.caption.47}{}}
+\newlabel{fig:neural_q_distribution}{{4.3b}{37}{Neural-Q\relax }{figure.caption.47}{}}
+\newlabel{sub@fig:neural_q_distribution}{{b}{37}{Neural-Q\relax }{figure.caption.47}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.3}{\ignorespaces Visualisation of the incident radiance at three different points within a scene using both the Expected Sarsa and Neural-Q learned incident radiance function. The learned incident radiance is represented by placing an adaptive quadrature at the point with 144 different sectors, each representing an incident direction which the incident radiance has been estimated at. Sectors where the approximated incident from radiance is at its highest are the sectors which the closest to being red, whereas sectors closer to green have a low incident radiance estimate. The scene consists of a large area light on the left, therefore the large majority of light contributed to a point in the scene are directions which intersect with this light.\relax }}{37}{figure.caption.47}}
+\newlabel{fig:distribution_visualisation}{{4.3}{37}{Visualisation of the incident radiance at three different points within a scene using both the Expected Sarsa and Neural-Q learned incident radiance function. The learned incident radiance is represented by placing an adaptive quadrature at the point with 144 different sectors, each representing an incident direction which the incident radiance has been estimated at. Sectors where the approximated incident from radiance is at its highest are the sectors which the closest to being red, whereas sectors closer to green have a low incident radiance estimate. The scene consists of a large area light on the left, therefore the large majority of light contributed to a point in the scene are directions which intersect with this light.\relax }{figure.caption.47}{}}
+\newlabel{fig:dist_expected_sarsa}{{4.4a}{37}{Expected Sarsa\relax }{figure.caption.48}{}}
+\newlabel{sub@fig:dist_expected_sarsa}{{a}{37}{Expected Sarsa\relax }{figure.caption.48}{}}
+\newlabel{fig:dist_neural_q}{{4.4b}{37}{Neural-Q\relax }{figure.caption.48}{}}
+\newlabel{sub@fig:dist_neural_q}{{b}{37}{Neural-Q\relax }{figure.caption.48}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.4}{\ignorespaces An illustration of the incident radiance distribution for a given point directly in front of the light source shown in Figure \ref  {fig:distribution_visualisation} for both the Expected Sarsa and Neural-Q methods. Where $\omega _i \in \Omega $ is discrete incident angles on the point, and $p(\omega _i)$ is the probability density function over incident radiance evaluated at angle $\omega _i$. The \textbf  {red} line represents the true incident radiance distribution on the point, the \textbf  {blue} represents a smoothed version of the corresponding methods approximation of the incident radiance distribution on the point.\relax }}{37}{figure.caption.48}}
+\newlabel{fig:dist_2_methods}{{4.4}{37}{An illustration of the incident radiance distribution for a given point directly in front of the light source shown in Figure \ref {fig:distribution_visualisation} for both the Expected Sarsa and Neural-Q methods. Where $\omega _i \in \Omega $ is discrete incident angles on the point, and $p(\omega _i)$ is the probability density function over incident radiance evaluated at angle $\omega _i$. The \textbf {red} line represents the true incident radiance distribution on the point, the \textbf {blue} represents a smoothed version of the corresponding methods approximation of the incident radiance distribution on the point.\relax }{figure.caption.48}{}}
 \citation{georgiev2018arnold}
 \citation{christensen2018renderman}
 \citation{hyperion}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.2.2}A Closer Inspection of Pixel Error Values}{34}{subsection.4.2.2}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.2.3}Convergence for Learning Incident Radiance}{34}{subsection.4.2.3}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.2.4}Hyper Parameter Tuning}{34}{subsection.4.2.4}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.2.5}Reusing Trained ANN for Different Scenes}{34}{subsection.4.2.5}}
-\@writefile{toc}{\contentsline {section}{\numberline {4.3}From Memory Bound to Compute Bound}{34}{section.4.3}}
-\@writefile{lof}{\contentsline {figure}{\numberline {4.1}{\ignorespaces A comparison of the default forward path tracer, Expected Sarsa path tracer, and the Neural-Q path tracer of their image noise for four different rendered scenes. All scenes were rendered with 128 samples per pixel. The score under each column in an image row corresponds to the MAPE score for each path tracing algorithm for the particular scene.The Neural-Q and Expected Sarsa algorithms both used $144$ equally spaced directions to estimate the radiance distribution on a given point. The Neural-Q path tracer used the network described in \ref  {sec:ann_architecture} for all fours scenes with a decaying $\epsilon $-\textit  {greedy} policy start at $\epsilon =1$ with a decay of $\delta = 0.05$ applied after every pixel in the image has had a light path sampled through it once. The Expected Sarsa path tracer used just enough Irradiance Volumes (which varied depending on the scene) to facilitate a significant reduction in image noise in all four renders.\relax }}{35}{figure.caption.45}}
-\newlabel{fig:mape_results_grid}{{4.1}{35}{A comparison of the default forward path tracer, Expected Sarsa path tracer, and the Neural-Q path tracer of their image noise for four different rendered scenes. All scenes were rendered with 128 samples per pixel. The score under each column in an image row corresponds to the MAPE score for each path tracing algorithm for the particular scene.The Neural-Q and Expected Sarsa algorithms both used $144$ equally spaced directions to estimate the radiance distribution on a given point. The Neural-Q path tracer used the network described in \ref {sec:ann_architecture} for all fours scenes with a decaying $\epsilon $-\textit {greedy} policy start at $\epsilon =1$ with a decay of $\delta = 0.05$ applied after every pixel in the image has had a light path sampled through it once. The Expected Sarsa path tracer used just enough Irradiance Volumes (which varied depending on the scene) to facilitate a significant reduction in image noise in all four renders.\relax }{figure.caption.45}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {4.3}Convergence and Learning Incident Radiance}{38}{section.4.3}}
+\newlabel{sec:convergence_learning_incident}{{4.3}{38}{Convergence and Learning Incident Radiance}{section.4.3}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.5}{\ignorespaces Training curves for the average path length and number of zero contribution light paths when rendering the Shelter scene for 100 epochs, using both the Expected Sarsa and Neural-Q path tracers. An epoch represents one sampled light ray through every pixel in the image. The average path length is the number reflections a light path takes before intersecting with a light source. A zero contribution light path is one which contributes almost zero colour to the final image.\relax }}{38}{figure.caption.49}}
+\newlabel{fig:training_curves_archway}{{4.5}{38}{Training curves for the average path length and number of zero contribution light paths when rendering the Shelter scene for 100 epochs, using both the Expected Sarsa and Neural-Q path tracers. An epoch represents one sampled light ray through every pixel in the image. The average path length is the number reflections a light path takes before intersecting with a light source. A zero contribution light path is one which contributes almost zero colour to the final image.\relax }{figure.caption.49}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.3.1}Hyper Parameter Tuning}{38}{subsection.4.3.1}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.3.2}Reusing Trained ANN for Different Scenes}{38}{subsection.4.3.2}}
+\@writefile{toc}{\contentsline {section}{\numberline {4.4}From Memory Bound to Compute Bound}{38}{section.4.4}}
+\newlabel{fig:default_1_spp}{{4.6a}{39}{Default\relax }{figure.caption.50}{}}
+\newlabel{sub@fig:default_1_spp}{{a}{39}{Default\relax }{figure.caption.50}{}}
+\newlabel{fig:sarsa_1_spp}{{4.6b}{39}{Expected Sarsa\relax }{figure.caption.50}{}}
+\newlabel{sub@fig:sarsa_1_spp}{{b}{39}{Expected Sarsa\relax }{figure.caption.50}{}}
+\newlabel{fig:neural_q_1_spp}{{4.6c}{39}{Neural-Q\relax }{figure.caption.50}{}}
+\newlabel{sub@fig:neural_q_1_spp}{{c}{39}{Neural-Q\relax }{figure.caption.50}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.6}{\ignorespaces The Door Room scene rendered using only 1 sampled light path per pixel with the default path tracer, a trained Expected Sarsa path tracer, and a trained Neural-Q path tracer. The light path through each pixel using the default path tracer is constructed according to Algorithm \ref  {alg:default_path_tracer}. Whereas, the single sample for each pixel in the Expected Sarsa and Neural-Q renders is constructed by reflecting the light path in the direction of highest estimated radiance upon every intersection point, until the light is intersected.\relax }}{39}{figure.caption.50}}
+\newlabel{fig:1_spp_max_dir}{{4.6}{39}{The Door Room scene rendered using only 1 sampled light path per pixel with the default path tracer, a trained Expected Sarsa path tracer, and a trained Neural-Q path tracer. The light path through each pixel using the default path tracer is constructed according to Algorithm \ref {alg:default_path_tracer}. Whereas, the single sample for each pixel in the Expected Sarsa and Neural-Q renders is constructed by reflecting the light path in the direction of highest estimated radiance upon every intersection point, until the light is intersected.\relax }{figure.caption.50}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.4.1}Memory Usage}{39}{subsection.4.4.1}}
+\@writefile{lot}{\contentsline {table}{\numberline {4.1}{\ignorespaces Additional memory required in Megabytes (MB) to render each of the four scenes shown in Figure \ref  {fig:mape_results_grid} using both the Expected Sarsa and Neural-Q path tracers.\relax }}{39}{table.caption.51}}
+\newlabel{tab-label}{{4.1}{39}{Additional memory required in Megabytes (MB) to render each of the four scenes shown in Figure \ref {fig:mape_results_grid} using both the Expected Sarsa and Neural-Q path tracers.\relax }{table.caption.51}{}}
+\@writefile{toc}{\contentsline {subsubsection}{Expected Sarsa}{39}{section*.52}}
 \citation{dahm2017learning}
 \citation{devastator}
-\@writefile{lof}{\contentsline {figure}{\numberline {4.2}{\ignorespaces Histograms for the average RGB pixel error values for all four rendered scenes using both the Expected Sarsa path tracer and the Neural-Q path tracer. Where the average RGB pixel error value is the average difference in all RGB colour channels between a pixel in the reference image, and the corresponding pixel in the image rendered by either the Expected Sarsa or Neural-Q path tracers. The histograms are based on the rendered images presented in Figure \ref  {fig:mape_results_grid}.\relax }}{36}{figure.caption.46}}
-\newlabel{fig:histogram_errors}{{4.2}{36}{Histograms for the average RGB pixel error values for all four rendered scenes using both the Expected Sarsa path tracer and the Neural-Q path tracer. Where the average RGB pixel error value is the average difference in all RGB colour channels between a pixel in the reference image, and the corresponding pixel in the image rendered by either the Expected Sarsa or Neural-Q path tracers. The histograms are based on the rendered images presented in Figure \ref {fig:mape_results_grid}.\relax }{figure.caption.46}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.3.1}Memory Usage}{36}{subsection.4.3.1}}
-\@writefile{toc}{\contentsline {subsubsection}{Expected Sarsa}{36}{section*.49}}
 \citation{ren2013global}
-\@writefile{lof}{\contentsline {figure}{\numberline {4.3}{\ignorespaces Training curves for the average path length and number of zero contribution light paths when rendering the Shelter scene for 100 epochs, using both the Expected Sarsa and Neural-Q path tracers. An epoch represents one sampled light ray through every pixel in the image. The average path length is the number reflections a light path takes before intersecting with a light source. A zero contribution light path is one which contributes almost zero colour to the final image.\relax }}{37}{figure.caption.47}}
-\newlabel{fig:training_curves_archway}{{4.3}{37}{Training curves for the average path length and number of zero contribution light paths when rendering the Shelter scene for 100 epochs, using both the Expected Sarsa and Neural-Q path tracers. An epoch represents one sampled light ray through every pixel in the image. The average path length is the number reflections a light path takes before intersecting with a light source. A zero contribution light path is one which contributes almost zero colour to the final image.\relax }{figure.caption.47}{}}
-\@writefile{toc}{\contentsline {subsubsection}{Neural-Q}{37}{section*.50}}
 \citation{crockett1995parallel}
 \citation{alerstam2008parallel}
 \citation{fatahalian2009data}
 \citation{embarissingly_parallelizable}
 \citation{accelerated_ray_tracing}
 \citation{hyperion}
+\@writefile{toc}{\contentsline {subsubsection}{Neural-Q}{40}{section*.53}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.4.2}Parallel Processing}{40}{subsection.4.4.2}}
 \citation{raynal2012concurrent}
 \citation{cuda}
 \citation{cuda_c_guide}
 \citation{global_vs_shared}
 \citation{dahm2017learning}
-\newlabel{fig:default_1_spp}{{4.4a}{38}{Default\relax }{figure.caption.48}{}}
-\newlabel{sub@fig:default_1_spp}{{a}{38}{Default\relax }{figure.caption.48}{}}
-\newlabel{fig:sarsa_1_spp}{{4.4b}{38}{Expected Sarsa\relax }{figure.caption.48}{}}
-\newlabel{sub@fig:sarsa_1_spp}{{b}{38}{Expected Sarsa\relax }{figure.caption.48}{}}
-\newlabel{fig:neural_q_1_spp}{{4.4c}{38}{Neural-Q\relax }{figure.caption.48}{}}
-\newlabel{sub@fig:neural_q_1_spp}{{c}{38}{Neural-Q\relax }{figure.caption.48}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {4.4}{\ignorespaces The Door Room scene rendered using only 1 sampled light path per pixel with the default path tracer, a trained Expected Sarsa path tracer, and a trained Neural-Q path tracer. The light path through each pixel using the default path tracer is constructed according to Algorithm \ref  {alg:default_path_tracer}. Whereas, the single sample for each pixel in the Expected Sarsa and Neural-Q renders is constructed by reflecting the light path in the direction of highest estimated radiance upon every intersection point, until the light is intersected.\relax }}{38}{figure.caption.48}}
-\newlabel{fig:1_spp_max_dir}{{4.4}{38}{The Door Room scene rendered using only 1 sampled light path per pixel with the default path tracer, a trained Expected Sarsa path tracer, and a trained Neural-Q path tracer. The light path through each pixel using the default path tracer is constructed according to Algorithm \ref {alg:default_path_tracer}. Whereas, the single sample for each pixel in the Expected Sarsa and Neural-Q renders is constructed by reflecting the light path in the direction of highest estimated radiance upon every intersection point, until the light is intersected.\relax }{figure.caption.48}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.3.2}Parallel Processing}{38}{subsection.4.3.2}}
-\@writefile{toc}{\contentsline {subsubsection}{Expected Sarsa}{38}{section*.51}}
 \citation{muller2018neural}
 \citation{alg:neural_q_path_tracer}
+\@writefile{toc}{\contentsline {subsubsection}{Expected Sarsa}{41}{section*.54}}
+\@writefile{toc}{\contentsline {subsubsection}{Neural-Q}{41}{section*.55}}
 \citation{global_data_transfer}
 \citation{muller2018neural}
 \citation{keller2019integral}
 \citation{tensor_cores}
-\@writefile{toc}{\contentsline {subsubsection}{Neural-Q}{39}{section*.52}}
-\@writefile{toc}{\contentsline {section}{\numberline {4.4}Neural-Q Path Tracer Design}{39}{section.4.4}}
 \citation{dahm2017learning}
 \citation{muller2017practical}
 \citation{vorba2014line}
@@ -332,13 +346,14 @@
 \citation{dinh2014nice}
 \citation{muller2018neural}
 \citation{muller2018neural}
-\@writefile{toc}{\contentsline {section}{\numberline {4.5}Recent Advancements in Neural Importance Sampling for Monte Carlo Path Tracing}{40}{section.4.5}}
-\@writefile{toc}{\contentsline {chapter}{\numberline {5}Conclusion}{41}{chapter.5}}
+\@writefile{toc}{\contentsline {section}{\numberline {4.5}Neural-Q Path Tracer Design}{42}{section.4.5}}
+\@writefile{toc}{\contentsline {section}{\numberline {4.6}Recent Advancements in Neural Importance Sampling for Monte Carlo Path Tracing}{42}{section.4.6}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {5}Conclusion}{45}{chapter.5}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
 \@writefile{loa}{\addvspace {10\p@ }}
-\newlabel{chap:conclusion}{{5}{41}{Conclusion}{chapter.5}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.0.1}Plan}{41}{subsection.5.0.1}}
+\newlabel{chap:conclusion}{{5}{45}{Conclusion}{chapter.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.0.1}Plan}{45}{subsection.5.0.1}}
 \bibdata{dissertation}
 \bibcite{glm}{1}
 \bibcite{sdl2}{2}
@@ -405,8 +420,8 @@
 \bibcite{vorba2014line}{63}
 \bibcite{normals}{64}
 \bibcite{zheng2018learning}{65}
-\@writefile{toc}{\contentsline {chapter}{\numberline {A}An Example Appendix}{47}{appendix.A}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {A}An Example Appendix}{51}{appendix.A}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
 \@writefile{loa}{\addvspace {10\p@ }}
-\newlabel{appx:example}{{A}{47}{An Example Appendix}{appendix.A}{}}
+\newlabel{appx:example}{{A}{51}{An Example Appendix}{appendix.A}{}}
