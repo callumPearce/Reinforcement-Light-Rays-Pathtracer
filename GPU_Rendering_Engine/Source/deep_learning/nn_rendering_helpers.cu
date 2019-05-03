@@ -312,7 +312,7 @@ void sample_batch_ray_directions_importance_sample(
     // Get the index of the ray in the current batch
     int batch_elem =  blockIdx.x * blockDim.x + threadIdx.x;
 
-    sample_max_direction(
+    importance_sample_direction(
         d_rand_state,
         ray_direction_indices,
         q_values_device,
