@@ -77,6 +77,7 @@
 \usepackage{caption}
 \usepackage{subcaption}
 \usepackage{mathtools}
+\usepackage{booktabs}
 
 % Algorithm2e setuo
 \newcommand\mycommfont[1]{\footnotesize\ttfamily\textcolor{blue}{#1}}

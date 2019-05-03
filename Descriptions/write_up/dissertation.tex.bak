@@ -27,7 +27,7 @@
                 % the degree programme
                     degree={MEng},
                 % the dissertation    title (which cannot be blank)
-                     title={How effective is Deep Reinforcement learning for reducing image noise in Monte Carlo path tracing, compared to Temporal Difference learning?},
+                     title={Learning the incident radiance for a continuous state space rather than a discrete one is more beneficial for Importance Sampling in Monte Carlo Path tracing},
                 % the dissertation subtitle (which can be blank)
                   subtitle={},
                 % the dissertation     type
