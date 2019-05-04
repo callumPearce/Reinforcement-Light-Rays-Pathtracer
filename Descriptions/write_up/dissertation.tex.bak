@@ -93,11 +93,6 @@ of authorship may still be produced online via
 % by simply commenting out the associated macro.
 
 \tableofcontents
-\listoffigures
-\listoftables
-\listofalgorithms
-\lstlistoflistings
-
 % The following sections are part of the front matter, but are not generated
 % automatically by LaTeX; the use of \chapter* means they are not numbered.
 

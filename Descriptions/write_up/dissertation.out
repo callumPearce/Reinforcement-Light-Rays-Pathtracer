@@ -14,9 +14,10 @@
 \BOOKMARK [0][-]{chapter.4}{Critical Evaluation}{}% 14
 \BOOKMARK [1][-]{section.4.1}{Experimental Setup}{chapter.4}% 15
 \BOOKMARK [1][-]{section.4.2}{Assessing the reduction in image Noise for Monte Carlo Path Tracing}{chapter.4}% 16
-\BOOKMARK [1][-]{section.4.3}{Convergence and Learning Incident Radiance}{chapter.4}% 17
-\BOOKMARK [1][-]{section.4.4}{From Memory Bound to Compute Bound}{chapter.4}% 18
-\BOOKMARK [1][-]{section.4.5}{Neural-Q Path Tracer Design}{chapter.4}% 19
-\BOOKMARK [1][-]{section.4.6}{Recent Advancements in Neural Importance Sampling for Monte Carlo Path Tracing}{chapter.4}% 20
-\BOOKMARK [0][-]{chapter.5}{Conclusion}{}% 21
-\BOOKMARK [0][-]{appendix.A}{An Example Appendix}{}% 22
+\BOOKMARK [1][-]{section.4.3}{Convergence}{chapter.4}% 17
+\BOOKMARK [1][-]{section.4.4}{From a Discrete to Continuous State Space}{chapter.4}% 18
+\BOOKMARK [1][-]{section.4.5}{From Memory Bound to Compute Bound}{chapter.4}% 19
+\BOOKMARK [1][-]{section.4.6}{Hyperparameters}{chapter.4}% 20
+\BOOKMARK [1][-]{section.4.7}{Recent Advancements in Neural Importance Sampling for Monte Carlo Path Tracing}{chapter.4}% 21
+\BOOKMARK [0][-]{chapter.5}{Conclusion}{}% 22
+\BOOKMARK [0][-]{appendix.A}{An Example Appendix}{}% 23

@@ -1,4 +1,4 @@
-\contentsline {subsection}{\numberline {0.0.1}Plan}{xix}{subsection.0.0.1}
+\contentsline {subsection}{\numberline {0.0.1}Plan}{xi}{subsection.0.0.1}
 \contentsline {chapter}{\numberline {1}Contextual Background}{1}{chapter.1}
 \contentsline {section}{\numberline {1.1}Path Tracing for Light Transport Simulation}{1}{section.1.1}
 \contentsline {section}{\numberline {1.2}Temporal Difference Learning for Importance Sampling Ray Directions}{3}{section.1.2}
@@ -16,16 +16,16 @@
 \contentsline {section}{\numberline {2.2}Monte Carlo Path Tracing}{9}{section.2.2}
 \contentsline {subsection}{\numberline {2.2.1}The Rendering Equation}{10}{subsection.2.2.1}
 \contentsline {subsection}{\numberline {2.2.2}Path Tracing}{12}{subsection.2.2.2}
-\contentsline {subsubsection}{Monte Carlo Path Tracing}{12}{section*.21}
-\contentsline {subsubsection}{Importance Sampling in Path Tracing}{13}{section*.23}
-\contentsline {subsubsection}{Existing Methods for Importance Sampling}{14}{section*.24}
+\contentsline {subsubsection}{Monte Carlo Path Tracing}{12}{section*.17}
+\contentsline {subsubsection}{Importance Sampling in Path Tracing}{13}{section*.19}
+\contentsline {subsubsection}{Existing Methods for Importance Sampling}{14}{section*.20}
 \contentsline {section}{\numberline {2.3}Reinforcement Learning and TD-Learning}{14}{section.2.3}
 \contentsline {subsection}{\numberline {2.3.1}Markov Decision Processes}{14}{subsection.2.3.1}
 \contentsline {subsection}{\numberline {2.3.2}Goals and Rewards}{15}{subsection.2.3.2}
 \contentsline {subsection}{\numberline {2.3.3}Value Function and Optimality}{15}{subsection.2.3.3}
 \contentsline {subsection}{\numberline {2.3.4}Temporal Difference Learning}{16}{subsection.2.3.4}
-\contentsline {subsubsection}{Q-Learning}{17}{section*.27}
-\contentsline {subsubsection}{Expected Sarsa}{17}{section*.28}
+\contentsline {subsubsection}{Q-Learning}{17}{section*.23}
+\contentsline {subsubsection}{Expected Sarsa}{17}{section*.24}
 \contentsline {subsection}{\numberline {2.3.5}Exploration vs Exploitation}{17}{subsection.2.3.5}
 \contentsline {section}{\numberline {2.4}Linking TD-Learning and Light Transport Simulation}{18}{section.2.4}
 \contentsline {chapter}{\numberline {3}TD-Learning and Deep Reinforcement Learning for Importance Sampling Light Paths}{21}{chapter.3}
@@ -34,9 +34,9 @@
 \contentsline {subsection}{\numberline {3.1.2}Expected Sarsa Path Tracing}{23}{subsection.3.1.2}
 \contentsline {section}{\numberline {3.2}The Neural-Q Path Tracer}{26}{section.3.2}
 \contentsline {subsection}{\numberline {3.2.1}Introduction to Deep Reinforcement Learning}{26}{subsection.3.2.1}
-\contentsline {subsubsection}{Value Function Approximation}{26}{section*.38}
-\contentsline {subsubsection}{Stochastic Gradient Descent}{26}{section*.39}
-\contentsline {subsubsection}{Bootstrapping}{27}{section*.40}
+\contentsline {subsubsection}{Value Function Approximation}{26}{section*.34}
+\contentsline {subsubsection}{Stochastic Gradient Descent}{26}{section*.35}
+\contentsline {subsubsection}{Bootstrapping}{27}{section*.36}
 \contentsline {subsection}{\numberline {3.2.2}Deep Reinforcement Learning Motivation}{27}{subsection.3.2.2}
 \contentsline {subsection}{\numberline {3.2.3}Deep Q-learning for Light Transport}{28}{subsection.3.2.3}
 \contentsline {subsection}{\numberline {3.2.4}Artificial Neural Network Architecture}{28}{subsection.3.2.4}
@@ -45,19 +45,20 @@
 \contentsline {section}{\numberline {4.1}Experimental Setup}{33}{section.4.1}
 \contentsline {section}{\numberline {4.2}Assessing the reduction in image Noise for Monte Carlo Path Tracing}{33}{section.4.2}
 \contentsline {subsection}{\numberline {4.2.1}Quantifying the Reduction in Image Noise}{33}{subsection.4.2.1}
-\contentsline {subsection}{\numberline {4.2.2}A Closer Inspection of Pixel Error Values}{34}{subsection.4.2.2}
-\contentsline {section}{\numberline {4.3}Convergence and Learning Incident Radiance}{38}{section.4.3}
-\contentsline {subsection}{\numberline {4.3.1}Hyper Parameter Tuning}{38}{subsection.4.3.1}
-\contentsline {subsection}{\numberline {4.3.2}Reusing Trained ANN for Different Scenes}{38}{subsection.4.3.2}
-\contentsline {section}{\numberline {4.4}From Memory Bound to Compute Bound}{38}{section.4.4}
-\contentsline {subsection}{\numberline {4.4.1}Memory Usage}{39}{subsection.4.4.1}
-\contentsline {subsubsection}{Expected Sarsa}{39}{section*.52}
-\contentsline {subsubsection}{Neural-Q}{40}{section*.53}
-\contentsline {subsection}{\numberline {4.4.2}Parallel Processing}{40}{subsection.4.4.2}
-\contentsline {subsubsection}{Expected Sarsa}{41}{section*.54}
-\contentsline {subsubsection}{Neural-Q}{41}{section*.55}
-\contentsline {section}{\numberline {4.5}Neural-Q Path Tracer Design}{42}{section.4.5}
-\contentsline {section}{\numberline {4.6}Recent Advancements in Neural Importance Sampling for Monte Carlo Path Tracing}{42}{section.4.6}
-\contentsline {chapter}{\numberline {5}Conclusion}{45}{chapter.5}
-\contentsline {subsection}{\numberline {5.0.1}Plan}{45}{subsection.5.0.1}
-\contentsline {chapter}{\numberline {A}An Example Appendix}{51}{appendix.A}
+\contentsline {subsection}{\numberline {4.2.2}A Closer Inspection of Pixel Error Values}{36}{subsection.4.2.2}
+\contentsline {section}{\numberline {4.3}Convergence}{38}{section.4.3}
+\contentsline {section}{\numberline {4.4}From a Discrete to Continuous State Space}{39}{section.4.4}
+\contentsline {section}{\numberline {4.5}From Memory Bound to Compute Bound}{41}{section.4.5}
+\contentsline {subsection}{\numberline {4.5.1}Memory Usage}{41}{subsection.4.5.1}
+\contentsline {subsubsection}{Expected Sarsa}{41}{section*.48}
+\contentsline {subsubsection}{Neural-Q}{42}{section*.49}
+\contentsline {subsection}{\numberline {4.5.2}Parallel Processing}{42}{subsection.4.5.2}
+\contentsline {subsubsection}{Expected Sarsa}{42}{section*.50}
+\contentsline {subsubsection}{Neural-Q}{43}{section*.51}
+\contentsline {section}{\numberline {4.6}Hyperparameters}{44}{section.4.6}
+\contentsline {subsubsection}{Expected Sarsa}{44}{section*.52}
+\contentsline {subsubsection}{Neural-Q}{44}{section*.53}
+\contentsline {section}{\numberline {4.7}Recent Advancements in Neural Importance Sampling for Monte Carlo Path Tracing}{45}{section.4.7}
+\contentsline {chapter}{\numberline {5}Conclusion}{47}{chapter.5}
+\contentsline {subsection}{\numberline {5.0.1}Plan}{47}{subsection.5.0.1}
+\contentsline {chapter}{\numberline {A}An Example Appendix}{53}{appendix.A}

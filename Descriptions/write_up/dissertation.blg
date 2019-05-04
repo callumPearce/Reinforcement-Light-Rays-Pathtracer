@@ -3,17 +3,18 @@ Capacity: max_strings=100000, hash_size=100000, hash_prime=85009
 The top-level auxiliary file: dissertation.aux
 The style file: plain.bst
 Database file #1: dissertation.bib
-Repeated entry---line 312 of file dissertation.bib
+Repeated entry---line 333 of file dissertation.bib
  : @misc{scratchapixel_2015
  :                         ,
 I'm skipping whatever remains of this entry
-I was expecting a `,' or a `}'---line 359 of file dissertation.bib
+I was expecting a `,' or a `}'---line 380 of file dissertation.bib
  :   
  :   publisher={Elsevier}
 (Error may have been on previous line)
 I'm skipping whatever remains of this entry
 Warning--I didn't find a database entry for "latexbook1"
 Warning--I didn't find a database entry for "latexbook2"
+Warning--I didn't find a database entry for "alg:neural_q_path_tracer"
 Warning--to sort, need author or key in glm
 Warning--to sort, need author or key in sdl2
 Warning--to sort, need author or key in tensorflow2015-whitepaper
@@ -23,45 +24,45 @@ Warning--empty publisher in glassner2014principles
 Warning--can't use both volume and number fields in kajiya1986rendering
 Warning--can't use both volume and number fields in muller2017practical
 Warning--empty title in nvidia_turing_architecture_whitepaper_2018
-You've used 65 entries,
+You've used 68 entries,
             2118 wiz_defined-function locations,
-            805 strings with 13916 characters,
-and the built_in function-call counts, 21483 in all, are:
-= -- 2006
-> -- 1197
+            819 strings with 14464 characters,
+and the built_in function-call counts, 22548 in all, are:
+= -- 2094
+> -- 1280
 < -- 17
-+ -- 484
-- -- 414
-* -- 1410
-:= -- 3558
-add.period$ -- 196
-call.type$ -- 65
-change.case$ -- 397
++ -- 517
+- -- 444
+* -- 1490
+:= -- 3746
+add.period$ -- 205
+call.type$ -- 68
+change.case$ -- 420
 chr.to.int$ -- 0
-cite$ -- 74
-duplicate$ -- 771
-empty$ -- 1643
-format.name$ -- 414
-if$ -- 4488
+cite$ -- 77
+duplicate$ -- 803
+empty$ -- 1716
+format.name$ -- 444
+if$ -- 4699
 int.to.chr$ -- 0
-int.to.str$ -- 65
-missing$ -- 45
-newline$ -- 320
-num.names$ -- 124
-pop$ -- 553
+int.to.str$ -- 68
+missing$ -- 47
+newline$ -- 335
+num.names$ -- 130
+pop$ -- 585
 preamble$ -- 1
-purify$ -- 334
+purify$ -- 354
 quote$ -- 0
-skip$ -- 594
+skip$ -- 615
 stack$ -- 0
-substring$ -- 931
-swap$ -- 192
+substring$ -- 955
+swap$ -- 196
 text.length$ -- 17
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 254
+type$ -- 266
 warning$ -- 9
-while$ -- 183
-width$ -- 67
-write$ -- 660
+while$ -- 190
+width$ -- 70
+write$ -- 690
 (There were 2 error messages)
