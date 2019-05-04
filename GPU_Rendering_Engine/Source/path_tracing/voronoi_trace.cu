@@ -23,7 +23,7 @@ vec3 voronoi_trace(curandState* d_rand_state, Camera* camera, RadianceMap* radia
 
         // Create a ray that we will change the direction for below
         Ray ray(camera->position, dir);
-        ray.rotate_ray(camera->yaw_y, camera->yaw_x);
+        ray.rotate_ray(0, 0);
         
         // Trace the path of the ray to find the closest intersection
         ray.closest_intersection(scene);
