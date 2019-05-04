@@ -58,6 +58,28 @@
   year={2013}
 }
 
+% Human level control
+@article{mnih2015human,
+  title={Human-level control through deep reinforcement learning},
+  author={Mnih, Volodymyr and Kavukcuoglu, Koray and Silver, David and Rusu, Andrei A and Veness, Joel and Bellemare, Marc G and Graves, Alex and Riedmiller, Martin and Fidjeland, Andreas K and Ostrovski, Georg and others},
+  journal={Nature},
+  volume={518},
+  number={7540},
+  pages={529},
+  year={2015},
+  publisher={Nature Publishing Group}
+}
+
+
+% Double Q learning
+@inproceedings{van2016deep,
+  title={Deep reinforcement learning with double q-learning},
+  author={Van Hasselt, Hado and Guez, Arthur and Silver, David},
+  booktitle={Thirtieth AAAI Conference on Artificial Intelligence},
+  year={2016}
+}
+
+
 % Actor-critic deep reinforcement learning
 @article{lillicrap2015continuous,
   title={Continuous control with deep reinforcement learning},

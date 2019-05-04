@@ -292,11 +292,11 @@
 \@writefile{lof}{\contentsline {figure}{\numberline {4.5}{\ignorespaces Training curves for the average path length and number of zero contribution light paths when rendering the Shelter scene for 100 epochs, as well as the 1st and 100th rendered frame when using 1 SPP for both images. This is shown for both the Expected Sarsa and Neural-Q path tracers. An epoch represents one sampled light ray through every pixel in the image. The average path length is the number reflections a light path takes before intersecting with a light source. A zero contribution light path is one which contributes almost zero colour to the final image.\relax }}{38}{figure.caption.45}}
 \newlabel{fig:training_curves_archway}{{4.5}{38}{Training curves for the average path length and number of zero contribution light paths when rendering the Shelter scene for 100 epochs, as well as the 1st and 100th rendered frame when using 1 SPP for both images. This is shown for both the Expected Sarsa and Neural-Q path tracers. An epoch represents one sampled light ray through every pixel in the image. The average path length is the number reflections a light path takes before intersecting with a light source. A zero contribution light path is one which contributes almost zero colour to the final image.\relax }{figure.caption.45}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {4.4}From a Discrete to Continuous State Space}{39}{section.4.4}}
-\@writefile{lof}{\contentsline {figure}{\numberline {4.6}{\ignorespaces Reference Images of the The Door Room and Shelter scenes next to SPP renderusing both na trained Expected Sarsa path tracer, and a trained Neural-Q path tracer trained for 100 epochs. The single sample for each pixel in the Expected Sarsa and Neural-Q renders is constructed by reflecting the light path in the direction of highest estimated radiance upon every intersection point, until the light is intersected with.\relax }}{40}{figure.caption.46}}
-\newlabel{fig:1_spp_max_dir}{{4.6}{40}{Reference Images of the The Door Room and Shelter scenes next to SPP renderusing both na trained Expected Sarsa path tracer, and a trained Neural-Q path tracer trained for 100 epochs. The single sample for each pixel in the Expected Sarsa and Neural-Q renders is constructed by reflecting the light path in the direction of highest estimated radiance upon every intersection point, until the light is intersected with.\relax }{figure.caption.46}{}}
 \citation{georgiev2018arnold}
 \citation{christensen2018renderman}
 \citation{hyperion}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.6}{\ignorespaces Reference Images of the The Door Room and Shelter scenes next to SPP renderusing both na trained Expected Sarsa path tracer, and a trained Neural-Q path tracer trained for 100 epochs. The single sample for each pixel in the Expected Sarsa and Neural-Q renders is constructed by reflecting the light path in the direction of highest estimated radiance upon every intersection point, until the light is intersected with.\relax }}{40}{figure.caption.46}}
+\newlabel{fig:1_spp_max_dir}{{4.6}{40}{Reference Images of the The Door Room and Shelter scenes next to SPP renderusing both na trained Expected Sarsa path tracer, and a trained Neural-Q path tracer trained for 100 epochs. The single sample for each pixel in the Expected Sarsa and Neural-Q renders is constructed by reflecting the light path in the direction of highest estimated radiance upon every intersection point, until the light is intersected with.\relax }{figure.caption.46}{}}
 \citation{dahm2017learning}
 \citation{devastator}
 \@writefile{toc}{\contentsline {section}{\numberline {4.5}From Memory Bound to Compute Bound}{41}{section.4.5}}
@@ -326,7 +326,19 @@
 \citation{muller2018neural}
 \citation{keller2019integral}
 \citation{tensor_cores}
+\citation{georgiev2018arnold}
+\citation{georgiev2018arnold}
 \@writefile{toc}{\contentsline {subsubsection}{Neural-Q}{43}{section*.51}}
+\citation{dahm2017learning}
+\citation{mnih2013playing}
+\citation{van2016deep}
+\citation{mnih2015human}
+\citation{georgiev2018arnold}
+\citation{christensen2018renderman}
+\citation{hyperion}
+\@writefile{toc}{\contentsline {section}{\numberline {4.6}Hyperparameters}{44}{section.4.6}}
+\@writefile{toc}{\contentsline {subsubsection}{Expected Sarsa}{44}{section*.52}}
+\@writefile{toc}{\contentsline {subsubsection}{Neural-Q}{44}{section*.53}}
 \citation{dahm2017learning}
 \citation{muller2017practical}
 \citation{vorba2014line}
@@ -342,10 +354,8 @@
 \citation{dinh2014nice}
 \citation{muller2018neural}
 \citation{muller2018neural}
-\@writefile{toc}{\contentsline {section}{\numberline {4.6}Hyperparameters}{44}{section.4.6}}
-\@writefile{toc}{\contentsline {section}{\numberline {4.7}Neural-Q Path Tracer Design}{44}{section.4.7}}
-\@writefile{toc}{\contentsline {section}{\numberline {4.8}Recent Advancements in Neural Importance Sampling for Monte Carlo Path Tracing}{44}{section.4.8}}
-\newlabel{sec:recent_advancements}{{4.8}{44}{Recent Advancements in Neural Importance Sampling for Monte Carlo Path Tracing}{section.4.8}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {4.7}Recent Advancements in Neural Importance Sampling for Monte Carlo Path Tracing}{45}{section.4.7}}
+\newlabel{sec:recent_advancements}{{4.7}{45}{Recent Advancements in Neural Importance Sampling for Monte Carlo Path Tracing}{section.4.7}{}}
 \@writefile{toc}{\contentsline {chapter}{\numberline {5}Conclusion}{47}{chapter.5}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
@@ -378,46 +388,49 @@
 \bibcite{glassner2014principles}{23}
 \bibcite{greger1998irradiance}{24}
 \bibcite{stanford_graphics}{25}
-\bibcite{global_vs_shared}{26}
-\bibcite{hermosilla2018deep}{27}
-\bibcite{jensen1996global}{28}
-\bibcite{kajiya1986rendering}{29}
-\bibcite{keller2019integral}{30}
-\bibcite{keller2016path}{31}
-\bibcite{konidaris2011value}{32}
-\bibcite{krivanek2014recent}{33}
-\bibcite{lecun2015deep}{34}
-\bibcite{lillicrap2015continuous}{35}
-\bibcite{mnih2013playing}{36}
-\bibcite{morokoff1995quasi}{37}
-\bibcite{muller2017practical}{38}
-\bibcite{muller2018neural}{39}
-\bibcite{nair2010rectified}{40}
-\bibcite{dynet}{41}
-\bibcite{cuda}{42}
-\bibcite{tensor_cores}{43}
-\bibcite{cuda_c_guide}{44}
-\bibcite{nvidia_turing_architecture_whitepaper_2018}{45}
-\bibcite{pan2006virtual}{46}
-\bibcite{pegoraro2008towards}{47}
-\bibcite{ramamoorthi2012theory}{48}
-\bibcite{raynal2012concurrent}{49}
-\bibcite{ren2013global}{50}
-\bibcite{devastator}{51}
-\bibcite{scratchapixel_2015}{52}
-\bibcite{shirley1994notes}{53}
-\bibcite{hyperion}{54}
-\bibcite{sutton1996generalization}{55}
-\bibcite{sutton2011reinforcement}{56}
-\bibcite{uther1998tree}{57}
-\bibcite{exploration_vs_exploitation}{58}
-\bibcite{deep_rl_function_approx}{59}
-\bibcite{introToRL}{60}
-\bibcite{mdp_dynamic_prog}{61}
-\bibcite{model_free_prediction}{62}
-\bibcite{vorba2014line}{63}
-\bibcite{normals}{64}
-\bibcite{zheng2018learning}{65}
+\bibcite{global_data_transfer}{26}
+\bibcite{global_vs_shared}{27}
+\bibcite{hermosilla2018deep}{28}
+\bibcite{jensen1996global}{29}
+\bibcite{kajiya1986rendering}{30}
+\bibcite{keller2019integral}{31}
+\bibcite{keller2016path}{32}
+\bibcite{konidaris2011value}{33}
+\bibcite{krivanek2014recent}{34}
+\bibcite{lecun2015deep}{35}
+\bibcite{lillicrap2015continuous}{36}
+\bibcite{mnih2013playing}{37}
+\bibcite{mnih2015human}{38}
+\bibcite{morokoff1995quasi}{39}
+\bibcite{muller2017practical}{40}
+\bibcite{muller2018neural}{41}
+\bibcite{nair2010rectified}{42}
+\bibcite{dynet}{43}
+\bibcite{cuda}{44}
+\bibcite{tensor_cores}{45}
+\bibcite{cuda_c_guide}{46}
+\bibcite{nvidia_turing_architecture_whitepaper_2018}{47}
+\bibcite{pan2006virtual}{48}
+\bibcite{pegoraro2008towards}{49}
+\bibcite{ramamoorthi2012theory}{50}
+\bibcite{raynal2012concurrent}{51}
+\bibcite{ren2013global}{52}
+\bibcite{devastator}{53}
+\bibcite{scratchapixel_2015}{54}
+\bibcite{shirley1994notes}{55}
+\bibcite{hyperion}{56}
+\bibcite{sutton1996generalization}{57}
+\bibcite{sutton2011reinforcement}{58}
+\bibcite{uther1998tree}{59}
+\bibcite{exploration_vs_exploitation}{60}
+\bibcite{deep_rl_function_approx}{61}
+\bibcite{introToRL}{62}
+\bibcite{mdp_dynamic_prog}{63}
+\bibcite{model_free_prediction}{64}
+\bibcite{van2016deep}{65}
+\bibcite{vorba2014line}{66}
+\bibcite{normals}{67}
+\bibcite{zheng2018learning}{68}
 \@writefile{toc}{\contentsline {chapter}{\numberline {A}An Example Appendix}{53}{appendix.A}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
