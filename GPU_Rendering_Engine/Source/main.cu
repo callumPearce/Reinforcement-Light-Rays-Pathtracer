@@ -101,14 +101,14 @@ int main (int argc, char** argv) {
     // Cornell Box: vec4(0.f,0.f, -3.f, 1.f);
     // Complex light: vec4(-1.f, -1.f, -0.4f, 1.f);
     // Archway: vec4(-1.f, 0.2f, -0.99f, 1.f)
-    Camera camera = Camera(vec4(-1.f, 0.2f, -0.99f, 1.f));
+    Camera camera = Camera(vec4(0.f, 0.5f, -0.9f, 1.f));
     // camera.rotate_right(3.14f);
     // camera.rotate_down(0.0f);
 
     // Initialise the scene
     Scene scene = Scene();
     // scene.load_cornell_box_scene();
-    scene.load_custom_scene("../Models/archway.obj", false);
+    scene.load_custom_scene("../Models/door_room.obj", false);
     scene.save_vertices_to_file();
 
     // CASE: Deep Reinforcement Learning
