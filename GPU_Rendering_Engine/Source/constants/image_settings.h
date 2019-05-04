@@ -14,7 +14,7 @@
 
 #define RENDER_SAVED_RADIANCE_VOLUMES false
 
-#define PATH_TRACING_METHOD 2
+#define PATH_TRACING_METHOD 1
 //0 = default
 //1 = reinforcement: expected SARSA
 //2 = voronoi
