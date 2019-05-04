@@ -225,6 +225,7 @@ Where:
 Unfortunately due to the use of function approximators for TD-learning methods, the methods are no longer proven to converge on the optimal policy $q_*$. That said, in general these methods perform well in practice for appropriate use cases \cite{lillicrap2015continuous, mnih2013playing}, and generally learn faster than the other option of Monte Carlo Reinforcement Learning with function approximation \cite{sutton2011reinforcement}.
 
 \subsection{Deep Reinforcement Learning Motivation}
+\label{sec:deep_rl_motivation}
 
 Like tabular TD-learning methods, I attempt to a deep reinforcement learning method to approximate the incident radiance from a set of discrete directions $\omega_k$ where $k = 0,..., n$ from point $x$ in the scene ($L_o(x, \omega_k)$), where $n$ is the number of discrete directions in the hemisphere. Then, when sampling direction to continue light paths during path tracing, the incident radiance estimate from each discretized direction is normalized, forming a distribution known as the radiance distribution, see section \ref{sec:irradiance_volume}. A good approximation of the radiance distribution at a point can be used in importance sampling directions for light path construction during Monte Carlo path tracing in order to reduce image noise (see section \ref{sec:monte_carlo_path_tracing}).\\
 
