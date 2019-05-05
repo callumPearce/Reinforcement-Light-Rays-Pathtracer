@@ -36,6 +36,7 @@ RadianceVolume::RadianceVolume(vec4 position, vec3 normal, std::vector<float>& q
     this->set_q_vals(q_vals);
 }
 
+
 // Updates the transformation matrix with the current set values of the normal and position
 __host__
 void RadianceVolume::update_transformation_matrix(){
