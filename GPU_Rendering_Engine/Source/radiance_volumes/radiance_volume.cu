@@ -243,6 +243,7 @@ vec4 RadianceVolume::sample_direction_from_radiance_distribution(curandState* d_
     return vec4(0.f,0.f,0.f,1.f);
 }
 
+
 // Samples a direction from the radiance volume using binary search for the sector
 __device__
 vec4 RadianceVolume::sample_max_direction_from_radiance_distribution(curandState* d_rand_state, int pixel_x, int pixel_y, int& sector_x, int& sector_y, float& pdf){
@@ -300,6 +301,7 @@ void RadianceVolume::temporal_difference_update(float sector_irradiance, int sec
     update_irradiance(surfaces, update, sector_x, sector_y);
 }
 
+
 // Gets the current irradiance estimate for the radiance volume
 __device__
 float RadianceVolume::get_irradiance_estimate(){
@@ -350,8 +352,8 @@ void RadianceVolume::write_volume_to_file(std::string filename){
         save_file << " " << normal.x << " " << normal.y << " " << normal.z;
 
         // Write each Q values
-        for (int n = 0; n < GRID_RESOLUTION*GRID_RESOLUTION; n++){
-            save_file << " " << this->radiance_distribution[n];
+        for (int n = 0; n <= GRID_RESOLUTION*GRID_RESOLUTION; n++){
+            save_file << " " << this->radiance_grid[n];
         }
 
         save_file << "\n";
@@ -367,8 +369,14 @@ void RadianceVolume::write_volume_to_file(std::string filename){
 // Set the radiance distribution of the radiance volume to the
 // supplied q_vals
 void RadianceVolume::set_q_vals(std::vector<float>& q_vals){
-    for (int n = 0; n < GRID_RESOLUTION*GRID_RESOLUTION; n++){
-        this->radiance_distribution[n] = q_vals[n];
+    float max_q = 0.f;
+    for (int n = 0; n <= GRID_RESOLUTION*GRID_RESOLUTION; n++){
+        if (q_vals[n] > max_q){
+            max_q = q_vals[n];
+        }
+    }
+    for (int i = 0; i <= GRID_RESOLUTION*GRID_RESOLUTION; i++){
+        this->radiance_distribution[i] = max(q_vals[i]/max_q, 0.f);
     }
 }
 
@@ -430,6 +438,7 @@ void RadianceVolume::read_radiance_volumes_from_file(
             RadianceVolume rv = RadianceVolume(position, normal, q_vals);
             rvs.push_back(rv);
         }
+        std::cout << "Read " << rvs.size() << " Radiance Volumes in!" << std::endl;
     }
     else{
         std::cout << "Could not read radiance volumes." << std::endl;

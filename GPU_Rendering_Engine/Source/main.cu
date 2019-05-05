@@ -101,14 +101,15 @@ int main (int argc, char** argv) {
     // Cornell Box: vec4(0.f,0.f, -3.f, 1.f);
     // Complex light: vec4(-1.f, -1.f, -0.4f, 1.f);
     // Archway: vec4(-1.f, 0.2f, -0.99f, 1.f)
-    Camera camera = Camera(vec4(-1.f, 0.2f, -0.99f, 1.f));
-    // camera.rotate_right(3.14f);
-    // camera.rotate_down(0.0f);
+    // Simple room closed: vec4(-0.7f, 0.1f, -0.6f, 1.f);
+    Camera camera = Camera(vec4(-0.7f, 0.1f, -0.6f, 1.f));
+    camera.rotate_right(0.25f);
+    camera.rotate_down(0.8f);
 
     // Initialise the scene
     Scene scene = Scene();
     // scene.load_cornell_box_scene();
-    scene.load_custom_scene("../Models/archway.obj", false);
+    scene.load_custom_scene("../Models/simple_room_closed.obj", false);
     scene.save_vertices_to_file();
 
     // CASE: Deep Reinforcement Learning
@@ -492,6 +493,53 @@ int main (int argc, char** argv) {
             // Delete radiance map variables
             cudaFree(device_radiance_volumes);
             cudaFree(device_radiance_map);
+        }
+        else if(PATH_TRACING_METHOD == 6){
+            Update(camera);
+
+            // Copy the camera to the device
+            checkCudaErrors(cudaMemcpy(device_camera, &camera, sizeof(Camera), cudaMemcpyHostToDevice));
+
+            // Get the block size and block count to compute over all pixels
+            dim3 block_size(8, 8);
+            int blocks_x = (SCREEN_WIDTH + block_size.x - 1)/block_size.x;
+            int blocks_y = (SCREEN_HEIGHT + block_size.y - 1)/block_size.y;
+            dim3 num_blocks(blocks_x, blocks_y);
+
+            init_rand_state<<<num_blocks, block_size>>>(d_rand_state, SCREEN_WIDTH, SCREEN_HEIGHT);
+            
+            // Read the radiance volumes and put them on to the device
+            std::vector<RadianceVolume> rvs;
+            RadianceVolume::read_radiance_volumes_from_file("../Radiance_Map_Data/selected_radiance_volumes/to_select_true.txt", rvs);
+
+            int b_size = 32;
+            int bs = ((GRID_RESOLUTION*GRID_RESOLUTION) + b_size - 1) / b_size;
+
+            // RENDER LOOP
+            for(int i = 0; i < rvs.size(); i++){
+
+                RadianceVolume* rv_device;
+                checkCudaErrors(cudaMalloc(&rv_device, sizeof(RadianceVolume)));
+                checkCudaErrors(cudaMemcpy(rv_device, (&rvs[i]), sizeof(RadianceVolume), cudaMemcpyHostToDevice));
+
+                // Copy the camera to the device and trace it
+                
+                path_trace_radiance_volume<<<bs, b_size>>>(
+                    d_rand_state, 
+                    rv_device, 
+                    device_scene
+                );
+
+                cudaDeviceSynchronize();
+
+                // Copy back the rv in to the array
+                checkCudaErrors(cudaMemcpy((&rvs[i]), rv_device, sizeof(RadianceVolume), cudaMemcpyDeviceToHost));
+                cudaFree(rv_device);
+            }
+            
+            for(int i = 0; i < rvs.size(); i++){
+                rvs[i].write_volume_to_file("../Radiance_Map_Data/selected_radiance_volumes/selected_true.txt");
+            }
         }
 
         /* Free memeory within CPU/GPU */

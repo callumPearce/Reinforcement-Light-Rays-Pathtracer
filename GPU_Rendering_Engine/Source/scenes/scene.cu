@@ -40,7 +40,7 @@ void Scene::load_custom_scene(const char* filename, bool lights_in_obj){
 
     if ( RENDER_SAVED_RADIANCE_VOLUMES ){
         RadianceVolume::read_radiance_volumes_to_surfaces(
-            "../Radiance_Map_Data/selected_radiance_volumes/selected_deep.txt",
+            "../Radiance_Map_Data/selected_radiance_volumes/selected_true.txt",
             surfaces_v
         );
     }

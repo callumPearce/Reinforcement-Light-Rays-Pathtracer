@@ -12,14 +12,15 @@
 #define EPS 0.00001f
 #define RHO (1.f / (2.f*3.1415926535f))
 
-#define RENDER_SAVED_RADIANCE_VOLUMES false
+#define RENDER_SAVED_RADIANCE_VOLUMES true
 
-#define PATH_TRACING_METHOD 4
+#define PATH_TRACING_METHOD 0
 //0 = default
 //1 = reinforcement: expected SARSA
 //2 = voronoi
 //3 = deep reinforcement learning
 //4 = pretrained network inference
 //5 = save nn q_value predictions for a given point (not for rendering)
+//6 = Get true radiance volume distribution
 
 #endif

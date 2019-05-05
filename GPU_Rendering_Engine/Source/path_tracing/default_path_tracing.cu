@@ -13,6 +13,7 @@ void draw_default_path_tracing(vec3* device_buffer, curandState* d_rand_state, C
     device_buffer[x*(int)SCREEN_HEIGHT + y] = path_trace(d_rand_state, camera, x, y, scene, device_path_lengths);
 }
 
+
 __device__
 vec3 path_trace(curandState* d_rand_state, Camera* camera, int pixel_x, int pixel_y, Scene* scene, int* device_path_lengths){
 
@@ -85,4 +86,34 @@ vec3 path_trace_iterative(curandState* d_rand_state, Ray ray, Scene* scene, int&
     }
     path_length = MAX_RAY_BOUNCES;
     return vec3(0.f);
+}
+
+// Given a radiance volume fill the true radiance volume values inside
+__global__
+void path_trace_radiance_volume(curandState* d_rand_state, RadianceVolume* rv, Scene* scene){
+        // Populate the shared GPU/CPU screen buffer
+    int n = blockIdx.x * blockDim.x + threadIdx.x;
+    int x = int(n/GRID_RESOLUTION);
+    int y = n - (x*GRID_RESOLUTION);
+
+    if ((x*GRID_RESOLUTION) + y >= GRID_RESOLUTION*GRID_RESOLUTION) return;
+
+    rv->radiance_grid[n] = path_trace_volume(d_rand_state, rv, x, y, scene);
+}
+
+__device__
+float path_trace_volume(curandState* d_rand_state, RadianceVolume* rv, int pixel_x, int pixel_y, Scene* scene){
+
+    vec3 irradiance = vec3(0.f);
+    for (int i = 0; i < SAMPLES_PER_PIXEL; i++){
+        
+        vec3 dir = convert_grid_pos_to_direction((float)pixel_x+0.5f, (float)pixel_y+0.5f, vec3(rv->position), rv->transformation_matrix);
+        Ray ray = Ray(rv->position + vec4((0.0001f * dir),1.f), vec4(dir,1.f));
+
+        // Trace the path of the ray
+        int pl = 0;
+        irradiance += path_trace_iterative(d_rand_state, ray, scene, pl);
+    }
+    irradiance /= (float)SAMPLES_PER_PIXEL;
+    return min((irradiance.x + irradiance.y + irradiance.z)/3.f, 1.f);
 }

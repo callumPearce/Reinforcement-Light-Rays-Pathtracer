@@ -373,6 +373,12 @@ image_settings.h
 /home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/Source/path_tracing/image_settings.h
 printing.h
 /home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/Source/path_tracing/printing.h
+radiance_volumes_settings.h
+/home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/Source/path_tracing/radiance_volumes_settings.h
+hemisphere_helpers.cuh
+/home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/Source/path_tracing/hemisphere_helpers.cuh
+radiance_volume.cuh
+/home/calst/Documents/year4/thesis/monte_carlo_raytracer/GPU_Rendering_Engine/Source/path_tracing/radiance_volume.cuh
 curand.h
 -
 curand_kernel.h
@@ -1431,6 +1437,12 @@ image_settings.h
 Source/path_tracing/image_settings.h
 printing.h
 Source/path_tracing/printing.h
+radiance_volumes_settings.h
+Source/path_tracing/radiance_volumes_settings.h
+hemisphere_helpers.cuh
+Source/path_tracing/hemisphere_helpers.cuh
+radiance_volume.cuh
+Source/path_tracing/radiance_volume.cuh
 curand.h
 -
 curand_kernel.h
