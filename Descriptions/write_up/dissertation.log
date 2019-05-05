@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.10.2)  5 MAY 2019 13:27
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.10.2)  5 MAY 2019 23:42
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1649,7 +1649,7 @@ Package pdftex.def Info: images/noise_diff.png used on input line 69.
 File: images/renders/expected_sarsa_visualisation.png Graphic file (type png)
  <use images/renders/expected_sarsa_visualisation.png>
 Package pdftex.def Info: images/renders/expected_sarsa_visualisation.png used o
-n input line 80.
+n input line 82.
 (pdftex.def)             Requested size: 204.85846pt x 204.8586pt.
 
 <images/renders/neural_q_visualisation.png, id=782, 1027.84pt x 1027.84pt>
@@ -1657,7 +1657,7 @@ File: images/renders/neural_q_visualisation.png Graphic file (type png)
 
 <use images/renders/neural_q_visualisation.png>
 Package pdftex.def Info: images/renders/neural_q_visualisation.png used on inpu
-t line 84.
+t line 86.
 (pdftex.def)             Requested size: 204.85846pt x 204.8586pt.
 
 
@@ -1669,48 +1669,48 @@ on.png> <./images/renders/neural_q_visualisation.png>]
 File: images/training_curves.png Graphic file (type png)
 
 <use images/training_curves.png>
-Package pdftex.def Info: images/training_curves.png used on input line 160.
+Package pdftex.def Info: images/training_curves.png used on input line 162.
 (pdftex.def)             Requested size: 455.24411pt x 195.00046pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 166--167
+Underfull \hbox (badness 10000) in paragraph at lines 168--169
 
  []
 
 [38 <./images/training_curves.png>]
 
 LaTeX Warning: Reference `fig:no_epsilon_greedy' on page 39 undefined on input 
-line 173.
+line 175.
 
 <images/1_spp.png, id=822, 593.0958pt x 375.3222pt>
 File: images/1_spp.png Graphic file (type png)
  <use images/1_spp.png>
-Package pdftex.def Info: images/1_spp.png used on input line 182.
+Package pdftex.def Info: images/1_spp.png used on input line 184.
 (pdftex.def)             Requested size: 455.24411pt x 288.08267pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 187--188
-
- []
-
-
 Underfull \hbox (badness 10000) in paragraph at lines 189--190
 
  []
 
+
+Underfull \hbox (badness 10000) in paragraph at lines 191--192
+
+ []
+
 [39] [40 <./images/1_spp.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 200--201
+Underfull \hbox (badness 10000) in paragraph at lines 202--203
 
  []
 
 
 LaTeX Warning: Reference `fig:more_irradiance_volumes' on page 41 undefined on 
-input line 221.
+input line 223.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 221--222
+Underfull \hbox (badness 10000) in paragraph at lines 223--224
 
  []
 
@@ -1718,14 +1718,14 @@ Underfull \hbox (badness 10000) in paragraph at lines 221--222
 File: images/less_volumes.png Graphic file (type png)
 
 <use images/less_volumes.png>
-Package pdftex.def Info: images/less_volumes.png used on input line 225.
+Package pdftex.def Info: images/less_volumes.png used on input line 227.
 (pdftex.def)             Requested size: 318.66948pt x 253.97989pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 230--231
+Underfull \hbox (badness 10000) in paragraph at lines 232--233
 
  []
 
@@ -1734,78 +1734,82 @@ File: images/renders/sarsa_128_1Mb_incorrect.png Graphic file (type png)
 
 <use images/renders/sarsa_128_1Mb_incorrect.png>
 Package pdftex.def Info: images/renders/sarsa_128_1Mb_incorrect.png used on inp
-ut line 234.
+ut line 236.
 (pdftex.def)             Requested size: 182.09486pt x 182.09709pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 [42 <./images/less_volumes.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 249--250
+Underfull \hbox (badness 10000) in paragraph at lines 251--252
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 253--254
+Underfull \hbox (badness 10000) in paragraph at lines 255--256
 
  []
 
 [43 <./images/renders/sarsa_128_1Mb_incorrect.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 255--256
+Underfull \hbox (badness 10000) in paragraph at lines 257--258
 
  []
 
 
 LaTeX Warning: Citation `alg:neural_q_path_tracer' on page 44 undefined on inpu
-t line 260.
+t line 262.
 
 
 LaTeX Warning: Reference `fig:memory_transfer' on page 44 undefined on input li
-ne 260.
+ne 262.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 260--261
+Underfull \hbox (badness 10000) in paragraph at lines 262--263
 
  []
 
 [44]
 
 LaTeX Warning: Reference `alg:default_path_tracer' on page 45 undefined on inpu
-t line 272.
+t line 274.
 
 
-LaTeX Warning: Reference `' on page 45 undefined on input line 272.
+LaTeX Warning: Reference `' on page 45 undefined on input line 274.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 272--273
+Underfull \hbox (badness 10000) in paragraph at lines 274--275
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 277--278
+Underfull \hbox (badness 10000) in paragraph at lines 279--280
 
  []
 
 [45]
-Underfull \hbox (badness 10000) in paragraph at lines 286--287
+Underfull \hbox (badness 10000) in paragraph at lines 288--289
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 288--289
+Underfull \hbox (badness 10000) in paragraph at lines 290--291
 
  []
 
 ) (./chapters/5_conclusion.tex [46]
 Chapter 5.
-) [47
 
-] [48
+Underfull \hbox (badness 10000) in paragraph at lines 12--13
 
-] (./dissertation.bbl
+ []
+
+[47
+
+]) [48] (./dissertation.bbl
 LaTeX Font Info:    Font shape `OMS/cmr/m/it' in size <10> not available
 (Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 68.
  [49
+
 
 ]
 Missing character: There is no â in font cmti10!
@@ -1826,7 +1830,7 @@ Package atveryend Info: Empty hook `AfterLastShipout' on input line 181.
 Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 181.
 Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 181.
 Package rerunfilecheck Info: File `dissertation.out' has not changed.
-(rerunfilecheck)             Checksum: DB4B21BB317EBA4131DE1692DC302EA9;1797.
+(rerunfilecheck)             Checksum: C8F586EC117202D2DC4BF1849A17D750;1798.
 
 
 LaTeX Warning: There were undefined references.
@@ -1837,9 +1841,9 @@ LaTeX Warning: There were undefined references.
 ### simple group (level 1) entered at line 1061 ({)
 ### bottom level 
 Here is how much of TeX's memory you used:
- 33742 strings out of 492995
- 764165 string characters out of 6132704
- 1141724 words of memory out of 5000000
+ 33743 strings out of 492995
+ 764180 string characters out of 6132704
+ 1141725 words of memory out of 5000000
  36364 multiletter control sequences out of 15000+600000
  17594 words of font info for 66 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
@@ -1868,10 +1872,10 @@ ve/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texliv
 e/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt8.pfb></usr/local/texlive/
 2017/texmf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb></usr/local/texl
 ive/2017/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on dissertation.pdf (67 pages, 32629294 bytes).
+Output written on dissertation.pdf (67 pages, 32631910 bytes).
 PDF statistics:
- 1149 PDF objects out of 1200 (max. 8388607)
- 989 compressed objects within 10 object streams
- 301 named destinations out of 1000 (max. 500000)
+ 1150 PDF objects out of 1200 (max. 8388607)
+ 990 compressed objects within 10 object streams
+ 302 named destinations out of 1000 (max. 500000)
  332 words of extra memory for PDF output out of 10000 (max. 10000000)
 

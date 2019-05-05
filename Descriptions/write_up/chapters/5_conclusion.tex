@@ -2,8 +2,22 @@
 
 \begin{document}
 
-\chapter{Conclusion}
+\chapter{Conclusions}
 \label{chap:conclusion}
+
+The objectives set out by this thesis were to learn the incident radiance function over the continuous set of locations in a scene. Then to design an algorithm which used the  approximation for importance sampling directions to continue light paths in as part of Monte Carlo path tracing, in order to reduce image noise. This algorithm then needs to be compared against an existing state of the art method which does the same, however approximates the incident radiance function by instead discretizing the continuous set of possible locations in the scene. With the new algorithm designed and evaluated, the question of is learning the incident radiance over the continuous set of possible locations in the scene beneficial for Monte Carlo path tracing compared to existing approaches in any way? This chapter describes the projects achievement of these goals and how this contributes to the field of computer graphics and efficient numerical integration. As well as  a discussion on the future research opportunities which have arisen following the conclusions made.
+
+\section*{Wider Motivation and Problem}
+
+Monte Carlo path tracing is a method used in Computer Graphics capable of producing photo-realistic images. Traditionally, it is known to trade off rendering time for the superior image quality it can produce, however increasing compute power, innovative algorithms and data-structures, and post processing have accelerated the speed of the algorithm by a significant amount. This combined with the lack of set-up required to render any arbitrary scene has led to a large resurgence in the algorithms use in industry, leading to even more research. In fact, a larger goal held across industry at this point is to achieve real-time rendering for methods like path tracing which accurately simulate light transport, but more work is required to make this a reality.\\
+
+As suggested in the name, Monte Carlo path tracing uses Monte Carlo integration to ultimately approximate the true pixel value for all pixels in an image to render a scene, where a sample is a single light path. Therefore, importance sampling light paths for Monte Carlo path tracing has the potential to significantly improve every pixels colour estimate within the image, while using the same number of SPP. The task of finding correct information to importance sample light path directions with is a difficult one, and there have been many different approaches for doing so. NVIDIA's technique for the Expected Sarsa path tracer introduced the application of reinforcement learning for approximating the incident radiance function, as well as a new path tracing algorithm to use this approximation for importance sampling light path directions to great success. Their tabular TD-learning approach along with others required a discretization of locations in the scene to approximate the incident radiance function, whereas the scene in actual fact contains an infinite number of discrete positions. This raised the question that is it possible to learn the incident radiance function over the continuous set of location in the scene using a function approximation instead? Also, is this advantageous to Monte Carlo path tracing in any way?
+
+\section*{Solution}
+
+\begin{itemize}
+\item 
+\end{itemize}
 
 {\bf A compulsory chapter,     of roughly $5$ pages} 
 \vspace{1cm} 
@@ -34,8 +48,6 @@ enough attention.  Ideally, the chapter will consist of three parts:
 
 \subsection{Plan}
 \begin{enumerate}
-
-\item Problem:
 
 \item Summarise contributions to solving problem:
 \begin{enumerate}
