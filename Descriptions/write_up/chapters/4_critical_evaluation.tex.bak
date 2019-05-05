@@ -221,7 +221,7 @@ The size of memory used by the Q-table is defined by the number of Irradiance Vo
 
 % 1 image for more irradiance volumes leading to higher MAPE score -> showing the scene discretization
 
-
+    
 
 
 A clear problem from this relationship is that if the underlying system does not have enough RAM, then the algorithm will not be able to significantly reduce the amount of noise in rendered images. Now, this may not be a problem for most small scenes with a polygon count ofaround 100, as common commodity graphics cards such as the NVIDIA 1070Ti GPU used for my experiments comes with 8GB of global memory (RAM), and NVIDIA claim they are able to fit the Q-table for a such scenes into only 2MB of memory to receive a significant reduction in noise \cite{dahm2017learning}. However, films commonly render scenes with hundred of thousands, or even millions of polygons potentially making it impossible to store a Q-table large enough to significantly reduce image noise in RAM. For example, in Transformers Revenge of the Fallen, the robot 'Devastator' was made out of 11,716,127 polygons \cite{devastator}. To present this memory scaling issue, Figure \ref{} presents a render of the Cornell Box scene which uses only xMB of memory to store the Q-table. The artefacts present in the image are cause by vastly incorrect importance\\
