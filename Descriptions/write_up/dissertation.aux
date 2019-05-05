@@ -306,6 +306,9 @@
 \newlabel{tab:memory_usage}{{4.1}{41}{Additional memory required in Megabytes (MB) to render each of the four scenes shown in Figure \ref {fig:mape_results_grid} using both the Expected Sarsa and Neural-Q path tracers.\relax }{table.caption.47}{}}
 \@writefile{toc}{\contentsline {subsubsection}{Expected Sarsa}{41}{section*.48}}
 \citation{ren2013global}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.7}{\ignorespaces The Complex Pillars scene rendered using two Expected Sarsa path tracers both trained for 1000 SPP and the rendered images in the middle column are produced using 128 SPP. The first row presents the Expected Sarsa path tracer with 36029 Irradiance Volumes. The second row is the Expected Sarsa path tracer with only 780 Irradiance Volumes. The left column is a voronoi plot of the Irradiance Volumes, where each pixel is given a colour to represent which Irradiance Volume it is closest to. The MAPE score and render is given for both renders in the middle column. The right column presents two close-ups to give a visual comparison of the noise between the two images.\relax }}{42}{figure.caption.49}}
+\newlabel{fig:voronoi_difference}{{4.7}{42}{The Complex Pillars scene rendered using two Expected Sarsa path tracers both trained for 1000 SPP and the rendered images in the middle column are produced using 128 SPP. The first row presents the Expected Sarsa path tracer with 36029 Irradiance Volumes. The second row is the Expected Sarsa path tracer with only 780 Irradiance Volumes. The left column is a voronoi plot of the Irradiance Volumes, where each pixel is given a colour to represent which Irradiance Volume it is closest to. The MAPE score and render is given for both renders in the middle column. The right column presents two close-ups to give a visual comparison of the noise between the two images.\relax }{figure.caption.49}{}}
+\@writefile{toc}{\contentsline {subsubsection}{Neural-Q}{42}{section*.51}}
 \citation{crockett1995parallel}
 \citation{alerstam2008parallel}
 \citation{fatahalian2009data}
@@ -314,9 +317,10 @@
 \citation{hyperion}
 \citation{raynal2012concurrent}
 \citation{cuda}
-\@writefile{toc}{\contentsline {subsubsection}{Neural-Q}{42}{section*.49}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.5.2}Parallel Processing}{42}{subsection.4.5.2}}
-\@writefile{toc}{\contentsline {subsubsection}{Expected Sarsa}{42}{section*.50}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.8}{\ignorespaces Cornell Box scene rendered using 1MB of memory to store the Irradiance Volumes for the Expected Sarsa path tracer. The large black artefacts and incorrect colouring of the red block is a result of using too few Irradiance Volumes to approximate the incident radiance function $L_i(x, \omega )$. Causing importance sampling to actually increase the variance in pixel value estimates, leading to an increase in overall image noise.\relax }}{43}{figure.caption.50}}
+\newlabel{fig:incorrect_cornell}{{4.8}{43}{Cornell Box scene rendered using 1MB of memory to store the Irradiance Volumes for the Expected Sarsa path tracer. The large black artefacts and incorrect colouring of the red block is a result of using too few Irradiance Volumes to approximate the incident radiance function $L_i(x, \omega )$. Causing importance sampling to actually increase the variance in pixel value estimates, leading to an increase in overall image noise.\relax }{figure.caption.50}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.5.2}Parallel Processing}{43}{subsection.4.5.2}}
+\@writefile{toc}{\contentsline {subsubsection}{Expected Sarsa}{43}{section*.52}}
 \citation{cuda_c_guide}
 \citation{global_vs_shared}
 \citation{dahm2017learning}
@@ -326,9 +330,9 @@
 \citation{muller2018neural}
 \citation{keller2019integral}
 \citation{tensor_cores}
+\@writefile{toc}{\contentsline {subsubsection}{Neural-Q}{44}{section*.53}}
 \citation{georgiev2018arnold}
 \citation{georgiev2018arnold}
-\@writefile{toc}{\contentsline {subsubsection}{Neural-Q}{43}{section*.51}}
 \citation{dahm2017learning}
 \citation{mnih2013playing}
 \citation{van2016deep}
@@ -336,9 +340,9 @@
 \citation{georgiev2018arnold}
 \citation{christensen2018renderman}
 \citation{hyperion}
-\@writefile{toc}{\contentsline {section}{\numberline {4.6}Hyperparameters}{44}{section.4.6}}
-\@writefile{toc}{\contentsline {subsubsection}{Expected Sarsa}{44}{section*.52}}
-\@writefile{toc}{\contentsline {subsubsection}{Neural-Q}{44}{section*.53}}
+\@writefile{toc}{\contentsline {section}{\numberline {4.6}Hyperparameters}{45}{section.4.6}}
+\@writefile{toc}{\contentsline {subsubsection}{Expected Sarsa}{45}{section*.54}}
+\@writefile{toc}{\contentsline {subsubsection}{Neural-Q}{45}{section*.55}}
 \citation{dahm2017learning}
 \citation{muller2017practical}
 \citation{vorba2014line}
@@ -354,8 +358,8 @@
 \citation{dinh2014nice}
 \citation{muller2018neural}
 \citation{muller2018neural}
-\@writefile{toc}{\contentsline {section}{\numberline {4.7}Recent Advancements in Neural Importance Sampling for Monte Carlo Path Tracing}{45}{section.4.7}}
-\newlabel{sec:recent_advancements}{{4.7}{45}{Recent Advancements in Neural Importance Sampling for Monte Carlo Path Tracing}{section.4.7}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {4.7}Recent Advancements in Neural Importance Sampling for Monte Carlo Path Tracing}{46}{section.4.7}}
+\newlabel{sec:recent_advancements}{{4.7}{46}{Recent Advancements in Neural Importance Sampling for Monte Carlo Path Tracing}{section.4.7}{}}
 \@writefile{toc}{\contentsline {chapter}{\numberline {5}Conclusion}{47}{chapter.5}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}

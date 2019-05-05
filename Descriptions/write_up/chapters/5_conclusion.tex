@@ -34,25 +34,31 @@ enough attention.  Ideally, the chapter will consist of three parts:
 
 \subsection{Plan}
 \begin{enumerate}
-\item Summarise contributions:
 
+\item Problem:
+
+\item Summarise contributions to solving problem:
 \begin{enumerate}
-\item Research into hwo neural network architectures relate to learning the irradiance distribution for a scene with a specific type of geometry
+\item Extended temporal difference learning for the Incident Radiance function to the continuous spatial domain 
 
-\item Implementing a path tracer from scratch to analyse in depth the difficulties and issues that come with Ken Dahm's algorithm. Including memory usage, parallelisation and parameter usage.
+\item Proved it is possible for a 2 layer ANN to learn an accurate approximation of the Incident Radiance Function for a variety of scenes by the development of the new Neural-Q path tracing algorithm
 
-\item Analysis of different reinforcement learning approaches pitched together clearly on a variety of scenes
+\item Presented the weakness of Expected Sarsa when learning the incident radiance distribution on a point compared to the Neural-Q's smoother and more accurate approximation.
 
-\item Analysis of neural networks ability to learn the irradiance distribution function
-
-\item Online deep-reinforcement learning algorithms effectiveness of learning irradiance distribution function
+\item Presented that the Neural-Q algorithm is better able to reduce image noise for certain scenes compared to the Expected Sarsa algorithm proposed by NVIDIA using a smaller amount of memory and simpler hyperparameter tuning. Whilst sacrificing compute speed, limiting the algorithms current applicability to industry.
 \end{enumerate}
 
+\item Discussion of main findings and drawbacks:
+
+\item Future work:
+
+\begin{itemize}
 \item If DQN does not work well provide some further analysis on potential other alternatives which could be used.
 
 \item Future Work: Policy learning to model continuous action \& state space
 
 \item DDQN and other deep reinforcement learning strategies
+\end{itemize}
 \end{enumerate}
 
 \end{document}

@@ -51,14 +51,14 @@
 \contentsline {section}{\numberline {4.5}From Memory Bound to Compute Bound}{41}{section.4.5}
 \contentsline {subsection}{\numberline {4.5.1}Memory Usage}{41}{subsection.4.5.1}
 \contentsline {subsubsection}{Expected Sarsa}{41}{section*.48}
-\contentsline {subsubsection}{Neural-Q}{42}{section*.49}
-\contentsline {subsection}{\numberline {4.5.2}Parallel Processing}{42}{subsection.4.5.2}
-\contentsline {subsubsection}{Expected Sarsa}{42}{section*.50}
-\contentsline {subsubsection}{Neural-Q}{43}{section*.51}
-\contentsline {section}{\numberline {4.6}Hyperparameters}{44}{section.4.6}
-\contentsline {subsubsection}{Expected Sarsa}{44}{section*.52}
+\contentsline {subsubsection}{Neural-Q}{42}{section*.51}
+\contentsline {subsection}{\numberline {4.5.2}Parallel Processing}{43}{subsection.4.5.2}
+\contentsline {subsubsection}{Expected Sarsa}{43}{section*.52}
 \contentsline {subsubsection}{Neural-Q}{44}{section*.53}
-\contentsline {section}{\numberline {4.7}Recent Advancements in Neural Importance Sampling for Monte Carlo Path Tracing}{45}{section.4.7}
+\contentsline {section}{\numberline {4.6}Hyperparameters}{45}{section.4.6}
+\contentsline {subsubsection}{Expected Sarsa}{45}{section*.54}
+\contentsline {subsubsection}{Neural-Q}{45}{section*.55}
+\contentsline {section}{\numberline {4.7}Recent Advancements in Neural Importance Sampling for Monte Carlo Path Tracing}{46}{section.4.7}
 \contentsline {chapter}{\numberline {5}Conclusion}{47}{chapter.5}
 \contentsline {subsection}{\numberline {5.0.1}Plan}{47}{subsection.5.0.1}
 \contentsline {chapter}{\numberline {A}An Example Appendix}{53}{appendix.A}
