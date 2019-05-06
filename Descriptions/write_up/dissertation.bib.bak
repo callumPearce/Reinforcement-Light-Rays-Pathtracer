@@ -299,6 +299,15 @@
 	note={Disney's Hyperion Renderer}
 }
 
+% real time rendering book
+@book{akenine2018real,
+  title={Real-time rendering},
+  author={Akenine-Moller, Tomas and Haines, Eric and Hoffman, Naty},
+  year={2018},
+  publisher={AK Peters/CRC Press}
+}
+
+
 % VR learning
 @article{pan2006virtual,
   title={Virtual reality and mixed reality for virtual learning environments},
@@ -618,6 +627,17 @@ journal={from Wolfram MathWorld}
   year={2013},
   publisher={ACM}
 }
+
+% Bounding boxes
+@inproceedings{boulos2005notes,
+  title={Notes on efficient ray tracing},
+  author={Boulos, Solomon},
+  booktitle={ACM SIGGRAPH 2005 Courses},
+  pages={10},
+  year={2005},
+  organization={ACM}
+}
+
 
 % Dynet
 @article{dynet,

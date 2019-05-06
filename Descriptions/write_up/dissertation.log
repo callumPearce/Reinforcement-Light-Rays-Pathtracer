@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.10.2)  6 MAY 2019 18:46
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.10.2)  7 MAY 2019 00:05
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1810,20 +1810,29 @@ Underfull \hbox (badness 10000) in paragraph at lines 293--294
 ) (./chapters/5_conclusion.tex [46]
 Chapter 5.
 
-Underfull \hbox (badness 10000) in paragraph at lines 12--13
-
- []
+LaTeX Warning: Citation `keller2015path' on page 47 undefined on input line 12.
 
 
-Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [47
+LaTeX Warning: Citation `akenine2018real' on page 47 undefined on input line 12
+.
 
-]
-[48] [49]
+[47
 
-LaTeX Warning: Reference `chap:critical_evaluation' on page 50 undefined on inp
-ut line 64.
+] [48]
+
+LaTeX Warning: Citation `boulos2005notes' on page 49 undefined on input line 53
+.
+
+[49]
+! Undefined control sequence.
+l.68 ... similar approach to that derived in \icte
+                                                  {newdahm}. Also, a replay ...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
 
 ) [50] (./dissertation.bbl
 LaTeX Font Info:    Font shape `OMS/cmr/m/it' in size <10> not available
@@ -1861,10 +1870,10 @@ LaTeX Warning: There were undefined references.
 ### simple group (level 1) entered at line 1061 ({)
 ### bottom level 
 Here is how much of TeX's memory you used:
- 33760 strings out of 492995
- 764594 string characters out of 6132704
- 1140983 words of memory out of 5000000
- 36376 multiletter control sequences out of 15000+600000
+ 33762 strings out of 492995
+ 764618 string characters out of 6132704
+ 1141981 words of memory out of 5000000
+ 36378 multiletter control sequences out of 15000+600000
  17594 words of font info for 66 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  72i,28n,98p,2501b,25889s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -1892,10 +1901,10 @@ ve/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texliv
 e/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt8.pfb></usr/local/texlive/
 2017/texmf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb></usr/local/texl
 ive/2017/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on dissertation.pdf (69 pages, 33568564 bytes).
+Output written on dissertation.pdf (69 pages, 33569772 bytes).
 PDF statistics:
- 1176 PDF objects out of 1200 (max. 8388607)
- 1012 compressed objects within 11 object streams
+ 1198 PDF objects out of 1200 (max. 8388607)
+ 1034 compressed objects within 11 object streams
  306 named destinations out of 1000 (max. 500000)
  369 words of extra memory for PDF output out of 10000 (max. 10000000)
 

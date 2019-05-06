@@ -61,7 +61,7 @@
 \contentsline {section}{\numberline {4.7}Recent Advancements in Neural Importance Sampling for Monte Carlo Path Tracing}{46}{section.4.7}
 \contentsline {chapter}{\numberline {5}Conclusions}{47}{chapter.5}
 \contentsline {section}{\numberline {5.1}Wider Motivation and the Problem}{47}{section.5.1}
-\contentsline {section}{\numberline {5.2}Summary of Contributions}{48}{section.5.2}
+\contentsline {section}{\numberline {5.2}Summary of Contributions}{47}{section.5.2}
 \contentsline {section}{\numberline {5.3}Discussion}{48}{section.5.3}
 \contentsline {section}{\numberline {5.4}Future Work}{49}{section.5.4}
 \contentsline {subsubsection}{Scaling up Neural-Q}{49}{section*.60}
