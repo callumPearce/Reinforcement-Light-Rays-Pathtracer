@@ -2,13 +2,13 @@
 
 \begin{document}
 
-\chapter{Contextual Background}
+\chapter{Introduction to Path Tracing}
 \label{chap:context}
 
 % I don't like this, needs to be more like the opening of a book chapter 
 
-This chapter explains on a high level what path tracing is and how it accurately 
-simulates light transport. Then importance sampling ray directions in light
+This chapter explains on a high level what path tracing is and how it faithfully
+simulates physical light transport. Then importance sampling ray directions in light
 transport simulation is discussed, and how it can potentially reduce the number 
 of zero contribution light paths and the associated benefits with this. Temporal 
 difference learning as a branch of reinforcement learning is then introduced, 

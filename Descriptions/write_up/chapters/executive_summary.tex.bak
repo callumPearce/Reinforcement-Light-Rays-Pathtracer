@@ -50,64 +50,32 @@ an might be as follows:
 \end{quote}
 \end{comment}
 
-In the field of Computer Graphics, Path tracing is an algorithm which 
-accurately approximates global illumination in order to produce 
-photo-realistic images. Path tracing has traditionally been known to 
-trade speed for image quality. This is due to the lengthy process of accurately 
-finding each pixels colour, whereby many light rays are 
-fired through each pixel into scene, then directions for each ray are 
-continually sampled until it intersects with a light source. Due to 
-this, a variety of Importance sampling algorithms have been designed 
-to avoid sampling directions which lead to rays contributing no light 
-to the rendered image. The paths formed by sampling rays in these 
-directions are known as zero contribution light paths. By not sampling 
-zero contribution light paths, it is possible to significantly reduce 
-the noise in rendered images using the same number of sampled rays per 
-pixel in path tracing\\
+In the field of Computer Graphics, Monte Carlo path tracing is an algorithm which is capable of rendering photo-realistic images. Traditionally Monte Carlo path tracing has been thought to trade quick render times for superior image quality. This is due to the lengthy process of accurately finding each pixels colour using Monte Carlo integration. At a high level, many light rays are traced from a camera, through each pixel and into scene, where each ray intersects with a point on a surface. Then, a new direction is sampled for each ray to continue their path in, where they intersect with another surface. A direction to continue the path of a ray in is continually sampled until it intersects with a light source. Each one of these rays traced through a pixel, around the scene and to a light source are a sample used to solve an integral by Monte Carlo integration which determines the pixels colour value.
 
-Recently a Temporal Difference learning method was used by Nvidia to
-achieve impressive results in Importance sampling within a Path tracer.
-The algorithm essentially learns which directions light is coming from for
-a given point in the scene. It then uses importance sampling to favour shooting
-rays stored in those directions, reducing the number of zero contribution light paths
-sampled. With this success, there is plenty of potential to experiment with
-other Temporal Difference learning methods, particularly Deep Q-Learning.
-It is also important to assess both of these methods on their ability to 
-accurately approximate Global Illumination to produce photo-realistic images.
-From this, my goal is to investigate the ability of two different temporal
-difference learning algorithms ability to reduce the number of zero contribution
-light paths in path tracing, whilst still accurately approximating global illumination.
-More specifically, the first temporal difference learning method will be that proposed
-by Nvidia, and the second will be my designed Neural-Q path tracing algorithm.
-I will be comparing these two methods in order to test the following hypothesis:
+As path tracing computes each pixel value in an image by Monte Carlo integration, importance sampling can be applied, whereby directions which are considered to be more 'important' for determining a pixel's colour value have a higher probability of being sampled. Therefore, if we have a good idea of which directions are more important to continue rays in, each one of our sampled rays per pixel will contribute more to the pixels value, meaning fewer samples will be required to accurately approximate the pixels colour value via Monte Carlo integration. In other words, the noise present in each pixels colour value will be lower by using importance sampling with the same number of samples per pixel than without. If the noise in each pixel's colour estimate is lower, then the noise across the rendered image by path tracing will be lower. Which ultimately improves the quality of the image, at the same computational cost.
+
+In order to determine which directions are more important to continue a ray in at a given intersection point, a reinforcement learning method, specifically temporal difference learning method has been used in a new path tracing algorithm to learn what is known as the incident radiance function. The approximation of this function made by the algorithm is used to importance sample directions to continue light paths in, which successfully reduces image noise in Monte Carlo path tracing. However, the algorithm approximates the function at a discrete set of locations within the scene, where in actual fact the scene is a continuous 3-dimensional space. Therefore, we have tested the following research hypothesis:
 
 \begin{quote}
-The Neural-Q  path tracer is further able to reduce
-the number of zero contribution light paths than an Expected SARSA
-Path tracer proposed by Nvidia, whilst still accurately simulating Global Illumination.
+Learning the incident radiance function for the continuous set of locations in a scene is more advantageous for importance sampling in Monte Carlo path tracing, compared to learning the function for a discrete set of locations.
 \end{quote}
 
 \noindent
-\textbf{Outcomes}
+In doing so, our main areas of work include:
+
 \begin{itemize}
-\item Which is better able to reduce the number of zero contribution light paths expected SARSA or Deep Q-learning
-\item Can Expected SARSA learning handle multiple lights well in a scene \& deep q-learning
+\item Built a path tracing engine from scratch which supports all path tracing algorithms we will introduce and the code for assessing them. This sums to over 7000 lines of C++/CUDA C code.
+
+\item Spent 50 hours researching into the field of efficient light transport simulation for path tracing techniques.
+
+\item Spent 130 hours researching into Reinforcement Learning and Deep Reinforcement Learning.
+
+\item Implemented the state of the art path tracing algorithm proposed by NVIDIA in \cite{dahm2017learning}  in which the incident radiance function is approximated for a discrete set of locations in a scene.
+
+\item Designed and implemented our newly proposed Neural-Q path tracer which approximates the incident radiance function for the continuous set of locations in a scene.
+
+\item Assessed the performance of the newly designed Neural-Q path tracer against NVIDIA's path tracer for various metrics, including the accuracy of the approximated incident radiance function.
 \end{itemize}
 
-\noindent
-\textbf{Main areas of work}
-\begin{itemize}
-\item I have written $x$ lines of code to build a  Path tracing engine from scratch which supports a variety of GPU accelerated Path tracing algorithms I have experimented with.
-
-\item I have spent $x$ hours researching into the field of efficient light transport simulation for ray-tracing techniques.
-
-\item I have spent $x$ hours researching into Reinforcement learning, particularly Temporal Difference learning and Deep Reinforcement learning, neither of which I have been taught before.
-
-\item I spent $x$ hours implementing and validating the on-line Expected SARSA Path tracing algorithm proposed by Nvidia, which required me to implement the Irradiance Volume data structure as a prerequisite.
-
-\item I have spent $x$ hours designing, implementing and analysing my own on-line Deep Q-learning Path tracing algorithm, along with a neural network architecture
-designed for the algorithm.
-
-\end{itemize}
 
 \end{document}

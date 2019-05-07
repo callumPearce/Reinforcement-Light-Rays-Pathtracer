@@ -281,8 +281,8 @@ This decision was inspired by \cite{mnih2013playing}, where a state in a game of
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.8\textwidth]{images/fwd_pass_process.png}   
-\caption{An illustration of the process for a forward pass on the ANN used for the Neural-Q path tracer. Starting with the scene on the left, all vertices in the scene are converted into a coordinate system relative to the point $x$, producing $\mathbf{v^x}$. This is passed to the input layer of the ANN which then computes a forward pass through the two hidden layers fully connected layers, each with a width of $200$ neurons to the output layer. The output layers width is equal to the number of discrete incident directions used }
+\includegraphics[width=0.9\textwidth]{images/fwd_pass_process.png}   
+\caption{An illustration of the process for a forward pass on the ANN used for the Neural-Q path tracer. Starting with the scene on the left, all vertices in the scene are converted into a coordinate system relative to the point $x$, producing $\mathbf{v^x}$. This is passed to the input layer of the ANN which then computes a forward pass through the two hidden layers fully connected layers, each with a width of $200$ neurons to the output layer. The output layers width is equal to the number of discrete incident directions $m$ used in the approximation of the incident radiance function. Each output represents the approximated incident radiance on the position $x$ for every discrete incident direction $\hat{q_\theta}(x, \omega_k)$ $\forall k = 1, ..., m$.}
 \label{fig:nn_radiance_estimate_illustration}
 \end{figure}
 
