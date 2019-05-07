@@ -329,7 +329,6 @@ Where:
 
 In Equation \ref{eq:rendering_eq_monte_carlo} recursive $L_i$ is still present, but the recursion is terminated when the light path intersects with a light source. By the law of large numbers in Equation \ref{eq:law_large_numbers}, the larger the number of sampled light paths ($N$), the closer each pixels approximation will be to the pixels true value as a result of solving the rendering equation. As known from section \ref{sec:rendering_equation}, the rendering equation follows the physical law of energy conservation, and due to this it accurately models light transport simulation for global illumination. Therefore, the more samples used in the Monte Carlo approximation in Equation \ref{eq:rendering_eq_monte_carlo}, the lower the amount of noise in the image \cite{christensen2016path}. An example of this concept applied to a simple forward path tracer is shown in Figure \ref{fig:reduce_noise_spp_example}, and the pseudo code for this forward path tracer to produce a single rendered image is given in Algorithm \ref{alg:forward_path_tracing}.
 
-% Include figure of increasing sampling count leading to a reduction in variance which corresponds to a reduction in image noise from things like fireflies
 \begin{figure}[h]
 \begin{center}
 \includegraphics[width=0.99\textwidth]{images/renders/noise_reduction_default/increasing_samples.png}    
@@ -561,6 +560,33 @@ Q(x, \omega) \leftarrow (1 - \alpha) \cdot Q(x, \omega) + \alpha \cdot \left( L_
 \end{equation}
 
 The estimated outgoing radiance values evaluated using Equation \ref{eq:mc_expected_sarsa_td_learning} for a discrete set of angles around a given  point $x$ can then be converted in to a distribution. This distribution is accordingly named the radiance distribution for a point \cite{greger1998irradiance}. A good approximation of the radiance distribution at a point $x$ will have a similar shape to the true function of outgoing radiance at point $x$, $L_o(x, \omega)$ $\forall \omega \in \Omega$. Therefore, by Monte Carlo importance sampling, sampling directions for light path construction from the learned radiance distribution and using it as the probability density function in the Monte Carlo approximation will significantly reduce the variance in the approximation. Leading to a significant reduction to a significant reduction in image noise.
+
+\begin{figure}[h]
+\centering
+\begin{minipage}{0.4\textwidth}
+      \begin{tikzpicture}
+	 \begin{axis}[every axis plot post/.append style={
+	  mark=none,domain=-20:20,samples=200,smooth},
+	  axis lines = left,
+	  tick style={draw=none},
+	  xticklabels={},
+	  yticklabels={},
+	    % All plots: from -2:2, 50 samples, smooth, no marks
+	  axis x line*=bottom, % no box around the plot, only x and y axis
+	  axis y line*=left, % the * suppresses the arrow tips
+	  enlargelimits=upper,
+	  xlabel = $\omega_i$,
+	  ylabel = $p(\omega_i)$
+	  ] % extend the axes a bit to the right and top
+	  \addplot [
+	  color=red,
+	  ]{gauss(-10.0,4.0) + gauss(10.0,4.0)};
+	\end{axis}
+    \end{tikzpicture}
+\end{minipage}
+\caption{An illustration of a simple incident radiance distribution for a given point $x$ in a scene. Where $\omega_i$ $\forall \omega_i \in \Omega$ are all possible incident directions in the hemisphere around the point $x$ oriented to the surface normal at $x$.The scene contains two area lights with the same power which are visible from $x$ in the scene, causing two equal level peaks in the incident radiance distribution for $x$.}
+  \label{fig:incident_radiance_distributio }
+\end{figure}
 
 \section*{Summary}
 The story up to this point can be summarised as follows; Monte Carlo integration is a numerical technique for approximating integral. It can be used to find an approximation of pixel values in path tracing by approximating the reflected radiance from a point in a given direction. Rather then uniformly sampling directions in light path construction for determining pixel values, a whole field is dedicated to importance sample these directions to reduce the variance in the Monte Carlo approximation. However, most traditional methods lack the ability to effectively reduce the number of zero-contribution light paths as they do not take into account visibility. Instead, reinforcement learning, specifically temporal difference learning techniques can be applied to learning the outgoing radiance from a point in a given direction, which are in turn used for importance sampling ray directions where the approximated radiance is high. To do this a link has been made between the rendering equation and the temporal difference learning rule Exepected Sarsa. This has opened up the opportunity to design and evaluate new algorithms for importance sampling directions in light path construction, specifically ones involving deep reinforcement learning.

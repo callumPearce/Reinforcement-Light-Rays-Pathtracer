@@ -177,6 +177,8 @@
 \citation{greger1998irradiance}
 \newlabel{eq:expected_sarsa_td_learning}{{2.26}{19}{Linking TD-Learning and Light Transport Simulation}{equation.2.4.26}{}}
 \newlabel{eq:mc_expected_sarsa_td_learning}{{2.27}{19}{Linking TD-Learning and Light Transport Simulation}{equation.2.4.27}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.9}{\ignorespaces An illustration of a simple incident radiance distribution for a given point $x$ in a scene. Where $\omega _i$ $\forall \omega _i \in \Omega $ are all possible incident directions in the hemisphere around the point $x$ oriented to the surface normal at $x$.The scene contains two area lights with the same power which are visible from $x$ in the scene, causing two equal level peaks in the incident radiance distribution for $x$.\relax }}{19}{figure.caption.25}}
+\newlabel{fig:incident_radiance_distributio }{{2.9}{19}{An illustration of a simple incident radiance distribution for a given point $x$ in a scene. Where $\omega _i$ $\forall \omega _i \in \Omega $ are all possible incident directions in the hemisphere around the point $x$ oriented to the surface normal at $x$.The scene contains two area lights with the same power which are visible from $x$ in the scene, causing two equal level peaks in the incident radiance distribution for $x$.\relax }{figure.caption.25}{}}
 \citation{dahm2017learning}
 \citation{dahm2017learning}
 \citation{greger1998irradiance}
@@ -190,10 +192,10 @@
 \newlabel{sec:expecte_sarsa_path_tracer}{{3.1}{21}{The expected Sarsa Path Tracer}{section.3.1}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.1.1}The Irradiance Volume}{21}{subsection.3.1.1}}
 \citation{bentley1975multidimensional}
-\@writefile{lof}{\contentsline {figure}{\numberline {3.1}{\ignorespaces An Irradiance Volume. Each sector holds the incoming radiance $L_i(x,\omega _k)$, the more green a sector is the lower the stored radiance in that sector, the more red a sector is the higher the stored radiance in that sector. \relax }}{22}{figure.caption.26}}
-\newlabel{fig:irradiance_volume}{{3.1}{22}{An Irradiance Volume. Each sector holds the incoming radiance $L_i(x,\omega _k)$, the more green a sector is the lower the stored radiance in that sector, the more red a sector is the higher the stored radiance in that sector. \relax }{figure.caption.26}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3.2}{\ignorespaces An example of discretizing location in the scene into Irradiance Volume locations. The geometry mesh (a) is used to uniformly sample Irradiance volume positions. Image (b) shows a voronoi plot for the Irradiance Volumes in the scene, where each pixel is coloured to the represent its closest Irradiance Volume, so each sector of colour in (b) represents a different Irradiance Volume location. Finally (c) gives a render using the Expected Sarsa path tracer based on Algorithm \ref  {alg:expected_sarsa_pathtracer}.\relax }}{22}{figure.caption.27}}
-\newlabel{fig:scene_discretization_example}{{3.2}{22}{An example of discretizing location in the scene into Irradiance Volume locations. The geometry mesh (a) is used to uniformly sample Irradiance volume positions. Image (b) shows a voronoi plot for the Irradiance Volumes in the scene, where each pixel is coloured to the represent its closest Irradiance Volume, so each sector of colour in (b) represents a different Irradiance Volume location. Finally (c) gives a render using the Expected Sarsa path tracer based on Algorithm \ref {alg:expected_sarsa_pathtracer}.\relax }{figure.caption.27}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.1}{\ignorespaces An Irradiance Volume. Each sector holds the incoming radiance $L_i(x,\omega _k)$, the more green a sector is the lower the stored radiance in that sector, the more red a sector is the higher the stored radiance in that sector. \relax }}{22}{figure.caption.27}}
+\newlabel{fig:irradiance_volume}{{3.1}{22}{An Irradiance Volume. Each sector holds the incoming radiance $L_i(x,\omega _k)$, the more green a sector is the lower the stored radiance in that sector, the more red a sector is the higher the stored radiance in that sector. \relax }{figure.caption.27}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.2}{\ignorespaces An example of discretizing location in the scene into Irradiance Volume locations. The geometry mesh (a) is used to uniformly sample Irradiance volume positions. Image (b) shows a voronoi plot for the Irradiance Volumes in the scene, where each pixel is coloured to the represent its closest Irradiance Volume, so each sector of colour in (b) represents a different Irradiance Volume location. Finally (c) gives a render using the Expected Sarsa path tracer based on Algorithm \ref  {alg:expected_sarsa_pathtracer}.\relax }}{22}{figure.caption.28}}
+\newlabel{fig:scene_discretization_example}{{3.2}{22}{An example of discretizing location in the scene into Irradiance Volume locations. The geometry mesh (a) is used to uniformly sample Irradiance volume positions. Image (b) shows a voronoi plot for the Irradiance Volumes in the scene, where each pixel is coloured to the represent its closest Irradiance Volume, so each sector of colour in (b) represents a different Irradiance Volume location. Finally (c) gives a render using the Expected Sarsa path tracer based on Algorithm \ref {alg:expected_sarsa_pathtracer}.\relax }{figure.caption.28}{}}
 \citation{devroye2006nonuniform}
 \citation{dahm2017learning}
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.1.2}Expected Sarsa Path Tracing}{23}{subsection.3.1.2}}
@@ -202,12 +204,12 @@
 \@writefile{loa}{\contentsline {algocf}{\numberline {2}{\ignorespaces Expected Sarsa path tracer pseudo code following Nvidia's method in \cite  {dahm2017learning}. Given a camera position, scene geometry, this algorithm will render a single image using a tabular Expected Sarsa approach to progressively reduce image noise. Where $N$ is the pre-specified number of sampled light paths per pixel.\relax }}{24}{algocf.2}}
 \newlabel{eq:mc_expected_sarsa_pdf}{{3.1}{24}{Monte Carlo Integration}{equation.3.1.1}{}}
 \citation{dahm2017learning}
-\newlabel{fig:uniform_pdf}{{3.3a}{25}{Hemisphere with a uniform $pdf$\relax }{figure.caption.32}{}}
-\newlabel{sub@fig:uniform_pdf}{{a}{25}{Hemisphere with a uniform $pdf$\relax }{figure.caption.32}{}}
-\newlabel{fig:not_uniform_pdf}{{3.3b}{25}{Irradiance Volume with a non-uniform $pdf$\relax }{figure.caption.32}{}}
-\newlabel{sub@fig:not_uniform_pdf}{{b}{25}{Irradiance Volume with a non-uniform $pdf$\relax }{figure.caption.32}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3.3}{\ignorespaces A 2 dimension view of a subset of values from two probability density functions ($pdf$). One for a unit hemisphere (left) with a uniform $pdf$. One for an Irradiance Volume (right) with non-uniform pdf. Where the arrows represent sampled directions and the values at the end are the evaluated $pdf$ values for each direction.\relax }}{25}{figure.caption.32}}
-\newlabel{fig:pdfs}{{3.3}{25}{A 2 dimension view of a subset of values from two probability density functions ($pdf$). One for a unit hemisphere (left) with a uniform $pdf$. One for an Irradiance Volume (right) with non-uniform pdf. Where the arrows represent sampled directions and the values at the end are the evaluated $pdf$ values for each direction.\relax }{figure.caption.32}{}}
+\newlabel{fig:uniform_pdf}{{3.3a}{25}{Hemisphere with a uniform $pdf$\relax }{figure.caption.33}{}}
+\newlabel{sub@fig:uniform_pdf}{{a}{25}{Hemisphere with a uniform $pdf$\relax }{figure.caption.33}{}}
+\newlabel{fig:not_uniform_pdf}{{3.3b}{25}{Irradiance Volume with a non-uniform $pdf$\relax }{figure.caption.33}{}}
+\newlabel{sub@fig:not_uniform_pdf}{{b}{25}{Irradiance Volume with a non-uniform $pdf$\relax }{figure.caption.33}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.3}{\ignorespaces A 2 dimension view of a subset of values from two probability density functions ($pdf$). One for a unit hemisphere (left) with a uniform $pdf$. One for an Irradiance Volume (right) with non-uniform pdf. Where the arrows represent sampled directions and the values at the end are the evaluated $pdf$ values for each direction.\relax }}{25}{figure.caption.33}}
+\newlabel{fig:pdfs}{{3.3}{25}{A 2 dimension view of a subset of values from two probability density functions ($pdf$). One for a unit hemisphere (left) with a uniform $pdf$. One for an Irradiance Volume (right) with non-uniform pdf. Where the arrows represent sampled directions and the values at the end are the evaluated $pdf$ values for each direction.\relax }{figure.caption.33}{}}
 \newlabel{eq:decay_lr}{{3.2}{25}{Consistency}{equation.3.1.2}{}}
 \citation{deep_rl_function_approx}
 \citation{sutton2011reinforcement}
@@ -217,15 +219,15 @@
 \citation{lecun2015deep}
 \@writefile{toc}{\contentsline {section}{\numberline {3.2}The Neural-Q Path Tracer}{26}{section.3.2}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.2.1}Introduction to Deep Reinforcement Learning}{26}{subsection.3.2.1}}
-\@writefile{toc}{\contentsline {subsubsection}{Value Function Approximation}{26}{section*.34}}
-\@writefile{toc}{\contentsline {subsubsection}{Stochastic Gradient Descent}{26}{section*.35}}
+\@writefile{toc}{\contentsline {subsubsection}{Value Function Approximation}{26}{section*.35}}
+\@writefile{toc}{\contentsline {subsubsection}{Stochastic Gradient Descent}{26}{section*.36}}
 \newlabel{eq:example_loss}{{3.3}{26}{Stochastic Gradient Descent}{equation.3.2.3}{}}
 \citation{deep_rl_function_approx}
 \citation{lillicrap2015continuous}
 \citation{mnih2013playing}
 \citation{sutton2011reinforcement}
-\@writefile{toc}{\contentsline {subsubsection}{Bootstrapping}{27}{section*.36}}
-\newlabel{sec:bootstrapping}{{3.2.1}{27}{Bootstrapping}{section*.36}{}}
+\@writefile{toc}{\contentsline {subsubsection}{Bootstrapping}{27}{section*.37}}
+\newlabel{sec:bootstrapping}{{3.2.1}{27}{Bootstrapping}{section*.37}{}}
 \newlabel{eq:td_error_q_learning}{{3.4}{27}{Bootstrapping}{equation.3.2.4}{}}
 \newlabel{eq:loss_q_learning}{{3.5}{27}{Bootstrapping}{equation.3.2.5}{}}
 \newlabel{eq:q_learning_derv_loss}{{3.6}{27}{Bootstrapping}{equation.3.2.6}{}}
@@ -267,210 +269,15 @@
 \@writefile{toc}{\contentsline {subsection}{\numberline {4.2.1}Quantifying the Reduction in Image Noise}{33}{subsection.4.2.1}}
 \citation{christensen2016path}
 \newlabel{eq:mape}{{4.1}{34}{Quantifying the Reduction in Image Noise}{equation.4.2.1}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {4.1}{\ignorespaces A comparison of the default forward path tracer, Expected Sarsa path tracer, and the Neural-Q path tracer of their image noise for four different rendered scenes. All scenes were rendered with 128 samples per pixel. The score under each column in an image row corresponds to the MAPE score for each path tracing algorithm for the particular scene.The Neural-Q and Expected Sarsa algorithms both used $144$ equally spaced directions to estimate the radiance distribution on a given point. The Neural-Q path tracer used the network described in \ref  {sec:ann_architecture} for all fours scenes with a decaying $\epsilon $-\textit  {greedy} policy start at $\epsilon =1$ with a decay of $\delta = 0.05$ applied after every pixel in the image has had a light path sampled through it once. The Expected Sarsa path tracer used just enough Irradiance Volumes (which varied depending on the scene) to facilitate a significant reduction in image noise in all four renders.\relax }}{35}{figure.caption.41}}
-\newlabel{fig:mape_results_grid}{{4.1}{35}{A comparison of the default forward path tracer, Expected Sarsa path tracer, and the Neural-Q path tracer of their image noise for four different rendered scenes. All scenes were rendered with 128 samples per pixel. The score under each column in an image row corresponds to the MAPE score for each path tracing algorithm for the particular scene.The Neural-Q and Expected Sarsa algorithms both used $144$ equally spaced directions to estimate the radiance distribution on a given point. The Neural-Q path tracer used the network described in \ref {sec:ann_architecture} for all fours scenes with a decaying $\epsilon $-\textit {greedy} policy start at $\epsilon =1$ with a decay of $\delta = 0.05$ applied after every pixel in the image has had a light path sampled through it once. The Expected Sarsa path tracer used just enough Irradiance Volumes (which varied depending on the scene) to facilitate a significant reduction in image noise in all four renders.\relax }{figure.caption.41}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.1}{\ignorespaces A comparison of the default forward path tracer, Expected Sarsa path tracer, and the Neural-Q path tracer of their image noise for four different rendered scenes. All scenes were rendered with 128 samples per pixel. The score under each column in an image row corresponds to the MAPE score for each path tracing algorithm for the particular scene.The Neural-Q and Expected Sarsa algorithms both used $144$ equally spaced directions to estimate the radiance distribution on a given point. The Neural-Q path tracer used the network described in \ref  {sec:ann_architecture} for all fours scenes with a decaying $\epsilon $-\textit  {greedy} policy start at $\epsilon =1$ with a decay of $\delta = 0.05$ applied after every pixel in the image has had a light path sampled through it once. The Expected Sarsa path tracer used just enough Irradiance Volumes (which varied depending on the scene) to facilitate a significant reduction in image noise in all four renders.\relax }}{35}{figure.caption.42}}
+\newlabel{fig:mape_results_grid}{{4.1}{35}{A comparison of the default forward path tracer, Expected Sarsa path tracer, and the Neural-Q path tracer of their image noise for four different rendered scenes. All scenes were rendered with 128 samples per pixel. The score under each column in an image row corresponds to the MAPE score for each path tracing algorithm for the particular scene.The Neural-Q and Expected Sarsa algorithms both used $144$ equally spaced directions to estimate the radiance distribution on a given point. The Neural-Q path tracer used the network described in \ref {sec:ann_architecture} for all fours scenes with a decaying $\epsilon $-\textit {greedy} policy start at $\epsilon =1$ with a decay of $\delta = 0.05$ applied after every pixel in the image has had a light path sampled through it once. The Expected Sarsa path tracer used just enough Irradiance Volumes (which varied depending on the scene) to facilitate a significant reduction in image noise in all four renders.\relax }{figure.caption.42}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {4.2.2}A Closer Inspection of Pixel Error Values}{36}{subsection.4.2.2}}
 \newlabel{sec:close_inspec_pixels}{{4.2.2}{36}{A Closer Inspection of Pixel Error Values}{subsection.4.2.2}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {4.2}{\ignorespaces Histograms for the average RGB pixel error values for all four rendered scenes using both the Expected Sarsa path tracer and the Neural-Q path tracer. Where the average RGB pixel error value is the average difference in all RGB colour channels between a pixel in the reference image, and the corresponding pixel in the image rendered by either the Expected Sarsa or Neural-Q path tracers. The max average RGB pixel error value is $255$, which corresponds to the case where the reference images pixels value was $(255,255,255)$ whereas the rendered images was $(0,0,0)$ or vice versa. The histograms are based on the rendered images presented in Figure \ref  {fig:mape_results_grid}.\relax }}{36}{figure.caption.42}}
-\newlabel{fig:histogram_errors}{{4.2}{36}{Histograms for the average RGB pixel error values for all four rendered scenes using both the Expected Sarsa path tracer and the Neural-Q path tracer. Where the average RGB pixel error value is the average difference in all RGB colour channels between a pixel in the reference image, and the corresponding pixel in the image rendered by either the Expected Sarsa or Neural-Q path tracers. The max average RGB pixel error value is $255$, which corresponds to the case where the reference images pixels value was $(255,255,255)$ whereas the rendered images was $(0,0,0)$ or vice versa. The histograms are based on the rendered images presented in Figure \ref {fig:mape_results_grid}.\relax }{figure.caption.42}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.2}{\ignorespaces Histograms for the average RGB pixel error values for all four rendered scenes using both the Expected Sarsa path tracer and the Neural-Q path tracer. Where the average RGB pixel error value is the average difference in all RGB colour channels between a pixel in the reference image, and the corresponding pixel in the image rendered by either the Expected Sarsa or Neural-Q path tracers. The max average RGB pixel error value is $255$, which corresponds to the case where the reference images pixels value was $(255,255,255)$ whereas the rendered images was $(0,0,0)$ or vice versa. The histograms are based on the rendered images presented in Figure \ref  {fig:mape_results_grid}.\relax }}{36}{figure.caption.43}}
+\newlabel{fig:histogram_errors}{{4.2}{36}{Histograms for the average RGB pixel error values for all four rendered scenes using both the Expected Sarsa path tracer and the Neural-Q path tracer. Where the average RGB pixel error value is the average difference in all RGB colour channels between a pixel in the reference image, and the corresponding pixel in the image rendered by either the Expected Sarsa or Neural-Q path tracers. The max average RGB pixel error value is $255$, which corresponds to the case where the reference images pixels value was $(255,255,255)$ whereas the rendered images was $(0,0,0)$ or vice versa. The histograms are based on the rendered images presented in Figure \ref {fig:mape_results_grid}.\relax }{figure.caption.43}{}}
 \citation{dahm2017learning}
-\newlabel{fig:true_incident_distribution}{{4.3a}{37}{Ground Truth\relax }{figure.caption.43}{}}
-\newlabel{sub@fig:true_incident_distribution}{{a}{37}{Ground Truth\relax }{figure.caption.43}{}}
-\newlabel{fig:exp_sarsa_distribution}{{4.3b}{37}{Expected Sarsa\relax }{figure.caption.43}{}}
-\newlabel{sub@fig:exp_sarsa_distribution}{{b}{37}{Expected Sarsa\relax }{figure.caption.43}{}}
-\newlabel{fig:neural_q_distribution}{{4.3c}{37}{Neural-Q\relax }{figure.caption.43}{}}
-\newlabel{sub@fig:neural_q_distribution}{{c}{37}{Neural-Q\relax }{figure.caption.43}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {4.3}{\ignorespaces Visualisations of the incident radiance distribution for three different positions in a scene. The incident radiance is represented by placing an adaptive quadrature at each point with 144 different sectors, each representing an incident direction which the incident radiance has been calculated at. The positions are in front of a single large area light within a simple scene. (a) presents the ground truth incident radiance distribution which has been calculated by Monte Carlo integration by firing 4096 sampled light paths per sector. (b) is the approximated incident radiance distribution for the three positions produced by the Expected Sarsa method when trained 1024 SPP, and (c) is the same but for the Neural-Q method trained with 1024 SPP. Due to the single large area light in front of the point, most of the incident radiance on the points will come from directions spanning from the area light on the left.\relax }}{37}{figure.caption.43}}
-\newlabel{fig:distribution_visualisation}{{4.3}{37}{Visualisations of the incident radiance distribution for three different positions in a scene. The incident radiance is represented by placing an adaptive quadrature at each point with 144 different sectors, each representing an incident direction which the incident radiance has been calculated at. The positions are in front of a single large area light within a simple scene. (a) presents the ground truth incident radiance distribution which has been calculated by Monte Carlo integration by firing 4096 sampled light paths per sector. (b) is the approximated incident radiance distribution for the three positions produced by the Expected Sarsa method when trained 1024 SPP, and (c) is the same but for the Neural-Q method trained with 1024 SPP. Due to the single large area light in front of the point, most of the incident radiance on the points will come from directions spanning from the area light on the left.\relax }{figure.caption.43}{}}
-\newlabel{fig:dist_expected_sarsa}{{4.4a}{37}{Expected Sarsa\relax }{figure.caption.44}{}}
-\newlabel{sub@fig:dist_expected_sarsa}{{a}{37}{Expected Sarsa\relax }{figure.caption.44}{}}
-\newlabel{fig:dist_neural_q}{{4.4b}{37}{Neural-Q\relax }{figure.caption.44}{}}
-\newlabel{sub@fig:dist_neural_q}{{b}{37}{Neural-Q\relax }{figure.caption.44}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {4.4}{\ignorespaces An illustration of the incident radiance distribution for a given point directly in front of the light source shown in Figure \ref  {fig:distribution_visualisation} for both the Expected Sarsa and Neural-Q methods. Where $\omega _i \in \Omega $ is discrete incident angles on the point, and $p(\omega _i)$ is the probability density function over incident radiance evaluated at angle $\omega _i$. The \textbf  {red} line represents the true incident radiance distribution on the point, the \textbf  {blue} represents the corresponding methods approximation of the incident radiance distribution on the point.\relax }}{37}{figure.caption.44}}
-\newlabel{fig:dist_2_methods}{{4.4}{37}{An illustration of the incident radiance distribution for a given point directly in front of the light source shown in Figure \ref {fig:distribution_visualisation} for both the Expected Sarsa and Neural-Q methods. Where $\omega _i \in \Omega $ is discrete incident angles on the point, and $p(\omega _i)$ is the probability density function over incident radiance evaluated at angle $\omega _i$. The \textbf {red} line represents the true incident radiance distribution on the point, the \textbf {blue} represents the corresponding methods approximation of the incident radiance distribution on the point.\relax }{figure.caption.44}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {4.3}From a Discrete to Continuous State Space}{38}{section.4.3}}
-\@writefile{lof}{\contentsline {figure}{\numberline {4.5}{\ignorespaces Reference Images of the The Door Room and Shelter scenes next to SPP renderusing both na trained Expected Sarsa path tracer, and a trained Neural-Q path tracer trained for 100 epochs. The single sample for each pixel in the Expected Sarsa and Neural-Q renders is constructed by reflecting the light path in the direction of highest estimated radiance upon every intersection point, until the light is intersected with.\relax }}{38}{figure.caption.45}}
-\newlabel{fig:1_spp_max_dir}{{4.5}{38}{Reference Images of the The Door Room and Shelter scenes next to SPP renderusing both na trained Expected Sarsa path tracer, and a trained Neural-Q path tracer trained for 100 epochs. The single sample for each pixel in the Expected Sarsa and Neural-Q renders is constructed by reflecting the light path in the direction of highest estimated radiance upon every intersection point, until the light is intersected with.\relax }{figure.caption.45}{}}
-\citation{dahm2017learning}
-\@writefile{toc}{\contentsline {section}{\numberline {4.4}Convergence}{39}{section.4.4}}
-\newlabel{sec:convergence_learning_incident}{{4.4}{39}{Convergence}{section.4.4}{}}
-\citation{georgiev2018arnold}
-\citation{christensen2018renderman}
-\citation{hyperion}
-\@writefile{lof}{\contentsline {figure}{\numberline {4.6}{\ignorespaces Training curves for the average path length and number of zero contribution light paths when rendering the Shelter scene for 100 epochs, as well as the 1st and 100th rendered frame when using 1 SPP for both images. This is shown for both the Expected Sarsa and Neural-Q path tracers. An epoch represents one sampled light ray through every pixel in the image. The average path length is the number reflections a light path takes before intersecting with a light source. A zero contribution light path is one which contributes almost zero colour to the final image.\relax }}{40}{figure.caption.46}}
-\newlabel{fig:training_curves_archway}{{4.6}{40}{Training curves for the average path length and number of zero contribution light paths when rendering the Shelter scene for 100 epochs, as well as the 1st and 100th rendered frame when using 1 SPP for both images. This is shown for both the Expected Sarsa and Neural-Q path tracers. An epoch represents one sampled light ray through every pixel in the image. The average path length is the number reflections a light path takes before intersecting with a light source. A zero contribution light path is one which contributes almost zero colour to the final image.\relax }{figure.caption.46}{}}
-\citation{dahm2017learning}
-\citation{devastator}
-\@writefile{toc}{\contentsline {section}{\numberline {4.5}From Memory Bound to Compute Bound}{41}{section.4.5}}
-\newlabel{sec:mem_to_comp}{{4.5}{41}{From Memory Bound to Compute Bound}{section.4.5}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.5.1}Memory Usage}{41}{subsection.4.5.1}}
-\@writefile{lot}{\contentsline {table}{\numberline {4.1}{\ignorespaces Additional memory required in Megabytes (MB) to render each of the four scenes shown in Figure \ref  {fig:mape_results_grid} using both the Expected Sarsa and Neural-Q path tracers.\relax }}{41}{table.caption.47}}
-\newlabel{tab:memory_usage}{{4.1}{41}{Additional memory required in Megabytes (MB) to render each of the four scenes shown in Figure \ref {fig:mape_results_grid} using both the Expected Sarsa and Neural-Q path tracers.\relax }{table.caption.47}{}}
-\@writefile{toc}{\contentsline {subsubsection}{Expected Sarsa}{41}{section*.48}}
-\citation{ren2013global}
-\@writefile{lof}{\contentsline {figure}{\numberline {4.7}{\ignorespaces The Complex Pillars scene rendered using two Expected Sarsa path tracers both trained for 1000 SPP and the rendered images in the middle column are produced using 128 SPP. The first row presents the Expected Sarsa path tracer with 36029 Irradiance Volumes. The second row is the Expected Sarsa path tracer with only 780 Irradiance Volumes. The left column is a voronoi plot of the Irradiance Volumes, where each pixel is given a colour to represent which Irradiance Volume it is closest to. The MAPE score and render is given for both renders in the middle column. The right column presents two close-ups to give a visual comparison of the noise between the two images.\relax }}{42}{figure.caption.49}}
-\newlabel{fig:voronoi_difference}{{4.7}{42}{The Complex Pillars scene rendered using two Expected Sarsa path tracers both trained for 1000 SPP and the rendered images in the middle column are produced using 128 SPP. The first row presents the Expected Sarsa path tracer with 36029 Irradiance Volumes. The second row is the Expected Sarsa path tracer with only 780 Irradiance Volumes. The left column is a voronoi plot of the Irradiance Volumes, where each pixel is given a colour to represent which Irradiance Volume it is closest to. The MAPE score and render is given for both renders in the middle column. The right column presents two close-ups to give a visual comparison of the noise between the two images.\relax }{figure.caption.49}{}}
-\@writefile{toc}{\contentsline {subsubsection}{Neural-Q}{42}{section*.51}}
-\citation{crockett1995parallel}
-\citation{alerstam2008parallel}
-\citation{fatahalian2009data}
-\citation{embarissingly_parallelizable}
-\citation{accelerated_ray_tracing}
-\citation{hyperion}
-\citation{raynal2012concurrent}
-\citation{cuda}
-\@writefile{lof}{\contentsline {figure}{\numberline {4.8}{\ignorespaces Cornell Box scene rendered using 1MB of memory to store the Irradiance Volumes for the Expected Sarsa path tracer. The large black artefacts and incorrect colouring of the red block is a result of using too few Irradiance Volumes to approximate the incident radiance function $L_i(x, \omega )$. Causing importance sampling to actually increase the variance in pixel value estimates, leading to an increase in overall image noise.\relax }}{43}{figure.caption.50}}
-\newlabel{fig:incorrect_cornell}{{4.8}{43}{Cornell Box scene rendered using 1MB of memory to store the Irradiance Volumes for the Expected Sarsa path tracer. The large black artefacts and incorrect colouring of the red block is a result of using too few Irradiance Volumes to approximate the incident radiance function $L_i(x, \omega )$. Causing importance sampling to actually increase the variance in pixel value estimates, leading to an increase in overall image noise.\relax }{figure.caption.50}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.5.2}Parallel Processing}{43}{subsection.4.5.2}}
-\@writefile{toc}{\contentsline {subsubsection}{Expected Sarsa}{43}{section*.52}}
-\citation{cuda_c_guide}
-\citation{global_vs_shared}
-\citation{dahm2017learning}
-\citation{muller2018neural}
-\citation{alg:neural_q_path_tracer}
-\citation{global_data_transfer}
-\citation{muller2018neural}
-\citation{keller2019integral}
-\citation{tensor_cores}
-\@writefile{toc}{\contentsline {subsubsection}{Neural-Q}{44}{section*.53}}
-\citation{georgiev2018arnold}
-\citation{georgiev2018arnold}
-\citation{dahm2017learning}
-\citation{mnih2013playing}
-\citation{van2016deep}
-\citation{mnih2015human}
-\citation{georgiev2018arnold}
-\citation{christensen2018renderman}
-\citation{hyperion}
-\@writefile{toc}{\contentsline {section}{\numberline {4.6}Hyperparameters}{45}{section.4.6}}
-\@writefile{toc}{\contentsline {subsubsection}{Expected Sarsa}{45}{section*.54}}
-\@writefile{toc}{\contentsline {subsubsection}{Neural-Q}{45}{section*.55}}
-\citation{dahm2017learning}
-\citation{muller2017practical}
-\citation{vorba2014line}
-\citation{zheng2018learning}
-\citation{muller2018neural}
-\citation{keller2019integral}
-\citation{hermosilla2018deep}
-\citation{muller2017practical}
-\citation{zheng2018learning}
-\citation{dahm2017learning}
-\citation{keller2019integral}
-\citation{muller2018neural}
-\citation{dinh2014nice}
-\citation{muller2018neural}
-\citation{muller2018neural}
-\@writefile{toc}{\contentsline {section}{\numberline {4.7}Recent Advancements in Neural Importance Sampling for Monte Carlo Path Tracing}{46}{section.4.7}}
-\newlabel{sec:recent_advancements}{{4.7}{46}{Recent Advancements in Neural Importance Sampling for Monte Carlo Path Tracing}{section.4.7}{}}
-\citation{keller2015path}
-\citation{akenine2018real}
-\citation{vorba2014line}
-\citation{muller2017practical}
-\citation{dahm2017learning}
-\citation{dahm2017learning}
-\citation{mnih2013playing}
-\citation{kajiya1986rendering}
-\@writefile{toc}{\contentsline {chapter}{\numberline {5}Conclusions}{47}{chapter.5}}
-\@writefile{lof}{\addvspace {10\p@ }}
-\@writefile{lot}{\addvspace {10\p@ }}
-\@writefile{loa}{\addvspace {10\p@ }}
-\newlabel{chap:conclusion}{{5}{47}{Conclusions}{chapter.5}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {5.1}Wider Motivation and the Problem}{47}{section.5.1}}
-\@writefile{toc}{\contentsline {section}{\numberline {5.2}Summary of Contributions}{47}{section.5.2}}
-\citation{keller2019integral}
-\citation{muller2018neural}
-\@writefile{toc}{\contentsline {section}{\numberline {5.3}Discussion}{48}{section.5.3}}
-\citation{keller2019integral}
-\citation{keller2019integral}
-\citation{muller2018neural}
-\citation{zheng2018learning}
-\citation{keller2019integral}
-\citation{muller2018neural}
-\citation{muller2018neural}
-\citation{nvidia_turing_architecture_whitepaper_2018}
-\citation{tensor_cores}
-\citation{boulos2005notes}
-\@writefile{toc}{\contentsline {section}{\numberline {5.4}Future Work}{49}{section.5.4}}
-\@writefile{toc}{\contentsline {subsubsection}{Scaling up Neural-Q}{49}{section*.60}}
-\citation{georgiev2018arnold}
-\citation{christensen2018renderman}
-\citation{bako2017kernel}
-\citation{chaitanya2017interactive}
-\citation{muller2018neural}
-\@writefile{toc}{\contentsline {subsubsection}{Investigating the relationship between scene geometry and ANN requirements}{50}{section*.61}}
-\@writefile{toc}{\contentsline {subsubsection}{Neural-Q versus Disney's Neural Path Guider}{50}{section*.62}}
-\@writefile{toc}{\contentsline {subsubsection}{Further investigate Deep Reinforcement learning techniques}{50}{section*.63}}
-\bibdata{dissertation}
-\bibcite{glm}{1}
-\bibcite{sdl2}{2}
-\bibcite{tensorflow2015-whitepaper}{3}
-\bibcite{alerstam2008parallel}{4}
-\bibcite{accelerated_ray_tracing}{5}
-\bibcite{maya}{6}
-\bibcite{bako2017kernel}{7}
-\bibcite{bashford2012significance}{8}
-\bibcite{bentley1975multidimensional}{9}
-\bibcite{bloomberg.com}{10}
-\bibcite{chaitanya2017interactive}{11}
-\bibcite{christensen2018renderman}{12}
-\bibcite{christensen2016path}{13}
-\bibcite{cline2008table}{14}
-\bibcite{crockett1995parallel}{15}
-\bibcite{dahm2017learning}{16}
-\bibcite{devroye2006nonuniform}{17}
-\bibcite{dinh2014nice}{18}
-\bibcite{dutre2004state}{19}
-\bibcite{fatahalian2009data}{20}
-\bibcite{embarissingly_parallelizable}{21}
-\bibcite{georgiev2018arnold}{22}
-\bibcite{glassner2014principles}{23}
-\bibcite{greger1998irradiance}{24}
-\bibcite{stanford_graphics}{25}
-\bibcite{global_data_transfer}{26}
-\bibcite{global_vs_shared}{27}
-\bibcite{hermosilla2018deep}{28}
-\bibcite{jensen1996global}{29}
-\bibcite{kajiya1986rendering}{30}
-\bibcite{keller2019integral}{31}
-\bibcite{keller2016path}{32}
-\bibcite{konidaris2011value}{33}
-\bibcite{krivanek2014recent}{34}
-\bibcite{lecun2015deep}{35}
-\bibcite{lillicrap2015continuous}{36}
-\bibcite{mnih2013playing}{37}
-\bibcite{mnih2015human}{38}
-\bibcite{morokoff1995quasi}{39}
-\bibcite{muller2017practical}{40}
-\bibcite{muller2018neural}{41}
-\bibcite{nair2010rectified}{42}
-\bibcite{dynet}{43}
-\bibcite{cuda}{44}
-\bibcite{tensor_cores}{45}
-\bibcite{cuda_c_guide}{46}
-\bibcite{nvidia_turing_architecture_whitepaper_2018}{47}
-\bibcite{pan2006virtual}{48}
-\bibcite{pegoraro2008towards}{49}
-\bibcite{ramamoorthi2012theory}{50}
-\bibcite{raynal2012concurrent}{51}
-\bibcite{ren2013global}{52}
-\bibcite{devastator}{53}
-\bibcite{scratchapixel_2015}{54}
-\bibcite{shirley1994notes}{55}
-\bibcite{hyperion}{56}
-\bibcite{sutton1996generalization}{57}
-\bibcite{sutton2011reinforcement}{58}
-\bibcite{uther1998tree}{59}
-\bibcite{exploration_vs_exploitation}{60}
-\bibcite{deep_rl_function_approx}{61}
-\bibcite{introToRL}{62}
-\bibcite{mdp_dynamic_prog}{63}
-\bibcite{model_free_prediction}{64}
-\bibcite{van2016deep}{65}
-\bibcite{vorba2014line}{66}
-\bibcite{normals}{67}
-\bibcite{zheng2018learning}{68}
-\@writefile{toc}{\contentsline {chapter}{\numberline {A}An Example Appendix}{55}{appendix.A}}
-\@writefile{lof}{\addvspace {10\p@ }}
-\@writefile{lot}{\addvspace {10\p@ }}
-\@writefile{loa}{\addvspace {10\p@ }}
-\newlabel{appx:example}{{A}{55}{An Example Appendix}{appendix.A}{}}
+\newlabel{fig:true_incident_distribution}{{4.3a}{37}{Ground Truth\relax }{figure.caption.44}{}}
+\newlabel{sub@fig:true_incident_distribution}{{a}{37}{Ground Truth\relax }{figure.caption.44}{}}
+\newlabel{fig:exp_sarsa_distribution}{{4.3b}{37}{Expected Sarsa\relax }{figure.caption.44}{}}
+\newlabel{sub@fig:exp_sarsa_distribution}{{b}{37}{Expected Sarsa\relax }{figure.caption.44}{}}
+\newlabel{fig:neural_q_distribution}{{4.3c}{37}{Neural-Q\relax }{figure.capt

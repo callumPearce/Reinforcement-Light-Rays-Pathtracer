@@ -3,11 +3,11 @@ Capacity: max_strings=100000, hash_size=100000, hash_prime=85009
 The top-level auxiliary file: dissertation.aux
 The style file: plain.bst
 Database file #1: dissertation.bib
-Repeated entry---line 333 of file dissertation.bib
+Repeated entry---line 352 of file dissertation.bib
  : @misc{scratchapixel_2015
  :                         ,
 I'm skipping whatever remains of this entry
-I was expecting a `,' or a `}'---line 380 of file dissertation.bib
+I was expecting a `,' or a `}'---line 399 of file dissertation.bib
  :   
  :   publisher={Elsevier}
 (Error may have been on previous line)
@@ -24,45 +24,45 @@ Warning--empty publisher in glassner2014principles
 Warning--can't use both volume and number fields in kajiya1986rendering
 Warning--can't use both volume and number fields in muller2017practical
 Warning--empty title in nvidia_turing_architecture_whitepaper_2018
-You've used 68 entries,
+You've used 73 entries,
             2118 wiz_defined-function locations,
-            819 strings with 14464 characters,
-and the built_in function-call counts, 22548 in all, are:
-= -- 2094
-> -- 1280
-< -- 17
-+ -- 517
-- -- 444
-* -- 1490
-:= -- 3746
-add.period$ -- 205
-call.type$ -- 68
-change.case$ -- 420
+            842 strings with 15287 characters,
+and the built_in function-call counts, 24564 in all, are:
+= -- 2280
+> -- 1398
+< -- 20
++ -- 565
+- -- 486
+* -- 1621
+:= -- 4070
+add.period$ -- 222
+call.type$ -- 73
+change.case$ -- 454
 chr.to.int$ -- 0
-cite$ -- 77
-duplicate$ -- 803
-empty$ -- 1716
-format.name$ -- 444
-if$ -- 4699
+cite$ -- 82
+duplicate$ -- 890
+empty$ -- 1866
+format.name$ -- 486
+if$ -- 5136
 int.to.chr$ -- 0
-int.to.str$ -- 68
-missing$ -- 47
-newline$ -- 335
-num.names$ -- 130
-pop$ -- 585
+int.to.str$ -- 73
+missing$ -- 54
+newline$ -- 360
+num.names$ -- 140
+pop$ -- 640
 preamble$ -- 1
-purify$ -- 354
+purify$ -- 385
 quote$ -- 0
-skip$ -- 615
+skip$ -- 672
 stack$ -- 0
-substring$ -- 955
-swap$ -- 196
-text.length$ -- 17
+substring$ -- 1029
+swap$ -- 225
+text.length$ -- 20
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 266
+type$ -- 282
 warning$ -- 9
-while$ -- 190
-width$ -- 70
-write$ -- 690
+while$ -- 205
+width$ -- 75
+write$ -- 745
 (There were 2 error messages)
