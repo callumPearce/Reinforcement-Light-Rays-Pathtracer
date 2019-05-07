@@ -576,7 +576,7 @@ The estimated outgoing radiance values evaluated using Equation \ref{eq:mc_expec
 	  axis y line*=left, % the * suppresses the arrow tips
 	  enlargelimits=upper,
 	  xlabel = $\omega_i$,
-	  ylabel = $p(x, \omega_i)$
+	  ylabel = $p(\omega_i)$
 	  ] % extend the axes a bit to the right and top
 	  \addplot [
 	  color=red,
@@ -584,7 +584,7 @@ The estimated outgoing radiance values evaluated using Equation \ref{eq:mc_expec
 	\end{axis}
     \end{tikzpicture}
 \end{minipage}
-\caption{An illustration of a simple incident radiance distribution for a given point $x$ in a scene. Where $\omega_i$ $\forall \omega_i \in \Omega$ are all possible incident directions in the hemisphere around the point $x$ oriented to the surface normal at $x$.The scene contains two area lights which are visible from $x$ in the scene, causing two peaks in the incident radiance distribution.}
+\caption{An illustration of a simple incident radiance distribution for a given point $x$ in a scene. Where $\omega_i$ $\forall \omega_i \in \Omega$ are all possible incident directions in the hemisphere around the point $x$ oriented to the surface normal at $x$.The scene contains two area lights with the same power which are visible from $x$ in the scene, causing two equal level peaks in the incident radiance distribution for $x$.}
   \label{fig:incident_radiance_distributio }
 \end{figure}
 

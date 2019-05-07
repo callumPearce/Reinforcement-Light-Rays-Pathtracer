@@ -50,22 +50,22 @@
 \contentsline {section}{\numberline {4.4}Convergence}{39}{section.4.4}
 \contentsline {section}{\numberline {4.5}From Memory Bound to Compute Bound}{41}{section.4.5}
 \contentsline {subsection}{\numberline {4.5.1}Memory Usage}{41}{subsection.4.5.1}
-\contentsline {subsubsection}{Expected Sarsa}{41}{section*.49}
-\contentsline {subsubsection}{Neural-Q}{42}{section*.52}
+\contentsline {subsubsection}{Expected Sarsa}{41}{section*.50}
+\contentsline {subsubsection}{Neural-Q}{42}{section*.53}
 \contentsline {subsection}{\numberline {4.5.2}Parallel Processing}{43}{subsection.4.5.2}
-\contentsline {subsubsection}{Expected Sarsa}{43}{section*.53}
-\contentsline {subsubsection}{Neural-Q}{44}{section*.54}
+\contentsline {subsubsection}{Expected Sarsa}{43}{section*.54}
+\contentsline {subsubsection}{Neural-Q}{44}{section*.55}
 \contentsline {section}{\numberline {4.6}Hyperparameters}{45}{section.4.6}
-\contentsline {subsubsection}{Expected Sarsa}{45}{section*.55}
-\contentsline {subsubsection}{Neural-Q}{45}{section*.56}
+\contentsline {subsubsection}{Expected Sarsa}{45}{section*.56}
+\contentsline {subsubsection}{Neural-Q}{45}{section*.57}
 \contentsline {section}{\numberline {4.7}Recent Advancements in Neural Importance Sampling for Monte Carlo Path Tracing}{46}{section.4.7}
 \contentsline {chapter}{\numberline {5}Conclusions}{47}{chapter.5}
 \contentsline {section}{\numberline {5.1}Wider Motivation and the Problem}{47}{section.5.1}
 \contentsline {section}{\numberline {5.2}Summary of Contributions}{47}{section.5.2}
 \contentsline {section}{\numberline {5.3}Discussion}{48}{section.5.3}
 \contentsline {section}{\numberline {5.4}Future Work}{49}{section.5.4}
-\contentsline {subsubsection}{Scaling up Neural-Q}{49}{section*.61}
-\contentsline {subsubsection}{Investigating the relationship between scene geometry and ANN requirements}{50}{section*.62}
-\contentsline {subsubsection}{Neural-Q versus Disney's Neural Path Guider}{50}{section*.63}
-\contentsline {subsubsection}{Further investigate Deep Reinforcement learning techniques}{50}{section*.64}
+\contentsline {subsubsection}{Scaling up Neural-Q}{49}{section*.62}
+\contentsline {subsubsection}{Investigating the relationship between scene geometry and ANN requirements}{50}{section*.63}
+\contentsline {subsubsection}{Neural-Q versus Disney's Neural Path Guider}{50}{section*.64}
+\contentsline {subsubsection}{Further investigate Deep Reinforcement learning techniques}{50}{section*.65}
 \contentsline {chapter}{\numberline {A}An Example Appendix}{55}{appendix.A}

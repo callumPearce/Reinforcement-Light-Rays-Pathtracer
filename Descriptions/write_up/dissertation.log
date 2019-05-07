@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.10.2)  7 MAY 2019 11:53
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.10.2)  7 MAY 2019 13:24
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1556,25 +1556,23 @@ Underfull \hbox (badness 10000) in paragraph at lines 271--272
  []
 
 
-LaTeX Warning: Reference `fig:nn_radiance_estimate_illustration' on page 29 und
-efined on input line 280.
-
-
 Underfull \hbox (badness 10000) in paragraph at lines 280--281
 
  []
 
+<images/fwd_pass_process.png, id=691, 915.42pt x 288.07625pt>
+File: images/fwd_pass_process.png Graphic file (type png)
 
-LaTeX Warning: Reference `fig:nn_radiance_estimate_illustration' on page 29 und
-efined on input line 284.
+<use images/fwd_pass_process.png>
+Package pdftex.def Info: images/fwd_pass_process.png used on input line 284.
+(pdftex.def)             Requested size: 409.71692pt x 128.93419pt.
 
-
-Underfull \hbox (badness 10000) in paragraph at lines 284--285
+Underfull \hbox (badness 10000) in paragraph at lines 289--290
 
  []
 
-[29]
-Underfull \hbox (badness 10000) in paragraph at lines 303--304
+[29 <./images/fwd_pass_process.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 308--309
 
  []
 
@@ -1587,7 +1585,7 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
 [30]
 
 LaTeX Warning: Reference `eq:exploration_vs_exploitation' on page 31 undefined 
-on input line 308.
+on input line 313.
 
 ) (./chapters/4_critical_evaluation.tex
 Underfull \vbox (badness 10000) has occurred while \output is active []
@@ -1626,7 +1624,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 50--51
 
  []
 
-<images/noise_reduction.png, id=778, 570.4512pt x 820.2645pt>
+<images/noise_reduction.png, id=783, 570.4512pt x 820.2645pt>
 File: images/noise_reduction.png Graphic file (type png)
 
 <use images/noise_reduction.png>
@@ -1637,7 +1635,7 @@ Package pdftex.def Info: images/noise_reduction.png used on input line 56.
 LaTeX Warning: Float too large for page by 14.36754pt on input line 60.
 
 [34] [35 <./images/noise_reduction.png>]
-<images/noise_diff.png, id=796, 538.1706pt x 203.8014pt>
+<images/noise_diff.png, id=801, 538.1706pt x 203.8014pt>
 File: images/noise_diff.png Graphic file (type png)
 
 <use images/noise_diff.png>
@@ -1648,7 +1646,7 @@ Package pdftex.def Info: images/noise_diff.png used on input line 69.
 LaTeX Warning: Reference `sec:importance_sampling' on page 36 undefined on inpu
 t line 75.
 
-<images/renders/true_distribution.png, id=801, 722.7pt x 722.7pt>
+<images/renders/true_distribution.png, id=806, 722.7pt x 722.7pt>
 File: images/renders/true_distribution.png Graphic file (type png)
 
 <use images/renders/true_distribution.png>
@@ -1656,7 +1654,7 @@ Package pdftex.def Info: images/renders/true_distribution.png used on input lin
 e 80.
 (pdftex.def)             Requested size: 141.12456pt x 141.11891pt.
 
-<images/renders/expected_sarsa_visualisation.png, id=802, 1027.84pt x 1027.84pt
+<images/renders/expected_sarsa_visualisation.png, id=807, 1027.84pt x 1027.84pt
 >
 File: images/renders/expected_sarsa_visualisation.png Graphic file (type png)
  <use images/renders/expected_sarsa_visualisation.png>
@@ -1664,7 +1662,7 @@ Package pdftex.def Info: images/renders/expected_sarsa_visualisation.png used o
 n input line 84.
 (pdftex.def)             Requested size: 141.12456pt x 141.12062pt.
 
-<images/renders/neural_q_visualisation.png, id=803, 1027.84pt x 1027.84pt>
+<images/renders/neural_q_visualisation.png, id=808, 1027.84pt x 1027.84pt>
 File: images/renders/neural_q_visualisation.png Graphic file (type png)
 
 <use images/renders/neural_q_visualisation.png>
@@ -1677,7 +1675,7 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 
 [36 <./images/noise_diff.png>] [37 <./images/renders/true_distribution.png> <./
 images/renders/expected_sarsa_visualisation.png> <./images/renders/neural_q_vis
-ualisation.png>] <images/1_spp.png, id=829, 593.0958pt x 375.3222pt>
+ualisation.png>] <images/1_spp.png, id=834, 593.0958pt x 375.3222pt>
 File: images/1_spp.png Graphic file (type png)
 
 <use images/1_spp.png>
@@ -1693,7 +1691,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 170--171
 
  []
 
-<images/training_curves.png, id=847, 766.5438pt x 328.3467pt>
+<images/training_curves.png, id=852, 766.5438pt x 328.3467pt>
 File: images/training_curves.png Graphic file (type png)
 
 <use images/training_curves.png>
@@ -1725,7 +1723,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 226--227
 
  []
 
-<images/less_volumes.png, id=869, 446.1468pt x 355.5684pt>
+<images/less_volumes.png, id=874, 446.1468pt x 355.5684pt>
 File: images/less_volumes.png Graphic file (type png)
 
 <use images/less_volumes.png>
@@ -1740,7 +1738,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 235--236
 
  []
 
-[41] <images/renders/sarsa_128_1Mb_incorrect.png, id=882, 722.7pt x 722.7pt>
+[41] <images/renders/sarsa_128_1Mb_incorrect.png, id=887, 722.7pt x 722.7pt>
 File: images/renders/sarsa_128_1Mb_incorrect.png Graphic file (type png)
 
 <use images/renders/sarsa_128_1Mb_incorrect.png>
@@ -1841,19 +1839,16 @@ Package rerunfilecheck Info: File `dissertation.out' has not changed.
 
 LaTeX Warning: There were undefined references.
 
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
-
  )
 (\end occurred inside a group at level 1)
 
 ### simple group (level 1) entered at line 1061 ({)
 ### bottom level 
 Here is how much of TeX's memory you used:
- 33788 strings out of 492995
- 765154 string characters out of 6132704
- 1182623 words of memory out of 5000000
- 36398 multiletter control sequences out of 15000+600000
+ 33794 strings out of 492995
+ 765318 string characters out of 6132704
+ 1183388 words of memory out of 5000000
+ 36402 multiletter control sequences out of 15000+600000
  17594 words of font info for 66 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  72i,28n,98p,2501b,25889s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -1881,10 +1876,10 @@ ve/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texliv
 e/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt8.pfb></usr/local/texlive/
 2017/texmf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb></usr/local/texl
 ive/2017/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on dissertation.pdf (69 pages, 33577973 bytes).
+Output written on dissertation.pdf (69 pages, 33746449 bytes).
 PDF statistics:
- 1214 PDF objects out of 1440 (max. 8388607)
- 1050 compressed objects within 11 object streams
- 312 named destinations out of 1000 (max. 500000)
- 369 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 1220 PDF objects out of 1440 (max. 8388607)
+ 1054 compressed objects within 11 object streams
+ 313 named destinations out of 1000 (max. 500000)
+ 374 words of extra memory for PDF output out of 10000 (max. 10000000)
 
