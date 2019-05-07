@@ -5,58 +5,25 @@
 \chapter{Introduction}
 \label{chap:context}
 
-% I don't like this, needs to be more like the opening of a book chapter 
+The aim of this chapter is to give a tour of the concepts we will be working with and set out a clear motivation for why we believe or work is necessary. We will avoid delving into any technical depth here, the pre-requisite knowledge to understand our work is instead given in chapter \ref{chap:technical_background}. Our journey begins with an overview of Monte Carlo path tracing and how importance sampling is beneficial for this. Next, we introduced temporal difference learning as a branch of Reinforcement Learning and how this relates to light transport for path tracing. Finally, we give our wider motivation for our work, as well as our objectives and the significant challenges standing in the way of achieving them.
 
-This chapter explains on a high level what path tracing is and how it faithfully
-simulates physical light transport. Then importance sampling ray directions in light
-transport simulation is discussed, and how it can potentially reduce the number 
-of zero contribution light paths and the associated benefits with this. Temporal 
-difference learning as a branch of reinforcement learning is then introduced, 
-along with how it can be used in importance sampling ray directions towards 
-light sources. With a conceptual overview of theory my work is based on, I take 
-a look at recent work which contributes to real-time accurate light transport 
-simulation which my work aims to contribute to. Finally, an overview of the 
-objectives and significant challenges of my investigation are described.
-
-
-\section{Path Tracing for Light Transport Simulation}
+\section{Monte Carlo Path Tracing for Light Transport Simulation}
 \label{sec:conceptual_path_trace}
-Path Tracing is a Monte Carlo method for rendering photo-realistic images of 3D 
-scenes by accurately approximating global illumination \cite{christensen2016path}.
-Figure \ref{fig:path_tracing_overview} summarises on a high level how forward Path tracing produces a 
-2D image of a 3D scene. For each pixel multiple rays are shot from the camera through the 
-pixel and into the scene. Any ray which intersects with an area light terminates, 
-otherwise a new direction is sampled for the ray and it is fired again. This process 
-is repeated until all rays have intersected with an area light, at which point the pixel 
-colour value can  be found by averaging the colour estimate of each ray fired 
-through that pixel. Each rays colour estimate is calculated based on the material 
-surface properties it intersects with before intersecting with the light and the
-intersected area lights properties. The more rays shot through each pixel (also 
-known as samples per pixel), the higher the quality of the rendered image 
-becomes, but at a higher computational cost.
+Monte Carlo path tracing, more generally known as path tracing, is a Monte Carlo method for rendering photo-realistic images of 3D  scenes by accurately approximating global illumination \cite{christensen2016path}. Figure \ref{fig:path_tracing_overview} summarises on a high level how path tracing produces a 2-dimensional image of a 3-dimensional scene. For each pixel multiple rays are shot from the camera through the pixel and into the scene. Any ray which intersects with an area light terminates, otherwise a new direction is sampled for the ray and it is continued in this sampled direction. This process is repeated until all rays have intersected with an area light.  At which point, the pixel colour value can  be found by computing a Monte Carlo approximation of an integral, the details of which are discussed in chapter \ref{chap:technical}. Each rays colour estimate is calculated based on the material surface properties it intersects with before intersecting with the light, as well as the area lights properties it intersected with. The full path of a ray takes from the camera to intersecting with an area light is known as a \textit{light path}, and we will use this terminology from here on. Therefore, each sampled light path represents a sample used to solve an integral to determine a pixels colour values by Monte Carlo integration. The more Sampled light paths Per Pixel (SPP), the more accurate the Monte Carlo approximation is of the integral to determine the pixels colour value. Meaning, the higher the SPP, the lower the noise in each pixel and in turn, the rendered image \cite{kajiya1986rendering}. 
 
 \begin{figure}[h!]
 \begin{center}
 \includegraphics[width=0.8\textwidth]{images/path_tracing.png}    
 \end{center}
-\caption{An illustration of path tracing, where three light paths are traced from from the camera through a pixel, to the light source in a simple 3D scene.}
+\caption{An illustration of path tracing, where three light paths are traced from the camera through a pixel, to the light source in a simple 3D scene. The light paths are used to determine the pixel colours of the rendered image.}
 \label{fig:path_tracing_overview}
 \end{figure}
 
-Path tracing simulates global illumination, meaning it accounts for both direct and 
-indirect illumination. Direct illumination being light paths emitted from a light 
-source, which reflect off exactly one surface before reaching the camera in the 
-scene . Whereas in indirect illumination, light paths reflect 2 or times before
-reaching the camera. In Figure \ref{fig:direct_and_global}, an identical scene is shown with only direct illumination
-(left) and the other with global illumination (right). The globally illuminated scene displays
-a range of effects due to Path tracings ability to accurately simulate light transport, 
-which is not the case for the directly illuminated scene. Where light transport simulation
-refers to firing and summing up the contributions of light transport paths that connect from the
-camera to light sources \cite{keller2016path}, such as those displayed in Figure \ref{fig:direct_and_global}. For 
-example, effects such as; (a) colour bleeding which is clear on the white walls by the boxes. (b) Soft shadows of the boxes silhouette. (c) Indirect diffuse lighting
-from light transport simulation causes the shadow of the box to not be pitch black.\\
+Path tracing is said to simulate \textit{light transport} \cite{keller2016path}, meaning it simulates the interactions of photons with surfaces. This is achieved by the process described above where each light path can be thought of as a photon. However, light paths in path tracing begin from the camera and reflect off surfaces until until they intersect with a light source, whereas in reality photons begin from the light source and reflect off surfaces until they intersect with the camera lens. It turns out that simulating light paths in this way is identical to simulating photons how they naturally occur, because the physics behind light transport does not change if the paths are reversed \cite{stanford_graphics}. This means path tracing is able faithfully simulate light transport whilst only simulating light paths that intersect with the camera lens to contribute to the image.
 
-\begin{figure}[h]
+As path tracing simulates light transport, it also simulates global illumination as it accounts for both direct and indirect illumination. Direct illumination light paths which contribute to the image by reflecting off a exactly one surface before intersecting with a light source. Whereas  indirect illumination is where light paths reflect 2 or more times before reaching a light source. In figure \ref{fig:direct_and_global}, an identical scene is shown with only direct illumination (left) and the other with global illumination (right). The globally illuminated scene displays a range of light effects, which are not present in the directly illuminated scene  For example, effects such as; colour bleeding which is clear on the white walls by the boxes, soft shadows of the boxes silhouette, and indirect diffuse lighting causes the shadow of the box to not be pitch black. These light effects are achieved by a simple process of determining each pixels colour value individually. This allows artists to increase productivity and perform less manual image tweaking in the production of photo-realistic images. Due to this, the Computer Graphics industry has seen a large resurgence in research and usage of path tracing and other rendering methods which simulate light trasnport in the past decade \cite{krivanek2014recent}.
+
+\begin{figure}[h!]
 \centering
 \begin{minipage}{.45\textwidth}
 \includegraphics[width=0.99\textwidth]{images/renders/cornell/direct_light.png}    
@@ -70,33 +37,7 @@ from light transport simulation causes the shadow of the box to not be pitch bla
 \label{fig:direct_and_global}
 \end{figure}
 
-Light transport simulation methods are able to produce 
-many complex light transport effects by a simple single pass of a rendering algorithm.
-This allows artists to increase productivity and perform less manual image tweaking
-in the production of photo-realistic images. Due to this, the Computer Graphics 
-industry has seen a large resurgence in research and usage of light transport simulation 
-rendering methods in the past decade \cite{krivanek2014recent}. \\
-
-My work in this thesis focuses on developing and assessing importance sampling 
-techniques using Temporal Difference learning methods for light transport simulation 
-in forward Path tracing. In particular, More specifically,
-for any intersection point in a 3D scene, I attempt to create an AI agent that learns 
-and samples in  directions light is coming from, reducing the total number of 
-zero contribution light paths. A zero contribution light path is one whose 
-estimated colour values are almost zero for all $(R,G,B)$ components, hence,
-they contribute almost no visible difference to the rendered image. We should 
-instead focus our sampling on light paths which do contribute to the image,
-reducing the noise in pixel values and bringing them closer to their true 
-values for the same number of sampled rays per pixel. Meaning, Importance 
-sampling can reduce the number of rays needed to be sampled per pixel in 
-order to receive a photo-realistic (also known as converged) image from Path 
-tracing. An example of this reduction in noise can be see in \ref{fig:noise_reduction_simple_room}, where the 
-default forward path tracers output is compared to Nvidia's on-line
-reinforcement learning Path tracer which uses Importance sampling. Note, any 
-light transport simulation algorithm \cite{jensen1996global, keller2016path} can benefit from the Temporal DIfference learning
-schemes which will be described, 
-as they are all derived from what is known as the rendering equation. This equation
-is used as a mathematical basis of modelling light transport.\\
+Importance sampling can be used in path tracing to improve the rendered image quality when using the same number of SPP. The reason being is that directions to continue a light path in for the default path tracing algorithm are sampled at uniformly at random. However, some directions will lead to light path contributing more to the approximated colour value of a pixel than others. These directions are said to be more 'important'. We wish to sample important directions more often as they will reduce the variance in our Monte Carlo approximation of a pixels colour value, which is otherwise known as a reduction in noise. Therefore, by using importance sampling we can construct light paths in such a way that they are more likely to reduce the noise in each pixels colour estimate, producing higher quality rendered images using the same number of SPP. An example of this reduction in noise can be see in \ref{fig:noise_reduction_simple_room}, where the default path tracers output is compared to our implementation of NVIDIA's path tracer \cite{dahm2017learning}, which uses Importance sampling. Note, any other rendering algorithm which simulates light transport can benefit from importance sampling, as they are all derived from the \textit{rendering equation} \cite{jensen1996global, keller2016path} which we will detail in chapter \ref{chap:technical_background}.
 
 \begin{figure}[h]
 \centering
@@ -108,126 +49,52 @@ is used as a mathematical basis of modelling light transport.\\
 \includegraphics[width=0.99\textwidth]{images/renders/simple_room/reinforcement_16.png}    
 \subcaption{Expected Sarsa Path Tracer}
 \end{minipage}
-\caption{Two renders of a simple room using 16 sampled light paths per pixel. Where one does not use importance sampling in the construction of light paths (left), and the other does so based on a reinforcement learning rule (right). A clear reduction in image noise can be seen.}
+\caption{Two renders of a simple room using 16 SPP. Where one does not use importance sampling in the construction of light paths (left), and the other does so based on a reinforcement learning rule \cite{dahm2017learning} (right). A clear reduction in image noise can be seen by the use of importance sampling.}
 \label{fig:noise_reduction_simple_room}
 \end{figure}
-
-It is paramount that Importance sampling Path tracing algorithms continue to accurately
-simulates global illumination in order to produce photo-realistic images in a single
-rendering pass, as this is the major selling point of Path tracing over other 
-methods. Therefore, I will also be assessing the accuracy of the global
-illumination approximation made by the Importance sampling algorithms compared
-to that of the naive forward Path tracing algorithm.
 
 \section{Temporal Difference Learning for Importance Sampling Ray Directions}
 \label{sec:td_learn_for_importance}
 
-There are three important unanswered questions up to this point; a) what is temporal
-difference learning?  b) How can temporal difference learning methods be 
-used to importance sample new ray directions for a given intersection point in 
-the scene? c) Why use temporal difference learning methods over other Importance 
-sampling methods to do so? 
+We will be using temporal difference learning techniques to find out which directions are important to continue light paths in during path tracing. This section answers three important questions to detail our motivation behind doing this; a) what is temporal difference learning?  b) How can temporal difference learning methods be used to importance sample new ray directions for a given intersection point in the scene? c) Why use temporal difference learning methods over other Importance sampling methods to do so? 
 
 \subsection{What is Temporal Difference learning?}
-Temporal difference learning, which I will refer to from 
-here on as TD-learning, are a set of model free Reinforcement learning methods. 
-Firstly, Reinforcement learning is the process of an AI agent learning what is the 
-best action to take in any given state of the system it exists within, in order to 
-maximise a numerical reward signal \cite{sutton2011reinforcement}.
-The AI agent is not told which actions are  best to take in a given state, but
- instead it must learn which ones are by trialling them and observing the reward 
-signal. Actions taken may not only affect the immediate 
-reward, but all subsequent rewards received for taking future actions. For 
-example, picture a robot rover whose duty it is to explore the surrounding area 
-as much possible. A state in this case is a position in the world it is exploring, 
-and its action are the directions to move in for a given distance. If it discovers 
-a new area, it receives a positive reward signal. Now, if the robot chooses to 
-explore a given area it may not be able to get back from, say a canyon, the 
-robot is limited to searching areas reachable from the canyon. Hence, all 
-subsequent reward signals are limited to what can be received from exploration 
-of the canyon, compared to not entering the canyon and exploring areas which 
-can be returned from first.
-
-\begin{comment} %Might need to remove all
-As mentioned TD learning methods are model free methods, meaning the methods 
-do not require a model of the system dynamics they are placed in, instead they
- learn over time by interacting with the system. In other words, they learn from 
- raw experience  \cite{sutton2011reinforcement}. TD methods update their current
-estimates based on a combination of data received from interacting with the 
-environment, and partly on their current learned estimates without waiting for the 
-final outcome of events, this is known as bootstrapping. To illustrate the concept 
-of bootstrapping, imagine you are driving home from work and you wish to estimate 
-how long it will take you get home. By following a TD learning method, if you hit 
-traffic you can update your current estimate of the time it takes you to drive home
-based on this new data, and your pre-existing estimate. Whereas compared to 
-another set of Reinforcement learning methods known as Monte Carlo methods, 
-you would have to wait until you got home to update your current estimate of how 
-long it takes to get home from work. Meaning you have to wait for the final outcome
-before learning can begin, which is not the case for TD learning.
-\end{comment}
+Temporal difference learning, which I will refer to from here on as TD-learning, is a set of model free Reinforcement learning methods. Firstly, Reinforcement learning is the process of an AI agent learning what is the best action to take in any given state of the system it exists within, in order to maximise a numerical reward signal \cite{sutton2011reinforcement}. The AI agent is not told which actions are  best to take in a given state, but instead it must learn which ones are by trialling them and observing the reward signal. Actions taken may not only affect the immediate reward, but all subsequent rewards received for taking future actions. For example, picture a robot rover whose duty it is to explore the surrounding area as much possible. A state in this case is any sensory data the robot has, such as camera for observing its surroundings. Its possible actions are the directions to move in for a set distance. If it discovers a new area, it receives a positive reward signal, otherwise the reward signal is zero. Now, if the robot chooses to explore a given area it may not be able to get back from, say a canyon, the robot is limited to searching areas reachable from the canyon. Hence, all subsequent reward signals are limited to what can be received from exploration of the canyon, compared to not entering the canyon and exploring areas which can be returned from first.
 
 \subsection{Temporal Difference learning methods for Efficient Light Transport Simulation}
 
-One of my main aims to reduce the number of zero contribution light paths sampled 
-in Path tracing by the use of TD learning methods. In order to do so I must formulate 
-the problem a reinforcement learning problem, which is done in detail in Chapter
-\ref{chap:technical}. However for a conceptual overview it suffices to explain what a 
-state, action, and reward signal will be in the case of light transport simulation within 
-Path tracing:
+ As a small introduction to how reinforcement learning can be applied to light transport simulation, a state, action, and reward signal in the context of light transport simulation within path tracing are given below.
 
 \begin{itemize}
 
-\item \textbf{State}: A 3D intersection position in the scene for a given ray to sample 
-the rays next direction from. 
+\item \textbf{State}: A 3D intersection position of light path in the scene.
 
-\item \textbf{Action}: Firing the ray in a given direction (3D vector) from the current 
+\item \textbf{Action}: Continuing a light path in a given direction from the current 
 state.
 
-\item \textbf{Reward Signal}: The amount of light incident from the direction the ray 
+\item \textbf{Reward Signal}: The amount of light received by the next intersection location
+of the light path when continued in the direction sampled.
 was sampled in.
 
 \end{itemize}
 
-In this reinforcement learning setting, we can use TD-learning methods to create 
-an AI agent which learns by taking different actions in different states and observes 
-their reward signals to find out for each state which actions have the highest valuations.
-By then converting the action space into a probability distribution weighted by each
-actions learned valuation, the AI agent will more likely sample non-zero contribution 
-light paths, reducing noise in rendered images. Note, the term valuation means the 
-total expected reward for taking a given action, meaning valuation not only accounts 
-for the immediate reward, but the expected reward for taking all future actions to come 
-until the ray intersects with a light. Also, for the proposed AI agent, current actions 
-can affect future rewards, as when the ray intersects a surface it looses some energy. 
-Therefore, future rewards received after many intersections will be discounted 
-compared to the reward of received immediately to match this behaviour. This means 
-the agent will aim to minimise the average number of intersection a ray makes before 
-intersecting with a light source, making it a good metric to test evaluate against to 
-determine how well the AI agent is performing.
+In this setting, we can use TD-learning methods to create an AI agent which learns by taking different actions in different states, which then observes their reward signals to find out for each state which actions have the highest valuations. By then converting the action space into a probability distribution weighted by each actions learned valuation, the AI agent can sample from this distribution to increase the average light paths contribution to a pixel, reducing the noise in rendered images. 
 
 \subsection{Why use Temporal Difference Learning for Importance Sampling?}
 
-Traditional Importance sampling techniques for path tracing do not take into account 
-the visibility of the object from light source. A light blocker is shown in \ref{fig:blocker}, where the 
-blocking object stops rays from directly reaching the light. Due to the unknown 
-presence of blockers, traditional importance sampling methods can fail to avoid 
-sampling zero contribution light paths. Therefore, scenes which are significantly 
-affected by blockers will not receive the benefits from traditional Importance sampling 
-and can even benefit more from an uniform sampling scheme 
-\cite{ramamoorthi2012theory}.\\
+Traditional Importance sampling techniques for path tracing do not take into account the visibility of the object from light source \cite{dahm2017learning}. A light blocker is shown in \ref{fig:blocker}, where the  blocking object stops rays from directly reaching the light. Due to the unknown presence of blockers, traditional importance sampling methods can fail to avoid sampling zero contribution light paths. Therefore, scenes which are significantly affected by blockers will not receive the benefits from traditional Importance sampling and can even benefit more from an uniform sampling scheme \cite{ramamoorthi2012theory}.
 
 \begin{figure}[h!]
 \begin{center}
 \includegraphics[width=0.3\textwidth]{images/light_blocker.png}    
 \end{center}
-\caption{An illustration of a light blocker for an importance sampling scheme which does not consider visibility. Each arrow represents a possible direction the light path will be reflected in. Clearly the reflected light path is likely to hit the blocker increasing the likelihood of it becoming a zero-contribution light path.}
+\caption{An illustration of a light blocker for an importance sampling scheme which does not consider visibility. Each arrow represents a possible direction the light path will be continued in. Clearly the reflected light path is likely to hit the blocker, reducing its contribution to the approximation of a pixel value.}
 \label{fig:blocker}
 \end{figure}
 
-Temporal difference learning methods are better equipped to tackle this problem 
-\cite{dahm2017learning}. As the AI agent described in the previous section learns 
-which directions light is coming from in the scene and concentrates its sampling 
-towards these directions. Directions leading to blockers will have a low value, 
-hence it is unlikely the AI agent will sample rays in these directions.\\
+Temporal difference learning methods are better equipped to tackle this problem \cite{dahm2017learning}. As the AI agent described in the previous section learns which directions light is coming from in the scene and concentrates its sampling towards these directions. Directions leading to blockers will have a low value, hence it is unlikely the AI agent will sample rays in these directions. In fact, we have described that the agents goal is equivalent to learning what is known as the \textit{incident radiance function}. The incident radiance describes the power of light incident on a surface at a given point from a given direction.
+
+\subsection{From Discrete to a Continuous State Space}
 
 \section{Motivation}
 \label{sec:motivation}

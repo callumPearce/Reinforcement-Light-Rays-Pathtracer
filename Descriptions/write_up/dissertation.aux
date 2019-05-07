@@ -22,34 +22,43 @@
 \providecommand \oddpage@label [2]{}
 \citation{dahm2017learning}
 \citation{christensen2016path}
+\citation{kajiya1986rendering}
 \citation{keller2016path}
+\citation{stanford_graphics}
+\citation{krivanek2014recent}
 \@writefile{toc}{\contentsline {chapter}{\numberline {1}Introduction}{1}{chapter.1}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
 \@writefile{loa}{\addvspace {10\p@ }}
 \newlabel{chap:context}{{1}{1}{Introduction}{chapter.1}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {1.1}Path Tracing for Light Transport Simulation}{1}{section.1.1}}
-\newlabel{sec:conceptual_path_trace}{{1.1}{1}{Path Tracing for Light Transport Simulation}{section.1.1}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {1.1}{\ignorespaces An illustration of path tracing, where three light paths are traced from from the camera through a pixel, to the light source in a simple 3D scene.\relax }}{1}{figure.caption.8}}
-\providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
-\newlabel{fig:path_tracing_overview}{{1.1}{1}{An illustration of path tracing, where three light paths are traced from from the camera through a pixel, to the light source in a simple 3D scene.\relax }{figure.caption.8}{}}
-\citation{krivanek2014recent}
+\@writefile{toc}{\contentsline {section}{\numberline {1.1}Monte Carlo Path Tracing for Light Transport Simulation}{1}{section.1.1}}
+\newlabel{sec:conceptual_path_trace}{{1.1}{1}{Monte Carlo Path Tracing for Light Transport Simulation}{section.1.1}{}}
+\citation{dahm2017learning}
 \citation{jensen1996global}
 \citation{keller2016path}
+\@writefile{lof}{\contentsline {figure}{\numberline {1.1}{\ignorespaces An illustration of path tracing, where three light paths are traced from the camera through a pixel, to the light source in a simple 3D scene. The light paths are used to determine the pixel colours of the rendered image.\relax }}{2}{figure.caption.8}}
+\providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
+\newlabel{fig:path_tracing_overview}{{1.1}{2}{An illustration of path tracing, where three light paths are traced from the camera through a pixel, to the light source in a simple 3D scene. The light paths are used to determine the pixel colours of the rendered image.\relax }{figure.caption.8}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {1.2}{\ignorespaces Two renders of the Cornell Box, where the left is directly illuminated and the right is globally illuminated.\relax }}{2}{figure.caption.9}}
 \newlabel{fig:direct_and_global}{{1.2}{2}{Two renders of the Cornell Box, where the left is directly illuminated and the right is globally illuminated.\relax }{figure.caption.9}{}}
+\citation{dahm2017learning}
+\citation{dahm2017learning}
 \citation{sutton2011reinforcement}
-\@writefile{lof}{\contentsline {figure}{\numberline {1.3}{\ignorespaces Two renders of a simple room using 16 sampled light paths per pixel. Where one does not use importance sampling in the construction of light paths (left), and the other does so based on a reinforcement learning rule (right). A clear reduction in image noise can be seen.\relax }}{3}{figure.caption.10}}
-\newlabel{fig:noise_reduction_simple_room}{{1.3}{3}{Two renders of a simple room using 16 sampled light paths per pixel. Where one does not use importance sampling in the construction of light paths (left), and the other does so based on a reinforcement learning rule (right). A clear reduction in image noise can be seen.\relax }{figure.caption.10}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {1.3}{\ignorespaces Two renders of a simple room using 16 SPP. Where one does not use importance sampling in the construction of light paths (left), and the other does so based on a reinforcement learning rule \cite  {dahm2017learning} (right). A clear reduction in image noise can be seen by the use of importance sampling.\relax }}{3}{figure.caption.10}}
+\newlabel{fig:noise_reduction_simple_room}{{1.3}{3}{Two renders of a simple room using 16 SPP. Where one does not use importance sampling in the construction of light paths (left), and the other does so based on a reinforcement learning rule \cite {dahm2017learning} (right). A clear reduction in image noise can be seen by the use of importance sampling.\relax }{figure.caption.10}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {1.2}Temporal Difference Learning for Importance Sampling Ray Directions}{3}{section.1.2}}
 \newlabel{sec:td_learn_for_importance}{{1.2}{3}{Temporal Difference Learning for Importance Sampling Ray Directions}{section.1.2}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {1.2.1}What is Temporal Difference learning?}{3}{subsection.1.2.1}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {1.2.2}Temporal Difference learning methods for Efficient Light Transport Simulation}{3}{subsection.1.2.2}}
+\citation{dahm2017learning}
 \citation{ramamoorthi2012theory}
 \citation{dahm2017learning}
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.2.2}Temporal Difference learning methods for Efficient Light Transport Simulation}{4}{subsection.1.2.2}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {1.2.3}Why use Temporal Difference Learning for Importance Sampling?}{4}{subsection.1.2.3}}
-\@writefile{lof}{\contentsline {figure}{\numberline {1.4}{\ignorespaces An illustration of a light blocker for an importance sampling scheme which does not consider visibility. Each arrow represents a possible direction the light path will be reflected in. Clearly the reflected light path is likely to hit the blocker increasing the likelihood of it becoming a zero-contribution light path.\relax }}{4}{figure.caption.11}}
-\newlabel{fig:blocker}{{1.4}{4}{An illustration of a light blocker for an importance sampling scheme which does not consider visibility. Each arrow represents a possible direction the light path will be reflected in. Clearly the reflected light path is likely to hit the blocker increasing the likelihood of it becoming a zero-contribution light path.\relax }{figure.caption.11}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {1.4}{\ignorespaces An illustration of a light blocker for an importance sampling scheme which does not consider visibility. Each arrow represents a possible direction the light path will be continued in. Clearly the reflected light path is likely to hit the blocker, reducing its contribution to the approximation of a pixel value.\relax }}{4}{figure.caption.11}}
+\newlabel{fig:blocker}{{1.4}{4}{An illustration of a light blocker for an importance sampling scheme which does not consider visibility. Each arrow represents a possible direction the light path will be continued in. Clearly the reflected light path is likely to hit the blocker, reducing its contribution to the approximation of a pixel value.\relax }{figure.caption.11}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.2.4}From Discrete to a Continuous State Space}{4}{subsection.1.2.4}}
+\@writefile{toc}{\contentsline {section}{\numberline {1.3}Motivation}{4}{section.1.3}}
+\newlabel{sec:motivation}{{1.3}{4}{Motivation}{section.1.3}{}}
 \citation{pan2006virtual}
 \citation{bloomberg.com}
 \citation{nvidia_turing_architecture_whitepaper_2018}
@@ -58,8 +67,6 @@
 \citation{christensen2018renderman}
 \citation{georgiev2018arnold}
 \citation{dahm2017learning}
-\@writefile{toc}{\contentsline {section}{\numberline {1.3}Motivation}{5}{section.1.3}}
-\newlabel{sec:motivation}{{1.3}{5}{Motivation}{section.1.3}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {1.3.1}Real time Rendering using Accurate Light Transport Simulation}{5}{subsection.1.3.1}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {1.3.2}Recent Developments}{5}{subsection.1.3.2}}
 \@writefile{toc}{\contentsline {section}{\numberline {1.4}Challenges and Objectives}{5}{section.1.4}}
