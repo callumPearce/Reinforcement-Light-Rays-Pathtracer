@@ -5,21 +5,98 @@
 \chapter{TD-Learning and Deep Reinforcement Learning for Importance Sampling Light Paths}
 \label{chap:td_deep_sampling}
 
-Monte Carlo Integration, importance sampling, Monte Carlo path tracing, reinforcement learning and the link between temporal difference learning and light transport have all been introduced. So now it is finally time to combine all of these concepts to build path tracing algorithms for Importance sampling. 
+Monte Carlo Integration, importance sampling, path tracing, and reinforcement learning have all been introduced. So now it is finally time to combine all of these concepts to build path tracing algorithms which importance sample directions to continue light paths in to reduce image noise.
 
-In this section I introduce two path tracers I have implemented to assess their ability in reducing image noise in Monte Carlo path tracing with a fixed number of sampled light paths per pixel. The first is based on a method introduced by Nvidia \cite{dahm2017learning} which I refer to as the Expected Sarsa path tracer. The other I refer to as the Neural-Q path tracer which I have designed. Both of which progressively reduce the number of zero-contribution light paths sampled during rendering, reducing the variance in the Monte Carlo approximation of a pixels colour. Ultimately, reducing the noise in rendered images. 
+In this section we introduce two modified path tracers. The first is based on the NVIDIA path tracer, which we refer to as the Expected Sarsa path tracer. The other is our newly proposed path tracer which we refer to as the Neural-Q path tracer. Both path tracers progressively learn the incident radiance function for importance sampling directions to continue light paths in. This reduces the variance in the Monte Carlo approximation of a pixels colour, ultimately reducing the noise in rendered images. 
 
 \section{The expected Sarsa Path Tracer}
 \label{sec:expecte_sarsa_path_tracer}
 
-The Expected Sarsa path tracer was first introduced by Nvidia \cite{dahm2017learning} to apply the derived  Expected Sarsa learning rule for learning the incident radiance in a given direction on a position, which was derived in Equation \ref{eq:mc_expected_sarsa_td_learning}:
+In this section we introduce the Expected Sarsa path tracer proposed by NVIDIA in \cite{dahm2017learning}. In doing so, we will cover how light transport can be linked to the rendering equation for learning the incident radiance function, the Irradiance Volume data structure, and the modified path tracing algorithm itself.
 
-$$Q(x, \omega) \leftarrow (1 - \alpha) \cdot Q(x, \omega) + \alpha \cdot \left( L_e(y, -\omega) +\frac{2 \pi}{n} \sum_{k=1}^{n-1} Q(y, \omega_k) f_s(\omega_k, y, -\omega) \cos(\theta_k)  \right)$$
+\subsection{Linking TD-Learning and Light Transport Simulation}
+\label{sec:td_light_transport}
+Here, we will  link together the concepts introduced in chapter \ref{chap:technical} to derive a way of learning the incident radiance on any position in the scene $x$ from any direction $\omega$. In other words, we will step through the derivation of the learning rule given in \cite{dahm2017learning} for learning the incident radiance function based on the TD-learning method Expected Sarsa.
 
-I will now introduce my implementation of the algorithm which uses it to progressively reduce the number of zero-contribution light paths sampled in a path tracer, which can reduce noise in rendered images significantly. 
+First, the Expected Sarsa learning rule's summation over the set of all actions $\mathcal{A}$ can be represented as an integral with respect to an action $a$ over all actions $\mathcal{A}$, as shown in Equation \ref{eq:sarsa_integral}.
+
+\begin{align}
+Q(S_t, A_t) & \leftarrow Q(S_t, A_t) + \alpha [R_{t+1} + \gamma \sum_a \pi(a| S_{t+1}) Q(S_{t+1}, a) - Q(S_t, A_t)]\\
+& =  (1 - \alpha) \cdot Q(S_{t},A_t) + \alpha \cdot \left( R_{t+1} + \gamma \sum_a \pi(a|S_{t+1}) Q(S_{t+1}, a) \right)\\
+& = (1 - \alpha) \cdot Q(S_{t},A_t) + \alpha \cdot \left( R_{t+1} + \gamma \int_\mathcal{A} \pi(a|S_{t+1}) Q(S_{t+1}, a) da \right)
+ \label{eq:sarsa_integral}
+\end{align}
+
+\noindent
+Recall the rendering equation from section \ref{sec:rendering_equation} describes the radiance in an outgoing direction $\omega$ from point $x$ is equivalent to the emitted radiance in $\omega$ from $x$ plus the reflected radiance in the $\omega$ from $x$. Note, we have set the incident radiance function to $L_i(x, \omega_i) = L_o(h(x, \omega_i), -\omega_i)$ (see section \ref{sec:rendering_equation}).
+
+\begin{equation}
+L_o(x, \omega) = L_e(x,\omega)  + \int_\Omega L_o(h(x, \omega_i), -\omega_i)  \cdot f_r(\omega_i, x, \omega) \cdot \cos(\theta_i) d\omega_i \nonumber
+\end{equation}
+
+\noindent
+Now, by matching  terms from the rendering equation to the Expected Sarsa learning rule in equation \ref{eq:sarsa_integral}, equation \ref{eq:expected_sarsa_td_learning} is formed. Where this new learning rule is designed to approximate the incident radiance in direction $\omega$ on a point $x$ in the scene. Therefore, the Q-value of the state-action pair $Q(x = S_t, \omega = A_t)$ is determined by the amount of radiance incident in direction $\omega$ on $x$. An important detail which may be overlooked is that the substitution of $\gamma \cdot \pi(a|S_{t+1})$ for $f_s(\omega_k, y, -\omega) \cdot \cos(\theta_i)$ ensures that a trade off of long term rewards for more immediate rewards is made as $f_s(\omega_k, y, -\omega) \cdot \cos(\theta_i) \leq 1$. Meaning, the learning rule accurately accounts for a light paths loss of energy as reflects off surfaces within the scene.
+
+Below, we have listed what each term in the Expected Sarsa learning rule is matched to for deriving equation \ref{sec:expected_sarsa_td_learning}:
+\begin{conditions}
+ S_t &  3D position in the scene, $x \in \mathbb{R}^3$  \\
+ 
+ A_t & Sampling a direction to continue the light path in from location $x$, in direction $\omega$ \\   
+ 
+S_{t+1}   &  3D position of a light ray from reflected from $x$ in direction $\omega$, $y = h(x, \omega)$ \\
+
+R_{t+1} & Emitted radiance from point $y$ in direction $-\omega$, $L_e(y, -\omega)$\\
+
+\mathcal{A} & All directions in the hemisphere at $x$, oriented to the surface normal at $x$, $\Omega$\\
+
+\gamma \cdot \pi(a|S_{t+1}) & BRDF and the cosine of the angle between $y$ and $\omega_i$, $f_r(\omega_i, y, \omega) \cdot \cos(\theta_i)$\\
+    
+Q(S_t, A_t) & Approximated radiance incident on $x$ from direction $\omega$, $-L_i(x, \omega) = Q(x, \omega)$\\
+\end{conditions}
+
+\begin{equation}
+Q(x, \omega) \leftarrow (1 - \alpha) \cdot Q(x, \omega) + \alpha \cdot \left( L_e(y, -\omega) + \int_\Omega Q(y, \omega_i) f_s(\omega_i, y, -\omega) \cos(\theta_i) d\omega_i \right)
+\label{eq:expected_sarsa_td_learning}
+\end{equation}
+
+Finally, Monte Carlo integration with a uniform distribution PDF can be used to approximate the integral in equation \ref{eq:expected_sarsa_td_learning}. This converts the action space from continuous to $m$ discrete angles and provides a numerical solution for approximating the incident radiance on $x$ from direction $\omega$, as shown in equation \ref{eq:mc_expected_sarsa_td_learning}.
+
+\begin{equation}
+Q(x, \omega) \leftarrow (1 - \alpha) \cdot Q(x, \omega) + \alpha \cdot \left( L_e(y, -\omega) +\frac{2 \pi}{m} \sum_{k=1}^{m-1} Q(y, \omega_k) f_s(\omega_k, y, -\omega) \cos(\theta_k)  \right)
+\label{eq:mc_expected_sarsa_td_learning}
+\end{equation}
+
+The estimated incident radiance function for a point $x$ consists of $m$ approximated incident radaince values from directions $\omega_i \forall i = 1,...,m$. These approximated incident radiance values can be converted into a distribution. This distribution is an apporximation of the \textit{radiance distribution} for a point \cite{greger1998irradiance}. A good approximation of the radiance distribution at a point $x$ will have a similar shape to the true function of incident radiance at point $x$, $L_o(x, \omega)$ $\forall \omega \in \Omega$. Therefore, by MC importance sampling, sampling directions to continue light paths in from the learned radiance distribution and using it as the PDF in the MC approximation, will significantly reduce the variance in the approximation. Leading to a significant reduction in image noise. Figure \ref{fig:incident_radiance_distribution} gives an illustration of the radiance distribution for a point.
+
+\begin{figure}[h]
+\centering
+\begin{minipage}{0.4\textwidth}
+      \begin{tikzpicture}
+	 \begin{axis}[every axis plot post/.append style={
+	  mark=none,domain=-20:20,samples=200,smooth},
+	  axis lines = left,
+	  tick style={draw=none},
+	  xticklabels={},
+	  yticklabels={},
+	    % All plots: from -2:2, 50 samples, smooth, no marks
+	  axis x line*=bottom, % no box around the plot, only x and y axis
+	  axis y line*=left, % the * suppresses the arrow tips
+	  enlargelimits=upper,
+	  xlabel = $\omega_i$,
+	  ylabel = $p(\omega_i)$
+	  ] % extend the axes a bit to the right and top
+	  \addplot [
+	  color=red,
+	  ]{gauss(-10.0,4.0) + gauss(10.0,4.0)};
+	\end{axis}
+    \end{tikzpicture}
+\end{minipage}
+\caption{An illustration of a simple incident radiance distribution for a given point $x$ in a scene. Where $\omega_i$ $\forall \omega_i \in \Omega$ are all possible incident directions in the hemisphere around the point $x$ oriented to the surface normal at $x$.The scene contains two area lights with the same power which are visible from $x$ in the scene, causing two equal level peaks in the incident radiance distribution for $x$.}
+  \label{fig:incident_radiance_distribution}
+\end{figure}
 
 \subsection{The Irradiance Volume}
-The derived Expected Sarsa learning rule requires some sort of data-structure for looking up and updating the incident radiance on a point $x$ from direction $\omega$, which from here on I will refer to as a Q-value. Therefore, the main requirement of the data structure is that it has some way of representing a discrete set of angles ($\omega_k$) in a hemisphere located at a position $x$ and oriented to the surface normal at $x$. The Irradiance Volume data structure \cite{greger1998irradiance} meets this requirement.\\
+The Expected Sarsa learning rule derived in equation \ref{eq:mc_expected_sarsa_td_learning} requires some sort of data-structure for looking up and updating the incident radiance on a point $x$ from direction $\omega_i$, which from here on we will refer to as a Q-value. Therefore, the main requirement of the data structure is that it has some way of representing a discrete set of angles ($\omega_k$ $\forall k = 1, ..., m$) in a hemisphere located at a position $x$ and oriented to the surface normal at $x$. The Irradiance Volume data structure \cite{greger1998irradiance} meets this requirement.\\
 
 \begin{figure}[h]
 \begin{center}
@@ -29,7 +106,7 @@ The derived Expected Sarsa learning rule requires some sort of data-structure fo
 \label{fig:irradiance_volume}
 \end{figure}
 
-Originally designed to be used for pre-computation of radiance values which are looked up at runtime to approximate global illumination, the Irradiance Volume data structure is essentially a discretized version of a hemisphere which is visually represented in Figure \ref{fig:irradiance_volume}. The image shows the discrete sectors which make up a hemisphere, this was implemented by converting a 2D square grid into the 3D hemisphere shown, which is known as an adaptive quadrature. Where all sectors in the 2D grid have an equal area and a mapping introduced in \cite{shirley1994notes} converts the 2D grid coordinates into a hemisphere made up of sectors in 3D space. The mapping ensures the hemisphere sectors remain equal to one another, meaning the discrete set of direction represented by the hemisphere are of equal angles apart from one another.\\
+Originally designed to be used for pre-computation of radiance values which are looked up at runtime to approximate global illumination, the Irradiance Volume data structure is essentially a discretized version of a hemisphere which is visually represented in figure \ref{fig:irradiance_volume}. The image shows the discrete sectors which make up a hemisphere. This was implemented by converting a 2-dimensional square grid into the 3-dimensional hemisphere shown, which is known as an adaptive quadrature. Where all sectors in the 2-dimensional grid have an equal area and a mapping introduced in \cite{shirley1994notes} converts the 2-dimensional grid coordinates into a hemisphere made up of sectors in 3-dimensional space. The mapping ensures the hemisphere sectors remain equal to one another, meaning the discrete set of direction represented by the hemisphere are of equal angles apart from one another.
 
 \begin{figure}[!htb]
 \centering
@@ -49,16 +126,16 @@ Originally designed to be used for pre-computation of radiance values which are 
 \label{fig:scene_discretization_example}
 \end{figure}
 
-Each sector of the Irradiance Volume is then used to store the current approximation of incident radiance in the incident direction formed by the unit vector from centre of the sector to $x$. Therefore, an Irradiance Volume stores the incident radiance (Q-value) for a given position $x$ (state) from each direction $\omega_k$ (action), for all sectors $\forall k = 1,...,n$ in the hemisphere located at $x$. In order to store Q-values across the scene, Irradiance Volumes can be uniformly sampled over the scenes geometry as shown in Figure \ref{fig:scene_discretization_example}. Then to lookup a radiance/Q-value for a given position $x$ in direction $\omega_k$, a nearest neighbour search is performed to find the closest Irradiance volume to position $x$, then retrieve the Q-value from the sector at index $k$. Giving a lookup and update time of $O(\log n) + O(1) = O(\log n)$ when using the KD-Tree data structure for nearest neighbour search \cite{bentley1975multidimensional}.  Lookup and update procedures from the Irradiance volumes in the scene is all that is needed to apply the Expected Sarsa learning rule in Equation \ref{eq:mc_expected_sarsa_td_learning}. The entire collection of Irradiance Volumes in a scene can be thought of as a large 5D table ($x \in \mathbb{R}^3, \omega \in \mathbb{R}^2$) to store the current incident radiance approximation at each point. Expected Sarsa and all other TD-learning methods presented in section \ref{sec:td_learning} are know as tabular methods, and I will refer to the table described as the Q-table for the scene.\\
+Each sector of the Irradiance Volume is then used to store the current approximation of incident radiance in the incident direction formed by the unit vector from centre of the sector to the centre of the hemisphere. Therefore, an Irradiance Volume stores the incident radiance (Q-value) for a given position $x$ (state) in the scene, from each direction $\omega_k$ (action), for all sectors $\forall k = 1,...,m$ in the hemisphere located at $x$. In order to store Q-values across the scene, Irradiance Volumes can be uniformly sampled over the scenes geometry as shown in figure \ref{fig:scene_discretization_example}. Then to lookup a radiance/Q-value for a given position $x$ in direction $\omega_k$, a nearest neighbour search is performed to find the closest Irradiance Volume to position $x$, then a lookup is performed to retrieve the Q-value from the sector at index $k$. Using this method results in a lookup and update time of $O(\log n) + O(1) = O(\log n)$ when using the KD-Tree data structure for nearest neighbour search \cite{bentley1975multidimensional}, which is essentially a binary tree for nearest neighbour search in 3-dimensional space. 
 
-%TODO Explain KD-Tree?
+Lookup and update procedures from the Irradiance volumes in the scene are all that are needed to apply the Expected Sarsa learning rule in equation \ref{eq:mc_expected_sarsa_td_learning}. The entire collection of Irradiance Volumes in a scene can be thought of as a large 5-dimensional table ($x \in \mathbb{R}^3, \omega \in \mathbb{R}^2$) to store the current incident radiance approximation at each point. All Irradiance Volumes in the scene form the Q-table which is used by the Expected Sarsa learning rule to approximate the incident radiance function.
 
-At each Irradiance Volume the radiance distribution is stored. The radiance distribution for each radiance volumes is a probability distribution over the $n$ Q-values (incoming radiance estimates) stored by the radiance volume. As described in section \ref{sec:td_light_transport}, a direction to continue a light path in can be sampled proportionally to the radiance distribution of the closest radiance volume to the a light paths intersection point. This distribution is also used as the probability density function in the Monte Carlo path tracing colour estimate for a pixel (Equation \ref{eq:rendering_eq_monte_carlo}). Due to this, as the radiance estimate held in each of the $n$ sectors of every radiance volume improves with the number of rendered frames, the radiance distribution will come closer a normalized version of the true function describing the incoming radiance on point $x$. Therefore, the variance in the colour estimate for a light path through a given pixel will reduce for the same number of samples used, progressively reducing image noise.
+Each radiance volume stores the radiance distribution approximated for its centre point. This is calculated by normalizing its stored Q-values into a probability distribution. As described in section \ref{sec:td_light_transport}, a direction to continue a light path in can be sampled proportionally to the radiance distribution of the closest radiance volume to the a light paths intersection point. This distribution is also used as the probability density function for calculating colour estimate for a pixel using path tracing (Equation \ref{eq:rendering_eq_monte_carlo}). The Expected Sarsa learning rule can be used to improve the radiance estimate held in each of the $m$ sectors of every radiance volume as the number of rendered frames increases, exactly how will be detailed in section \ref{sec:expected_sarsa_path_tracer}. Meaning, the radiance distribution will come closer and closer to a normalized version of the incident radiance function ($L_i(x, \omega_i)$), which is used to importance sample directions to continue light paths in. Therefore, as the approximation of $L_i$ improves, the noise in rendered images will fall.
 
 \subsection{Expected Sarsa Path Tracing}
 \label{sec:expected_sarsa_path_tracer}
 
-The Expected Sarsa based path tracing algorithm is very similar to the original forward path tracer introduced in Algorithm \ref{alg:forward_path_tracing}. The algorithm learns online, meaning after every rendered frame pixel values are likely to have a lower variance due to a reduction in the number of zero contribution light paths sampled. Initially, radiance volumes are sampled uniformly across the room with all Q-values initialised to a small constant proportional to the number of sectors on each hemisphere $k$. This encodes the assumption that initially the radiance in all directions from any given point in the room is equal, as initially there is no prior knowledge of any radiance values $Q(x, \omega)$. With the radiance volumes set up, every frame $N$ sampled light paths are traced through each pixel from the camera and into the scene to find its average colour estimate using Algorithm \ref{alg:expected_sarsa_pathtracer}. Algorithm \ref{alg:expected_sarsa_pathtracer} updates the radiance distribution stored in by each Irradiance Volume after every rendered frame using the updated $Q(x, \omega_k)$ values stored. Meaning the next frame will importance sample from the new updated radiance distribution estimate held by every Irradiance Volume. The three additions to this algorithm from the forward path tracer in Algorithm \ref{alg:forward_path_tracing}, are as follows:
+The Expected Sarsa path tracing algorithm is very similar to the original forward path tracer introduced in algorithm \ref{alg:forward_path_tracing}. The algorithm learns online, meaning after every rendered frame, pixel values are likely to have a lower variance due to am improvement in the approximation of the learned incident radiance function $L_i$ stored in the Irradiance Volumes in the scene. Initially, radiance volumes are sampled uniformly across the room with all Q-values initialised to a small constant proportional to the number of sectors on each hemisphere $m$. This encodes the assumption that initially the radiance incident in all directions at any given point in the scene is equal. This a good assumption, as initially we have no prior knowledge of any radiance values $Q(x, \omega)$. With the radiance volumes set up, every frame $N$ sampled light paths are traced through each pixel from the camera and into the scene, to find the pixels average colour estimate using algorithm \ref{alg:expected_sarsa_pathtracer}. Algorithm \ref{alg:expected_sarsa_pathtracer} updates the radiance distribution stored in each Irradiance Volume after every rendered frame using the updated $Q(x, \omega_k)$ values stored. Meaning the next frame will importance sample from the new updated radiance distribution estimate held by every Irradiance Volume. The three additions to this algorithm from the path tracer in Algorithm \ref{alg:forward_path_tracing}, are as follows:
 
 \subsubsection*{Addition 1: Sample directions proportional to closest radiance distribution}
 The direction to continue the light path in is sampled proportional to the Q-values stored in the closest Irradiance Volume to position $y$ by using the stored radiance distribution in the closest Irradiance Volume.  Inverse transform sampling \cite{devroye2006nonuniform} is used to sample a direction from the stored radiance distribution. Inverse transform sampling is where a random number $r \in [0,1]$ is sampled, then the largest number $x$ from the domain of the cumulative distribution $P(X)$ is returned where $ P(-\infty < X < x) \leq r$. 

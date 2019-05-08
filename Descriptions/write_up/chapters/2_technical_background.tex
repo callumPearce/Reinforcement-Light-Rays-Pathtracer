@@ -375,21 +375,23 @@ The question now is, do we have any knowlegde of which directions contribute the
 
 There exists many other methods of retrieving knowledge from the scene to use in importance sampling during rendering. For example, irradiance cahcing \cite{bashford2012significance}, table-driven adaptive importance sampling \cite{cline2008table}, and sequential Monte Carlo adaptation \cite{pegoraro2008towards}. However, these methods suffer from the problem described in \ref{motivation} where they do not account for light blockers. This is because they do not actually attempt to learn a the incident radiance function instead, they make assumptions about its general shape. Meaning if these assumption are incorrect, there is potential that the PDF used by these methods for importance sampling is a far different shape to the true incident radiance function $L_i$. Hence, they may actually increase the presence of noise rendered in images (see section \ref{sec:importance_sampling}) when compared to using a uniform PDF. 
 
-To avoid this issue, NVIDIA proposed that a reinforcement learning method can be adapted and used to learn the incident radiance function. This approximation of the incident radiance function is then used for importance sampling directions to continue light paths in \cite{dahm2017learning}, leading to a reduction in image noise. We will present NVIDIA's path tracer in chapter \ref{chap:td_deep_sampling}.
+To avoid this issue, NVIDIA proposed that a reinforcement learning method can be adapted and used to learn the incident radiance function. This approximation of the incident radiance function is then used for importance sampling directions to continue light paths in \cite{dahm2017learning}, leading to a reduction in image noise. We will present NVIDIA's path tracer in chapter \ref{chap:td_deep_sampling}
 
 
 \section{Reinforcement Learning and TD-Learning}
-Now that it is clear how Importance sampling light paths can be used to reduce variance in Monte Carlo path tracing, it is time to introduce the concept of reinforcement learning as I will be using this to gain knowledge for this Importance sampling. This section aims to give a quick introduction to reinforcement learning and TD-learning to cover all of the background material of the learning methods I will be using, before describing how they are applied to path tracing in the next section.
+
+In this section we give a quick introduction to reinforcement learning and TD-learning. TD-learning learning rules are what both we and NVIDIA propose to use for approximating the incident radiance function. This approximation is used to importance sample directions to continue light paths in, in order to reduce the noise present in images rendered by path tracing. Exactly how the TD-learning can be applied to learn the incident radiance function is the central topic of chapter \ref{chap:td_deep_sampling}.
 
 \subsection{Markov Decision Processes}
-Reinforcement learning is one of the three archetypes of machine learning and it is concerned with finding what action should be taken in a given situation, in order to maximise a numerical reward \cite{sutton2011reinforcement}. This problem is formalized by a finite Markov Decision Process (MDP), which is designed to capture the most important aspects of the problem a learning agent faces when interacting over time with its environment to achieve a goal. A MDP is summarised in \ref{fig:mdp} and can be described in terms of the following:
+Reinforcement learning is one of the three archetypes of machine learning. It is concerned with finding what action should be taken in a given situation, in order to maximise a numerical reward \cite{sutton2011reinforcement}. This problem is formalized by a finite Markov Decision Process (MDP), which is designed to capture the most important aspects of the problem a learning agent faces when interacting over time with its environment to achieve a goal. An MDP is summarised in figure \ref{fig:mdp} and can be described in terms of the following:
 
 \begin{itemize}
 \item \textbf{Agent} - The learner and decision maker which takes an action $A_t$ in an observed state $S_t$ (where $t$ is the current time step), receiving an immediate numerical reward $R_{t_+1}$ and the next observed state $S_{t+1}$
+
 \item \textbf{Environment} - What the agent interacts with when taking an action $A_t$ in state $S_t$ and produces both $R_{t+1}$ \& $S_{t+1}$ 
 \end{itemize}
 
-\begin{figure}[h]
+\begin{figure}[h!]
 \begin{center}
 \includegraphics[width=0.5\textwidth]{images/MDP.png}    
 \end{center}
@@ -410,13 +412,13 @@ p   & Probability of receiving reward $r$ and state $s'$ when in the previous st
 \end{conditions}
 
 \noindent
-An important detail of an MDP which makes it far easier to implement in practice is that any problem modelled by an MDP assumes the Markov property.
+An important detail of an MDP  is that any problem modelled by an MDP assumes the Markov property.
 
 \begin{quote}
 "The future is independent of the past, given the present." - \textit{Hado van Hasselt, Senior Research Scientist at DeepMind} \cite{introToRL}
 \end{quote}
 
-This is expressed mathematically for an MDP in equation \ref{eq:markov_property}. Put simply, the Markov property means the current state captures all relevant information from the history of all previous states the agent has experienced, meaning the history is not needed.
+This is expressed mathematically for an MDP in equation \ref{eq:markov_property}. Put simply, the Markov property means the current state captures all relevant information from the history of all previous states the agent has experienced. Meaning the history of all previous states are not needed if we have the current state.
 
 \begin{equation}
 \label{eq:markov_property}
@@ -424,69 +426,69 @@ p(R_{t+1} = r, S_{t+1} = s' | S_t = s) = p(R_{t+1} = r, S_{t+1} = s' | S_1, .. ,
 \end{equation}
 
 \subsection{Goals and Rewards}
-The goal thought of for a reinforcement learning agent can change significantly depending on the problem, for example in the case of a game it may be to maximise the total score in one play-through. Or for a robotic space rover it may be to discover the most amount of unseen terrain. However, in terms of an MDP all AI agents goals a described as maximising the total amount of cumulative reward received. This is more formally described by the reward hypothesis \cite{sutton2011reinforcement}
+The goal of a reinforcement learning agent can change significantly depending on the problem. For example, in the case of a game it may be to maximise the total score in one play-through. Or for a robotic space rover, it may be to discover the most amount of unseen terrain. However, in terms of an MDP all AI agents goals are described as maximising the total amount of cumulative reward received. This is more formally described by the reward hypothesis \cite{sutton2011reinforcement}:
 
 \begin{quote}
 Any goal can be formalized as the maximisation of the expected value of the cumulative sum of a received scalar reward signal.
 \end{quote}
 
-Once again in the case of an agent learning the best possible action to take for any state in the game (known as the optimal policy), a reward signal could be the points gained by making a certain move. Therefore, to maximise the expected return would be to maximise the number of points received in a play-through.  The return is formally defined in Equation \ref{eq:return} in terms of a reward sequence combined with the discount factor, which as previously mentioned trades off later rewards for more immediate ones. If a discount factor ($\gamma$) is closer to 1 the agent is said to be far sighted, as it gives future rewards a high weighting. Whereas a myopic agent is one which has a discount factor closer closer to 0, as it gives a lower weighting to future rewards for their contribution towards the return $G_t$ \cite{introToRL}. 
+Once again, in the case of an agent learning the best possible action to take for any state in a game, a reward signal could be the points gained by making a certain move. Therefore, to maximise the expected return would be to maximise the number of points received in a play-through of the game in this case.  The return is formally defined in equation \ref{eq:return}. It consists of a sequence of reward signals ($R_{t+i}$), combined with the discount factor ($\gamma$), which as previously mentioned trades off later rewards for more immediate ones. If the discount factor is closer to 1, the agent is said to be far sightes, as it gives future rewards a high weighting. Whereas a myopic agent is one which has a discount factor closer closer to 0, as it gives a lower weighting to future rewards for their contribution towards the return $G_t$ \cite{introToRL}. 
 
 \begin{equation}
 \label{eq:return}
 G_t = R_{t+1} + \gamma R_{t+2} + \gamma^2 R_{t+3} + ... = \sum^\infty_{k=0} \gamma^k R_{t+k+1}
 \end{equation}
 
-This formulation works well if the agents interactions with the environment break down easily into sub-sequences \cite{sutton2011reinforcement}, where an agent starts in one of a given set of starting states and takes a series of actions to reach a terminal state. From the terminal state the agent can be reset to one of the starting states to begin learning once again. This applies to path tracing, where the terminal state is one in which the light path has intersected with a light, but this will be discussed in detail in Section \ref{sec:td_light_transport}.
+This formulation works well if the agents interactions with the environment break down easily into sub-sequences \cite{sutton2011reinforcement}. Where an agent starts in one of a given set of \textit{starting states} and takes a series of actions to reach a \textit{terminal state}. The process of taking a series of actions from the starting state to the terminal state is known as an \textit{episode}. From the terminal state the agent can be reset to one of the starting states to begin learning once again. This applies to path tracing, where the terminal state is one in which the light path has intersected with a light. This will be discussed in detail in chapter \ref{chap:td_deep_sampling}.
 
 \subsection{Value Function and Optimality}
 \label{sec:optimal_value}
-All reinforcement learning algorithms I will be considering involve the concept of a value function. There are two kinds of value functions, one which determines the value of being in a given state, the other determines the value of being in a certain state and taking a certain action, known as a state-action pair. The methods I consider are those which use state-action pair value functions, where the value of a state-action pair is defined in terms of the expected return from that state-action pair.
+All reinforcement learning algorithms we will be considering involve the concept of a value function. There are two kinds of value functions, one which determines the value of being in a given state, the other determines the value of being in a certain state and taking a certain action, known as a state-action pair. We will be focusing on state-action pair value functions, where the value of a state-action pair is defined in terms of the expected return $G_t$ from that state-action pair.
 
-An agent follows a policy $\pi$, which determines how the agent will act in a given state. Formally, a policy is a mapping from states to probabilities of selecting a particular action. When an agent is following policy $\pi$ at time $t$, then $\pi(a|s)$ is the probability that $A_t = a$ if $S_t = s$. Reinforcement learning algorithms state how an agents policy changes from experience. 
+An agent follows a policy $\pi$, which determines how the agent will act in a given state. More formally, a policy is a mapping from states to probabilities of selecting a particular action. When an agent is following policy $\pi$ at time $t$, then $\pi(a|s)$ is the probability of the agent taking action $A_t = a$ in state  $S_t = s$. The reinforcement learning algorithms we shall discuss state how an agents policy changes from experience. In other words, how the agents behaviour changes depending on previous experiences.
 
-The value of a state-action pair $(s,a)$ under a policy $\pi$, is given in Equation \ref{eq:value_function} denoted as $q_\pi(s,a)$,. This value function is commonly known as the action value function for policy $\pi$. Stating 'under policy $\pi$' is important as the value of a given state-action pair depends upon the actions we take onwards from taking action $a$ in state $s$ due to $\pi$. $\mathbf{E}_\pi$ denotes the expected value of a random variable, given that the agent follows policy $\pi$. From this, if one were to keep track of the actual returns received for taking a state-action pair, then as the number of times the state-action pair is chosen tends to infinity, the average of the returns will converge on the true expected value of the return for the state-action pair $q_\pi(s,a)$.
+The value of a state-action pair $(s,a)$ under a policy $\pi$, is given in equation \ref{eq:value_function} denoted as $q_\pi(s,a)$,. This value function is commonly known as the action value function for policy $\pi$. Stating 'under policy $\pi$' is important as the value of a given state-action pair depends upon the actions we take onwards from taking action $a$ in state $s$ while following $\pi$. $\mathbf{E}_\pi$ denotes the expected value of a random variable, given that the agent follows policy $\pi$. From this, if we were to keep track of the actual returns received for taking a state-action pair, then as the number of times all state-action pairs are chosen tends to infinity, the average of the returns for the state action pair $(s,a)$ will converge on the true expected value of the return for that state-action pair $q_\pi(s,a)$.
 
 \begin{equation}
 \label{eq:value_function}
 q_\pi(s, a) = \mathbf{E}_\pi[G_t | S_t = s, A_t = a] = \mathbf{E}_\pi [\sum_{k=0}^{\infty} \gamma^k R_{t+k+1} | S_t = s, A_t = a]
 \end{equation}
 
-Now, if you had an AI agent the best way it could perform would be to maximise the expected reward it receives in an episode. In terms of a policies, this is know as the optimal policy which is said to be better then all other policies and agent can follow. Formally, the optimal policy is $\pi$ if $\pi \geq \pi'$ for al possible policies $\pi'$. Where, $\pi \geq \pi'$ if and only if $q_\pi(s,a) \geq q_{\pi'}(s,a)$ for all $s \in \mathcal{S}$ and $a \in \mathcal{A}$. The optimal policy is denoted as $\pi_*$ and the value function following the optimal policy, which is the optimal value function, is denoted $q_*(s,a)$. The optimal value function is defined in Equation \ref{eq:optimal_value}.
+Now, if we had an AI agent the best way it could perform would be to maximise the true expected reward it receives in an episode. The policy which does this is known as the \textit{optimal policy}, which is provably better than all other policies an agent can follow. Formally, the optimal policy is $\pi$ if $\pi \geq \pi'$ for al possible policies $\pi'$. Where, $\pi \geq \pi'$ if and only if $q_\pi(s,a) \geq q_{\pi'}(s,a)$ for all $s \in \mathcal{S}$ and $a \in \mathcal{A}$. The optimal policy is denoted as $\pi_*$ and the value function following the optimal policy, which is the \textit{optimal value function}, is denoted $q_*(s,a)$. The optimal value function is defined in equation \ref{eq:optimal_value}.
 
 \begin{align}
 q_*(s,a) & = \max_\pi q_\pi(s,a) \label{eq:optimal_value} \\
  & = \mathbf{E}[R_{t+1} + \gamma \max_{a'} q_* (S_{t+1}, a') | S_t = s, A_t = a]  \label{eq:bellman_optimal}
 \end{align}
 
-Equation \ref{eq:bellman_optimal} defines the Bellman optimality equation, which states that the value of a state-action pair under an optimal policy must be equal to the expected return of the immediate reward plus the highest valued state-action pair available from the next state. Intuitively, if the optimal policy is available which is essentially a cheat sheet of what action is most valuable to take in each state. Then the value of a given state-action pair should be equal the immediate reward received by taking the action in the current state, plus the value of the best action to take in the next state given by the cheat sheet/optimal policy. Therefore, if one has the optimal value function, the optimal policy can easily be found by maximising the choice of action $a$ for $q_*(s,a)$  in state $s$ \cite{sutton2011reinforcement}. \\ 
+Equation \ref{eq:bellman_optimal} defines the \textit{Bellman optimality equation}, which states that the value of a state-action pair under an optimal policy must be equal to the expected return of the immediate reward plus the highest valued state-action pair available from the next state. Intuitively, if the optimal policy is available which is essentially a cheat sheet of what action is most valuable to take in each state. Then the trhe value of a given state-action pair should be equal the immediate reward received by taking the action in the current state, plus the value of the best action to take in the next state given by the cheat sheet/optimal policy. SImilarly, if we have the optimal value function, the optimal policy can easily be found by choosing the action $a$ with the highest values $q_*(s,a)$  in state $s$ \cite{sutton2011reinforcement}. 
 
-To summarize, the aim from here on is to build an agent which is able to learn the optimal value function, but whilst this is provably possible, it rarely happens in practice. However, the learning methods I will discuss in the next section on TD-learning are able to find a good value function for light path direction sampling.
+To summarize, the aim from here on is to build an agent which is able to learn the optimal value function. But whilst this is provably possible, it rarely happens in practice. However, the learning methods I will discuss in the next section on TD-learning are able to learn a good value function in practice \cite{sutton1996generalization, konidaris2011value, uther1998tree, mnih2013playing}.
 
 \subsection{Temporal Difference Learning}
 \label{sec:td_learning}
 
-TD-Learning is combination of Monte Carlo and Dynamic Programming reinforcement learning methods for learning the optimal value function from equation \ref{eq:optimal_value}. I will not discuss the details of Monte Carlo and Dynamic Programming methods as they are not investigated as part of my work. However, the reasoning for choosing to study  TD-learning approaches over these two alternative approaches are as follows; TD-learning can perform learning updates of the value function throughout an episode, unlike Monte Carlo approaches which wait until the end \cite{model_free_prediction}. This means TD-learning algorithms can be written in an online learning algorithm \cite{sutton2011reinforcement}. TD-learning can learn directly from experience, as it does not require a true model of the environment in order to learn, unlike Dynamic Programming methods \cite{mdp_dynamic_prog}. This means TD-learning is model-free, avoiding the expense of building the true model of the environment. I will now introduce
+TD-Learning is combination of Monte Carlo and Dynamic Programming reinforcement learning methods for learning the optimal value function from equation \ref{eq:optimal_value}. We will not discuss the details of Monte Carlo and Dynamic Programming methods as they are not investigated as part of our work. However, the reasoning for choosing to study  TD-learning approaches over these two alternative approaches are as follows; TD-learning can perform learning updates of the value function throughout an episode, unlike Monte Carlo approaches which wait until the end \cite{model_free_prediction}. This means TD-learning algorithms can be implemented as online learning algorithm \cite{sutton2011reinforcement}, meaning they are able to learn during an episode. TD-learning can learn directly from experience, as it does not require a true model of the environment in order to learn the optimal value function, unlike Dynamic Programming methods \cite{mdp_dynamic_prog}. This means TD-learning is model-free, avoiding the expense of building the true model of the environment.
 
-I will now introduce three different temporal difference learning methods which are required knowledge for the rest of my work.
+We will now introduce three different TD-learning methods which are required knowledge for the rest of our work.
 
 \subsubsection*{Sarsa}
 
-Sarsa is a on-policy TD method which learns a good state-action pair valuation function $q_\pi(s,a)$. The Sarsa learning rule is presented in Equation \ref{eq:sarsa}, and I have chosen to present this method first to explain some key concepts TD-learning methods share. Firstly, $Q$ denotes the current value function under policy $\pi$, $q_\pi$. Therefore the left arrow indicates an update in the value of the current estimate $Q$. Also notice, how the current estimate is update upon every time step $t$, this means Sarsa like other TD-learning methods can learn during an episode as previously mentioned. The $\alpha$ term is the current learning rate where $\alpha \in [0,1]$ and $\gamma$ is the discount factor as previously discussed. Finally, Sarsa performs what is known as bootstrapping in the context of reinforcement learning \cite{sutton2011reinforcement}. Bootstrapping is where the  estimate of the valuation function ($Q$), is updated based on some new data by experience, which is the immediate reward $R_{t+1}$. As well as, the current estimate of the valuation function $Q$. Sarsa therefore learns from experience, whereby an action is $A_t$ is taken in state $S_{t}$, leading to an immediate reward $R_{t+1}$ which is used to update the current estimate $Q$.
+Sarsa is an on-policy TD method which learns a state-action pair valuation function $q_\pi(s,a)$. The Sarsa learning rule is presented in equation \ref{eq:sarsa}, and we have chosen to present this method first to explain some key concepts TD-learning methods share. Firstly, $Q$ denotes the current apporximation of the optimal value function under policy $\pi$, $q_\pi$. Therefore the left arrow indicates an update in the currently estimated value of state-action pair $(s,a)$, $Q(s,a)$. Also notice, how the current estimate is update upon every time step $t$, this means Sarsa like other TD-learning methods can learn during an episode as previously mentioned. The $\alpha$ term is the current learning rate, where $\alpha \in [0,1]$ and $\gamma$ is the discount factor as previously described. Finally, Sarsa performs what is known as bootstrapping in the context of reinforcement learning \cite{sutton2011reinforcement}. Bootstrapping is where the current estimate of the value function ($Q$) is updated based on some new data received by experience, which is the immediate reward $R_{t+1}$. As well as, the current estimate of the value function $Q$. Sarsa therefore learns from experience after every time step $t$, whereby an action $A_t$ is taken in state $S_{t}$, leading to an immediate reward $R_{t+1}$ which is used to update the current estimate $Q$.
 
 \begin{equation}
 Q(S_t, A_t) \leftarrow Q(S_t, A_t) + \alpha[R_{t+1} + \gamma Q(S_{t+1}, A_{t+1}) - Q(S_t, A_t)]
 \label{eq:sarsa}
 \end{equation}
 
-The reasoning behind the name Sarsa is that the method uses every element in the quintuple of events, $Q(S_t, A_t, R_{t+1}, S_{t+1}, A_{t_1})$, which makes up a transition between each time step of state-action pairs. Sarsa is an on-policy TD-learning method, as to choose the next action to take in the next state ($Q(S_{t+1}, A_{t+1}$) the policy is used. Sarsa is proven to converge on the optimal value function $q_*$ when the policy $\pi$ remains constant. \\
+The reasoning behind the name Sarsa is that the method uses every element in the quintuple, $(S_t, A_t, R_{t+1}, S_{t+1}, A_{t_1})$, which makes up a transition between each time step of state-action pairs. Sarsa is an on-policy TD-learning method, as to choose the next action to take in the next state ($Q(S_{t+1}, A_{t+1}$) the policy is used. Sarsa is proven to converge on the optimal value function $q_*$ when the policy $\pi$ remains constant. Sarsa is a tabular learning method for approximating the optimal value function $q_*$. Meaning, a table with an entry for every state-action pair is required for the algorithm to converge on the optimal value function by using the update rule in equation \ref{eq:sarsa}.
 
-To make Sarsa learning and TD-learning in general more concrete, imagine a robot with a camera whose goal it is to manoeuvre to the end of a corridor. Each time step is the point when a new frame is rendered on the camera, and the state is the image displayed by the camera. The robots actions consist of moving a short distance in a set of four different direction. If the robot were to learn using Sarsa, the robot would have a large table storing the value of each state-action pair $Q(S_t, A_t)$, which represents the current value function. The robot would then select an action at each time step according to the policy $\pi$ to receive a reward signal based on its distance to the end of the corridor. The robot would then perform a lookup on the large table indexing with the action it took in the state it was in and perform the update rule in \ref{eq:sarsa}. This large table representing the current estimate of the optimal value function is also know as a Q-table, where each value in the table is known as a Q-value, $Q(S_t, A_t)$. By following a suitable policy, the robot will over time will keep updating its Q-values to improve
+To make Sarsa learning and TD-learning in general more concrete, imagine a robot with a camera whose goal it is to manoeuvre to the end of a corridor. Each time step is the point when a new frame is rendered on the camera, and the state is the image displayed by the camera. The robots actions consist of moving a short distance in a set of four different directions. If the robot were to learn using Sarsa, the robot would have a large table storing the value of each state-action pair $Q(S_t, A_t)$, which represents the current approximation of the value function. The robot would then select an action at each time step according to the policy $\pi$ to receive a reward signal based on its distance to the end of the corridor. The robot would then perform a lookup on the large table, indexing with the action it took in the state it was in to perform the update rule in \ref{eq:sarsa}. This large table representing the current estimate of the optimal value function is also know as a \textit{Q-table}, where each value in the table is known as a \textit{Q-value}, $Q(S_t, A_t)$. By following a suitable policy, the robot will over time will keep updating its Q-values to improve
 its estimate of $q_\pi(s,a)$.
 
 \subsubsection{Q-Learning}
 
-Q-learning is very similar to Sarsa except it is an off-policy TD-learning algorithm. Also, if all state-action pairs are visited infinitely many times, it is proven that Q-learning can converge on the optimal policy $q_\pi(s,a)$ faster then Sarsa, therefore it is generally a preferred method. The learning rule is displayed in Equation \ref{eq:q_learning}, where rather then following a policy $\pi$ to select the action to update with, the maximum value of the highest valued action in the next state is selected ($\max_a Q(S_{t+1}, a$). This means the agent following policy $\pi$ will still choose its actions in a state based on $\pi$, however when it update its valuation function $Q$, the action chosen to update with may not necessarily be the same as the action chosen. Hence, Q-learning is an off-policy TD-learning algorithm.
+Q-learning is very similar to Sarsa except it is an off-policy TD-learning algorithm. Also, if all state-action pairs are visited infinitely many times, it is proven that Q-learning can converge on the optimal policy $q_\pi(s,a)$ faster than Sarsa. Making it a generally a preferred method to Sarsa. The learning rule is given in equation \ref{eq:q_learning}, where rather than following a policy $\pi$ to select the action to update with, the maximum value of the highest valued action in the next state is selected ($\max_a Q(S_{t+1}, a$). This means the agent following policy $\pi$ will still choose its actions from a state based on $\pi$, however when it updates its value function $Q$, the action it chooses to update with may not necessarily be the same as the action it took. Hence, Q-learning is an off-policy TD-learning algorithm.
 
 \begin{equation}
 Q(S_t, A_t) \leftarrow Q(S_t, A_t) + \alpha[R_{t+1} + \gamma \max_aQ(S_{t+1}, a) - Q(S_t, A_t)]
@@ -494,10 +496,10 @@ Q(S_t, A_t) \leftarrow Q(S_t, A_t) + \alpha[R_{t+1} + \gamma \max_aQ(S_{t+1}, a)
 
 \subsubsection{Expected Sarsa}
 
-Expected Sarsa is a TD-learning algorithm which is generally found to be superior to both Q-learning and Sarsa in practice \cite{sutton2011reinforcement}. It is very similar to Q-learning, but instead of using the maximum value of the next state-action pairs it takes the expected value over them. This means Expected Sarsa takes into account how likely each action is under the current policy as shown in Equation \ref{eq:expected_sarsa}. Where $\pi(a | S_{t+1})$ returns the probability of selecting action $a$ in state $S_{t+1}$, while following the policy $\pi$. Note, Expected Sarsa may be used as either an on-policy of off-policy algorithm, for example if the policy $\pi$ was set to the greedy-policy used in Q-learning, the learning rule would become identical to that of Q-learning. Therefore, Expected Sarsa generalizes over Q-learning. Expected Sarsa also reduces the variance in the value function approximation compared to that of Sarsa, as the expectation taken over the current valuation estimate for state-action pairs used.
+Expected Sarsa is a TD-learning algorithm which is generally found to be superior to both Q-learning and Sarsa in practice \cite{sutton2011reinforcement}. It is very similar to Q-learning, but instead of using the maximum value of the next state-action pairs, it uses the expectation over them. This means Expected Sarsa takes into account how likely each action is under the current policy as shown in equation \ref{eq:expected_sarsa}. Where $\pi(a | S_{t+1})$ returns the probability of selecting action $a$ in state $S_{t+1}$, while following the policy $\pi$. Note, Expected Sarsa may be used as either an on-policy or an off-policy algorithm. For example, if the policy $\pi$ was set to the greedy-policy used in Q-learning, the learning rule would become identical to that of Q-learning. Therefore, Expected Sarsa generalizes over Q-learning. Expected Sarsa also reduces the variance in the value function approximation compared to that of Sarsa, as the expectation taken over the current valuation estimate for state-action pairs used.
 
 \begin{align}
-Q(S_t, A_t) &  \leftarrow Q(S_t, A_t) + \alpha [R_{t+1} + \gamma \mathbf{E}[Q(S_{t+1}, A_{t+1}) | S_{t+1}] - Q(S_t, A_t)]\\
+Q(S_t, A_t) &  \leftarrow Q(S_t, A_t) + \alpha [R_{t+1} + \gamma \mathbf{E}[Q(S_{t+1}, A_{t+1}) | S_{t+1}] - Q(S_t, A_t)] \nonumber \\
  & \leftarrow Q(S_t, A_t) + \alpha [R_{t+1} + \gamma \sum_a \pi(a| S_{t+1}) Q(S_{t+1}, a) - Q(S_t, A_t)]
  \label{eq:expected_sarsa}
 \end{align}
@@ -505,97 +507,17 @@ Q(S_t, A_t) &  \leftarrow Q(S_t, A_t) + \alpha [R_{t+1} + \gamma \mathbf{E}[Q(S_
 \subsection{Exploration vs Exploitation}
 \label{sec:exploration_vs_exploitation}
 
-Up to now I have formally introduced what reinforcement learning is, including what the optimal value function is and different ways to learn it. As for the TD-learning methods presented so far, I have not discussed any details about the kind of policy an agent should use to select actions in the process of learning. Deciding on this policy is very influential on our agents performance, as the agent needs to gather enough information about its environment to make the best overall decisions. Therefore, online decision-making requires a fundamental choice to be made by the agent every time it chooses to take an action \cite{exploration_vs_exploitation}. This is between the following:
+Up to now we have formally introduced what reinforcement learning is, including what the optimal value function is and different ways to learn it. In the case of off-policy methods like Q-learning, we have not yet discussed any details about the kind of policy an agent should use to select actions for learning the optimal value function. Deciding on this policy is very influential on our agents performance, as the agent needs to gather enough information about its environment to make the best overall decisions. Therefore, online decision-making requires a fundamental choice to be made by the agent every time it chooses to take an action \cite{exploration_vs_exploitation}. This is between the following:
 
 \begin{itemize}
 \item \textbf{Exploration}: Maximise the agents performance based on the current knowledge available
 \item \textbf{Exploration}: Gain more knowledge about the environment
 \end{itemize}
 
-This means a good learning strategy for an agent may be to sacrifice short-term performance to maximise it in the long-term. This applies directly to the policy used in TD-learning methods. Initially exploration is the most important to quickly gain a broad amount of knowledge about the environment and opening up more specific areas for further exploration. Then over time the policy should favour exploitation more and more by taking known higher valued actions. An example of this kind of policy is the decaying $\epsilon$-greedy policy \cite{sutton2011reinforcement}. This policy maintains the current value of $\epsilon \in [0,1]$ and involves sampling a random number $x \in [0,1]$, then if $x > \epsilon$ exploitation occurs, else exploration. By exploitation it is common practice to choose the current highest valued action, whereas exploration involves choosing one at random. Overtime $\epsilon$ is decreased to match the behaviour of increasing exploitation as more knowledge is gained.
-
-\section{Linking TD-Learning and Light Transport Simulation}
-\label{sec:td_light_transport}
-I will now to link together the concepts introduced so far in this chapter to derive a way of finding the outgoing radiance from position $x$ in direction $\omega$ ($Q(x, \omega)$), based on the TD-learning method Expected Sarsa. I incorperate this learning rule later into Nvidia's online reinforcement learning path tracing algorithm, which uses the learned $Q(x, \omega)$ values for importance sampling directions in light path construction \cite{dahm2017learning}.\\
-
-First, the Expected Sarsa learning rule's summation over the set of all actions $\mathcal{A}$ can be represented as an integral with respect to an action $a$, as shown in Equation \ref{eq:sarsa_integral}. This implies the action space is continuous:
-
-\begin{align}
-Q(S_t, A_t) & \leftarrow Q(S_t, A_t) + \alpha [R_{t+1} + \gamma \sum_a \pi(a| S_{t+1}) Q(S_{t+1}, a) - Q(S_t, A_t)]\\
-& =  (1 - \alpha) \cdot Q(S_{t},A_t) + \alpha \cdot \left( R_{t+1} + \gamma \sum_a \pi(a|S_{t+1}) Q(S_{t+1}, a) \right)\\
-& = (1 - \alpha) \cdot Q(S_{t},A_t) + \alpha \cdot \left( R_{t+1} + \gamma \int_\mathcal{A} \pi(a|S_{t+1}) Q(S_{t+1}, a) da \right)
- \label{eq:sarsa_integral}
-\end{align}
-
-Recall the rendering equation from section \ref{sec:rendering_equation} describes the radiance in an outgoing direction $\omega$ from point $x$ is equivalent to the emitted radiance in the direction plus the reflected radiance in the direction. 
-
-\begin{equation}
-L_o(x, \omega) = L_e(x,\omega)  + \int_\Omega L_i(h(x, \omega_i), -\omega_i)  \cdot f_r(\omega_i, x, \omega) \cdot \cos(\theta_i) d\omega_i \nonumber
-\end{equation}
-
-\noindent
-Now, by matching  terms from the rendering equation to the Expected Sarsa learning rule in Equation \ref{eq:sarsa_integral}, Equation \ref{eq:expected_sarsa_td_learning} is formed. Where this new learning rule is designed to approximate the outgoing radiance in direction $\omega$ from point $x$. Therefore, the value of the state-action pair $Q(x = S_t, \omega = A_t)$ is determined by the amount of radiance incident in direction $\omega$ from point $x$. An important detail which may be overlooked is that the substitution of $\gamma \cdot \pi(a|S_{t+1})$ for $f_s(\omega_k, y, -\omega) \cdot \cos(\theta_i)$ ensures that a trade off of long term rewards for more immediate rewards is made as $f_s(\omega_k, y, -\omega) \cdot \cos(\theta_i) \leq 1$. Meaning, the learning rule accurately accounts for a light paths loss of energy as reflects off surfaces in the scene.
-
-The following lists what each term in the Expected Sarsa learning rule is matched to:
-\begin{conditions}
- S_t &  3D position in the scene, $x \in \mathbb{R}^3$  \\
- 
- A_t & Sampling a direction to continue the light path from location $x$, in direction $\omega$ \\   
- 
-S_{t+1}   &  3D position of a light ray from reflected from $x$ in direction $\omega$, $y = h(x, \omega)$ \\
-
-R_{t+1} & Emitted radiance from point $y$ in direction $-\omega$, $L_e(y, -\omega)$\\
-
-\mathcal{A} & All direction in the hemisphere at $x$, oriented to the surface normal at $x$, $\Omega$\\
-
-\gamma \cdot \pi(a|S_{t+1}) & BRDF and the cosine of the angle $y, \omega_i$, $f_r(\omega_i, y, \omega) \cdot \cos(\theta_i)$\\
-    
-Q(S_t, A_t) & Radiance incident on $x$ from direction $\omega$, $-L_i(x, \omega) = Q(x, \omega)$\\
-\end{conditions}
-
-\begin{equation}
-Q(x, \omega) \leftarrow (1 - \alpha) \cdot Q(x, \omega) + \alpha \cdot \left( L_e(y, -\omega) + \int_\Omega Q(y, \omega_i) f_s(\omega_i, y, -\omega) \cos(\theta_i) d\omega_i \right)
-\label{eq:expected_sarsa_td_learning}
-\end{equation}
-
-Finally, Monte Carlo integration with a uniform distribution for the probability density function can be used to approximate the integral in Equation \ref{eq:expected_sarsa_td_learning}. This converts the action space from continuous to $n$ discrete angles and provides a numerical solution for approximating the outgoing radiance from $x$ in direction $\omega$, which is presented in Equation \ref{eq:mc_expected_sarsa_td_learning}.
-
-\begin{equation}
-Q(x, \omega) \leftarrow (1 - \alpha) \cdot Q(x, \omega) + \alpha \cdot \left( L_e(y, -\omega) +\frac{2 \pi}{n} \sum_{k=1}^{n-1} Q(y, \omega_k) f_s(\omega_k, y, -\omega) \cos(\theta_k)  \right)
-\label{eq:mc_expected_sarsa_td_learning}
-\end{equation}
-
-The estimated outgoing radiance values evaluated using Equation \ref{eq:mc_expected_sarsa_td_learning} for a discrete set of angles around a given  point $x$ can then be converted in to a distribution. This distribution is accordingly named the radiance distribution for a point \cite{greger1998irradiance}. A good approximation of the radiance distribution at a point $x$ will have a similar shape to the true function of outgoing radiance at point $x$, $L_o(x, \omega)$ $\forall \omega \in \Omega$. Therefore, by Monte Carlo importance sampling, sampling directions for light path construction from the learned radiance distribution and using it as the probability density function in the Monte Carlo approximation will significantly reduce the variance in the approximation. Leading to a significant reduction to a significant reduction in image noise.
-
-\begin{figure}[h]
-\centering
-\begin{minipage}{0.4\textwidth}
-      \begin{tikzpicture}
-	 \begin{axis}[every axis plot post/.append style={
-	  mark=none,domain=-20:20,samples=200,smooth},
-	  axis lines = left,
-	  tick style={draw=none},
-	  xticklabels={},
-	  yticklabels={},
-	    % All plots: from -2:2, 50 samples, smooth, no marks
-	  axis x line*=bottom, % no box around the plot, only x and y axis
-	  axis y line*=left, % the * suppresses the arrow tips
-	  enlargelimits=upper,
-	  xlabel = $\omega_i$,
-	  ylabel = $p(\omega_i)$
-	  ] % extend the axes a bit to the right and top
-	  \addplot [
-	  color=red,
-	  ]{gauss(-10.0,4.0) + gauss(10.0,4.0)};
-	\end{axis}
-    \end{tikzpicture}
-\end{minipage}
-\caption{An illustration of a simple incident radiance distribution for a given point $x$ in a scene. Where $\omega_i$ $\forall \omega_i \in \Omega$ are all possible incident directions in the hemisphere around the point $x$ oriented to the surface normal at $x$.The scene contains two area lights with the same power which are visible from $x$ in the scene, causing two equal level peaks in the incident radiance distribution for $x$.}
-  \label{fig:incident_radiance_distributio }
-\end{figure}
+This means a good learning strategy for an agent may be to sacrifice short-term performance to maximise it in the long-term. This applies directly to the policies used for both on-policy and off-policy TD-learning methods. Initially exploration is the most important to quickly gain a broad amount of knowledge about the environment to open up more specific areas for further exploration. Then over time the policy should favour exploitation more and more by taking known higher valued actions. An example of this kind of policy is the decaying $\epsilon$-greedy policy \cite{sutton2011reinforcement}. This policy maintains the current value of $\epsilon \in [0,1]$ and involves sampling a random number $x \in [0,1]$, then if $x > \epsilon$ exploitation occurs, else exploration. By exploitation it could be to choose the current highest valued action from a state, whereas exploration involves choosing one at random. Overtime $\epsilon$ is decayed by a value $\delta$ as more episodes of training are accumulated, achieving the behaviour of increasing exploitation as more knowledge is gained.
 
 \section*{Summary}
-The story up to this point can be summarised as follows; Monte Carlo integration is a numerical technique for approximating integral. It can be used to find an approximation of pixel values in path tracing by approximating the reflected radiance from a point in a given direction. Rather then uniformly sampling directions in light path construction for determining pixel values, a whole field is dedicated to importance sample these directions to reduce the variance in the Monte Carlo approximation. However, most traditional methods lack the ability to effectively reduce the number of zero-contribution light paths as they do not take into account visibility. Instead, reinforcement learning, specifically temporal difference learning techniques can be applied to learning the outgoing radiance from a point in a given direction, which are in turn used for importance sampling ray directions where the approximated radiance is high. To do this a link has been made between the rendering equation and the temporal difference learning rule Exepected Sarsa. This has opened up the opportunity to design and evaluate new algorithms for importance sampling directions in light path construction, specifically ones involving deep reinforcement learning.
+The story up to this point can be summarised as follows; Monte Carlo integration is a numerical technique for approximating integral. It can be used to find an approximation of pixel values in path tracing by approximating the reflected radiance from a point in a given direction. Rather then uniformly sampling directions in light path construction for determining pixel values, a whole field is dedicated to importance sample these directions to reduce the variance in the Monte Carlo approximation. However, most traditional methods do not learn the incident radiance function, limiting their effectiveness for reducing image noise. Instead, reinforcement learning, specifically temporal difference learning techniques can be applied to learning the outgoing radiance from a point in a given direction, which are in turn used for importance sampling ray directions where the approximated radiance is high. We are specifically interested in TD-learning methods which are used to approximate the optimal value function, which in turn is used to make a better decision on what action an agent should take from a given state.
 
 \begin{comment}
 {\bf A compulsory chapter,     of roughly $10$ pages} 
