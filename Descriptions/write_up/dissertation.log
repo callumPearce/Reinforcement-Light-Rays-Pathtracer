@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.10.2)  8 MAY 2019 12:50
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.10.2)  8 MAY 2019 15:31
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1243,22 +1243,10 @@ Package pdftex.def Info: images/light_blocker.png used on input line 91.
 (pdftex.def)             Requested size: 136.57462pt x 130.32335pt.
 
 
-LaTeX Warning: Reference `sec:temp_diff_for_light_transport' on page 4 undefine
-d on input line 97.
-
-
-LaTeX Warning: Reference `sec:why_temp_diff' on page 4 undefined on input line 
-102.
-
-
 LaTeX Warning: Reference `chap:technical_background' on page 4 undefined on inp
 ut line 102.
 
 [4 <./images/light_blocker.png>]
-
-LaTeX Warning: Reference `sec:discrete_to_continuous_motivation' on page 5 unde
-fined on input line 107.
-
 
 LaTeX Warning: Citation `goral1984modeling' on page 5 undefined on input line 1
 13.
@@ -1281,8 +1269,13 @@ Chapter 2.
 
 ]
 
+LaTeX Warning: Citation `bellman1966dynamic' on page 8 undefined on input line 
+43.
+
+[8]
+
 Package pgfplots Warning: Axis range for axis y is approximately empty; enlargi
-ng it (it is [0.1:0.1]) on input line 99.
+ng it (it is [0.1:0.1]) on input line 97.
 
  [warning /pgfplots/warning/approx empty range enlarged]
 Missing character: There is no . in font nullfont!
@@ -1290,128 +1283,143 @@ Missing character: There is no 0 in font nullfont!
 Missing character: There is no 1 in font nullfont!
 Missing character: There is no p in font nullfont!
 Missing character: There is no t in font nullfont!
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-[8] [9]
-Overfull \hbox (6.68353pt too wide) in paragraph at lines 242--250
+[9]
+Overfull \hbox (6.68353pt too wide) in paragraph at lines 243--251
 [] 
  []
 
-<images/rendering_equation.png, id=367, 516.93124pt x 142.5325pt>
+<images/rendering_equation.png, id=375, 516.93124pt x 142.5325pt>
 File: images/rendering_equation.png Graphic file (type png)
 
 <use images/rendering_equation.png>
-Package pdftex.def Info: images/rendering_equation.png used on input line 256.
+Package pdftex.def Info: images/rendering_equation.png used on input line 257.
 (pdftex.def)             Requested size: 318.66948pt x 87.869pt.
- [10 <./images/rendering_equation.png>]
-<images/diffuse_brdf.png, id=381, 284.06125pt x 142.5325pt>
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[10] <images/diffuse_brdf.png, id=388, 284.06125pt x 142.5325pt>
 File: images/diffuse_brdf.png Graphic file (type png)
 
 <use images/diffuse_brdf.png>
-Package pdftex.def Info: images/diffuse_brdf.png used on input line 267.
+Package pdftex.def Info: images/diffuse_brdf.png used on input line 268.
 (pdftex.def)             Requested size: 145.68144pt x 73.09947pt.
 
-<images/specular_brdf.png, id=382, 284.06125pt x 142.5325pt>
+<images/specular_brdf.png, id=389, 284.06125pt x 142.5325pt>
 File: images/specular_brdf.png Graphic file (type png)
 
 <use images/specular_brdf.png>
-Package pdftex.def Info: images/specular_brdf.png used on input line 271.
+Package pdftex.def Info: images/specular_brdf.png used on input line 272.
 (pdftex.def)             Requested size: 145.68144pt x 73.09947pt.
 
-<images/diffuse_sculpture.jpeg, id=384, 642.4pt x 481.8pt>
+<images/diffuse_sculpture.jpeg, id=391, 642.4pt x 481.8pt>
 File: images/diffuse_sculpture.jpeg Graphic file (type jpg)
 
 <use images/diffuse_sculpture.jpeg>
-Package pdftex.def Info: images/diffuse_sculpture.jpeg used on input line 283.
+Package pdftex.def Info: images/diffuse_sculpture.jpeg used on input line 284.
 (pdftex.def)             Requested size: 145.68144pt x 109.26045pt.
 
-<images/specular_sculpture.jpg, id=385, 90.8193pt x 60.225pt>
+<images/specular_sculpture.jpg, id=392, 90.8193pt x 60.225pt>
 File: images/specular_sculpture.jpg Graphic file (type jpg)
 
 <use images/specular_sculpture.jpg>
-Package pdftex.def Info: images/specular_sculpture.jpg used on input line 287.
+Package pdftex.def Info: images/specular_sculpture.jpg used on input line 288.
 (pdftex.def)             Requested size: 145.68144pt x 96.6119pt.
 
-Underfull \hbox (badness 2884) in paragraph at lines 288--288
+Underfull \hbox (badness 2884) in paragraph at lines 289--289
 []\OT1/cmr/m/n/9 (b) |Cloud Gate, Stain-less Steel
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 295--296
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 296--297
 
  []
 
-[11 <./images/diffuse_brdf.png> <./images/specular_brdf.png> <./images/diffuse_
-sculpture.jpeg> <./images/specular_sculpture.jpg>]
-Underfull \hbox (badness 10000) in paragraph at lines 309--310
+[11 <./images/rendering_equation.png> <./images/diffuse_brdf.png> <./images/spe
+cular_brdf.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 310--311
 
  []
 
 
-Overfull \hbox (5.65875pt too wide) in paragraph at lines 324--328
+Overfull \hbox (5.65875pt too wide) in paragraph at lines 325--329
 [] 
  []
 
-
-<images/renders/noise_reduction_default/increasing_samples.png, id=411, 573.141
+[12 <./images/diffuse_sculpture.jpeg> <./images/specular_sculpture.jpg>]
+<images/renders/noise_reduction_default/increasing_samples.png, id=430, 573.141
 25pt x 255.95625pt>
 File: images/renders/noise_reduction_default/increasing_samples.png Graphic fil
 e (type png)
 
 <use images/renders/noise_reduction_default/increasing_samples.png>
 Package pdftex.def Info: images/renders/noise_reduction_default/increasing_samp
-les.png used on input line 334.
+les.png used on input line 335.
 (pdftex.def)             Requested size: 450.69417pt x 201.27759pt.
 
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-[12]
-Underfull \hbox (badness 10000) in paragraph at lines 368--369
+Underfull \hbox (badness 10000) in paragraph at lines 369--370
 
  []
 
 [13 <./images/renders/noise_reduction_default/increasing_samples.png>]
-<images/MDP.png, id=439, 615.29875pt x 242.9075pt>
+<images/MDP.png, id=448, 615.29875pt x 242.9075pt>
 File: images/MDP.png Graphic file (type png)
  <use images/MDP.png>
-Package pdftex.def Info: images/MDP.png used on input line 388.
+Package pdftex.def Info: images/MDP.png used on input line 389.
 (pdftex.def)             Requested size: 227.62206pt x 89.85953pt.
 
-Overfull \hbox (8.33034pt too wide) in paragraph at lines 399--404
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+
+Overfull \hbox (8.33034pt too wide) in paragraph at lines 400--405
 [] 
  []
 
-[14 <./images/MDP.png>] [15]
-Underfull \hbox (badness 10000) in paragraph at lines 456--457
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 476--477
+[14] [15 <./images/MDP.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 457--458
 
  []
 
 [16]
-
-LaTeX Warning: Reference `eq:q_learning' on page 17 undefined on input line 483
-.
-
-[17]
-Underfull \hbox (badness 10000) in paragraph at lines 513--514
+Underfull \hbox (badness 10000) in paragraph at lines 477--478
 
  []
 
-[18]) (./chapters/3_td_learning_methods_for_light_transport.tex [19pdfTeX warni
-ng (ext4): destination with the same identifier (name{equation.2.4.26}) has bee
-n already used, duplicate ignored
 
-\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
-                                                  \fi \fi 
-l.5 \chapter
-            {TD-Learning and Deep Reinforcement Learning for Importance Samp...
-]
+LaTeX Warning: Reference `eq:q_learning' on page 17 undefined on input line 484
+.
+
+[17]
+Underfull \hbox (badness 10000) in paragraph at lines 514--515
+
+ []
+
+[18]pdfTeX warning (ext4): destination with the same identifier (name{equation.
+2.4.26}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.551 \begin{equation}
+                      pdfTeX warning (ext4): destination with the same identifi
+er (name{equation.2.4.26}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.551 \begin{equation}
+                      pdfTeX warning (ext4): destination with the same identifi
+er (name{equation.2.4.26}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.551 \begin{equation}
+                      pdfTeX warning (ext4): destination with the same identifi
+er (name{equation.2.4.26}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.551 \begin{equation}
+                       [19])
+(./chapters/3_td_learning_methods_for_light_transport.tex [20]
 Chapter 3.
 
 Underfull \hbox (badness 10000) in paragraph at lines 22--23
@@ -1419,7 +1427,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 22--23
  []
 
 
-<images/renders/hemispheres/irradiance_volume.png, id=539, 687.56876pt x 687.56
+<images/renders/hemispheres/irradiance_volume.png, id=557, 687.56876pt x 687.56
 876pt>
 File: images/renders/hemispheres/irradiance_volume.png Graphic file (type png)
  <use images/renders/hemispheres/irradiance_volume.png>
@@ -1435,7 +1443,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 32--33
 
  []
 
-<images/renders/simple_room/geometry.png, id=542, 886.31125pt x 885.3075pt>
+<images/renders/simple_room/geometry.png, id=560, 886.31125pt x 885.3075pt>
 File: images/renders/simple_room/geometry.png Graphic file (type png)
 
 <use images/renders/simple_room/geometry.png>
@@ -1443,7 +1451,7 @@ Package pdftex.def Info: images/renders/simple_room/geometry.png used on input
 line 37.
 (pdftex.def)             Requested size: 145.68144pt x 145.51556pt.
 
-<images/renders/simple_room/voronoi.png, id=543, 722.7pt x 722.7pt>
+<images/renders/simple_room/voronoi.png, id=561, 722.7pt x 722.7pt>
 File: images/renders/simple_room/voronoi.png Graphic file (type png)
 
 <use images/renders/simple_room/voronoi.png>
@@ -1456,35 +1464,35 @@ File: images/renders/simple_room/reinforcement_16.png Graphic file (type png)
 Package pdftex.def Info: images/renders/simple_room/reinforcement_16.png used o
 n input line 45.
 (pdftex.def)             Requested size: 145.68144pt x 145.67326pt.
- [20
+ [21
 
 ]
 Underfull \hbox (badness 10000) in paragraph at lines 52--53
 
  []
 
-[21 <./images/renders/hemispheres/irradiance_volume.png> <./images/renders/simp
-le_room/geometry.png> <./images/renders/simple_room/voronoi.png>] [22] [23]
-<images/uniform_pdf.png, id=597, 284.06125pt x 147.55125pt>
+[22 <./images/renders/hemispheres/irradiance_volume.png> <./images/renders/simp
+le_room/geometry.png> <./images/renders/simple_room/voronoi.png>] [23] [24]
+<images/uniform_pdf.png, id=615, 284.06125pt x 147.55125pt>
 File: images/uniform_pdf.png Graphic file (type png)
 
 <use images/uniform_pdf.png>
 Package pdftex.def Info: images/uniform_pdf.png used on input line 131.
 (pdftex.def)             Requested size: 145.68144pt x 75.6734pt.
 
-<images/not_uniform_pdf.png, id=598, 284.06125pt x 147.55125pt>
+<images/not_uniform_pdf.png, id=616, 284.06125pt x 147.55125pt>
 File: images/not_uniform_pdf.png Graphic file (type png)
 
 <use images/not_uniform_pdf.png>
 Package pdftex.def Info: images/not_uniform_pdf.png used on input line 135.
 (pdftex.def)             Requested size: 145.68144pt x 75.6734pt.
- [24 <./images/uniform_pdf.png> <./images/not_uniform_pdf.png>] [25]
+ [25 <./images/uniform_pdf.png> <./images/not_uniform_pdf.png>] [26]
 
-LaTeX Warning: Reference `eq:q_learning' on page 26 undefined on input line 196
+LaTeX Warning: Reference `eq:q_learning' on page 27 undefined on input line 196
 .
 
 
-LaTeX Warning: Reference `sec:irradiance_volume' on page 26 undefined on input 
+LaTeX Warning: Reference `sec:irradiance_volume' on page 27 undefined on input 
 line 230.
 
 
@@ -1497,7 +1505,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 232--233
 
  []
 
-[26]
+[27]
 Underfull \hbox (badness 10000) in paragraph at lines 234--235
 
  []
@@ -1507,7 +1515,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 269--270
 
  []
 
-[27pdfTeX warning (ext4): destination with the same identifier (name{equation.3
+[28pdfTeX warning (ext4): destination with the same identifier (name{equation.3
 .2.7}) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
@@ -1523,7 +1531,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 280--281
 
  []
 
-<images/fwd_pass_process.png, id=674, 915.42pt x 288.07625pt>
+<images/fwd_pass_process.png, id=692, 915.42pt x 288.07625pt>
 File: images/fwd_pass_process.png Graphic file (type png)
 
 <use images/fwd_pass_process.png>
@@ -1534,17 +1542,17 @@ Underfull \hbox (badness 10000) in paragraph at lines 289--290
 
  []
 
-[28 <./images/fwd_pass_process.png>]
+[29 <./images/fwd_pass_process.png>]
 Underfull \hbox (badness 10000) in paragraph at lines 308--309
 
  []
 
-[29]
+[30]
 
-LaTeX Warning: Reference `eq:exploration_vs_exploitation' on page 30 undefined 
+LaTeX Warning: Reference `eq:exploration_vs_exploitation' on page 31 undefined 
 on input line 313.
 
-) (./chapters/4_critical_evaluation.tex [30] [31]
+) (./chapters/4_critical_evaluation.tex [31] [32]
 Chapter 4.
 
 Underfull \hbox (badness 10000) in paragraph at lines 13--14
@@ -1552,10 +1560,10 @@ Underfull \hbox (badness 10000) in paragraph at lines 13--14
  []
 
 
-LaTeX Warning: Reference `alg:default_path_tracer' on page 32 undefined on inpu
+LaTeX Warning: Reference `alg:default_path_tracer' on page 33 undefined on inpu
 t line 15.
 
-[32
+[33
 
 ]
 Underfull \hbox (badness 10000) in paragraph at lines 38--39
@@ -1563,7 +1571,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 38--39
  []
 
 
-LaTeX Warning: Reference `alg:default_path_tracer' on page 33 undefined on inpu
+LaTeX Warning: Reference `alg:default_path_tracer' on page 34 undefined on inpu
 t line 50.
 
 
@@ -1571,7 +1579,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 50--51
 
  []
 
-<images/noise_reduction.png, id=766, 570.4512pt x 820.2645pt>
+<images/noise_reduction.png, id=784, 570.4512pt x 820.2645pt>
 File: images/noise_reduction.png Graphic file (type png)
 
 <use images/noise_reduction.png>
@@ -1581,8 +1589,8 @@ Package pdftex.def Info: images/noise_reduction.png used on input line 56.
 
 LaTeX Warning: Float too large for page by 14.36754pt on input line 60.
 
-[33] [34 <./images/noise_reduction.png>]
-<images/noise_diff.png, id=783, 538.1706pt x 203.8014pt>
+[34] [35 <./images/noise_reduction.png>]
+<images/noise_diff.png, id=802, 538.1706pt x 203.8014pt>
 File: images/noise_diff.png Graphic file (type png)
 
 <use images/noise_diff.png>
@@ -1590,10 +1598,10 @@ Package pdftex.def Info: images/noise_diff.png used on input line 69.
 (pdftex.def)             Requested size: 450.69417pt x 170.67577pt.
 
 
-LaTeX Warning: Reference `sec:importance_sampling' on page 35 undefined on inpu
+LaTeX Warning: Reference `sec:importance_sampling' on page 36 undefined on inpu
 t line 75.
 
-<images/renders/true_distribution.png, id=788, 722.7pt x 722.7pt>
+<images/renders/true_distribution.png, id=807, 722.7pt x 722.7pt>
 File: images/renders/true_distribution.png Graphic file (type png)
 
 <use images/renders/true_distribution.png>
@@ -1601,7 +1609,7 @@ Package pdftex.def Info: images/renders/true_distribution.png used on input lin
 e 80.
 (pdftex.def)             Requested size: 141.12456pt x 141.11891pt.
 
-<images/renders/expected_sarsa_visualisation.png, id=789, 1027.84pt x 1027.84pt
+<images/renders/expected_sarsa_visualisation.png, id=808, 1027.84pt x 1027.84pt
 >
 File: images/renders/expected_sarsa_visualisation.png Graphic file (type png)
  <use images/renders/expected_sarsa_visualisation.png>
@@ -1609,7 +1617,7 @@ Package pdftex.def Info: images/renders/expected_sarsa_visualisation.png used o
 n input line 84.
 (pdftex.def)             Requested size: 141.12456pt x 141.12062pt.
 
-<images/renders/neural_q_visualisation.png, id=790, 1027.84pt x 1027.84pt>
+<images/renders/neural_q_visualisation.png, id=809, 1027.84pt x 1027.84pt>
 File: images/renders/neural_q_visualisation.png Graphic file (type png)
 
 <use images/renders/neural_q_visualisation.png>
@@ -1620,9 +1628,9 @@ t line 88.
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-[35 <./images/noise_diff.png>] [36 <./images/renders/true_distribution.png> <./
+[36 <./images/noise_diff.png>] [37 <./images/renders/true_distribution.png> <./
 images/renders/expected_sarsa_visualisation.png> <./images/renders/neural_q_vis
-ualisation.png>] <images/1_spp.png, id=817, 593.0958pt x 375.3222pt>
+ualisation.png>] <images/1_spp.png, id=835, 593.0958pt x 375.3222pt>
 File: images/1_spp.png Graphic file (type png)
 
 <use images/1_spp.png>
@@ -1633,33 +1641,33 @@ Underfull \hbox (badness 10000) in paragraph at lines 168--169
 
  []
 
-[37 <./images/1_spp.png>]
+[38 <./images/1_spp.png>]
 Underfull \hbox (badness 10000) in paragraph at lines 170--171
 
  []
 
-<images/training_curves.png, id=834, 766.5438pt x 328.3467pt>
+<images/training_curves.png, id=853, 766.5438pt x 328.3467pt>
 File: images/training_curves.png Graphic file (type png)
 
 <use images/training_curves.png>
 Package pdftex.def Info: images/training_curves.png used on input line 182.
 (pdftex.def)             Requested size: 455.24411pt x 195.00046pt.
- [38]
+ [39]
 Underfull \hbox (badness 10000) in paragraph at lines 188--189
 
  []
 
 
-LaTeX Warning: Reference `fig:no_epsilon_greedy' on page 39 undefined on input 
+LaTeX Warning: Reference `fig:no_epsilon_greedy' on page 40 undefined on input 
 line 195.
 
-[39 <./images/training_curves.png>]
+[40 <./images/training_curves.png>]
 Underfull \hbox (badness 10000) in paragraph at lines 204--205
 
  []
 
 
-LaTeX Warning: Reference `fig:more_irradiance_volumes' on page 40 undefined on 
+LaTeX Warning: Reference `fig:more_irradiance_volumes' on page 41 undefined on 
 input line 226.
 
 
@@ -1667,7 +1675,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 226--227
 
  []
 
-<images/less_volumes.png, id=857, 446.1468pt x 355.5684pt>
+<images/less_volumes.png, id=875, 446.1468pt x 355.5684pt>
 File: images/less_volumes.png Graphic file (type png)
 
 <use images/less_volumes.png>
@@ -1682,7 +1690,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 235--236
 
  []
 
-[40] <images/renders/sarsa_128_1Mb_incorrect.png, id=869, 722.7pt x 722.7pt>
+[41] <images/renders/sarsa_128_1Mb_incorrect.png, id=888, 722.7pt x 722.7pt>
 File: images/renders/sarsa_128_1Mb_incorrect.png Graphic file (type png)
 
 <use images/renders/sarsa_128_1Mb_incorrect.png>
@@ -1693,7 +1701,7 @@ ut line 239.
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-[41 <./images/less_volumes.png>]
+[42 <./images/less_volumes.png>]
 Underfull \hbox (badness 10000) in paragraph at lines 254--255
 
  []
@@ -1703,17 +1711,17 @@ Underfull \hbox (badness 10000) in paragraph at lines 258--259
 
  []
 
-[42 <./images/renders/sarsa_128_1Mb_incorrect.png>]
+[43 <./images/renders/sarsa_128_1Mb_incorrect.png>]
 Underfull \hbox (badness 10000) in paragraph at lines 260--261
 
  []
 
 
-LaTeX Warning: Citation `alg:neural_q_path_tracer' on page 43 undefined on inpu
+LaTeX Warning: Citation `alg:neural_q_path_tracer' on page 44 undefined on inpu
 t line 265.
 
 
-LaTeX Warning: Reference `fig:memory_transfer' on page 43 undefined on input li
+LaTeX Warning: Reference `fig:memory_transfer' on page 44 undefined on input li
 ne 265.
 
 
@@ -1721,13 +1729,13 @@ Underfull \hbox (badness 10000) in paragraph at lines 265--266
 
  []
 
-[43]
+[44]
 
-LaTeX Warning: Reference `alg:default_path_tracer' on page 44 undefined on inpu
+LaTeX Warning: Reference `alg:default_path_tracer' on page 45 undefined on inpu
 t line 277.
 
 
-LaTeX Warning: Reference `' on page 44 undefined on input line 277.
+LaTeX Warning: Reference `' on page 45 undefined on input line 277.
 
 
 Underfull \hbox (badness 10000) in paragraph at lines 277--278
@@ -1739,7 +1747,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 282--283
 
  []
 
-[44]
+[45]
 Underfull \hbox (badness 10000) in paragraph at lines 291--292
 
  []
@@ -1756,11 +1764,11 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[45]
+[46]
 Chapter 5.
-[46
+[47
 
-] [47] [48]) [49]
+] [48] [49]) [50]
 
 Package Fancyhdr Warning: \fancyhead's `E' option without twoside option is use
 less on input line 148.
@@ -1768,20 +1776,20 @@ less on input line 148.
 (./dissertation.bbl
 LaTeX Font Info:    Font shape `OMS/cmr/m/it' in size <10> not available
 (Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 83.
- [50
+ [51
 
 
 ]
 Missing character: There is no â in font cmti10!
 Missing character: There is no € in font cmti10!
 Missing character: There is no ™ in font cmti10!
- [51]
+ [52]
 Missing character: There is no â in font cmr10!
 Missing character: There is no € in font cmr10!
 Missing character: There is no ¦ in font cmr10!
- [52]) [53]
+ [53]) [54]
 Appendix A.
-[54
+[55
 
 ]
 Package atveryend Info: Empty hook `BeforeClearDocument' on input line 181.
@@ -1790,7 +1798,7 @@ Package atveryend Info: Empty hook `AfterLastShipout' on input line 181.
 Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 181.
 Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 181.
 Package rerunfilecheck Info: File `dissertation.out' has not changed.
-(rerunfilecheck)             Checksum: E9AD99392C876B39658CF56C6ED8C98F;2066.
+(rerunfilecheck)             Checksum: B73BA8E4B4DCCC569106236075C0EFC9;2117.
 
 
 LaTeX Warning: There were undefined references.
@@ -1804,41 +1812,62 @@ LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
 ### simple group (level 1) entered at line 1061 ({)
 ### bottom level 
 Here is how much of TeX's memory you used:
- 33794 strings out of 492995
- 765435 string characters out of 6132704
- 1182434 words of memory out of 5000000
- 36408 multiletter control sequences out of 15000+600000
+ 33805 strings out of 492995
+ 765612 string characters out of 6132704
+ 1184806 words of memory out of 5000000
+ 36411 multiletter control sequences out of 15000+600000
  17594 words of font info for 66 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 72i,28n,98p,2501b,25889s stack positions out of 5000i,500n,10000p,200000b,80000s
-</usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts
-/cm/cmbx10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/
-cm/cmbx12.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/c
-m/cmbx7.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/
-cmbxti10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm
-/cmex10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/
-cmmi10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/c
-mmi5.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmm
-i7.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi9
-.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.p
-fb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb
-></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb><
-/usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr5.pfb></us
-r/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/l
-ocal/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/loca
-l/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsl10.pfb></usr/local
-/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/
-texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy5.pfb></usr/local/te
-xlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texl
-ive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texli
-ve/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texliv
-e/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt8.pfb></usr/local/texlive/
-2017/texmf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb></usr/local/texl
-ive/2017/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on dissertation.pdf (62 pages, 33747013 bytes).
+ 72i,28n,98p,2501b,25893s stack positions out of 5000i,500n,10000p,200000b,80000s
+pdfTeX warning (dest): name{equation.2.4.30} has been reference
+d but does not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{equation.2.4.29} has been referenced but does not e
+xist, replaced by a fixed one
+
+pdfTeX warning (dest): name{equation.2.4.28} has been referenced but does not e
+xist, replaced by a fixed one
+
+pdfTeX warning (dest): name{equation.2.3.25} has been referenced but does not e
+xist, replaced by a fixed one
+
+pdfTeX warning (dest): name{equation.2.2.16} has been referenced but does not e
+xist, replaced by a fixed one
+
+pdfTeX warning (dest): name{equation.2.2.15} has been referenced but does not e
+xist, replaced by a fixed one
+
+pdfTeX warning (dest): name{equation.2.2.14} has been referenced but does not e
+xist, replaced by a fixed one
+
+</usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb><
+/usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></
+usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx7.pfb></us
+r/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbxti10.pfb></u
+sr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></us
+r/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr
+/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/l
+ocal/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/loc
+al/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi9.pfb></usr/local
+/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/t
+exlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/tex
+live/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/local/texli
+ve/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr5.pfb></usr/local/texlive/
+2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/201
+7/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/local/texlive/2017/t
+exmf-dist/fonts/type1/public/amsfonts/cm/cmsl10.pfb></usr/local/texlive/2017/te
+xmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2017/tex
+mf-dist/fonts/type1/public/amsfonts/cm/cmsy5.pfb></usr/local/texlive/2017/texmf
+-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/2017/texmf-d
+ist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texlive/2017/texmf-di
+st/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texlive/2017/texmf-dis
+t/fonts/type1/public/amsfonts/cm/cmtt8.pfb></usr/local/texlive/2017/texmf-dist/
+fonts/type1/public/amsfonts/symbols/msam10.pfb></usr/local/texlive/2017/texmf-d
+ist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
+Output written on dissertation.pdf (63 pages, 33747840 bytes).
 PDF statistics:
- 1202 PDF objects out of 1440 (max. 8388607)
- 1042 compressed objects within 11 object streams
- 307 named destinations out of 1000 (max. 500000)
+ 1221 PDF objects out of 1440 (max. 8388607)
+ 1060 compressed objects within 11 object streams
+ 315 named destinations out of 1000 (max. 500000)
  374 words of extra memory for PDF output out of 10000 (max. 10000000)
 

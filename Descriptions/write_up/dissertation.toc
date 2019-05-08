@@ -8,16 +8,16 @@
 \contentsline {section}{\numberline {1.3}Motivation}{5}{section.1.3}
 \contentsline {subsection}{\numberline {1.3.1}Real time Rendering using Accurate Light Transport Simulation}{5}{subsection.1.3.1}
 \contentsline {subsection}{\numberline {1.3.2}Recent Developments}{5}{subsection.1.3.2}
-\contentsline {section}{\numberline {1.4}Challenges and Objectives}{6}{section.1.4}
-\contentsline {chapter}{\numberline {2}Technical Background}{7}{chapter.2}
+\contentsline {section}{\numberline {1.4}Objectives and Challenges}{6}{section.1.4}
+\contentsline {chapter}{\numberline {2}Monte Carlo Integration, Path Tracing, and Temporal Difference Learning}{7}{chapter.2}
 \contentsline {section}{\numberline {2.1}Monte Carlo Integration and Importance Sampling}{7}{section.2.1}
 \contentsline {subsection}{\numberline {2.1.1}Monte Carlo Integration}{7}{subsection.2.1.1}
 \contentsline {subsection}{\numberline {2.1.2}Importance Sampling for Reducing Approximation Variance}{8}{subsection.2.1.2}
-\contentsline {section}{\numberline {2.2}Monte Carlo Path Tracing}{9}{section.2.2}
+\contentsline {section}{\numberline {2.2}Monte Carlo Path Tracing}{10}{section.2.2}
 \contentsline {subsection}{\numberline {2.2.1}The Rendering Equation}{10}{subsection.2.2.1}
 \contentsline {subsection}{\numberline {2.2.2}Path Tracing}{12}{subsection.2.2.2}
 \contentsline {subsubsection}{Monte Carlo Path Tracing}{12}{section*.17}
-\contentsline {subsubsection}{Importance Sampling in Path Tracing}{13}{section*.19}
+\contentsline {subsubsection}{Importance Sampling in Path Tracing}{14}{section*.19}
 \contentsline {subsubsection}{Existing Methods for Importance Sampling}{14}{section*.20}
 \contentsline {section}{\numberline {2.3}Reinforcement Learning and TD-Learning}{14}{section.2.3}
 \contentsline {subsection}{\numberline {2.3.1}Markov Decision Processes}{14}{subsection.2.3.1}
@@ -26,46 +26,46 @@
 \contentsline {subsection}{\numberline {2.3.4}Temporal Difference Learning}{16}{subsection.2.3.4}
 \contentsline {subsubsection}{Q-Learning}{17}{section*.23}
 \contentsline {subsubsection}{Expected Sarsa}{17}{section*.24}
-\contentsline {subsection}{\numberline {2.3.5}Exploration vs Exploitation}{17}{subsection.2.3.5}
+\contentsline {subsection}{\numberline {2.3.5}Exploration vs Exploitation}{18}{subsection.2.3.5}
 \contentsline {section}{\numberline {2.4}Linking TD-Learning and Light Transport Simulation}{18}{section.2.4}
-\contentsline {chapter}{\numberline {3}TD-Learning and Deep Reinforcement Learning for Importance Sampling Light Paths}{20}{chapter.3}
-\contentsline {section}{\numberline {3.1}The expected Sarsa Path Tracer}{20}{section.3.1}
-\contentsline {subsection}{\numberline {3.1.1}The Irradiance Volume}{20}{subsection.3.1.1}
-\contentsline {subsection}{\numberline {3.1.2}Expected Sarsa Path Tracing}{22}{subsection.3.1.2}
-\contentsline {section}{\numberline {3.2}The Neural-Q Path Tracer}{25}{section.3.2}
-\contentsline {subsection}{\numberline {3.2.1}Introduction to Deep Reinforcement Learning}{25}{subsection.3.2.1}
-\contentsline {subsubsection}{Value Function Approximation}{25}{section*.35}
-\contentsline {subsubsection}{Stochastic Gradient Descent}{25}{section*.36}
-\contentsline {subsubsection}{Bootstrapping}{26}{section*.37}
-\contentsline {subsection}{\numberline {3.2.2}Deep Reinforcement Learning Motivation}{26}{subsection.3.2.2}
-\contentsline {subsection}{\numberline {3.2.3}Deep Q-learning for Light Transport}{27}{subsection.3.2.3}
-\contentsline {subsection}{\numberline {3.2.4}Artificial Neural Network Architecture}{27}{subsection.3.2.4}
-\contentsline {subsection}{\numberline {3.2.5}Neural-Q Path Tracing Algorithm}{29}{subsection.3.2.5}
-\contentsline {chapter}{\numberline {4}Critical Evaluation}{32}{chapter.4}
-\contentsline {section}{\numberline {4.1}Experimental Setup}{32}{section.4.1}
-\contentsline {section}{\numberline {4.2}Assessing the reduction in image Noise for Monte Carlo Path Tracing}{32}{section.4.2}
-\contentsline {subsection}{\numberline {4.2.1}Quantifying the Reduction in Image Noise}{32}{subsection.4.2.1}
-\contentsline {subsection}{\numberline {4.2.2}A Closer Inspection of Pixel Error Values}{35}{subsection.4.2.2}
-\contentsline {section}{\numberline {4.3}From a Discrete to Continuous State Space}{37}{section.4.3}
-\contentsline {section}{\numberline {4.4}Convergence}{38}{section.4.4}
-\contentsline {section}{\numberline {4.5}From Memory Bound to Compute Bound}{40}{section.4.5}
-\contentsline {subsection}{\numberline {4.5.1}Memory Usage}{40}{subsection.4.5.1}
-\contentsline {subsubsection}{Expected Sarsa}{40}{section*.50}
-\contentsline {subsubsection}{Neural-Q}{41}{section*.53}
-\contentsline {subsection}{\numberline {4.5.2}Parallel Processing}{42}{subsection.4.5.2}
-\contentsline {subsubsection}{Expected Sarsa}{42}{section*.54}
-\contentsline {subsubsection}{Neural-Q}{43}{section*.55}
-\contentsline {section}{\numberline {4.6}Hyperparameters}{44}{section.4.6}
-\contentsline {subsubsection}{Expected Sarsa}{44}{section*.56}
-\contentsline {subsubsection}{Neural-Q}{44}{section*.57}
-\contentsline {section}{\numberline {4.7}Recent Advancements in Neural Importance Sampling for Monte Carlo Path Tracing}{45}{section.4.7}
-\contentsline {chapter}{\numberline {5}Conclusions}{46}{chapter.5}
-\contentsline {section}{\numberline {5.1}Wider Motivation and the Problem}{46}{section.5.1}
-\contentsline {section}{\numberline {5.2}Summary of Contributions}{46}{section.5.2}
-\contentsline {section}{\numberline {5.3}Discussion}{47}{section.5.3}
-\contentsline {section}{\numberline {5.4}Future Work}{48}{section.5.4}
-\contentsline {subsubsection}{Scaling up Neural-Q}{48}{section*.62}
-\contentsline {subsubsection}{Investigating the relationship between scene geometry and ANN requirements}{49}{section*.63}
-\contentsline {subsubsection}{Neural-Q versus Disney's Neural Path Guider}{49}{section*.64}
-\contentsline {subsubsection}{Further investigate Deep Reinforcement learning techniques}{49}{section*.65}
-\contentsline {chapter}{\numberline {A}An Example Appendix}{54}{appendix.A}
+\contentsline {chapter}{\numberline {3}TD-Learning and Deep Reinforcement Learning for Importance Sampling Light Paths}{21}{chapter.3}
+\contentsline {section}{\numberline {3.1}The expected Sarsa Path Tracer}{21}{section.3.1}
+\contentsline {subsection}{\numberline {3.1.1}The Irradiance Volume}{21}{subsection.3.1.1}
+\contentsline {subsection}{\numberline {3.1.2}Expected Sarsa Path Tracing}{23}{subsection.3.1.2}
+\contentsline {section}{\numberline {3.2}The Neural-Q Path Tracer}{26}{section.3.2}
+\contentsline {subsection}{\numberline {3.2.1}Introduction to Deep Reinforcement Learning}{26}{subsection.3.2.1}
+\contentsline {subsubsection}{Value Function Approximation}{26}{section*.35}
+\contentsline {subsubsection}{Stochastic Gradient Descent}{26}{section*.36}
+\contentsline {subsubsection}{Bootstrapping}{27}{section*.37}
+\contentsline {subsection}{\numberline {3.2.2}Deep Reinforcement Learning Motivation}{27}{subsection.3.2.2}
+\contentsline {subsection}{\numberline {3.2.3}Deep Q-learning for Light Transport}{28}{subsection.3.2.3}
+\contentsline {subsection}{\numberline {3.2.4}Artificial Neural Network Architecture}{28}{subsection.3.2.4}
+\contentsline {subsection}{\numberline {3.2.5}Neural-Q Path Tracing Algorithm}{30}{subsection.3.2.5}
+\contentsline {chapter}{\numberline {4}Critical Evaluation}{33}{chapter.4}
+\contentsline {section}{\numberline {4.1}Experimental Setup}{33}{section.4.1}
+\contentsline {section}{\numberline {4.2}Assessing the reduction in image Noise for Monte Carlo Path Tracing}{33}{section.4.2}
+\contentsline {subsection}{\numberline {4.2.1}Quantifying the Reduction in Image Noise}{33}{subsection.4.2.1}
+\contentsline {subsection}{\numberline {4.2.2}A Closer Inspection of Pixel Error Values}{36}{subsection.4.2.2}
+\contentsline {section}{\numberline {4.3}From a Discrete to Continuous State Space}{38}{section.4.3}
+\contentsline {section}{\numberline {4.4}Convergence}{39}{section.4.4}
+\contentsline {section}{\numberline {4.5}From Memory Bound to Compute Bound}{41}{section.4.5}
+\contentsline {subsection}{\numberline {4.5.1}Memory Usage}{41}{subsection.4.5.1}
+\contentsline {subsubsection}{Expected Sarsa}{41}{section*.50}
+\contentsline {subsubsection}{Neural-Q}{42}{section*.53}
+\contentsline {subsection}{\numberline {4.5.2}Parallel Processing}{43}{subsection.4.5.2}
+\contentsline {subsubsection}{Expected Sarsa}{43}{section*.54}
+\contentsline {subsubsection}{Neural-Q}{44}{section*.55}
+\contentsline {section}{\numberline {4.6}Hyperparameters}{45}{section.4.6}
+\contentsline {subsubsection}{Expected Sarsa}{45}{section*.56}
+\contentsline {subsubsection}{Neural-Q}{45}{section*.57}
+\contentsline {section}{\numberline {4.7}Recent Advancements in Neural Importance Sampling for Monte Carlo Path Tracing}{46}{section.4.7}
+\contentsline {chapter}{\numberline {5}Conclusions}{47}{chapter.5}
+\contentsline {section}{\numberline {5.1}Wider Motivation and the Problem}{47}{section.5.1}
+\contentsline {section}{\numberline {5.2}Summary of Contributions}{47}{section.5.2}
+\contentsline {section}{\numberline {5.3}Discussion}{48}{section.5.3}
+\contentsline {section}{\numberline {5.4}Future Work}{49}{section.5.4}
+\contentsline {subsubsection}{Scaling up Neural-Q}{49}{section*.62}
+\contentsline {subsubsection}{Investigating the relationship between scene geometry and ANN requirements}{50}{section*.63}
+\contentsline {subsubsection}{Neural-Q versus Disney's Neural Path Guider}{50}{section*.64}
+\contentsline {subsubsection}{Further investigate Deep Reinforcement learning techniques}{50}{section*.65}
+\contentsline {chapter}{\numberline {A}An Example Appendix}{55}{appendix.A}
