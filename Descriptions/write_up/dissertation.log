@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.10.2)  8 MAY 2019 15:31
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.10.2)  8 MAY 2019 19:49
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1284,42 +1284,39 @@ Missing character: There is no 1 in font nullfont!
 Missing character: There is no p in font nullfont!
 Missing character: There is no t in font nullfont!
 [9]
-Overfull \hbox (6.68353pt too wide) in paragraph at lines 243--251
+Overfull \hbox (7.28764pt too wide) in paragraph at lines 244--251
 [] 
  []
 
-<images/rendering_equation.png, id=375, 516.93124pt x 142.5325pt>
+[10] <images/rendering_equation.png, id=383, 516.93124pt x 142.5325pt>
 File: images/rendering_equation.png Graphic file (type png)
 
 <use images/rendering_equation.png>
 Package pdftex.def Info: images/rendering_equation.png used on input line 257.
 (pdftex.def)             Requested size: 318.66948pt x 87.869pt.
 
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-[10] <images/diffuse_brdf.png, id=388, 284.06125pt x 142.5325pt>
+<images/diffuse_brdf.png, id=387, 284.06125pt x 142.5325pt>
 File: images/diffuse_brdf.png Graphic file (type png)
 
 <use images/diffuse_brdf.png>
 Package pdftex.def Info: images/diffuse_brdf.png used on input line 268.
 (pdftex.def)             Requested size: 145.68144pt x 73.09947pt.
 
-<images/specular_brdf.png, id=389, 284.06125pt x 142.5325pt>
+<images/specular_brdf.png, id=388, 284.06125pt x 142.5325pt>
 File: images/specular_brdf.png Graphic file (type png)
 
 <use images/specular_brdf.png>
 Package pdftex.def Info: images/specular_brdf.png used on input line 272.
 (pdftex.def)             Requested size: 145.68144pt x 73.09947pt.
 
-<images/diffuse_sculpture.jpeg, id=391, 642.4pt x 481.8pt>
+<images/diffuse_sculpture.jpeg, id=390, 642.4pt x 481.8pt>
 File: images/diffuse_sculpture.jpeg Graphic file (type jpg)
 
 <use images/diffuse_sculpture.jpeg>
 Package pdftex.def Info: images/diffuse_sculpture.jpeg used on input line 284.
 (pdftex.def)             Requested size: 145.68144pt x 109.26045pt.
 
-<images/specular_sculpture.jpg, id=392, 90.8193pt x 60.225pt>
+<images/specular_sculpture.jpg, id=391, 90.8193pt x 60.225pt>
 File: images/specular_sculpture.jpg Graphic file (type jpg)
 
 <use images/specular_sculpture.jpg>
@@ -1333,93 +1330,66 @@ Underfull \hbox (badness 2884) in paragraph at lines 289--289
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-
-Underfull \hbox (badness 10000) in paragraph at lines 296--297
-
- []
-
 [11 <./images/rendering_equation.png> <./images/diffuse_brdf.png> <./images/spe
-cular_brdf.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 310--311
-
- []
-
-
-Overfull \hbox (5.65875pt too wide) in paragraph at lines 325--329
-[] 
- []
-
-[12 <./images/diffuse_sculpture.jpeg> <./images/specular_sculpture.jpg>]
-<images/renders/noise_reduction_default/increasing_samples.png, id=430, 573.141
+cular_brdf.png>] [12 <./images/diffuse_sculpture.jpeg> <./images/specular_sculp
+ture.jpg>]
+<images/renders/noise_reduction_default/increasing_samples.png, id=428, 573.141
 25pt x 255.95625pt>
 File: images/renders/noise_reduction_default/increasing_samples.png Graphic fil
 e (type png)
 
 <use images/renders/noise_reduction_default/increasing_samples.png>
 Package pdftex.def Info: images/renders/noise_reduction_default/increasing_samp
-les.png used on input line 335.
+les.png used on input line 336.
 (pdftex.def)             Requested size: 450.69417pt x 201.27759pt.
+ [13 <./images/renders/noise_reduction_default/increasing_samples.png>]
 
-Underfull \hbox (badness 10000) in paragraph at lines 369--370
+LaTeX Warning: Reference `motivation' on page 14 undefined on input line 376.
 
- []
 
-[13 <./images/renders/noise_reduction_default/increasing_samples.png>]
+LaTeX Warning: Reference `sec:importance_sampling' on page 14 undefined on inpu
+t line 376.
+
 <images/MDP.png, id=448, 615.29875pt x 242.9075pt>
 File: images/MDP.png Graphic file (type png)
  <use images/MDP.png>
-Package pdftex.def Info: images/MDP.png used on input line 389.
+Package pdftex.def Info: images/MDP.png used on input line 394.
 (pdftex.def)             Requested size: 227.62206pt x 89.85953pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 
-Overfull \hbox (8.33034pt too wide) in paragraph at lines 400--405
+Overfull \hbox (8.33034pt too wide) in paragraph at lines 405--410
 [] 
  []
 
 [14] [15 <./images/MDP.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 457--458
+Underfull \hbox (badness 10000) in paragraph at lines 462--463
 
  []
 
 [16]
-Underfull \hbox (badness 10000) in paragraph at lines 477--478
+Underfull \hbox (badness 10000) in paragraph at lines 482--483
 
  []
 
 
-LaTeX Warning: Reference `eq:q_learning' on page 17 undefined on input line 484
+LaTeX Warning: Reference `eq:q_learning' on page 17 undefined on input line 489
 .
 
 [17]
-Underfull \hbox (badness 10000) in paragraph at lines 514--515
+Underfull \hbox (badness 10000) in paragraph at lines 519--520
 
  []
 
-[18]pdfTeX warning (ext4): destination with the same identifier (name{equation.
-2.4.26}) has been already used, duplicate ignored
-<to be read again> 
-                   \relax 
-l.551 \begin{equation}
-                      pdfTeX warning (ext4): destination with the same identifi
-er (name{equation.2.4.26}) has been already used, duplicate ignored
-<to be read again> 
-                   \relax 
-l.551 \begin{equation}
-                      pdfTeX warning (ext4): destination with the same identifi
-er (name{equation.2.4.26}) has been already used, duplicate ignored
-<to be read again> 
-                   \relax 
-l.551 \begin{equation}
-                      pdfTeX warning (ext4): destination with the same identifi
-er (name{equation.2.4.26}) has been already used, duplicate ignored
-<to be read again> 
-                   \relax 
-l.551 \begin{equation}
-                       [19])
-(./chapters/3_td_learning_methods_for_light_transport.tex [20]
+[18] [19pdfTeX warning (ext4): destination with the same identifier (name{equat
+ion.2.4.26}) has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.599 
+      ]) (./chapters/3_td_learning_methods_for_light_transport.tex [20]
 Chapter 3.
 
 Underfull \hbox (badness 10000) in paragraph at lines 22--23
@@ -1427,7 +1397,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 22--23
  []
 
 
-<images/renders/hemispheres/irradiance_volume.png, id=557, 687.56876pt x 687.56
+<images/renders/hemispheres/irradiance_volume.png, id=552, 687.56876pt x 687.56
 876pt>
 File: images/renders/hemispheres/irradiance_volume.png Graphic file (type png)
  <use images/renders/hemispheres/irradiance_volume.png>
@@ -1443,7 +1413,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 32--33
 
  []
 
-<images/renders/simple_room/geometry.png, id=560, 886.31125pt x 885.3075pt>
+<images/renders/simple_room/geometry.png, id=555, 886.31125pt x 885.3075pt>
 File: images/renders/simple_room/geometry.png Graphic file (type png)
 
 <use images/renders/simple_room/geometry.png>
@@ -1451,7 +1421,7 @@ Package pdftex.def Info: images/renders/simple_room/geometry.png used on input
 line 37.
 (pdftex.def)             Requested size: 145.68144pt x 145.51556pt.
 
-<images/renders/simple_room/voronoi.png, id=561, 722.7pt x 722.7pt>
+<images/renders/simple_room/voronoi.png, id=556, 722.7pt x 722.7pt>
 File: images/renders/simple_room/voronoi.png Graphic file (type png)
 
 <use images/renders/simple_room/voronoi.png>
@@ -1473,14 +1443,14 @@ Underfull \hbox (badness 10000) in paragraph at lines 52--53
 
 [22 <./images/renders/hemispheres/irradiance_volume.png> <./images/renders/simp
 le_room/geometry.png> <./images/renders/simple_room/voronoi.png>] [23] [24]
-<images/uniform_pdf.png, id=615, 284.06125pt x 147.55125pt>
+<images/uniform_pdf.png, id=611, 284.06125pt x 147.55125pt>
 File: images/uniform_pdf.png Graphic file (type png)
 
 <use images/uniform_pdf.png>
 Package pdftex.def Info: images/uniform_pdf.png used on input line 131.
 (pdftex.def)             Requested size: 145.68144pt x 75.6734pt.
 
-<images/not_uniform_pdf.png, id=616, 284.06125pt x 147.55125pt>
+<images/not_uniform_pdf.png, id=612, 284.06125pt x 147.55125pt>
 File: images/not_uniform_pdf.png Graphic file (type png)
 
 <use images/not_uniform_pdf.png>
@@ -1531,7 +1501,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 280--281
 
  []
 
-<images/fwd_pass_process.png, id=692, 915.42pt x 288.07625pt>
+<images/fwd_pass_process.png, id=689, 915.42pt x 288.07625pt>
 File: images/fwd_pass_process.png Graphic file (type png)
 
 <use images/fwd_pass_process.png>
@@ -1579,7 +1549,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 50--51
 
  []
 
-<images/noise_reduction.png, id=784, 570.4512pt x 820.2645pt>
+<images/noise_reduction.png, id=783, 570.4512pt x 820.2645pt>
 File: images/noise_reduction.png Graphic file (type png)
 
 <use images/noise_reduction.png>
@@ -1646,7 +1616,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 170--171
 
  []
 
-<images/training_curves.png, id=853, 766.5438pt x 328.3467pt>
+<images/training_curves.png, id=852, 766.5438pt x 328.3467pt>
 File: images/training_curves.png Graphic file (type png)
 
 <use images/training_curves.png>
@@ -1690,7 +1660,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 235--236
 
  []
 
-[41] <images/renders/sarsa_128_1Mb_incorrect.png, id=888, 722.7pt x 722.7pt>
+[41] <images/renders/sarsa_128_1Mb_incorrect.png, id=889, 722.7pt x 722.7pt>
 File: images/renders/sarsa_128_1Mb_incorrect.png Graphic file (type png)
 
 <use images/renders/sarsa_128_1Mb_incorrect.png>
@@ -1812,33 +1782,36 @@ LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
 ### simple group (level 1) entered at line 1061 ({)
 ### bottom level 
 Here is how much of TeX's memory you used:
- 33805 strings out of 492995
- 765612 string characters out of 6132704
- 1184806 words of memory out of 5000000
- 36411 multiletter control sequences out of 15000+600000
+ 33806 strings out of 492995
+ 765637 string characters out of 6132704
+ 1183317 words of memory out of 5000000
+ 36412 multiletter control sequences out of 15000+600000
  17594 words of font info for 66 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  72i,28n,98p,2501b,25893s stack positions out of 5000i,500n,10000p,200000b,80000s
-pdfTeX warning (dest): name{equation.2.4.30} has been reference
-d but does not exist, replaced by a fixed one
+pdfTeX warning (dest): name{figure.caption.52} has been referen
+ced but does not exist, replaced by a fixed one
 
-pdfTeX warning (dest): name{equation.2.4.29} has been referenced but does not e
-xist, replaced by a fixed one
+pdfTeX warning (dest): name{figure.caption.48} has been referenced but does not
+ exist, replaced by a fixed one
 
-pdfTeX warning (dest): name{equation.2.4.28} has been referenced but does not e
-xist, replaced by a fixed one
+pdfTeX warning (dest): name{table.caption.49} has been referenced but does not 
+exist, replaced by a fixed one
 
-pdfTeX warning (dest): name{equation.2.3.25} has been referenced but does not e
-xist, replaced by a fixed one
+pdfTeX warning (dest): name{section*.37} has been referenced but does not exist
+, replaced by a fixed one
 
-pdfTeX warning (dest): name{equation.2.2.16} has been referenced but does not e
-xist, replaced by a fixed one
+pdfTeX warning (dest): name{figure.caption.38} has been referenced but does not
+ exist, replaced by a fixed one
 
-pdfTeX warning (dest): name{equation.2.2.15} has been referenced but does not e
-xist, replaced by a fixed one
+pdfTeX warning (dest): name{figure.caption.33} has been referenced but does not
+ exist, replaced by a fixed one
 
-pdfTeX warning (dest): name{equation.2.2.14} has been referenced but does not e
-xist, replaced by a fixed one
+pdfTeX warning (dest): name{figure.caption.28} has been referenced but does not
+ exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{figure.caption.21} has been referenced but does not
+ exist, replaced by a fixed one
 
 </usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb><
 /usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></
@@ -1864,10 +1837,10 @@ st/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texlive/2017/texmf-dis
 t/fonts/type1/public/amsfonts/cm/cmtt8.pfb></usr/local/texlive/2017/texmf-dist/
 fonts/type1/public/amsfonts/symbols/msam10.pfb></usr/local/texlive/2017/texmf-d
 ist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on dissertation.pdf (63 pages, 33747840 bytes).
+Output written on dissertation.pdf (63 pages, 33748540 bytes).
 PDF statistics:
- 1221 PDF objects out of 1440 (max. 8388607)
- 1060 compressed objects within 11 object streams
+ 1223 PDF objects out of 1440 (max. 8388607)
+ 1062 compressed objects within 11 object streams
  315 named destinations out of 1000 (max. 500000)
  374 words of extra memory for PDF output out of 10000 (max. 10000000)
 

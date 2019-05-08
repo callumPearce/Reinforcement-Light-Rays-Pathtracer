@@ -17,15 +17,14 @@
 \contentsline {subsection}{\numberline {2.2.1}The Rendering Equation}{10}{subsection.2.2.1}
 \contentsline {subsection}{\numberline {2.2.2}Path Tracing}{12}{subsection.2.2.2}
 \contentsline {subsubsection}{Monte Carlo Path Tracing}{12}{section*.17}
-\contentsline {subsubsection}{Importance Sampling in Path Tracing}{14}{section*.19}
-\contentsline {subsubsection}{Existing Methods for Importance Sampling}{14}{section*.20}
+\contentsline {subsubsection}{Importance Sampling in Path Tracing}{13}{section*.19}
 \contentsline {section}{\numberline {2.3}Reinforcement Learning and TD-Learning}{14}{section.2.3}
 \contentsline {subsection}{\numberline {2.3.1}Markov Decision Processes}{14}{subsection.2.3.1}
 \contentsline {subsection}{\numberline {2.3.2}Goals and Rewards}{15}{subsection.2.3.2}
-\contentsline {subsection}{\numberline {2.3.3}Value Function and Optimality}{15}{subsection.2.3.3}
+\contentsline {subsection}{\numberline {2.3.3}Value Function and Optimality}{16}{subsection.2.3.3}
 \contentsline {subsection}{\numberline {2.3.4}Temporal Difference Learning}{16}{subsection.2.3.4}
-\contentsline {subsubsection}{Q-Learning}{17}{section*.23}
-\contentsline {subsubsection}{Expected Sarsa}{17}{section*.24}
+\contentsline {subsubsection}{Q-Learning}{17}{section*.22}
+\contentsline {subsubsection}{Expected Sarsa}{17}{section*.23}
 \contentsline {subsection}{\numberline {2.3.5}Exploration vs Exploitation}{18}{subsection.2.3.5}
 \contentsline {section}{\numberline {2.4}Linking TD-Learning and Light Transport Simulation}{18}{section.2.4}
 \contentsline {chapter}{\numberline {3}TD-Learning and Deep Reinforcement Learning for Importance Sampling Light Paths}{21}{chapter.3}
@@ -34,9 +33,9 @@
 \contentsline {subsection}{\numberline {3.1.2}Expected Sarsa Path Tracing}{23}{subsection.3.1.2}
 \contentsline {section}{\numberline {3.2}The Neural-Q Path Tracer}{26}{section.3.2}
 \contentsline {subsection}{\numberline {3.2.1}Introduction to Deep Reinforcement Learning}{26}{subsection.3.2.1}
-\contentsline {subsubsection}{Value Function Approximation}{26}{section*.35}
-\contentsline {subsubsection}{Stochastic Gradient Descent}{26}{section*.36}
-\contentsline {subsubsection}{Bootstrapping}{27}{section*.37}
+\contentsline {subsubsection}{Value Function Approximation}{26}{section*.34}
+\contentsline {subsubsection}{Stochastic Gradient Descent}{26}{section*.35}
+\contentsline {subsubsection}{Bootstrapping}{27}{section*.36}
 \contentsline {subsection}{\numberline {3.2.2}Deep Reinforcement Learning Motivation}{27}{subsection.3.2.2}
 \contentsline {subsection}{\numberline {3.2.3}Deep Q-learning for Light Transport}{28}{subsection.3.2.3}
 \contentsline {subsection}{\numberline {3.2.4}Artificial Neural Network Architecture}{28}{subsection.3.2.4}
@@ -50,22 +49,22 @@
 \contentsline {section}{\numberline {4.4}Convergence}{39}{section.4.4}
 \contentsline {section}{\numberline {4.5}From Memory Bound to Compute Bound}{41}{section.4.5}
 \contentsline {subsection}{\numberline {4.5.1}Memory Usage}{41}{subsection.4.5.1}
-\contentsline {subsubsection}{Expected Sarsa}{41}{section*.50}
-\contentsline {subsubsection}{Neural-Q}{42}{section*.53}
+\contentsline {subsubsection}{Expected Sarsa}{41}{section*.49}
+\contentsline {subsubsection}{Neural-Q}{42}{section*.52}
 \contentsline {subsection}{\numberline {4.5.2}Parallel Processing}{43}{subsection.4.5.2}
-\contentsline {subsubsection}{Expected Sarsa}{43}{section*.54}
-\contentsline {subsubsection}{Neural-Q}{44}{section*.55}
+\contentsline {subsubsection}{Expected Sarsa}{43}{section*.53}
+\contentsline {subsubsection}{Neural-Q}{44}{section*.54}
 \contentsline {section}{\numberline {4.6}Hyperparameters}{45}{section.4.6}
-\contentsline {subsubsection}{Expected Sarsa}{45}{section*.56}
-\contentsline {subsubsection}{Neural-Q}{45}{section*.57}
+\contentsline {subsubsection}{Expected Sarsa}{45}{section*.55}
+\contentsline {subsubsection}{Neural-Q}{45}{section*.56}
 \contentsline {section}{\numberline {4.7}Recent Advancements in Neural Importance Sampling for Monte Carlo Path Tracing}{46}{section.4.7}
 \contentsline {chapter}{\numberline {5}Conclusions}{47}{chapter.5}
 \contentsline {section}{\numberline {5.1}Wider Motivation and the Problem}{47}{section.5.1}
 \contentsline {section}{\numberline {5.2}Summary of Contributions}{47}{section.5.2}
 \contentsline {section}{\numberline {5.3}Discussion}{48}{section.5.3}
 \contentsline {section}{\numberline {5.4}Future Work}{49}{section.5.4}
-\contentsline {subsubsection}{Scaling up Neural-Q}{49}{section*.62}
-\contentsline {subsubsection}{Investigating the relationship between scene geometry and ANN requirements}{50}{section*.63}
-\contentsline {subsubsection}{Neural-Q versus Disney's Neural Path Guider}{50}{section*.64}
-\contentsline {subsubsection}{Further investigate Deep Reinforcement learning techniques}{50}{section*.65}
+\contentsline {subsubsection}{Scaling up Neural-Q}{49}{section*.61}
+\contentsline {subsubsection}{Investigating the relationship between scene geometry and ANN requirements}{50}{section*.62}
+\contentsline {subsubsection}{Neural-Q versus Disney's Neural Path Guider}{50}{section*.63}
+\contentsline {subsubsection}{Further investigate Deep Reinforcement learning techniques}{50}{section*.64}
 \contentsline {chapter}{\numberline {A}An Example Appendix}{55}{appendix.A}
