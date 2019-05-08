@@ -62,6 +62,7 @@ We will be using temporal difference learning techniques to find out which direc
 Temporal difference learning, which I will refer to from here on as TD-learning, is a set of model free Reinforcement learning methods. Firstly, Reinforcement learning is the process of an AI agent learning what is the best action to take in any given state of the system it exists within, in order to maximise a numerical reward signal \cite{sutton2011reinforcement}. The AI agent is not told which actions are  best to take in a given state, but instead it must learn which ones are by trialling them and observing the reward signal. Actions taken may not only affect the immediate reward, but all subsequent rewards received for taking future actions. For example, picture a robot rover whose duty it is to explore the surrounding area as much possible. A state in this case is any sensory data the robot has, such as camera for observing its surroundings. Its possible actions are the directions to move in for a set distance. If it discovers a new area, it receives a positive reward signal, otherwise the reward signal is zero. Now, if the robot chooses to explore a given area it may not be able to get back from, say a canyon, the robot is limited to searching areas reachable from the canyon. Hence, all subsequent reward signals are limited to what can be received from exploration of the canyon, compared to not entering the canyon and exploring areas which can be returned from first.
 
 \subsection{Temporal Difference learning methods for Efficient Light Transport Simulation}
+\label{sec:temp_diff_for_light_transport}
 
  As a small introduction to how reinforcement learning can be applied to light transport simulation, a state, action, and reward signal in the context of light transport simulation within path tracing are given below.
 
@@ -81,6 +82,7 @@ was sampled in.
 In this setting, we can use TD-learning methods to create an AI agent which learns by taking different actions in different states, which then observes their reward signals to find out for each state which actions have the highest valuations. By then converting the action space into a probability distribution weighted by each actions learned valuation, the AI agent can sample from this distribution to increase the average light paths contribution to a pixel, reducing the noise in rendered images. 
 
 \subsection{Why use Temporal Difference Learning for Importance Sampling?}
+\label{sec:why_temp_diff}
 
 Traditional Importance sampling techniques for path tracing do not take into account the visibility of the object from light source \cite{dahm2017learning}. A light blocker is shown in \ref{fig:blocker}, where the  blocking object stops rays from directly reaching the light. Due to the unknown presence of blockers, traditional importance sampling methods can fail to avoid sampling zero contribution light paths. Therefore, scenes which are significantly affected by blockers will not receive the benefits from traditional Importance sampling and can even benefit more from an uniform sampling scheme \cite{ramamoorthi2012theory}.
 
@@ -88,123 +90,54 @@ Traditional Importance sampling techniques for path tracing do not take into acc
 \begin{center}
 \includegraphics[width=0.3\textwidth]{images/light_blocker.png}    
 \end{center}
-\caption{An illustration of a light blocker for an importance sampling scheme which does not consider visibility. Each arrow represents a possible direction the light path will be reflected in. Clearly the reflected light path is likely to hit the blocker increasing the likelihood of it becoming a zero-contribution light path.}
+\caption{An illustration of a light blocker for an importance sampling scheme which does not consider visibility. Each arrow represents a possible direction the light path will be continued in. Clearly the reflected light path is likely to hit the blocker, reducing its contribution to the approximation of a pixel value.}
 \label{fig:blocker}
 \end{figure}
 
-Temporal difference learning methods are better equipped to tackle this problem \cite{dahm2017learning}. As the AI agent described in the previous section learns which directions light is coming from in the scene and concentrates its sampling towards these directions. Directions leading to blockers will have a low value, hence it is unlikely the AI agent will sample rays in these directions.\\
+Temporal difference learning methods are better equipped to tackle this problem \cite{dahm2017learning}. The AI agent outlined in section \ref{sec:temp_diff_for_light_transport} learns which directions contribute the highest power of light to a point, to concentrate its sampling in these directions. This means directions leading to blockers will have a low value, hence it is unlikely the AI agent will continue light paths in these directions. In fact, what we have described the agents goal to be is equivalent to learning what is known as the \textit{incident radiance function}. The incident radiance function describes the power of light incident on a surface at a given point from a given direction.
 
 \subsection{From Discrete to a Continuous State Space}
+\label{sec:discrete_to_continuous_motivation}
+
+With it now conceptually clear how temporal difference learning can be used for importance sampling Monte Carlo path tracing, we will introduce what our main area of work is for this thesis.  As described in section \ref{sec:why_temp_diff}, it is possible to construct an AI agent which learns the incident radiance function. This was first proposed by NVIDIA in \cite{dahm2017learning}, which when used in importance sampling for path tracing, it significantly reduced the noise in rendered images. The incident radiance function was approximated at a discrete set of locations in the scene by using a temporal difference learning rule, the details of which will be given in chapter \ref{chap:technical_background}. However, the set of possible locations in a 3-dimensional scene are technically infinite. Think of the room which you are in now, there are infinitely many positions, this also follows in the Computer Graphics. Therefore, we attempt to learn the incident radiance function for the continuous set of possible locations in the scene, by using a Deep Reinforcement Learning technique. The potential advantages for importance sampling in path tracing compared to NVIDIA's algorithm include reduced image noise for complex scenes, easier hyperparameter tuning, and a significant reduction in memory usage.
 
 \section{Motivation}
 \label{sec:motivation}
 
-Rendering time of my graphics engine is not something I have tried to heavily 
-optimise. I instead focus on producing higher quality images using the same 
-number of samples per pixel in light transport simulation in hope that future 
-work will find ways of optimising my methods for speed. Therefore, my work 
-still aims to contribute to the wider goal seen in computer graphics to use 
-accurate light transport simulation in the rendering of photo-realistic images 
-for complex scenes in real-time.  Speeding up the methods I use is a large 
-topic in itself, requiring a deep investigation into the best software, hardware, 
-and parallel programming paradigms to use.\\
+We have identified the overarching goal of our work in section \ref{sec:discrete_to_continuous_motivation}. Which is to extend the approximation of the incident radiance function from a discrete set of locations to a continuous set, to benefit importance sampling for Monte Carlo path tracing in multiple ways. However, the timeliness and importance of our work in path tracing is yet to be explained, which is exactly what we will do here.
 
 \subsection{Real time Rendering using Accurate Light Transport Simulation}
-The motivation for using accurate light transport simulation in real-time 
-comes from the clear superior visual quality of images rendered using this 
-techniques, compared to that of scanline methods which are currently used. 
-Where scanline rendering, also known as rasterizing, is the current computer 
-graphics industry standard method for real-time rendering. Not only are 
-renders for a wide range of scenes clearly superior from methods which 
-accurately simulate light transport, but they also scale far better with the 
-number of polygons used to build the scenes surfaces. Therefore, scanline 
-rendering for scenes with extremely complex geometry in real-time is currently 
-not and option. Accurate light transport simulation methods therefore have 
-great potential to be used in ultra realistic simulations for applications such 
-as scenario planning and virtual reality learning environments \cite{pan2006virtual}. 
-Also, many games sell realism as one of their most important features, therefore 
-developing photo-realistic graphics in real-time has clear economic incentive for 
-the video games industry which was valued at over \$$136$ by the end of 2018 
-\cite{bloomberg.com}. An economic incentive can also be seen for the film
-industry, where reductions in render times lead to a direct saving on compute 
-time, as well as the hardware required to render full length films.
+
+Our wider motivation for our work is contribute to the achievement of  the long sought after goal of real-time ray-tracing. When we say ray-tracing we are specifically referring to methods which simulate light transport to render images, which includes path tracing. While our work here may not prove to directly reduce the render time for producing high quality images from path tracing. It does attempt to reduce the number SPP required to render these high quality images, in hope that future work will optimise our methodology for speed, to further reduce render times of these images.
+
+The excellent image quality from path tracing and other methods which simulate light transport for rendering has been well known since their conception \cite{kajiya1986rendering, goral1984modeling, whitted2005improved, jensen1996global}, as opposed to scanline renderers. Scanline renderers are the current 'go to' rendering algorithms for real-time rendering of computer graphically generated images, due to their speed. However, they cannot simulate the light effects discussed in section \ref{sec:conceptual_path_trace} as easily or to such a high quality \cite{wald2001state}.
+
+Furthermore, scanline rendering methods do not scale well with the number of polygons used to build a scenes surfaces, compared to that of methods like path tracing. Therefore, scanline rendering for scenes with extremely complex geometry in real-time is currently not and option. Rendering methods which simulate light transport therefore have great potential to be used in ultra realistic simulations for applications such as scenario planning and virtual reality learning environments \cite{pan2006virtual}. Also, many games sell realism as one of their most important features. So, developing photo-realistic graphics in real-time has clear economic incentive for the video games industry which was valued at over \$$136$ by the end of 2018 \cite{bloomberg.com}. An economic incentive can also be seen for the film industry, where reductions in render times will lead to a direct saving on compute time.
 
 \subsection{Recent Developments}
-Due to the incentives, a large amount of research and investment has been focused 
-on purpose built hardware and Deep learning  post-processing methods in an 
-attempt to bring accurate light transport simulation into real-time. NVIDIA's 
-Turing Ray Tracing Technology \cite{nvidia_turing_architecture_whitepaper_2018} 
-represents a significant leap in the hardware to support light transport simulation. 
-It allows for real-time graphics engines to be a hybrid of both scanline rendering, 
-and ray-tracing. The 20 series Turing GPU architecture has significantly improved 
-the speed of ray-casting for light transport simulation, and has the capacity for  
-simulating 10 Giga Rays per second. However, using this hardware alone with 
-current rendering methods is not enough to perform accurate light transport 
-simulation for complex scenes in real-time.\\
+Due to the incentives of real-time ray tracing, a number of different areas of research have emerged, besides importance sampling in light transport simulation alone. Purpose built hardware and deep learning post processing methods for reducing render times of these methods have a received a large amount of research and investment recently. NVIDIA's Turing Ray Tracing Technology \cite{nvidia_turing_architecture_whitepaper_2018} represents a significant leap in hardware to support light transport simulation. It allows for real-time graphics engines to be a hybrid of both scanline rendering, and ray-tracing. The 20 series Turing GPU architecture has significantly improved the speed of ray-casting for light transport simulation. It has the capacity for  simulating 10 Giga Rays per second. However, using this hardware alone with current rendering methods is not enough to perform accurate light transport simulation for complex scenes in real-time.
 
-Post-processing methods are designed to take a noisy input image produced by a 
-render which simulates light transport, and then reconstruct the image to remove 
-the noise present in the image. Generally these methods rely on pre-trained deep 
-neural networks to reconstruct the image far quicker then it would take for the 
-renderer to produce an image of the same visual quality \cite{bako2017kernel}. 
-Once again NVIDIA has made significant advancements in this area with NVIDIA 
-OptiX AI Accelerated Denoiser, which is based on their newly designed recurrent 
-denoising autoencoder \cite{chaitanya2017interactive}. OptiX has been successfully 
-integrated in to many of the top rendering engines which accurately simulate light
-transport, such as RenderMan \cite{christensen2018renderman} and Arnold 
-\cite{georgiev2018arnold}. Whilst post-processing has significantly reduced the 
-number of samples required to render photo-realistic images, there is still more 
-work to be done to produce these images in real-time.\\
+Post-processing methods are designed to take a noisy input image and reconstruct it, such that the presnce of noise is signficantly reduced. Generally, these methods rely on pre-trained deep neural networks to reconstruct the image far quicker then it would take for the renderer alone to produce an image of the same visual quality\cite{bako2017kernel}. Once again NVIDIA has made significant advancements in this area with NVIDIA OptiX AI Accelerated Denoiser, which is based on their newly designed recurrent denoising autoencoder \cite{chaitanya2017interactive}. OptiX has been successfully integrated in to many of the top rendering engines which accurately simulate light transport, such as RenderMan\cite{christensen2018renderman} and Arnold \cite{georgiev2018arnold}. Whilst post-processing has significantly reduced the number of samples required to render photo-realistic images, there is still more work to be done to produce these images in real-time.
 
-By using importance sampling by TD learning to reduce the number of samples 
-required for accurate light transport simulation, the same standard of noisy 
-image can be fed into an AI accelerated denoiser with fewer samples per pixel 
-in light transport simulation. Running a rendering engine optimised in this way on 
-purpose built hardware could make accurate light transport simulation for 
-rendering photo-realistic images closer than it ever has been to real-time.
+We believe the eventual progression of production path tracing engines will be to include both importance sampling and post processing for reducing the number of SPP required to render photo-realistic images. A path tracer equipped with these practices running on purpose built hardware for light transport simulation, real-time ray tracing may soon become a reality.
 
-\section{Challenges and Objectives}
+\section{Objectives and Challenges}
 
-% Needs work
-
-As previously mentioned, there already exists an example of TD learning used 
-for importance sampling ray directions in a forward Path tracer \cite{dahm2017learning}. 
-However, further methods of analysis need to be conducted upon this new 
-method to determine its performance for reducing the number of zero contribution l
-ight paths for different scenes with different settings. It is difficult to assess this as 
-there are infinitely many scenes the method can be used to render, so coming to a 
-clear conclusion is difficult. Another difficult task is that of designing an algorithm 
-for an AI agent to learn what are the favourable directions to sample in a scene are 
-using the deep Q-learning method. This includes some important unanswered 
-questions, such as; is it possible for a deep neural network to model all Q values for 
-a continuous scene space? If so, what is a suitable network architecture? All of 
-which I will describe in more depth in Chapter \ref{chap:deep-q}. Then the actual 
-task of implementing such an algorithm in a graphics engine written from scratch 
-is non-trivial due to the technologies which will need to be combined together. 
-The algorithm must also run fast enough to collect large amounts of data from, 
-otherwise a justified conclusion on its performance cannot be made. Therefore, 
-the algorithm will have to be parallelized and run on a GPU.\\
-
-As previously mentioned, my main goal is to investigate the ability of two 
-different temporal difference learning algorithms ability to reduce the number 
-of zero contribution light paths in path tracing, whilst still accurately 
-approximating global illumination. Which can be broken down in to the 
-following objectives:
+Once again, our primary goal is to approximate the incident radiance function for the set of continuous positions in a scene, which will be used for importance sampling light path directions in path tracing. To do so we have set the following ordered objectives for our work:
 
 \begin{enumerate}
-\item Reimplement Nvidia's state of the art on-line Temporal 
-Difference learning Path Tracer in order to further investigate its ability
-to reduce the number of zero contribution light paths.
+\item Implement NVIDIA's state of the art path tracer which learns the incident radiance function for a discrete set of locations in the scene for importance sampling in path tracing \cite{dahm2017learning}.
 
-\item Design and implement an on-line Deep Q-Learning variant of the
-Path tracing algorithm and investigate its ability to reduce the number of zero contribution light paths sampled.
+\item Devise a way to accurately learn the incident radiance function for the continuous set of locations in a scene by researching and using Deep Reinforcement Learning.
 
-\item Assess both Nvidia's state of the art on-line Temporal Difference 
-learning Path tracer, and the Deep Q-Learning Path tracer' on their ability 
-to accurately simulate Global Illumination.
+\item Research into the field of light transport simulation to design and implement an algorithm which uses the approximated incident radiance function to importance sample directions for continuing light paths in during path tracing.
 
+\item Compare the newly designed algorithm against NVIDIA's to evaluate if it is beneficial in any way for importance sampling directions to continue light paths in during path tracing.
 \end{enumerate}
 
+By achieving the objectives between (1-3) we will be able to test our research hypothesis during objective (4). The objectives above require us to overcome some significant technical challenges during our work.
+
+Details of the path tracing algorithm proposed by NVIDIA are sparse, the single paper \cite{dahm2017learning} is careful not to give away all implementation details, making it difficult to implement correctly. This is part of a more general problem with the field of light transport simulation, where a few large companies including NVIDIA and Disney dominate research in this area, and implementation details of their methods are very sparse. Objective (2) will require us to somehow use deep reinforcement learning to accurately approximate the incident radiance function, which has never been done before to the best of our knowledge. So we must find a way to make this possible before attempting to design and implement a new path tracing algorithm which uses this approximation. The algorithm itself will also require the use of existing data-structures to represent the incident radiance at a point, adding more complexity to the implementation. Finally, comparing NVIDIAs path tracer to our newly designed path tracer is no simple task. The incident radiance function is a 5-dimension function (the details of this will be discussed in chapter \ref{chap:technical_background}), making it difficult to assess the quality of its approximation across the scene. We will have to come up  with new methods of comparing the quality of the approximation between NVIDIA's path tracer and ours.
 
 \begin{comment}
 {\bf A compulsory chapter,     of roughly $5$ pages}

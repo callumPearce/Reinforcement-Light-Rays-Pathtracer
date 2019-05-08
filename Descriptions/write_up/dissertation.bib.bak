@@ -215,6 +215,17 @@
   publisher={Springer}
 }
 
+% Ray-tracing vs rasterizing
+@article{wald2001state,
+  title={State of the art in interactive ray tracing},
+  author={Wald, Ingo and Slusallek, Philipp},
+  journal={State of the Art Reports, EUROGRAPHICS},
+  volume={2001},
+  pages={21--42},
+  year={2001}
+}
+
+
 % Light transport simulation
 @inproceedings{krivanek2014recent,
   title={Recent advances in light transport simulation: some theory and a lot of practice.},
