@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.10.2)  9 MAY 2019 16:30
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.10.2)  9 MAY 2019 18:54
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1590,129 +1590,51 @@ Package pdftex.def Info: images/1_spp.png used on input line 177.
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-
-Underfull \hbox (badness 10000) in paragraph at lines 182--183
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 184--185
-
- []
-
 [38] [39 <./images/1_spp.png>]
-<images/training_curves.png, id=848, 766.5438pt x 328.3467pt>
+<images/training_curves.png, id=847, 766.5438pt x 328.3467pt>
 File: images/training_curves.png Graphic file (type png)
 
 <use images/training_curves.png>
-Package pdftex.def Info: images/training_curves.png used on input line 196.
+Package pdftex.def Info: images/training_curves.png used on input line 197.
 (pdftex.def)             Requested size: 455.24411pt x 195.00046pt.
-
-Underfull \hbox (badness 10000) in paragraph at lines 202--203
-
- []
-
-
-LaTeX Warning: Reference `fig:no_epsilon_greedy' on page 40 undefined on input 
-line 209.
-
-[40 <./images/training_curves.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 218--219
-
- []
-
+ [40 <./images/training_curves.png>]
 
 LaTeX Warning: Reference `fig:more_irradiance_volumes' on page 41 undefined on 
-input line 240.
+input line 235.
 
-
-Underfull \hbox (badness 10000) in paragraph at lines 240--241
-
- []
-
-<images/less_volumes.png, id=866, 446.1468pt x 355.5684pt>
+<images/less_volumes.png, id=865, 446.1468pt x 355.5684pt>
 File: images/less_volumes.png Graphic file (type png)
 
 <use images/less_volumes.png>
-Package pdftex.def Info: images/less_volumes.png used on input line 244.
+Package pdftex.def Info: images/less_volumes.png used on input line 239.
 (pdftex.def)             Requested size: 318.66948pt x 253.97989pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-
-Underfull \hbox (badness 10000) in paragraph at lines 249--250
-
- []
-
-[41] <images/renders/sarsa_128_1Mb_incorrect.png, id=878, 722.7pt x 722.7pt>
+[41] <images/renders/sarsa_128_1Mb_incorrect.png, id=877, 722.7pt x 722.7pt>
 File: images/renders/sarsa_128_1Mb_incorrect.png Graphic file (type png)
 
 <use images/renders/sarsa_128_1Mb_incorrect.png>
 Package pdftex.def Info: images/renders/sarsa_128_1Mb_incorrect.png used on inp
-ut line 253.
+ut line 248.
 (pdftex.def)             Requested size: 182.09486pt x 182.09709pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-[42 <./images/less_volumes.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 268--269
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 272--273
-
- []
-
-[43 <./images/renders/sarsa_128_1Mb_incorrect.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 274--275
-
- []
-
+[42 <./images/less_volumes.png>] [43 <./images/renders/sarsa_128_1Mb_incorrect.
+png>]
 
 LaTeX Warning: Citation `alg:neural_q_path_tracer' on page 44 undefined on inpu
-t line 279.
-
-
-LaTeX Warning: Reference `fig:memory_transfer' on page 44 undefined on input li
-ne 279.
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 279--280
-
- []
+t line 275.
 
 [44]
 
 LaTeX Warning: Reference `alg:default_path_tracer' on page 45 undefined on inpu
-t line 291.
+t line 284.
 
-
-LaTeX Warning: Reference `' on page 45 undefined on input line 291.
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 291--292
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 296--297
-
- []
-
-[45]
-Underfull \hbox (badness 10000) in paragraph at lines 305--306
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 307--308
-
- []
-
-) (./chapters/5_conclusion.tex
+[45]) (./chapters/5_conclusion.tex
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
  Make it at least 22.43335pt.
@@ -1758,22 +1680,19 @@ Package rerunfilecheck Info: File `dissertation.out' has not changed.
 
 LaTeX Warning: There were undefined references.
 
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
-
  )
 (\end occurred inside a group at level 1)
 
 ### simple group (level 1) entered at line 1061 ({)
 ### bottom level 
 Here is how much of TeX's memory you used:
- 33779 strings out of 492995
- 765410 string characters out of 6132704
- 1184519 words of memory out of 5000000
- 36402 multiletter control sequences out of 15000+600000
+ 33776 strings out of 492995
+ 765364 string characters out of 6132704
+ 1184560 words of memory out of 5000000
+ 36399 multiletter control sequences out of 15000+600000
  14171 words of font info for 53 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 72i,28n,98p,2501b,25891s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 72i,28n,98p,2204b,25891s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts
 /cm/cmbx10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/
 cm/cmbx12.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/c
@@ -1797,10 +1716,10 @@ live/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texl
 ive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt8.pfb></usr/local/texliv
 e/2017/texmf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb></usr/local/te
 xlive/2017/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on dissertation.pdf (62 pages, 33745257 bytes).
+Output written on dissertation.pdf (62 pages, 33745280 bytes).
 PDF statistics:
- 1207 PDF objects out of 1440 (max. 8388607)
- 1048 compressed objects within 11 object streams
+ 1210 PDF objects out of 1440 (max. 8388607)
+ 1051 compressed objects within 11 object streams
  306 named destinations out of 1000 (max. 500000)
  366 words of extra memory for PDF output out of 10000 (max. 10000000)
 
