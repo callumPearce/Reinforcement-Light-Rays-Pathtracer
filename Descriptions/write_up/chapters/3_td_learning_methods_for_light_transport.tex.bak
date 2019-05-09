@@ -7,9 +7,9 @@
 
 Monte Carlo Integration, importance sampling, path tracing, and reinforcement learning have all been introduced. So now it is finally time to combine all of these concepts to build path tracing algorithms which importance sample directions to continue light paths in to reduce image noise.
 
-In this section we introduce two modified path tracers. The first is based on the NVIDIA path tracer, which we refer to as the Expected Sarsa path tracer. The other is our newly proposed path tracer which we refer to as the Neural-Q path tracer. Both path tracers progressively learn the incident radiance function for importance sampling directions to continue light paths in. This reduces the variance in the Monte Carlo approximation of a pixels colour, ultimately reducing the noise in rendered images. 
+In this section we introduce two modified path tracers. The first is based on the NVIDIA path tracer, which we refer to as the Expected Sarsa path tracer. The other is our newly proposed path tracer which we refer to as the Neural-Q path tracer. Both path tracers progressively learn the incident radiance function for importance sampling directions to continue light paths in. This reduces the variance in the Monte Carlo approximation of a pixels colour, ultimately reducing the noise in rendered images. However, the Expected Sarsa path tracer learns the incident radiance function for a discrete set of locations in the scene, whereas our Neural-Q path tracer learns it for the continuous set of locations in a scene.
 
-\section{The expected Sarsa Path Tracer}
+\section{The Expected Sarsa Path Tracer}
 \label{sec:expecte_sarsa_path_tracer}
 
 In this section we introduce the Expected Sarsa path tracer proposed by NVIDIA in \cite{dahm2017learning}. In doing so, we will cover how light transport can be linked to the rendering equation for learning the incident radiance function, the Irradiance Volume data structure, and the modified path tracing algorithm itself.
