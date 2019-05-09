@@ -27,7 +27,7 @@
                 % the degree programme
                     degree={MEng},
                 % the dissertation    title (which cannot be blank)
-                     title={Learning the incident radiance for a continuous state space rather than a discrete one is more beneficial for Importance Sampling in Monte Carlo Path tracing},
+                     title={Learning the incident radiance for a continuous state space rather than a discrete one is more beneficial for Importance Sampling in Monte Carlo Path Tracing},
                 % the dissertation subtitle (which can be blank)
                   subtitle={},
                 % the dissertation     type
@@ -159,7 +159,7 @@ of authorship may still be produced online via
 \appendix
 
 \chapter{Appendix}
-\label{appx:example}
+\label{appx:images}
 
 \begin{figure}[h]
 \centering
@@ -167,15 +167,15 @@ of authorship may still be produced online via
   \includegraphics[width=\textwidth]{images/renders/shelter/default.png}   
   \subcaption{Default}
 \endminipage\hspace{1em}
-\minipage{\textwidth}
+\minipage{0.45\textwidth}
   \includegraphics[width=\textwidth]{images/renders/shelter/sarsa.png}   
   \subcaption{Expected Sarsa}
 \endminipage\hspace{1em}
-\minipage{\textwidth}
+\minipage{0.45\textwidth}
   \includegraphics[width=\textwidth]{images/renders/shelter/nn.png}
   \subcaption{Neural-Q}
 \endminipage
-\caption{128 SPP renders for the Shelter scene}
+\caption{128 SPP renders for the Shelter scene.}
 \label{fig:shelter}
 \end{figure}
 
@@ -183,19 +183,19 @@ of authorship may still be produced online via
 
 \begin{figure}[h]
 \centering
-\minipage{\textwidth}
+\minipage{0.45\textwidth}
   \includegraphics[width=\textwidth]{images/renders/cornell/default.png}   
   \subcaption{Default}
 \endminipage\hspace{1em}
-\minipage{\textwidth}
+\minipage{0.45\textwidth}
   \includegraphics[width=\textwidth]{images/renders/cornell/sarsa.png}   
   \subcaption{Expected Sarsa}
 \endminipage\hspace{1em}
-\minipage{\textwidth}
+\minipage{0.45\textwidth}
   \includegraphics[width=\textwidth]{images/renders/cornell/nn.png}
   \subcaption{Neural-Q}
 \endminipage
-\caption{128 SPP renders for the Cornell Box scene}
+\caption{128 SPP renders for the Cornell Box scene.}
 \label{fig:cornell}
 \end{figure}
 
@@ -203,19 +203,19 @@ of authorship may still be produced online via
 
 \begin{figure}[h]
 \centering
-\minipage{\textwidth}
+\minipage{0.45\textwidth}
   \includegraphics[width=\textwidth]{images/renders/complex_pillars/default.png}   
   \subcaption{Default}
 \endminipage\hspace{1em}
-\minipage{\textwidth}
+\minipage{0.45\textwidth}
   \includegraphics[width=\textwidth]{images/renders/complex_pillars/sarsa.png}   
   \subcaption{Expected Sarsa}
 \endminipage\hspace{1em}
-\minipage{\textwidth}
+\minipage{0.45\textwidth}
   \includegraphics[width=\textwidth]{images/renders/complex_pillars/nn.png}
   \subcaption{Neural-Q}
 \endminipage
-\caption{128 SPP renders for the Complex Pillars scene}
+\caption{128 SPP renders for the Complex Pillars scene.}
 \label{fig:complex_light}
 \end{figure}
 
@@ -223,19 +223,19 @@ of authorship may still be produced online via
 
 \begin{figure}[h]
 \centering
-\minipage{\textwidth}
+\minipage{0.45\textwidth}
   \includegraphics[width=\textwidth]{images/renders/door_room/default.png}   
   \subcaption{Default}
 \endminipage\hspace{1em}
-\minipage{\textwidth}
+\minipage{0.45\textwidth}
   \includegraphics[width=\textwidth]{images/renders/door_room/sarsa.png}   
   \subcaption{Expected Sarsa}
 \endminipage\hspace{1em}
-\minipage{\textwidth}
+\minipage{0.45\textwidth}
   \includegraphics[width=\textwidth]{images/renders/door_room/nn.png}
   \subcaption{Neural-Q}
 \endminipage
-\caption{128 SPP renders for the Door Room scene}
+\caption{128 SPP renders for the Door Room scene.}
 \label{fig:door_room}
 \end{figure}
 
