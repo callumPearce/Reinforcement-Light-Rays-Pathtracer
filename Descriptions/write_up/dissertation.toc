@@ -17,7 +17,7 @@
 \contentsline {subsection}{\numberline {2.2.1}The Rendering Equation}{10}{subsection.2.2.1}
 \contentsline {subsection}{\numberline {2.2.2}Path Tracing}{12}{subsection.2.2.2}
 \contentsline {subsubsection}{Monte Carlo Path Tracing}{12}{section*.17}
-\contentsline {subsubsection}{Importance Sampling in Path Tracing}{13}{section*.19}
+\contentsline {subsubsection}{Importance Sampling in Path Tracing}{14}{section*.19}
 \contentsline {section}{\numberline {2.3}Reinforcement Learning and TD-Learning}{14}{section.2.3}
 \contentsline {subsection}{\numberline {2.3.1}Markov Decision Processes}{14}{subsection.2.3.1}
 \contentsline {subsection}{\numberline {2.3.2}Goals and Rewards}{15}{subsection.2.3.2}
@@ -26,10 +26,10 @@
 \contentsline {subsubsection}{Q-Learning}{17}{section*.22}
 \contentsline {subsubsection}{Expected Sarsa}{17}{section*.23}
 \contentsline {subsection}{\numberline {2.3.5}Exploration vs Exploitation}{18}{subsection.2.3.5}
-\contentsline {chapter}{\numberline {3}TD-Learning and Deep Reinforcement Learning for Importance Sampling Light Paths}{19}{chapter.3}
+\contentsline {chapter}{\numberline {3}The Expected Sarsa and Neural-Q path tracers}{19}{chapter.3}
 \contentsline {section}{\numberline {3.1}The expected Sarsa Path Tracer}{19}{section.3.1}
 \contentsline {subsection}{\numberline {3.1.1}Linking TD-Learning and Light Transport Simulation}{19}{subsection.3.1.1}
-\contentsline {subsection}{\numberline {3.1.2}The Irradiance Volume}{21}{subsection.3.1.2}
+\contentsline {subsection}{\numberline {3.1.2}The Irradiance Volume}{20}{subsection.3.1.2}
 \contentsline {subsection}{\numberline {3.1.3}Expected Sarsa Path Tracing}{22}{subsection.3.1.3}
 \contentsline {section}{\numberline {3.2}The Neural-Q Path Tracer}{25}{section.3.2}
 \contentsline {subsection}{\numberline {3.2.1}Introduction to Deep Reinforcement Learning}{25}{subsection.3.2.1}

@@ -346,8 +346,10 @@ In equation \ref{eq:rendering_eq_monte_carlo} the recursive $L_i$ is still prese
  \Fn{renderImage(camera, scene)}{  
    \For{$i = 1$ \KwTo $N$}{
      \For{$p$ \In $camera.screen$}{
+         \tcc{Set the ray to be traced from the camera, through the pixel and into the scene}
          $ray \leftarrow \text{initializeRay}(p, camera)$\\
          \For{$j=1$ \KwTo $\infty$}{
+         \tcc{Find the rays closest intersection with the scene geometry}
          $(y, \mathbf{n}, L_e) \leftarrow \text{closestIntersection}(ray, scene)$\\
          \If{$\text{noIntersection}(y) \ \Or \ \text{areaLightIntersection}(y)$}{
              $ray.throughput \leftarrow ray.throughput \cdot L_e$\\
