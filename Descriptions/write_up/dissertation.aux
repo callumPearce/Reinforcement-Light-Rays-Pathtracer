@@ -275,7 +275,7 @@
 \citation{sutton2011reinforcement}
 \citation{sutton2011reinforcement}
 \citation{muller2018neural}
-\newlabel{alg:neural_q_pathtracer}{{\caption@xref {alg:neural_q_pathtracer}{ on input line 397}}{31}{Addition 4: Decaying decaying $\epsilon $-\textit {greedy}}{algocf.caption.41}{}}
+\newlabel{alg:neural_q_pathtracer}{{\caption@xref {alg:neural_q_pathtracer}{ on input line 397}}{31}{Addition 4: Decaying decaying $\epsilon $-greedy}{algocf.caption.41}{}}
 \@writefile{loa}{\contentsline {algocf}{\numberline {3}{\ignorespaces Neural-Q forward path tracer. Given a camera position, scene geometry, epsilon and epsilon decay, this algorithm will render a single image. Where $N$ is the pre-specified number of sampled light paths per pixel. The algorithm trains the ANN online to progressively reduce noise in consecutive rendered images, by improving its approximation of the incident radiance function for the scene.\relax }}{31}{algocf.3}}
 \citation{glm}
 \citation{sdl2}
@@ -293,8 +293,8 @@
 \@writefile{toc}{\contentsline {section}{\numberline {4.2}Assessing the reduction in image Noise for Monte Carlo Path Tracing}{33}{section.4.2}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {4.2.1}Quantifying the Reduction in Image Noise}{33}{subsection.4.2.1}}
 \newlabel{eq:mape}{{4.1}{33}{Quantifying the Reduction in Image Noise}{equation.4.2.1}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {4.1}{\ignorespaces A comparison of the default forward path tracer, Expected Sarsa path tracer, and the Neural-Q path tracer of their rendered image noise for four different rendered scenes. All images were rendered with 128 SPP, apart from the reference images in the very right column which use 4096 SPP. The score under each column in an image row corresponds to the MAPE score for each path tracing algorithm for the particular scene.The Neural-Q and Expected Sarsa algorithms both used $144$ discrete directions in each discretized hemisphere to estimate the incident radiance distribution at a given point. The Neural-Q path tracer used the ANN architecture described in \ref  {sec:ann_architecture} for all fours scenes with a decaying $\epsilon $-greedy policy starting at $\epsilon =1$, with a decay of $\delta = 0.05$ applied after every pixel in the image has had a light path sampled through it. The Expected Sarsa path tracer used just enough Irradiance Volumes (which varied depending on the scene) to facilitate a significant reduction in image noise in all four renders, such that it was competitive with the Neural-Q path tracer.\relax }}{35}{figure.caption.42}}
-\newlabel{fig:mape_results_grid}{{4.1}{35}{A comparison of the default forward path tracer, Expected Sarsa path tracer, and the Neural-Q path tracer of their rendered image noise for four different rendered scenes. All images were rendered with 128 SPP, apart from the reference images in the very right column which use 4096 SPP. The score under each column in an image row corresponds to the MAPE score for each path tracing algorithm for the particular scene.The Neural-Q and Expected Sarsa algorithms both used $144$ discrete directions in each discretized hemisphere to estimate the incident radiance distribution at a given point. The Neural-Q path tracer used the ANN architecture described in \ref {sec:ann_architecture} for all fours scenes with a decaying $\epsilon $-greedy policy starting at $\epsilon =1$, with a decay of $\delta = 0.05$ applied after every pixel in the image has had a light path sampled through it. The Expected Sarsa path tracer used just enough Irradiance Volumes (which varied depending on the scene) to facilitate a significant reduction in image noise in all four renders, such that it was competitive with the Neural-Q path tracer.\relax }{figure.caption.42}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.1}{\ignorespaces A comparison of the default forward path tracer, Expected Sarsa path tracer, and the Neural-Q path tracer of their rendered image noise for four different rendered scenes. All images were rendered with 128 SPP, apart from the reference images in the very right column which use 4096 SPP. The score under each column in an image row corresponds to the MAPE score for each path tracing algorithm for the particular scene.The Neural-Q and Expected Sarsa algorithms both used $144$ discrete directions in each discretized hemisphere to estimate the incident radiance distribution at a given point. The Neural-Q path tracer used the ANN architecture described in \ref  {sec:ann_architecture} for all fours scenes with a decaying $\epsilon $-greedy policy starting at $\epsilon =1$, with a decay of $\delta = 0.05$ applied after every pixel in the image has had a light path sampled through it. The Expected Sarsa path tracer used just enough Irradiance Volumes (which varied depending on the scene) to facilitate a significant reduction in image noise in all four renders, such that it was competitive with the Neural-Q path tracer. See appendix \ref  {appx:images} for the full images produced by all three path tracers.\relax }}{35}{figure.caption.42}}
+\newlabel{fig:mape_results_grid}{{4.1}{35}{A comparison of the default forward path tracer, Expected Sarsa path tracer, and the Neural-Q path tracer of their rendered image noise for four different rendered scenes. All images were rendered with 128 SPP, apart from the reference images in the very right column which use 4096 SPP. The score under each column in an image row corresponds to the MAPE score for each path tracing algorithm for the particular scene.The Neural-Q and Expected Sarsa algorithms both used $144$ discrete directions in each discretized hemisphere to estimate the incident radiance distribution at a given point. The Neural-Q path tracer used the ANN architecture described in \ref {sec:ann_architecture} for all fours scenes with a decaying $\epsilon $-greedy policy starting at $\epsilon =1$, with a decay of $\delta = 0.05$ applied after every pixel in the image has had a light path sampled through it. The Expected Sarsa path tracer used just enough Irradiance Volumes (which varied depending on the scene) to facilitate a significant reduction in image noise in all four renders, such that it was competitive with the Neural-Q path tracer. See appendix \ref {appx:images} for the full images produced by all three path tracers.\relax }{figure.caption.42}{}}
 \citation{christensen2016path}
 \@writefile{toc}{\contentsline {subsection}{\numberline {4.2.2}A Closer Inspection of Pixel Error Values}{36}{subsection.4.2.2}}
 \newlabel{sec:close_inspec_pixels}{{4.2.2}{36}{A Closer Inspection of Pixel Error Values}{subsection.4.2.2}{}}
@@ -444,72 +444,85 @@
 \bibcite{maya}{7}
 \bibcite{bako2017kernel}{8}
 \bibcite{bashford2012significance}{9}
-\bibcite{bentley1975multidimensional}{10}
-\bibcite{bishop2006pattern}{11}
-\bibcite{bloomberg.com}{12}
-\bibcite{boulos2005notes}{13}
-\bibcite{chaitanya2017interactive}{14}
-\bibcite{christensen2018renderman}{15}
-\bibcite{christensen2016path}{16}
-\bibcite{cline2008table}{17}
-\bibcite{crockett1995parallel}{18}
-\bibcite{dahm2017learning}{19}
-\bibcite{devroye2006nonuniform}{20}
-\bibcite{dinh2014nice}{21}
-\bibcite{dutre2004state}{22}
-\bibcite{fatahalian2009data}{23}
-\bibcite{embarissingly_parallelizable}{24}
-\bibcite{georgiev2018arnold}{25}
-\bibcite{glassner2014principles}{26}
-\bibcite{greger1998irradiance}{27}
-\bibcite{stanford_graphics}{28}
-\bibcite{global_data_transfer}{29}
-\bibcite{global_vs_shared}{30}
-\bibcite{hermosilla2018deep}{31}
-\bibcite{jensen1996global}{32}
-\bibcite{kajiya1986rendering}{33}
-\bibcite{keller2019integral}{34}
-\bibcite{keller2016path}{35}
-\bibcite{keller2015path}{36}
-\bibcite{konidaris2011value}{37}
-\bibcite{krivanek2014recent}{38}
-\bibcite{lecun2015deep}{39}
-\bibcite{lillicrap2015continuous}{40}
-\bibcite{mnih2016asynchronous}{41}
-\bibcite{mnih2013playing}{42}
-\bibcite{mnih2015human}{43}
-\bibcite{morokoff1995quasi}{44}
-\bibcite{muller2017practical}{45}
-\bibcite{muller2018neural}{46}
-\bibcite{nair2010rectified}{47}
-\bibcite{dynet}{48}
-\bibcite{cuda}{49}
-\bibcite{tensor_cores}{50}
-\bibcite{cuda_c_guide}{51}
-\bibcite{nvidia_turing_architecture_whitepaper_2018}{52}
-\bibcite{pan2006virtual}{53}
-\bibcite{pegoraro2008towards}{54}
-\bibcite{ramamoorthi2012theory}{55}
-\bibcite{raynal2012concurrent}{56}
-\bibcite{ren2013global}{57}
-\bibcite{devastator}{58}
-\bibcite{scratchapixel_2015}{59}
-\bibcite{shirley1994notes}{60}
-\bibcite{hyperion}{61}
-\bibcite{sutton1996generalization}{62}
-\bibcite{sutton2011reinforcement}{63}
-\bibcite{uther1998tree}{64}
-\bibcite{exploration_vs_exploitation}{65}
-\bibcite{deep_rl_function_approx}{66}
-\bibcite{introToRL}{67}
-\bibcite{mdp_dynamic_prog}{68}
-\bibcite{model_free_prediction}{69}
-\bibcite{van2016deep}{70}
-\bibcite{vorba2014line}{71}
-\bibcite{normals}{72}
-\bibcite{zheng2018learning}{73}
-\@writefile{toc}{\contentsline {chapter}{\numberline {A}An Example Appendix}{55}{appendix.A}}
+\bibcite{bellman1966dynamic}{10}
+\bibcite{bentley1975multidimensional}{11}
+\bibcite{bishop2006pattern}{12}
+\bibcite{bloomberg.com}{13}
+\bibcite{boulos2005notes}{14}
+\bibcite{chaitanya2017interactive}{15}
+\bibcite{christensen2018renderman}{16}
+\bibcite{christensen2016path}{17}
+\bibcite{cline2008table}{18}
+\bibcite{crockett1995parallel}{19}
+\bibcite{dahm2017learning}{20}
+\bibcite{devroye2006nonuniform}{21}
+\bibcite{dinh2014nice}{22}
+\bibcite{dutre2004state}{23}
+\bibcite{fatahalian2009data}{24}
+\bibcite{embarissingly_parallelizable}{25}
+\bibcite{georgiev2018arnold}{26}
+\bibcite{glassner2014principles}{27}
+\bibcite{goral1984modeling}{28}
+\bibcite{greger1998irradiance}{29}
+\bibcite{stanford_graphics}{30}
+\bibcite{global_data_transfer}{31}
+\bibcite{global_vs_shared}{32}
+\bibcite{hermosilla2018deep}{33}
+\bibcite{jensen1996global}{34}
+\bibcite{kajiya1986rendering}{35}
+\bibcite{keller2019integral}{36}
+\bibcite{keller2016path}{37}
+\bibcite{keller2015path}{38}
+\bibcite{kingma2014adam}{39}
+\bibcite{konidaris2011value}{40}
+\bibcite{krivanek2014recent}{41}
+\bibcite{lecun2015deep}{42}
+\bibcite{lillicrap2015continuous}{43}
+\bibcite{mnih2016asynchronous}{44}
+\bibcite{mnih2013playing}{45}
+\bibcite{mnih2015human}{46}
+\bibcite{morokoff1995quasi}{47}
+\bibcite{muller2017practical}{48}
+\bibcite{muller2018neural}{49}
+\bibcite{nair2010rectified}{50}
+\bibcite{dynet}{51}
+\bibcite{cuda}{52}
+\bibcite{tensor_cores}{53}
+\bibcite{cuda_c_guide}{54}
+\bibcite{nvidia_turing_architecture_whitepaper_2018}{55}
+\bibcite{pan2006virtual}{56}
+\bibcite{pegoraro2008towards}{57}
+\bibcite{ramamoorthi2012theory}{58}
+\bibcite{raynal2012concurrent}{59}
+\bibcite{ren2013global}{60}
+\bibcite{devastator}{61}
+\bibcite{scratchapixel_2015}{62}
+\bibcite{shirley1994notes}{63}
+\bibcite{hyperion}{64}
+\bibcite{sutton1996generalization}{65}
+\bibcite{sutton2011reinforcement}{66}
+\bibcite{uther1998tree}{67}
+\bibcite{exploration_vs_exploitation}{68}
+\bibcite{deep_rl_function_approx}{69}
+\bibcite{introToRL}{70}
+\bibcite{mdp_dynamic_prog}{71}
+\bibcite{model_free_prediction}{72}
+\bibcite{van2016deep}{73}
+\bibcite{vorba2014line}{74}
+\bibcite{wald2001state}{75}
+\bibcite{normals}{76}
+\bibcite{whitted2005improved}{77}
+\bibcite{zheng2018learning}{78}
+\@writefile{toc}{\contentsline {chapter}{\numberline {A}Appendix}{55}{appendix.A}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
 \@writefile{loa}{\addvspace {10\p@ }}
-\newlabel{appx:example}{{A}{55}{An Example Appendix}{appendix.A}{}}
+\newlabel{appx:images}{{A}{55}{Appendix}{appendix.A}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {A.1}{\ignorespaces 128 SPP renders for the Shelter scene.\relax }}{55}{figure.caption.66}}
+\newlabel{fig:shelter}{{A.1}{55}{128 SPP renders for the Shelter scene.\relax }{figure.caption.66}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {A.2}{\ignorespaces 128 SPP renders for the Cornell Box scene.\relax }}{56}{figure.caption.67}}
+\newlabel{fig:cornell}{{A.2}{56}{128 SPP renders for the Cornell Box scene.\relax }{figure.caption.67}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {A.3}{\ignorespaces 128 SPP renders for the Complex Pillars scene.\relax }}{57}{figure.caption.68}}
+\newlabel{fig:complex_light}{{A.3}{57}{128 SPP renders for the Complex Pillars scene.\relax }{figure.caption.68}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {A.4}{\ignorespaces 128 SPP renders for the Door Room scene.\relax }}{58}{figure.caption.69}}
+\newlabel{fig:door_room}{{A.4}{58}{128 SPP renders for the Door Room scene.\relax }{figure.caption.69}{}}

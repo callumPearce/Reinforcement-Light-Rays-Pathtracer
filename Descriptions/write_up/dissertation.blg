@@ -3,17 +3,15 @@ Capacity: max_strings=100000, hash_size=100000, hash_prime=85009
 The top-level auxiliary file: dissertation.aux
 The style file: plain.bst
 Database file #1: dissertation.bib
-Repeated entry---line 352 of file dissertation.bib
+Repeated entry---line 372 of file dissertation.bib
  : @misc{scratchapixel_2015
  :                         ,
 I'm skipping whatever remains of this entry
-I was expecting a `,' or a `}'---line 399 of file dissertation.bib
+I was expecting a `,' or a `}'---line 432 of file dissertation.bib
  :   
  :   publisher={Elsevier}
 (Error may have been on previous line)
 I'm skipping whatever remains of this entry
-Warning--I didn't find a database entry for "latexbook1"
-Warning--I didn't find a database entry for "latexbook2"
 Warning--I didn't find a database entry for "alg:neural_q_path_tracer"
 Warning--to sort, need author or key in glm
 Warning--to sort, need author or key in sdl2
@@ -21,48 +19,49 @@ Warning--to sort, need author or key in tensorflow2015-whitepaper
 Warning--can't use both volume and number fields in bashford2012significance
 Warning--can't use both volume and number fields in cline2008table
 Warning--empty publisher in glassner2014principles
+Warning--can't use both volume and number fields in goral1984modeling
 Warning--can't use both volume and number fields in kajiya1986rendering
 Warning--can't use both volume and number fields in muller2017practical
 Warning--empty title in nvidia_turing_architecture_whitepaper_2018
-You've used 73 entries,
+You've used 78 entries,
             2118 wiz_defined-function locations,
-            842 strings with 15287 characters,
-and the built_in function-call counts, 24564 in all, are:
-= -- 2280
-> -- 1398
-< -- 20
-+ -- 565
-- -- 486
-* -- 1621
-:= -- 4070
-add.period$ -- 222
-call.type$ -- 73
-change.case$ -- 454
+            868 strings with 15929 characters,
+and the built_in function-call counts, 26228 in all, are:
+= -- 2452
+> -- 1461
+< -- 23
++ -- 591
+- -- 506
+* -- 1727
+:= -- 4338
+add.period$ -- 239
+call.type$ -- 78
+change.case$ -- 479
 chr.to.int$ -- 0
-cite$ -- 82
-duplicate$ -- 890
-empty$ -- 1866
-format.name$ -- 486
-if$ -- 5136
+cite$ -- 88
+duplicate$ -- 962
+empty$ -- 2003
+format.name$ -- 506
+if$ -- 5496
 int.to.chr$ -- 0
-int.to.str$ -- 73
-missing$ -- 54
-newline$ -- 360
-num.names$ -- 140
-pop$ -- 640
+int.to.str$ -- 78
+missing$ -- 59
+newline$ -- 385
+num.names$ -- 150
+pop$ -- 666
 preamble$ -- 1
-purify$ -- 385
+purify$ -- 405
 quote$ -- 0
-skip$ -- 672
+skip$ -- 722
 stack$ -- 0
-substring$ -- 1029
-swap$ -- 225
-text.length$ -- 20
+substring$ -- 1127
+swap$ -- 246
+text.length$ -- 23
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 282
-warning$ -- 9
-while$ -- 205
-width$ -- 75
-write$ -- 745
+type$ -- 302
+warning$ -- 10
+while$ -- 223
+width$ -- 80
+write$ -- 802
 (There were 2 error messages)

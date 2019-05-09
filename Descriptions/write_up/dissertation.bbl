@@ -44,6 +44,11 @@ Thomas Bashford-Rogers, Kurt Debattista, and Alan Chalmers.
 \newblock In {\em Computer Graphics Forum}, volume~31, pages 1837--1851. Wiley
   Online Library, 2012.
 
+\bibitem{bellman1966dynamic}
+Richard Bellman.
+\newblock Dynamic programming.
+\newblock {\em Science}, 153(3731):34--37, 1966.
+
 \bibitem{bentley1975multidimensional}
 Jon~Louis Bentley.
 \newblock Multidimensional binary search trees used for associative searching.
@@ -142,6 +147,12 @@ Andrew~S Glassner.
 \newblock {\em Principles of digital image synthesis}.
 \newblock 2014.
 
+\bibitem{goral1984modeling}
+Cindy~M Goral, Kenneth~E Torrance, Donald~P Greenberg, and Bennett Battaile.
+\newblock Modeling the interaction of light between diffuse surfaces.
+\newblock In {\em ACM SIGGRAPH computer graphics}, volume~18, pages 213--222.
+  ACM, 1984.
+
 \bibitem{greger1998irradiance}
 Gene Greger, Peter Shirley, Philip~M Hubbard, and Donald~P Greenberg.
 \newblock The irradiance volume.
@@ -194,6 +205,11 @@ Alexander Keller, Luca Fascione, Marcos Fajardo, Iliyan Georgiev,
   P~Christensen, Johannes Hanika, Christian Eisenacher, and Gregory Nichols.
 \newblock The path tracing revolution in the movie industry.
 \newblock In {\em ACM SIGGRAPH 2015 Courses}, page~24. ACM, 2015.
+
+\bibitem{kingma2014adam}
+Diederik~P Kingma and Jimmy Ba.
+\newblock Adam: A method for stochastic optimization.
+\newblock {\em arXiv preprint arXiv:1412.6980}, 2014.
 
 \bibitem{konidaris2011value}
 George Konidaris, Sarah Osentoski, and Philip Thomas.
@@ -396,10 +412,20 @@ Ji{\v{r}}{\'\i} Vorba, Ond{\v{r}}ej Karl{\'\i}k, Martin {\v{S}}ik, Tobias
   simulation.
 \newblock {\em ACM Transactions on Graphics (TOG)}, 33(4):101, 2014.
 
+\bibitem{wald2001state}
+Ingo Wald and Philipp Slusallek.
+\newblock State of the art in interactive ray tracing.
+\newblock {\em State of the Art Reports, EUROGRAPHICS}, 2001:21--42, 2001.
+
 \bibitem{normals}
 Eric~W Weisstein.
 \newblock Normal vector.
 \newblock MathWolrd--A Wolfram Web Resource.
+
+\bibitem{whitted2005improved}
+Turner Whitted.
+\newblock An improved illumination model for shaded display.
+\newblock In {\em ACM Siggraph 2005 Courses}, page~4. ACM, 2005.
 
 \bibitem{zheng2018learning}
 Quan Zheng and Matthias Zwicker.

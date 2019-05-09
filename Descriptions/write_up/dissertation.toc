@@ -67,4 +67,4 @@
 \contentsline {subsubsection}{Investigating the relationship between scene geometry and ANN requirements}{50}{section*.62}
 \contentsline {subsubsection}{Neural-Q versus Disney's Neural Path Guider}{50}{section*.63}
 \contentsline {subsubsection}{Further investigate Deep Reinforcement learning techniques}{50}{section*.64}
-\contentsline {chapter}{\numberline {A}An Example Appendix}{55}{appendix.A}
+\contentsline {chapter}{\numberline {A}Appendix}{55}{appendix.A}

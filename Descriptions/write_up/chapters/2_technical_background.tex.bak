@@ -47,11 +47,11 @@ Another important property of MC integration is that by the law of large numbers
 Pr( \lim_{N \rightarrow \infty} \langle F^N \rangle = F ) = 1
 \end{equation}
 
-The standard error of the MC integration approximation decreases according to Equation \ref{eq:mc_error}. Where the standard error describes the statistical accuracy of the MC approximation. Where $\sigma_N^2$ is the variance of the solutions for the samples taken, and is calculated by equation \ref{eq:sample_variance} using the mean of the solutions for the samples taken ($\mu$). Due to equation \ref{eq:mc_error}, it takes four times as many samples to reduce the error of the MC approximation by a half. Also, the square root of the variance is equal to the error of the approximation. Therefore, from here on when we refer to reducing the variance, we also are implying a reduction in the error of the approximation.
+The standard error of the MC integration approximation decreases according to Equation \ref{eq:mc_error}. Where the standard error describes the statistical accuracy of the MC approximation. Where $\sigma_N^2$ is the variance of the solutions for the samples taken, and is calculated by equation \ref{eq:sample_variance} using the mean of the solutions for the samples taken ($\mu_N$). Due to equation \ref{eq:mc_error}, it takes four times as many samples to reduce the error of the MC approximation by a half. Also, the square root of the variance is equal to the error of the approximation. Therefore, from here on when we refer to reducing the variance, we also are implying a reduction in the error of the approximation.
 
 \begin{equation}
 \label{eq:sample_variance}
-\sigma_N^2 = \frac{1}{N-1} \sum_{i=0}^N (f(x_i) - \mu)^2
+\sigma_N^2 = \frac{1}{N-1} \sum_{i=0}^N (f(x_i) - \mu_N)^2
 \end{equation}
 
 \begin{equation}

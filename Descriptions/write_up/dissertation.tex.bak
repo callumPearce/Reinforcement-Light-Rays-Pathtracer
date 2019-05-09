@@ -158,24 +158,86 @@ of authorship may still be produced online via
 
 \appendix
 
-\chapter{An Example Appendix}
+\chapter{Appendix}
 \label{appx:example}
 
-Content which is not central to, but may enhance the dissertation can be 
-included in one or more appendices; examples include, but are not limited
-to
+\begin{figure}[h]
+\centering
+\minipage{0.45\textwidth}
+  \includegraphics[width=\textwidth]{images/renders/shelter/default.png}   
+  \subcaption{Default}
+\endminipage\hspace{1em}
+\minipage{\textwidth}
+  \includegraphics[width=\textwidth]{images/renders/shelter/sarsa.png}   
+  \subcaption{Expected Sarsa}
+\endminipage\hspace{1em}
+\minipage{\textwidth}
+  \includegraphics[width=\textwidth]{images/renders/shelter/nn.png}
+  \subcaption{Neural-Q}
+\endminipage
+\caption{128 SPP renders for the Shelter scene}
+\label{fig:shelter}
+\end{figure}
 
-\begin{itemize}
-\item lengthy mathematical proofs, numerical or graphical results which 
-      are summarised in the main body,
-\item sample or example calculations, 
-      and
-\item results of user studies or questionnaires.
-\end{itemize}
 
-\noindent
-Note that in line with most research conferences, the marking panel is not
-obliged to read such appendices.
+
+\begin{figure}[h]
+\centering
+\minipage{\textwidth}
+  \includegraphics[width=\textwidth]{images/renders/cornell/default.png}   
+  \subcaption{Default}
+\endminipage\hspace{1em}
+\minipage{\textwidth}
+  \includegraphics[width=\textwidth]{images/renders/cornell/sarsa.png}   
+  \subcaption{Expected Sarsa}
+\endminipage\hspace{1em}
+\minipage{\textwidth}
+  \includegraphics[width=\textwidth]{images/renders/cornell/nn.png}
+  \subcaption{Neural-Q}
+\endminipage
+\caption{128 SPP renders for the Cornell Box scene}
+\label{fig:cornell}
+\end{figure}
+
+
+
+\begin{figure}[h]
+\centering
+\minipage{\textwidth}
+  \includegraphics[width=\textwidth]{images/renders/complex_pillars/default.png}   
+  \subcaption{Default}
+\endminipage\hspace{1em}
+\minipage{\textwidth}
+  \includegraphics[width=\textwidth]{images/renders/complex_pillars/sarsa.png}   
+  \subcaption{Expected Sarsa}
+\endminipage\hspace{1em}
+\minipage{\textwidth}
+  \includegraphics[width=\textwidth]{images/renders/complex_pillars/nn.png}
+  \subcaption{Neural-Q}
+\endminipage
+\caption{128 SPP renders for the Complex Pillars scene}
+\label{fig:complex_light}
+\end{figure}
+
+
+
+\begin{figure}[h]
+\centering
+\minipage{\textwidth}
+  \includegraphics[width=\textwidth]{images/renders/door_room/default.png}   
+  \subcaption{Default}
+\endminipage\hspace{1em}
+\minipage{\textwidth}
+  \includegraphics[width=\textwidth]{images/renders/door_room/sarsa.png}   
+  \subcaption{Expected Sarsa}
+\endminipage\hspace{1em}
+\minipage{\textwidth}
+  \includegraphics[width=\textwidth]{images/renders/door_room/nn.png}
+  \subcaption{Neural-Q}
+\endminipage
+\caption{128 SPP renders for the Door Room scene}
+\label{fig:door_room}
+\end{figure}
 
 % =============================================================================
 

@@ -23,13 +23,103 @@ mistakenly use an acronym before defining it.  A limited example is
 as follows:
 \end{comment}
 
+\noindent
+\textbf{Miscellaneous}
 \begin{quote}
 \noindent
-
 \begin{tabular}{lcl}
-SPP &: & Sampled light paths Per Pixel\\
-TD learning    &:    & Temporal Difference learning\\
+
+GPU  &: & Graphical Processing Unit\\
+API  &: & Application Programming Interface\\
+RAM  &: & Random Access Memory\\
+MAPE  &: & Mean Absolute Percentage Error\\
+
 \end{tabular}
 \end{quote}
+
+\noindent
+\textbf{Monte Carlo Integration}
+\begin{quote}
+\noindent
+\begin{tabular}{lcl}
+
+MC  &: & Monte Carlo\\
+PDF  &: & Probability Density Function\\
+$F$ &: & True solution to an integral\\
+$\langle F^N \rangle$ &: & Approximate solution to the integral using $N$ samples\\
+$pdf(x_i)$ &: & Probability density function evaluated at $x_i$\\
+$\mathbb{E}[X]$ &: & Expectation of a random variable $X$, $\mathbb{E}[X] = \sum_{x \in X} p(x)x$\\
+$\sigma^2_N$ &: & Variance of the $N$ sampled solutions\\
+$\mu_N$ &: & Mean of the $N$ sampled solutions\\
+$Var(\langle F^N \rangle)$ &: & Standard error of the approximation $\langle F^N \rangle$\\
+$L_o^N$ &: & Outgoing radiance estimate using $N$ sampled light paths\\
+$\rho_i$ &: & PDF over reflected ray directions for position $x_i$ evaluated at the angle of incidence $\omega_i$\\
+
+\end{tabular}
+\end{quote}
+
+\noindent
+\textbf{Monte Carlo Path Tracing}
+\begin{quote}
+\noindent
+\begin{tabular}{lcl}
+
+SPP &: & Sampled light paths Per Pixel\\
+BRDF/$f_r$  &: & Bidirectional Reflectance Distribution Function\\
+$L_o$ &: & Outgoing radiance function\\
+$L_e$ &: & Emitted radiance function\\
+$L_i$ &: & Incident radiance function\\
+$\mathbf{n}$ &: & Surface normal\\
+$x$ &: & Position, $x \in \mathbb{R}^3$\\
+$\omega$ &: & Direction, $\omega \in \mathbb{R}^2$\\
+$\Omega$ &: & Set of all incident directions in a hemisphere surrounding a point\\
+$\cos(\theta_i)$ &: & Cosine of the angle between the surface normal and a direction $\omega_i$\\
+$h$ &: & Hit-point function, returning the closest intersection\\
+$m$ &: & Total number of discrete directions represented by the adaptive quadrature\\
+$N$ &: & Number of SPP\\
+$\mathbf{v^x}$ &: & Set of vertices converted into a coordinate system centred at point $x$\\
+$v_i$ &: & The $i$th vertex in the scene\\
+$v_i^{\{x\}}$ &: & The $i$th vertex in the scene converted into a coordinate system centred at point $x$\\
+$n$ & &: Total number of vertices in the scene\\
+
+\end{tabular}
+\end{quote}
+
+\pagebreak
+
+\noindent
+\textbf{Reinforcement Learning and Deep Reinforcement Learning}
+\begin{quote}
+\noindent
+\begin{tabular}{lcl}
+
+MDP  &: & Markov Decision Process\\
+TD learning    &:    & Temporal Difference learning\\
+ANN  &: & Artificial Neural Network\\
+$\mathcal{S}$ &: & Set of all possible states\\
+$\mathcal{A}$ &: & Set of all possible actions\\
+$S_t$ &: & The state at time step $t$\\
+$A_t$ &: & An action taken in time step $t$\\
+$R_t$ &: & Reward signal received at time step $t$\\
+$\gamma$ &: & Discount factor\\
+$s$ &: & A state\\
+$a$ &: & An action\\
+$p$ &: & Probability of receiving a reward $r$ in state $s'$ for choosing action $a$ in state $s$\\
+$G_t$ &: & Return (cumulative discounted reward) following time step $t$\\
+$\pi$ &: & A policy (Reinforcement Learning) / The optimal policy (Deep Reinforcement Learning)\\
+$q_\pi(s,a)$ &: & Value function under policy $\pi$ evaluated at state-action pair $(s,a)$\\
+$q_*$ &: & The optimal value function\\
+$Q$ &: & Approximate value function\\
+$\alpha$ &: & Learning rate\\
+$\theta$ &: & Parameter vector for an ANN\\
+$J(\theta)$ &: & Loss function evaluated at parameters $\theta$\\
+$\triangledown_\theta$ &: & Derivative w.r.t $\theta$\\
+$\hat{q_\theta}$ &: & Approximate value function modelled by an ANN with parameters $\theta$\\
+$\epsilon$ &: & Current value of the $\epsilon$-greedy policy\\
+$\delta$ &: & Decay rate of the $\epsilon$-greedy policy\\
+
+\end{tabular}
+\end{quote}
+
 
 \end{document}

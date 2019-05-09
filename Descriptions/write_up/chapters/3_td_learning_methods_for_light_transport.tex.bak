@@ -257,7 +257,7 @@ $$ \triangle \theta = -\frac{1}{2} \alpha \triangledown_\theta J(\theta)$$
 Where $\alpha$ is the step-size parameter. An example loss function for approximating the optimal value function is given in Equation \ref{eq:example_loss}. Note, is common in literature to denote the optimal value function as $q_\pi$ instead of $q_*$, we will stick to this convention from here on.
 
 \begin{equation}
-J(\theta) = \sum_{s \in \mathcal{S}} \sum_{a \in \mathcal{A}} (q_\pi(s,a) - q_\theta(s,a))^2
+J(\theta) = \sum_{s \in \mathcal{S}} \sum_{a \in \mathcal{A}} (q_\pi(s,a) - \hat{q_\theta}(s,a))^2
 \label{eq:example_loss}
 \end{equation}
 
@@ -266,7 +266,7 @@ Where:
 \begin{conditions}
 J(\theta) & The loss function for the current parameter values $\theta$\\
 q_\pi(s,a) & Value of the state-action pair under the optimal policy $\pi$ \\
-q_\theta(s,a) & Current approximation of the value for the state-action pair, using parameters $\theta$
+\hat{q_\theta}(s,a) & Current approximation of the value for the state-action pair, using parameters $\theta$
 \end{conditions}
 
 If plenty of data was available for $q_\pi(s,a)$ for many state actions pairs $(s,a)$, it would be possible to train an ANN to approximate the optimal value function $q_\pi$. This can be done by simply running a forward pass on the ANN to compute $q_\theta(s,a)$ for a given state-action pair as input, then calculate the loss $J(\theta)$ using the ground truth $q_\pi(s,a)$. Then, by using the backpropagation algorithm to calculate the partial derivatives w.r.t the loss. The parameters values $\theta$ can be updated using an optimizer such as Adam. The issue is $q_\pi$ is unknown and no training data is initially available for the training procedure just described. Instead, deep reinforcement learning uses online training procedures closely resembling the TD-learning methods introduced in section \ref{sec:td_learning} for function approximation.
@@ -390,7 +390,7 @@ Whilst a replay buffer was not used in the Neural-Q path tracer, what it hopes t
 
 Rather than storing transitions in a buffer to make up a minibatch for training, a batch of rays are continually traced and trained together in the Neural-Q path tracer. This avoids strong correlations between training iterations, reducing the variance in consecutive weight updates. However, it is likely there is still some correlation in the initial consecutive training iterations for light paths sampled from spatially local pixel positions in the image plane, so using some form of replay buffer like that suggested in \cite{muller2018neural} may further reduce the variance in consecutive weight updates.
 
-\subsubsection*{Addition 4: Decaying decaying $\epsilon$-\textit{greedy}}
+\subsubsection*{Addition 4: Decaying decaying $\epsilon$-greedy}
 As part of the decaying $\epsilon$-greedy policy, the value of $\epsilon$ is decreased after $1$ sampled light path is computed through every pixel in the image. Meaning, according to algorithm \ref{alg:neural_q_pathtracer}, this represents a single epoch. This is a reasonable point to decay $\epsilon$, as for an average light path length of $30$, for each sampled pixel in a $512x512$ image with a minibatch size of $1024$. Approximately $7,680$ training updates are made on the network. As discussed in section \ref{eq:exploration_vs_exploitation}, the decaying $\epsilon$-greedy policy makes sure the path tracer at first prioritises exploration of which direction contribute the most radiance. As training progresses, the path tracers policy alters more towards exploiting by sampling directions to continue light paths in based on the current estimated radiance distribution at their intersection points. This behaviour is desirable, as if we focused on exploitation to early, the path tracer may not sample seemingly unfavourable directions in the short term, which after more reflections off surfaces lead to a large amount of incident radiance to the point.
 
 \begin{algorithm}[hbtp]
