@@ -43,7 +43,7 @@
 % be deleted (or commented out) if you use the file as a template for your
 % own dissertation: everything following it is in the correct order to use 
 % as is.
-
+\begin{comment}
 \section*{Prelude}
 \thispagestyle{empty}
 
@@ -67,6 +67,7 @@ of authorship may still be produced online via
 \[
 \mbox{\url{http://www.cs.bris.ac.uk/Teaching/Resources/cover.html}}
 \]
+\end{comment}
 
 % =============================================================================
 

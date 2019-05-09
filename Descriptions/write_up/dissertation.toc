@@ -16,31 +16,31 @@
 \contentsline {section}{\numberline {2.2}Monte Carlo Path Tracing}{10}{section.2.2}
 \contentsline {subsection}{\numberline {2.2.1}The Rendering Equation}{10}{subsection.2.2.1}
 \contentsline {subsection}{\numberline {2.2.2}Path Tracing}{12}{subsection.2.2.2}
-\contentsline {subsubsection}{Monte Carlo Path Tracing}{12}{section*.17}
-\contentsline {subsubsection}{Importance Sampling in Path Tracing}{14}{section*.19}
+\contentsline {subsubsection}{Monte Carlo Path Tracing}{12}{section*.16}
+\contentsline {subsubsection}{Importance Sampling in Path Tracing}{14}{section*.18}
 \contentsline {section}{\numberline {2.3}Reinforcement Learning and TD-Learning}{14}{section.2.3}
 \contentsline {subsection}{\numberline {2.3.1}Markov Decision Processes}{14}{subsection.2.3.1}
 \contentsline {subsection}{\numberline {2.3.2}Goals and Rewards}{15}{subsection.2.3.2}
 \contentsline {subsection}{\numberline {2.3.3}Value Function and Optimality}{16}{subsection.2.3.3}
 \contentsline {subsection}{\numberline {2.3.4}Temporal Difference Learning}{16}{subsection.2.3.4}
-\contentsline {subsubsection}{Q-Learning}{17}{section*.22}
-\contentsline {subsubsection}{Expected Sarsa}{17}{section*.23}
+\contentsline {subsubsection}{Q-Learning}{17}{section*.21}
+\contentsline {subsubsection}{Expected Sarsa}{17}{section*.22}
 \contentsline {subsection}{\numberline {2.3.5}Exploration vs Exploitation}{18}{subsection.2.3.5}
-\contentsline {chapter}{\numberline {3}The Expected Sarsa and Neural-Q path tracers}{19}{chapter.3}
-\contentsline {section}{\numberline {3.1}The expected Sarsa Path Tracer}{19}{section.3.1}
+\contentsline {chapter}{\numberline {3}The Expected Sarsa and Neural-Q Path Tracers}{19}{chapter.3}
+\contentsline {section}{\numberline {3.1}The Expected Sarsa Path Tracer}{19}{section.3.1}
 \contentsline {subsection}{\numberline {3.1.1}Linking TD-Learning and Light Transport Simulation}{19}{subsection.3.1.1}
-\contentsline {subsection}{\numberline {3.1.2}The Irradiance Volume}{20}{subsection.3.1.2}
+\contentsline {subsection}{\numberline {3.1.2}The Irradiance Volume}{21}{subsection.3.1.2}
 \contentsline {subsection}{\numberline {3.1.3}Expected Sarsa Path Tracing}{22}{subsection.3.1.3}
 \contentsline {section}{\numberline {3.2}The Neural-Q Path Tracer}{25}{section.3.2}
 \contentsline {subsection}{\numberline {3.2.1}Introduction to Deep Reinforcement Learning}{25}{subsection.3.2.1}
-\contentsline {subsubsection}{Value Function Approximation}{25}{section*.34}
-\contentsline {subsubsection}{Stochastic Gradient Descent}{25}{section*.35}
-\contentsline {subsubsection}{Bootstrapping}{26}{section*.36}
+\contentsline {subsubsection}{Value Function Approximation}{25}{section*.33}
+\contentsline {subsubsection}{Stochastic Gradient Descent}{25}{section*.34}
+\contentsline {subsubsection}{Bootstrapping}{26}{section*.35}
 \contentsline {subsection}{\numberline {3.2.2}Deep Reinforcement Learning Motivation}{26}{subsection.3.2.2}
 \contentsline {subsection}{\numberline {3.2.3}Deep Q-learning for Light Transport}{27}{subsection.3.2.3}
 \contentsline {subsection}{\numberline {3.2.4}Artificial Neural Network Architecture}{27}{subsection.3.2.4}
 \contentsline {subsection}{\numberline {3.2.5}Neural-Q Path Tracing Algorithm}{29}{subsection.3.2.5}
-\contentsline {chapter}{\numberline {4}Critical Evaluation}{32}{chapter.4}
+\contentsline {chapter}{\numberline {4}Comparing the Expected Sarsa and Neural-Q Path Tracers}{32}{chapter.4}
 \contentsline {section}{\numberline {4.1}Experimental Setup}{32}{section.4.1}
 \contentsline {section}{\numberline {4.2}Assessing the reduction in image Noise for Monte Carlo Path Tracing}{32}{section.4.2}
 \contentsline {subsection}{\numberline {4.2.1}Quantifying the Reduction in Image Noise}{32}{subsection.4.2.1}
