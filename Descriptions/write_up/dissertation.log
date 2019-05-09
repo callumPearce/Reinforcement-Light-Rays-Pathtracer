@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.10.2)  9 MAY 2019 23:08
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.10.2)  10 MAY 2019 00:13
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1247,17 +1247,17 @@ Missing character: There is no 1 in font nullfont!
 Missing character: There is no p in font nullfont!
 Missing character: There is no t in font nullfont!
 [9]
-Overfull \hbox (7.28764pt too wide) in paragraph at lines 244--251
+Overfull \hbox (7.67415pt too wide) in paragraph at lines 244--251
 [] 
  []
 
-[10] <images/rendering_equation.png, id=390, 516.93124pt x 142.5325pt>
+<images/rendering_equation.png, id=382, 516.93124pt x 142.5325pt>
 File: images/rendering_equation.png Graphic file (type png)
 
 <use images/rendering_equation.png>
 Package pdftex.def Info: images/rendering_equation.png used on input line 257.
 (pdftex.def)             Requested size: 318.66948pt x 87.869pt.
-
+ [10]
 <images/diffuse_brdf.png, id=394, 284.06125pt x 142.5325pt>
 File: images/diffuse_brdf.png Graphic file (type png)
 
@@ -1303,37 +1303,25 @@ e (type png)
 
 <use images/renders/noise_reduction_default/increasing_samples.png>
 Package pdftex.def Info: images/renders/noise_reduction_default/increasing_samp
-les.png used on input line 336.
+les.png used on input line 338.
 (pdftex.def)             Requested size: 450.69417pt x 201.27759pt.
-
-
-LaTeX Warning: Reference `sec:importance_smapling' on page 13 undefined on inpu
-t line 372.
-
-[13 <./images/renders/noise_reduction_default/increasing_samples.png>]
-
-LaTeX Warning: Reference `motivation' on page 14 undefined on input line 378.
-
-<images/MDP.png, id=456, 615.29875pt x 242.9075pt>
+ [13 <./images/renders/noise_reduction_default/increasing_samples.png>]
+<images/MDP.png, id=458, 615.29875pt x 242.9075pt>
 File: images/MDP.png Graphic file (type png)
  <use images/MDP.png>
-Package pdftex.def Info: images/MDP.png used on input line 398.
+Package pdftex.def Info: images/MDP.png used on input line 400.
 (pdftex.def)             Requested size: 227.62206pt x 89.85953pt.
 
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 
-Overfull \hbox (8.33034pt too wide) in paragraph at lines 409--414
+Overfull \hbox (8.33034pt too wide) in paragraph at lines 411--416
 [] 
  []
 
-[14] [15 <./images/MDP.png>] [16]
-
-LaTeX Warning: Reference `eq:q_learning' on page 17 undefined on input line 493
-.
-
-[17]) (./chapters/3_td_learning_methods_for_light_transport.tex [18]
+[14] [15 <./images/MDP.png>] [16] [17])
+(./chapters/3_td_learning_methods_for_light_transport.tex [18]
 Chapter 3.
 [19
 
@@ -1368,7 +1356,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 99--100
  []
 
 [20]
-<images/renders/hemispheres/irradiance_volume.png, id=570, 687.56876pt x 687.56
+<images/renders/hemispheres/irradiance_volume.png, id=574, 687.56876pt x 687.56
 876pt>
 File: images/renders/hemispheres/irradiance_volume.png Graphic file (type png)
  <use images/renders/hemispheres/irradiance_volume.png>
@@ -1376,7 +1364,7 @@ Package pdftex.def Info: images/renders/hemispheres/irradiance_volume.png used
 on input line 103.
 (pdftex.def)             Requested size: 136.57462pt x 136.56708pt.
 
-<images/renders/simple_room/geometry.png, id=573, 886.31125pt x 885.3075pt>
+<images/renders/simple_room/geometry.png, id=577, 886.31125pt x 885.3075pt>
 File: images/renders/simple_room/geometry.png Graphic file (type png)
 
 <use images/renders/simple_room/geometry.png>
@@ -1384,7 +1372,7 @@ Package pdftex.def Info: images/renders/simple_room/geometry.png used on input
 line 114.
 (pdftex.def)             Requested size: 145.68144pt x 145.51556pt.
 
-<images/renders/simple_room/voronoi.png, id=574, 722.7pt x 722.7pt>
+<images/renders/simple_room/voronoi.png, id=578, 722.7pt x 722.7pt>
 File: images/renders/simple_room/voronoi.png Graphic file (type png)
 
 <use images/renders/simple_room/voronoi.png>
@@ -1399,14 +1387,14 @@ n input line 122.
 (pdftex.def)             Requested size: 145.68144pt x 145.67326pt.
  [21 <./images/renders/hemispheres/irradiance_volume.png> <./images/renders/sim
 ple_room/geometry.png> <./images/renders/simple_room/voronoi.png>] [22] [23]
-<images/uniform_pdf.png, id=626, 284.06125pt x 147.55125pt>
+<images/uniform_pdf.png, id=629, 284.06125pt x 147.55125pt>
 File: images/uniform_pdf.png Graphic file (type png)
 
 <use images/uniform_pdf.png>
 Package pdftex.def Info: images/uniform_pdf.png used on input line 211.
 (pdftex.def)             Requested size: 145.68144pt x 75.6734pt.
 
-<images/not_uniform_pdf.png, id=627, 284.06125pt x 147.55125pt>
+<images/not_uniform_pdf.png, id=630, 284.06125pt x 147.55125pt>
 File: images/not_uniform_pdf.png Graphic file (type png)
 
 <use images/not_uniform_pdf.png>
@@ -1419,10 +1407,6 @@ ine 230.
 
 [24 <./images/uniform_pdf.png> <./images/not_uniform_pdf.png>] [25]
 
-LaTeX Warning: Reference `eq:q_learning' on page 26 undefined on input line 277
-.
-
-
 LaTeX Warning: Reference `sec:incident_radiance_distribution' on page 26 undefi
 ned on input line 311.
 
@@ -1432,7 +1416,7 @@ ion.3.2.12}) has been already used, duplicate ignored
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
 l.353 
-      ] <images/fwd_pass_process.png, id=694, 915.42pt x 288.07625pt>
+      ] <images/fwd_pass_process.png, id=699, 915.42pt x 288.07625pt>
 File: images/fwd_pass_process.png Graphic file (type png)
 
 <use images/fwd_pass_process.png>
@@ -1509,7 +1493,7 @@ ntly lower for the [][]\OT1/cmtt/m/n/10 Shelter []\OT1/cmr/m/n/10 and [][]\OT1/
 cmtt/m/n/10 Complex Pillars
  []
 
-[33] <images/noise_reduction.png, id=793, 570.4512pt x 820.2645pt>
+[33] <images/noise_reduction.png, id=797, 570.4512pt x 820.2645pt>
 File: images/noise_reduction.png Graphic file (type png)
 
 <use images/noise_reduction.png>
@@ -1520,14 +1504,14 @@ Package pdftex.def Info: images/noise_reduction.png used on input line 66.
 LaTeX Warning: Float too large for page by 17.63765pt on input line 70.
 
 [34] [35 <./images/noise_reduction.png>]
-<images/noise_diff.png, id=813, 538.1706pt x 203.8014pt>
+<images/noise_diff.png, id=817, 538.1706pt x 203.8014pt>
 File: images/noise_diff.png Graphic file (type png)
 
 <use images/noise_diff.png>
 Package pdftex.def Info: images/noise_diff.png used on input line 81.
 (pdftex.def)             Requested size: 450.69417pt x 170.67577pt.
 
-<images/renders/true_distribution.png, id=818, 722.7pt x 722.7pt>
+<images/renders/true_distribution.png, id=822, 722.7pt x 722.7pt>
 File: images/renders/true_distribution.png Graphic file (type png)
 
 <use images/renders/true_distribution.png>
@@ -1535,7 +1519,7 @@ Package pdftex.def Info: images/renders/true_distribution.png used on input lin
 e 94.
 (pdftex.def)             Requested size: 141.12456pt x 141.11891pt.
 
-<images/renders/expected_sarsa_visualisation.png, id=819, 1027.84pt x 1027.84pt
+<images/renders/expected_sarsa_visualisation.png, id=823, 1027.84pt x 1027.84pt
 >
 File: images/renders/expected_sarsa_visualisation.png Graphic file (type png)
  <use images/renders/expected_sarsa_visualisation.png>
@@ -1543,7 +1527,7 @@ Package pdftex.def Info: images/renders/expected_sarsa_visualisation.png used o
 n input line 98.
 (pdftex.def)             Requested size: 141.12456pt x 141.12062pt.
 
-<images/renders/neural_q_visualisation.png, id=820, 1027.84pt x 1027.84pt>
+<images/renders/neural_q_visualisation.png, id=824, 1027.84pt x 1027.84pt>
 File: images/renders/neural_q_visualisation.png Graphic file (type png)
 
 <use images/renders/neural_q_visualisation.png>
@@ -1553,7 +1537,7 @@ t line 102.
  [36 <./images/noise_diff.png>]
 [37 <./images/renders/true_distribution.png> <./images/renders/expected_sarsa_v
 isualisation.png> <./images/renders/neural_q_visualisation.png>]
-<images/1_spp.png, id=847, 593.0958pt x 375.3222pt>
+<images/1_spp.png, id=851, 593.0958pt x 375.3222pt>
 File: images/1_spp.png Graphic file (type png)
  <use images/1_spp.png>
 Package pdftex.def Info: images/1_spp.png used on input line 177.
@@ -1563,7 +1547,7 @@ Package pdftex.def Info: images/1_spp.png used on input line 177.
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 [38] [39 <./images/1_spp.png>]
-<images/training_curves.png, id=867, 766.5438pt x 328.3467pt>
+<images/training_curves.png, id=871, 766.5438pt x 328.3467pt>
 File: images/training_curves.png Graphic file (type png)
 
 <use images/training_curves.png>
@@ -1574,7 +1558,7 @@ Package pdftex.def Info: images/training_curves.png used on input line 197.
 LaTeX Warning: Reference `fig:more_irradiance_volumes' on page 41 undefined on 
 input line 235.
 
-<images/less_volumes.png, id=885, 446.1468pt x 355.5684pt>
+<images/less_volumes.png, id=889, 446.1468pt x 355.5684pt>
 File: images/less_volumes.png Graphic file (type png)
 
 <use images/less_volumes.png>
@@ -1584,7 +1568,7 @@ Package pdftex.def Info: images/less_volumes.png used on input line 239.
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-[41] <images/renders/sarsa_128_1Mb_incorrect.png, id=898, 722.7pt x 722.7pt>
+[41] <images/renders/sarsa_128_1Mb_incorrect.png, id=902, 722.7pt x 722.7pt>
 File: images/renders/sarsa_128_1Mb_incorrect.png Graphic file (type png)
 
 <use images/renders/sarsa_128_1Mb_incorrect.png>
@@ -1638,7 +1622,7 @@ Missing character: There is no € in font cmr10!
 Missing character: There is no ¦ in font cmr10!
 ) [54]
 Appendix A.
-<images/renders/shelter/default.png, id=1085, 722.7pt x 722.7pt>
+<images/renders/shelter/default.png, id=1089, 722.7pt x 722.7pt>
 File: images/renders/shelter/default.png Graphic file (type png)
 
 <use images/renders/shelter/default.png>
@@ -1646,7 +1630,7 @@ Package pdftex.def Info: images/renders/shelter/default.png used on input line
 167.
 (pdftex.def)             Requested size: 204.85846pt x 204.85785pt.
 
-<images/renders/shelter/sarsa.png, id=1086, 722.7pt x 722.7pt>
+<images/renders/shelter/sarsa.png, id=1090, 722.7pt x 722.7pt>
 File: images/renders/shelter/sarsa.png Graphic file (type png)
 
 <use images/renders/shelter/sarsa.png>
@@ -1654,14 +1638,14 @@ Package pdftex.def Info: images/renders/shelter/sarsa.png used on input line 17
 1.
 (pdftex.def)             Requested size: 204.85846pt x 204.85785pt.
 
-<images/renders/shelter/nn.png, id=1087, 722.7pt x 722.7pt>
+<images/renders/shelter/nn.png, id=1091, 722.7pt x 722.7pt>
 File: images/renders/shelter/nn.png Graphic file (type png)
 
 <use images/renders/shelter/nn.png>
 Package pdftex.def Info: images/renders/shelter/nn.png used on input line 175.
 (pdftex.def)             Requested size: 204.85846pt x 204.85785pt.
 
-<images/renders/cornell/default.png, id=1088, 722.7pt x 722.7pt>
+<images/renders/cornell/default.png, id=1092, 722.7pt x 722.7pt>
 File: images/renders/cornell/default.png Graphic file (type png)
 
 <use images/renders/cornell/default.png>
@@ -1669,7 +1653,7 @@ Package pdftex.def Info: images/renders/cornell/default.png used on input line
 187.
 (pdftex.def)             Requested size: 204.85846pt x 204.85785pt.
 
-<images/renders/cornell/sarsa.png, id=1089, 722.7pt x 722.7pt>
+<images/renders/cornell/sarsa.png, id=1093, 722.7pt x 722.7pt>
 File: images/renders/cornell/sarsa.png Graphic file (type png)
 
 <use images/renders/cornell/sarsa.png>
@@ -1677,7 +1661,7 @@ Package pdftex.def Info: images/renders/cornell/sarsa.png used on input line 19
 1.
 (pdftex.def)             Requested size: 204.85846pt x 204.85785pt.
 
-<images/renders/cornell/nn.png, id=1090, 722.7pt x 722.7pt>
+<images/renders/cornell/nn.png, id=1094, 722.7pt x 722.7pt>
 File: images/renders/cornell/nn.png Graphic file (type png)
 
 <use images/renders/cornell/nn.png>
@@ -1687,7 +1671,7 @@ Package pdftex.def Info: images/renders/cornell/nn.png used on input line 195.
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-<images/renders/complex_pillars/default.png, id=1091, 722.7pt x 722.7pt>
+<images/renders/complex_pillars/default.png, id=1095, 722.7pt x 722.7pt>
 File: images/renders/complex_pillars/default.png Graphic file (type png)
 
 <use images/renders/complex_pillars/default.png>
@@ -1695,7 +1679,7 @@ Package pdftex.def Info: images/renders/complex_pillars/default.png used on inp
 ut line 207.
 (pdftex.def)             Requested size: 204.85846pt x 204.85785pt.
 
-<images/renders/complex_pillars/sarsa.png, id=1092, 722.7pt x 722.7pt>
+<images/renders/complex_pillars/sarsa.png, id=1096, 722.7pt x 722.7pt>
 File: images/renders/complex_pillars/sarsa.png Graphic file (type png)
 
 <use images/renders/complex_pillars/sarsa.png>
@@ -1703,7 +1687,7 @@ Package pdftex.def Info: images/renders/complex_pillars/sarsa.png used on input
  line 211.
 (pdftex.def)             Requested size: 204.85846pt x 204.85785pt.
 
-<images/renders/complex_pillars/nn.png, id=1093, 722.7pt x 722.7pt>
+<images/renders/complex_pillars/nn.png, id=1097, 722.7pt x 722.7pt>
 File: images/renders/complex_pillars/nn.png Graphic file (type png)
 
 <use images/renders/complex_pillars/nn.png>
@@ -1714,7 +1698,7 @@ ne 215.
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-<images/renders/door_room/default.png, id=1094, 722.7pt x 722.7pt>
+<images/renders/door_room/default.png, id=1098, 722.7pt x 722.7pt>
 File: images/renders/door_room/default.png Graphic file (type png)
 
 <use images/renders/door_room/default.png>
@@ -1722,7 +1706,7 @@ Package pdftex.def Info: images/renders/door_room/default.png used on input lin
 e 227.
 (pdftex.def)             Requested size: 204.85846pt x 204.85785pt.
 
-<images/renders/door_room/sarsa.png, id=1095, 722.7pt x 722.7pt>
+<images/renders/door_room/sarsa.png, id=1099, 722.7pt x 722.7pt>
 File: images/renders/door_room/sarsa.png Graphic file (type png)
 
 <use images/renders/door_room/sarsa.png>
@@ -1730,7 +1714,7 @@ Package pdftex.def Info: images/renders/door_room/sarsa.png used on input line
 231.
 (pdftex.def)             Requested size: 204.85846pt x 204.85785pt.
 
-<images/renders/door_room/nn.png, id=1096, 722.7pt x 722.7pt>
+<images/renders/door_room/nn.png, id=1100, 722.7pt x 722.7pt>
 File: images/renders/door_room/nn.png Graphic file (type png)
 
 <use images/renders/door_room/nn.png>
@@ -1768,10 +1752,10 @@ LaTeX Warning: There were undefined references.
 ### simple group (level 1) entered at line 1061 ({)
 ### bottom level 
 Here is how much of TeX's memory you used:
- 33846 strings out of 492995
- 767608 string characters out of 6132704
- 1184147 words of memory out of 5000000
- 36450 multiletter control sequences out of 15000+600000
+ 33844 strings out of 492995
+ 767571 string characters out of 6132704
+ 1184228 words of memory out of 5000000
+ 36448 multiletter control sequences out of 15000+600000
  14171 words of font info for 53 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  72i,28n,98p,2205b,25891s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -1798,10 +1782,10 @@ live/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texl
 ive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt8.pfb></usr/local/texliv
 e/2017/texmf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb></usr/local/te
 xlive/2017/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on dissertation.pdf (66 pages, 46767642 bytes).
+Output written on dissertation.pdf (66 pages, 46767668 bytes).
 PDF statistics:
- 1273 PDF objects out of 1440 (max. 8388607)
- 1085 compressed objects within 11 object streams
+ 1277 PDF objects out of 1440 (max. 8388607)
+ 1089 compressed objects within 11 object streams
  319 named destinations out of 1000 (max. 500000)
  426 words of extra memory for PDF output out of 10000 (max. 10000000)
 
