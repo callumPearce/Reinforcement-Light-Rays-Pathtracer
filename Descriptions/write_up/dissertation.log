@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.10.2)  10 MAY 2019 03:23
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.10.2)  10 MAY 2019 03:56
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1418,7 +1418,7 @@ Chapter 4.
 [32
 
 ]
-Overfull \hbox (23.9754pt too wide) in paragraph at lines 60--61
+Overfull \hbox (23.9754pt too wide) in paragraph at lines 61--62
 []\OT1/cmr/m/n/10 The MAPE scores for the Neural-Q path tracer are sig-nif-i-ca
 ntly lower for the [][]\OT1/cmtt/m/n/10 Shelter []\OT1/cmr/m/n/10 and [][]\OT1/
 cmtt/m/n/10 Complex Pillars
@@ -1428,18 +1428,18 @@ cmtt/m/n/10 Complex Pillars
 File: images/noise_reduction.png Graphic file (type png)
 
 <use images/noise_reduction.png>
-Package pdftex.def Info: images/noise_reduction.png used on input line 66.
+Package pdftex.def Info: images/noise_reduction.png used on input line 67.
 (pdftex.def)             Requested size: 386.96027pt x 556.42073pt.
 
 
-LaTeX Warning: Float too large for page by 5.63765pt on input line 70.
+LaTeX Warning: Float too large for page by 5.63765pt on input line 71.
 
 [34] [35 <./images/noise_reduction.png>]
 <images/noise_diff.png, id=825, 538.1706pt x 203.8014pt>
 File: images/noise_diff.png Graphic file (type png)
 
 <use images/noise_diff.png>
-Package pdftex.def Info: images/noise_diff.png used on input line 81.
+Package pdftex.def Info: images/noise_diff.png used on input line 82.
 (pdftex.def)             Requested size: 450.69417pt x 170.67577pt.
 
 <images/renders/true_distribution.png, id=830, 722.7pt x 722.7pt>
@@ -1447,7 +1447,7 @@ File: images/renders/true_distribution.png Graphic file (type png)
 
 <use images/renders/true_distribution.png>
 Package pdftex.def Info: images/renders/true_distribution.png used on input lin
-e 94.
+e 95.
 (pdftex.def)             Requested size: 141.12456pt x 141.11891pt.
 
 <images/renders/expected_sarsa_visualisation.png, id=831, 1027.84pt x 1027.84pt
@@ -1455,7 +1455,7 @@ e 94.
 File: images/renders/expected_sarsa_visualisation.png Graphic file (type png)
  <use images/renders/expected_sarsa_visualisation.png>
 Package pdftex.def Info: images/renders/expected_sarsa_visualisation.png used o
-n input line 98.
+n input line 99.
 (pdftex.def)             Requested size: 141.12456pt x 141.12062pt.
 
 <images/renders/neural_q_visualisation.png, id=832, 1027.84pt x 1027.84pt>
@@ -1463,7 +1463,7 @@ File: images/renders/neural_q_visualisation.png Graphic file (type png)
 
 <use images/renders/neural_q_visualisation.png>
 Package pdftex.def Info: images/renders/neural_q_visualisation.png used on inpu
-t line 102.
+t line 103.
 (pdftex.def)             Requested size: 141.12456pt x 141.12062pt.
  [36 <./images/noise_diff.png>]
 [37 <./images/renders/true_distribution.png> <./images/renders/expected_sarsa_v
@@ -1471,7 +1471,7 @@ isualisation.png> <./images/renders/neural_q_visualisation.png>]
 <images/1_spp.png, id=859, 593.0958pt x 375.3222pt>
 File: images/1_spp.png Graphic file (type png)
  <use images/1_spp.png>
-Package pdftex.def Info: images/1_spp.png used on input line 177.
+Package pdftex.def Info: images/1_spp.png used on input line 178.
 (pdftex.def)             Requested size: 455.24411pt x 288.08267pt.
 
 
@@ -1482,14 +1482,14 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 File: images/training_curves.png Graphic file (type png)
 
 <use images/training_curves.png>
-Package pdftex.def Info: images/training_curves.png used on input line 197.
+Package pdftex.def Info: images/training_curves.png used on input line 198.
 (pdftex.def)             Requested size: 455.24411pt x 195.00046pt.
  [40 <./images/training_curves.png>]
 <images/less_volumes.png, id=898, 446.1468pt x 355.5684pt>
 File: images/less_volumes.png Graphic file (type png)
 
 <use images/less_volumes.png>
-Package pdftex.def Info: images/less_volumes.png used on input line 239.
+Package pdftex.def Info: images/less_volumes.png used on input line 240.
 (pdftex.def)             Requested size: 318.66948pt x 253.97989pt.
 
 
@@ -1500,7 +1500,7 @@ File: images/renders/sarsa_128_1Mb_incorrect.png Graphic file (type png)
 
 <use images/renders/sarsa_128_1Mb_incorrect.png>
 Package pdftex.def Info: images/renders/sarsa_128_1Mb_incorrect.png used on inp
-ut line 248.
+ut line 249.
 (pdftex.def)             Requested size: 182.09486pt x 182.09709pt.
 
 
@@ -1539,7 +1539,7 @@ Missing character: There is no € in font cmr10!
 Missing character: There is no ¦ in font cmr10!
 ) [54]
 Appendix A.
-<images/renders/shelter/default.png, id=1100, 722.7pt x 722.7pt>
+<images/renders/shelter/default.png, id=1101, 722.7pt x 722.7pt>
 File: images/renders/shelter/default.png Graphic file (type png)
 
 <use images/renders/shelter/default.png>
@@ -1547,7 +1547,7 @@ Package pdftex.def Info: images/renders/shelter/default.png used on input line
 167.
 (pdftex.def)             Requested size: 204.85846pt x 204.85785pt.
 
-<images/renders/shelter/sarsa.png, id=1101, 722.7pt x 722.7pt>
+<images/renders/shelter/sarsa.png, id=1102, 722.7pt x 722.7pt>
 File: images/renders/shelter/sarsa.png Graphic file (type png)
 
 <use images/renders/shelter/sarsa.png>
@@ -1555,14 +1555,14 @@ Package pdftex.def Info: images/renders/shelter/sarsa.png used on input line 17
 1.
 (pdftex.def)             Requested size: 204.85846pt x 204.85785pt.
 
-<images/renders/shelter/nn.png, id=1102, 722.7pt x 722.7pt>
+<images/renders/shelter/nn.png, id=1103, 722.7pt x 722.7pt>
 File: images/renders/shelter/nn.png Graphic file (type png)
 
 <use images/renders/shelter/nn.png>
 Package pdftex.def Info: images/renders/shelter/nn.png used on input line 175.
 (pdftex.def)             Requested size: 204.85846pt x 204.85785pt.
 
-<images/renders/cornell/default.png, id=1103, 722.7pt x 722.7pt>
+<images/renders/cornell/default.png, id=1104, 722.7pt x 722.7pt>
 File: images/renders/cornell/default.png Graphic file (type png)
 
 <use images/renders/cornell/default.png>
@@ -1570,7 +1570,7 @@ Package pdftex.def Info: images/renders/cornell/default.png used on input line
 187.
 (pdftex.def)             Requested size: 204.85846pt x 204.85785pt.
 
-<images/renders/cornell/sarsa.png, id=1104, 722.7pt x 722.7pt>
+<images/renders/cornell/sarsa.png, id=1105, 722.7pt x 722.7pt>
 File: images/renders/cornell/sarsa.png Graphic file (type png)
 
 <use images/renders/cornell/sarsa.png>
@@ -1578,7 +1578,7 @@ Package pdftex.def Info: images/renders/cornell/sarsa.png used on input line 19
 1.
 (pdftex.def)             Requested size: 204.85846pt x 204.85785pt.
 
-<images/renders/cornell/nn.png, id=1105, 722.7pt x 722.7pt>
+<images/renders/cornell/nn.png, id=1106, 722.7pt x 722.7pt>
 File: images/renders/cornell/nn.png Graphic file (type png)
 
 <use images/renders/cornell/nn.png>
@@ -1588,7 +1588,7 @@ Package pdftex.def Info: images/renders/cornell/nn.png used on input line 195.
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-<images/renders/complex_pillars/default.png, id=1106, 722.7pt x 722.7pt>
+<images/renders/complex_pillars/default.png, id=1107, 722.7pt x 722.7pt>
 File: images/renders/complex_pillars/default.png Graphic file (type png)
 
 <use images/renders/complex_pillars/default.png>
@@ -1596,7 +1596,7 @@ Package pdftex.def Info: images/renders/complex_pillars/default.png used on inp
 ut line 207.
 (pdftex.def)             Requested size: 204.85846pt x 204.85785pt.
 
-<images/renders/complex_pillars/sarsa.png, id=1107, 722.7pt x 722.7pt>
+<images/renders/complex_pillars/sarsa.png, id=1108, 722.7pt x 722.7pt>
 File: images/renders/complex_pillars/sarsa.png Graphic file (type png)
 
 <use images/renders/complex_pillars/sarsa.png>
@@ -1604,7 +1604,7 @@ Package pdftex.def Info: images/renders/complex_pillars/sarsa.png used on input
  line 211.
 (pdftex.def)             Requested size: 204.85846pt x 204.85785pt.
 
-<images/renders/complex_pillars/nn.png, id=1108, 722.7pt x 722.7pt>
+<images/renders/complex_pillars/nn.png, id=1109, 722.7pt x 722.7pt>
 File: images/renders/complex_pillars/nn.png Graphic file (type png)
 
 <use images/renders/complex_pillars/nn.png>
@@ -1615,7 +1615,7 @@ ne 215.
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-<images/renders/door_room/default.png, id=1109, 722.7pt x 722.7pt>
+<images/renders/door_room/default.png, id=1110, 722.7pt x 722.7pt>
 File: images/renders/door_room/default.png Graphic file (type png)
 
 <use images/renders/door_room/default.png>
@@ -1623,7 +1623,7 @@ Package pdftex.def Info: images/renders/door_room/default.png used on input lin
 e 227.
 (pdftex.def)             Requested size: 204.85846pt x 204.85785pt.
 
-<images/renders/door_room/sarsa.png, id=1110, 722.7pt x 722.7pt>
+<images/renders/door_room/sarsa.png, id=1111, 722.7pt x 722.7pt>
 File: images/renders/door_room/sarsa.png Graphic file (type png)
 
 <use images/renders/door_room/sarsa.png>
@@ -1631,7 +1631,7 @@ Package pdftex.def Info: images/renders/door_room/sarsa.png used on input line
 231.
 (pdftex.def)             Requested size: 204.85846pt x 204.85785pt.
 
-<images/renders/door_room/nn.png, id=1111, 722.7pt x 722.7pt>
+<images/renders/door_room/nn.png, id=1112, 722.7pt x 722.7pt>
 File: images/renders/door_room/nn.png Graphic file (type png)
 
 <use images/renders/door_room/nn.png>
@@ -1669,10 +1669,10 @@ LaTeX Warning: There were undefined references.
 ### simple group (level 1) entered at line 1061 ({)
 ### bottom level 
 Here is how much of TeX's memory you used:
- 33837 strings out of 492995
- 767379 string characters out of 6132704
- 1184156 words of memory out of 5000000
- 36441 multiletter control sequences out of 15000+600000
+ 33838 strings out of 492995
+ 767416 string characters out of 6132704
+ 1184251 words of memory out of 5000000
+ 36442 multiletter control sequences out of 15000+600000
  14171 words of font info for 53 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  72i,28n,98p,2247b,25891s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -1699,10 +1699,10 @@ live/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texl
 ive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt8.pfb></usr/local/texliv
 e/2017/texmf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb></usr/local/te
 xlive/2017/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on dissertation.pdf (66 pages, 46768019 bytes).
+Output written on dissertation.pdf (66 pages, 46767895 bytes).
 PDF statistics:
- 1287 PDF objects out of 1440 (max. 8388607)
- 1099 compressed objects within 11 object streams
+ 1288 PDF objects out of 1440 (max. 8388607)
+ 1100 compressed objects within 11 object streams
  319 named destinations out of 1000 (max. 500000)
  426 words of extra memory for PDF output out of 10000 (max. 10000000)
 
